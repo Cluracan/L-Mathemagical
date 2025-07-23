@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
 // import { useGameMode } from "../store/useGameMode";
 import { Box, Button, Stack } from "@mui/material";
 

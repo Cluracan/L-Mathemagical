@@ -73,7 +73,11 @@ function RouteComponent() {
       >
         <CardContent>
           {storyText.map((text, index) => (
-            <Typography key={index} variant="body1" paragraph>
+            <Typography
+              key={index}
+              variant="body1"
+              sx={{ marginBottom: "1rem" }}
+            >
               {text}
             </Typography>
           ))}

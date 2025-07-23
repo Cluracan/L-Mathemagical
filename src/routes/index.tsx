@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 // import { useGameMode } from "../store/useGameMode";
 import { Box, Button, Stack } from "@mui/material";
+import logoL from "../assets/images/LogoL.svg";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -18,11 +19,7 @@ function Index() {
           width: "60vw",
         }}
       >
-        <img
-          src="../src/assets/images/LogoL.svg"
-          alt="L - Logo"
-          style={{ height: "60vh" }}
-        />
+        <img src={logoL} alt="L - Logo" style={{ height: "60vh" }} />
         <Stack direction="column" spacing={4}>
           <Button variant="outlined" href="/new-game">
             NEW GAME

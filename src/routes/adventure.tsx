@@ -1,4 +1,4 @@
-import { Box, GlobalStyles } from "@mui/material";
+import { Box } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 

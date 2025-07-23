@@ -19,7 +19,7 @@ function Index() {
           width: "60vw",
         }}
       >
-        <img src={logoL} alt="L - Logo" style={{ height: "60vh" }} />
+        <img src={logoL} alt="L - Logo" style={{ height: "72vh" }} />
         <Stack direction="column" spacing={4}>
           <Button variant="outlined" href="/new-game">
             NEW GAME

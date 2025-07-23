@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -7,6 +8,9 @@ import {
   Typography,
   GlobalStyles,
 } from "@mui/material";
+import { useState } from "react";
+import paperScrap from "../assets/images/paperScrap.bmp";
+
 import { storyText } from "../assets/data/instructions";
 
 export const Route = createFileRoute("/story")({
@@ -14,20 +18,17 @@ export const Route = createFileRoute("/story")({
 });
 
 function RouteComponent() {
+  const [paperScrapWidth, setPaperScrapWidth] = useState<"4rem" | "16rem">(
+    "4rem"
+  );
   return (
     <>
       <GlobalStyles
         styles={{
-          pre: { color: "hsla(62, 67%, 69%, 1.00)", "line-height": "1rem" },
+          pre: { color: "hsla(62, 67%, 69%, 1.00)", lineHeight: "1rem" },
         }}
       />
-      {/* <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-around",
-        }}
-      > */}
+
       <pre>{`                                                  !_
                                                   |*~=-.,
                                                   |_,-'\`
@@ -67,7 +68,7 @@ function RouteComponent() {
         sx={{
           maxWidth: "32vw",
           maxHeight: "90vh",
-          "overflow-y": "auto",
+          overflowY: "auto",
           padding: "2rem",
         }}
       >
@@ -82,11 +83,23 @@ function RouteComponent() {
             </Typography>
           ))}
         </CardContent>
-        <CardActions>
-          <Button variant="outlined" href="/">
-            Back
-          </Button>
-        </CardActions>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <CardActions>
+            <Button variant="outlined" href="/">
+              Back
+            </Button>
+          </CardActions>
+          <img
+            src={paperScrap}
+            alt="Paper Scrap"
+            style={{ width: `${paperScrapWidth}` }}
+            onClick={() => {
+              setPaperScrapWidth((prev) =>
+                prev === "4rem" ? "16rem" : "4rem"
+              );
+            }}
+          />
+        </Box>
       </Card>
       {/* </Box> */}
     </>

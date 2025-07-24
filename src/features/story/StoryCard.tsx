@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardActions, CardContent } from "@mui/material";
 import castleAscii from "./data/castleAscii.txt?raw";
 import mapFragment from "./images/mapFragment.png";
-import { storyData } from "./data/storyData";
+import { storyText } from "./data/storyText";
 import { AsciiContent } from "../../components/AsciiContent";
 import { ImageZoom } from "../../components/ImageZoom";
 import { TextContent } from "../../components/TextContent";
@@ -19,7 +19,7 @@ export const StoryCard = () => {
         }}
       >
         <CardContent>
-          <TextContent text={storyData} />
+          <TextContent text={storyText} />
         </CardContent>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <CardActions>

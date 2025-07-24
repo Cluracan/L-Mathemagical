@@ -1,28 +1,15 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-  GlobalStyles,
-} from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent } from "@mui/material";
+import castleAscii from "./data/castleAscii.txt?raw";
 import mapFragment from "./images/mapFragment.png";
-import { storyText } from "./data/instructions";
-import castleText from "./data/castle.txt?raw";
+import { storyData } from "./data/storyData";
+import { AsciiContent } from "../../components/AsciiContent";
 import { ImageZoom } from "../../components/ImageZoom";
-import { CardTextContent } from "../../components/CardTextContent";
-const modifiedCastleText = castleText.replace("\\", "\\\\").replace("`", "\\`");
+import { TextContent } from "../../components/TextContent";
 
 export const StoryCard = () => {
   return (
     <>
-      <GlobalStyles
-        styles={{
-          pre: { color: "hsla(62, 67%, 69%, 1.00)", lineHeight: "1rem" },
-        }}
-      />
-      <pre>{modifiedCastleText}</pre>
+      <AsciiContent imageText={castleAscii} color="hsla(62, 67%, 69%, 1.00)" />
       <Card
         sx={{
           maxWidth: "32vw",
@@ -32,7 +19,7 @@ export const StoryCard = () => {
         }}
       >
         <CardContent>
-          <CardTextContent text={storyText} />
+          <TextContent text={storyData} />
         </CardContent>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <CardActions>

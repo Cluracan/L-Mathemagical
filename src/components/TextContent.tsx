@@ -4,7 +4,7 @@ interface CardTextContentProps {
   text: string[];
 }
 
-export const CardTextContent = ({ text }: CardTextContentProps) => {
+export const TextContent = ({ text }: CardTextContentProps) => {
   return (
     <>
       {text.map((line, index) => (

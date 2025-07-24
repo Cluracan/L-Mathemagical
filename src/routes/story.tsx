@@ -7,11 +7,9 @@ import {
   CardContent,
   Typography,
   GlobalStyles,
-  Dialog,
 } from "@mui/material";
-import { useState } from "react";
-import paperScrap from "../assets/images/paperScrap.png";
 
+import { PaperScrap } from "../components/PaperScrap";
 import { storyText } from "../assets/data/instructions";
 
 export const Route = createFileRoute("/story")({
@@ -20,14 +18,7 @@ export const Route = createFileRoute("/story")({
 
 function RouteComponent() {
   console.log("Story route loaded");
-  const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
   return (
     <>
       <GlobalStyles
@@ -96,18 +87,9 @@ function RouteComponent() {
               Back
             </Button>
           </CardActions>
-          <img
-            src={paperScrap}
-            alt="Paper Scrap"
-            style={{ height: "4rem" }}
-            onClick={handleOpen}
-          />
+          <PaperScrap />
         </Box>
       </Card>
-      <Dialog open={open} onClose={handleClose}>
-        <img src={paperScrap} alt="Paper Scrap" style={{ height: "16rem" }} />
-      </Dialog>
-      {/* </Box> */}
     </>
   );
 }

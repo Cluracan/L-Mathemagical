@@ -6,7 +6,7 @@ import { AsciiContent } from "../../components/AsciiContent";
 import { ImageZoom } from "../../components/ImageZoom";
 import { TextContent } from "../../components/TextContent";
 
-export const StoryCard = () => {
+export const StoryContent = () => {
   return (
     <>
       <AsciiContent imageText={castleAscii} color="hsla(62, 67%, 69%, 1.00)" />

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { StoryCard } from "../features/story/StoryCard";
+import { StoryContent } from "../features/story/StoryContent";
 
 export const Route = createFileRoute("/story")({
   component: RouteComponent,
@@ -11,7 +11,7 @@ function RouteComponent() {
 
   return (
     <>
-      <StoryCard />
+      <StoryContent />
     </>
   );
 }

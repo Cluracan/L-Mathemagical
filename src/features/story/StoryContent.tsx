@@ -1,4 +1,5 @@
 import { Box, Button, Card, CardActions, CardContent } from "@mui/material";
+import { Link } from "@tanstack/react-router";
 import castleAscii from "./data/castleAscii.txt?raw";
 import mapFragment from "./images/mapFragment.png";
 import { storyText } from "./data/storyText";
@@ -23,7 +24,7 @@ export const StoryContent = () => {
         </CardContent>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <CardActions>
-            <Button variant="outlined" href="/">
+            <Button variant="outlined" component={Link} to="/">
               Back
             </Button>
           </CardActions>

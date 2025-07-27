@@ -16,7 +16,7 @@ export const IndexContent = () => {
       >
         <img src={logoL} alt="L - Logo" style={{ height: "72vh" }} />
         <Stack direction="column" spacing={4}>
-          <Button variant="outlined" component={Link} to="/new-game">
+          <Button variant="outlined" component={Link} to="/new">
             NEW GAME
           </Button>
           <Button variant="outlined" component={Link} to="/story">
@@ -28,7 +28,7 @@ export const IndexContent = () => {
           <Button variant="outlined" component={Link} to="/about">
             ABOUT
           </Button>
-          <Button variant="outlined" component={Link} to="/load-game">
+          <Button variant="outlined" component={Link} to="/load">
             LOAD GAME
           </Button>
         </Stack>

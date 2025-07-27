@@ -25,7 +25,7 @@ export const NewGameContent = () => {
   const [helperText, setHelperText] = useState<string>(" ");
 
   const { modernMode, toggleGameMode } = useGameMode();
-  const navigate = useNavigate({ from: "/new-game" });
+  const navigate = useNavigate({ from: "/new" });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -43,7 +43,7 @@ export const NewGameContent = () => {
       setError(false);
       setHelperText(" ");
       navigate({
-        to: "/adventure",
+        to: "/game",
       });
     }
   };

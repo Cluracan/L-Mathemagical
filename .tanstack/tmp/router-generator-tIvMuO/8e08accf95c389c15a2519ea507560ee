@@ -10,8 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StoryRouteImport } from './routes/story'
-import { Route as NewRouteImport } from './routes/new'
-import { Route as LoadRouteImport } from './routes/load'
+import { Route as NewGameRouteImport } from './routes/new-game'
+import { Route as LoadGameRouteImport } from './routes/load-game'
 import { Route as HintsRouteImport } from './routes/hints'
 import { Route as GameRouteImport } from './routes/game'
 import { Route as AboutRouteImport } from './routes/about'
@@ -22,14 +22,14 @@ const StoryRoute = StoryRouteImport.update({
   path: '/story',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NewRoute = NewRouteImport.update({
-  id: '/new',
-  path: '/new',
+const NewGameRoute = NewGameRouteImport.update({
+  id: '/new-game',
+  path: '/new-game',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoadRoute = LoadRouteImport.update({
-  id: '/load',
-  path: '/load',
+const LoadGameRoute = LoadGameRouteImport.update({
+  id: '/load-game',
+  path: '/load-game',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HintsRoute = HintsRouteImport.update({
@@ -58,8 +58,8 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/game': typeof GameRoute
   '/hints': typeof HintsRoute
-  '/load': typeof LoadRoute
-  '/new': typeof NewRoute
+  '/load-game': typeof LoadGameRoute
+  '/new-game': typeof NewGameRoute
   '/story': typeof StoryRoute
 }
 export interface FileRoutesByTo {
@@ -67,8 +67,8 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/game': typeof GameRoute
   '/hints': typeof HintsRoute
-  '/load': typeof LoadRoute
-  '/new': typeof NewRoute
+  '/load-game': typeof LoadGameRoute
+  '/new-game': typeof NewGameRoute
   '/story': typeof StoryRoute
 }
 export interface FileRoutesById {
@@ -77,23 +77,37 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/game': typeof GameRoute
   '/hints': typeof HintsRoute
-  '/load': typeof LoadRoute
-  '/new': typeof NewRoute
+  '/load-game': typeof LoadGameRoute
+  '/new-game': typeof NewGameRoute
   '/story': typeof StoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/game' | '/hints' | '/load' | '/new' | '/story'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/game'
+    | '/hints'
+    | '/load-game'
+    | '/new-game'
+    | '/story'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/game' | '/hints' | '/load' | '/new' | '/story'
+  to:
+    | '/'
+    | '/about'
+    | '/game'
+    | '/hints'
+    | '/load-game'
+    | '/new-game'
+    | '/story'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/game'
     | '/hints'
-    | '/load'
-    | '/new'
+    | '/load-game'
+    | '/new-game'
     | '/story'
   fileRoutesById: FileRoutesById
 }
@@ -102,8 +116,8 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   GameRoute: typeof GameRoute
   HintsRoute: typeof HintsRoute
-  LoadRoute: typeof LoadRoute
-  NewRoute: typeof NewRoute
+  LoadGameRoute: typeof LoadGameRoute
+  NewGameRoute: typeof NewGameRoute
   StoryRoute: typeof StoryRoute
 }
 
@@ -116,18 +130,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/new': {
-      id: '/new'
-      path: '/new'
-      fullPath: '/new'
-      preLoaderRoute: typeof NewRouteImport
+    '/new-game': {
+      id: '/new-game'
+      path: '/new-game'
+      fullPath: '/new-game'
+      preLoaderRoute: typeof NewGameRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/load': {
-      id: '/load'
-      path: '/load'
-      fullPath: '/load'
-      preLoaderRoute: typeof LoadRouteImport
+    '/load-game': {
+      id: '/load-game'
+      path: '/load-game'
+      fullPath: '/load-game'
+      preLoaderRoute: typeof LoadGameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/hints': {
@@ -166,8 +180,8 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   GameRoute: GameRoute,
   HintsRoute: HintsRoute,
-  LoadRoute: LoadRoute,
-  NewRoute: NewRoute,
+  LoadGameRoute: LoadGameRoute,
+  NewGameRoute: NewGameRoute,
   StoryRoute: StoryRoute,
 }
 export const routeTree = rootRouteImport

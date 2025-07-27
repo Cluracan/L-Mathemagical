@@ -1,4 +1,5 @@
 import { useState, type FormEvent, type ChangeEvent } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import {
   Card,
   Button,
@@ -12,7 +13,7 @@ import {
 } from "@mui/material";
 import { useGameMode } from "../../store/useGameMode";
 import entranceImage from "./images/entrance.png";
-
+import { Link } from "@tanstack/react-router";
 const validateName = (value: string): boolean => {
   const regex = /^[a-zA-Z0-9 ]+$/;
   return regex.test(value);
@@ -24,6 +25,7 @@ export const NewGameContent = () => {
   const [helperText, setHelperText] = useState<string>(" ");
 
   const { modernMode, toggleGameMode } = useGameMode();
+  const navigate = useNavigate({ from: "/new-game" });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -40,7 +42,9 @@ export const NewGameContent = () => {
     } else {
       setError(false);
       setHelperText(" ");
-      console.log(e);
+      navigate({
+        to: "/adventure",
+      });
     }
   };
 
@@ -104,7 +108,7 @@ export const NewGameContent = () => {
           </FormHelperText>
         </FormGroup>
         <Container sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Button variant="outlined" href="/">
+          <Button variant="outlined" component={Link} to="/">
             Back
           </Button>
           <Button variant="contained" type="submit">

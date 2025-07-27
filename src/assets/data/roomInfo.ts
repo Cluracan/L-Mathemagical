@@ -1,0 +1,432 @@
+//blockedRooms Info:
+ const blockedRooms = 
+{
+file:{
+  "direction": "E",
+  "text": "You cannot go through the oak door because it is locked.\n\nThe door has four large keyholes."
+},
+lobby:{
+  "direction": "S",
+  "text": "The door is securely locked."
+},
+cellar01:{
+  "direction": "W",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+cellar02:{
+  "direction": "N",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+cellar03:{
+  "direction": "N",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+cellar04:{
+  "direction": "W",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+cellar05:{
+  "direction": "S",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+cellar07:{
+  "direction": "W",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+cellar08:{
+  "direction": "E",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+cellar09:{
+  "direction": "W",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+cellar10:{
+  "direction": "S",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+cellar11:{
+  "direction": "W",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+cellar12:{
+  "direction": "W",
+  "text": "When you open this door you find a brick wall immediately behind it."
+},
+panelled:{
+  "direction": "W",
+  "text": "The west door seems to be locked from the other side."
+},
+riverS:{
+  "direction": "N",
+  "text": "How are you going to cross the river?"
+},
+riverN:{
+  "direction": "S",
+  "text": "How are you going to cross the river?"
+},
+poolFloor:{
+  "direction": "IN",
+  "text": "You can't fit through a hole that small!"
+},
+granite:{
+  "direction": "S",
+  "text": "The door is securely locked"
+},
+broomCupboard:{
+  "direction": "S",
+  "text": "The guard is blocking your way"
+},
+mirror:{
+  "direction": "W",
+  "text": "As you move, everyone else in the corridor moves too. Before you are half way to the west door, you bump into a cold flat surface which is impossible to pass."
+},
+triangle:{
+  "direction": "N",
+  "text": "As you move towards the door, hundreds of bats swarm around it making it impossible for you to go through."
+},
+safe:{
+  "direction": "N",
+  "text": "The door is securely locked."
+},
+attic:{
+  "direction": "E",
+  "text": "The door is securely locked."
+},
+}
+
+//puzzleBotLocations Info:
+ const puzzleBotLocations = 
+{
+store:{
+  "puzzleId": "abbot",
+  "initialText": "The abbot is standing in one corner. \n\nHe asks, \"Can you help me, please?\".",
+  "visitedText": "\"Ah!\", says the abbot.  Have you come back to help me?\"",
+  "triggerPuzzleCommands": "yesCommands",
+  "declinePuzzleCommands": "noCommands",
+  "turnedDownText": "The abbot sniffs sadly."
+},
+telephone:{
+  "puzzleId": "telephone",
+  "initialText": "",
+  "visitedText": "",
+  "triggerPuzzleCommands": [
+    "USE TELEPHONE",
+    "USE PHONE",
+    "GET TELEPHONE",
+    "DIAL NUMBER",
+    "RING ABBOT"
+  ]
+},
+file:{
+  "puzzleId": "key",
+  "initialText": "On the mantlepiece there are several key blanks and a small file.",
+  "triggerPuzzleCommands": [
+    "FILE",
+    "FILE KEY",
+    "USE FILE",
+    "MAKE KEY",
+    "GET FILE",
+    "GET KEY",
+    "GET BLANK",
+    "GET BLANKS"
+  ],
+  "openDoors": true
+},
+music:{
+  "puzzleId": "piano",
+  "initialText": "",
+  "triggerPuzzleCommands": [
+    "PLAY PIANO",
+    "PLAY",
+    "PLAY THE PIANO",
+    "SIT STOOL"
+  ],
+  "rewardItems": [
+    {
+      "name": "BOTTLE",
+      "text": "On the ground is  a small medicine bottle, containing a blue liquid. On the label is printed 'x 1.25'.",
+      "inventoryText": "A bottle labelled 'x 1.25'",
+      "pickUpText": "medicine bottle.",
+      "examineText": "The bottle contains a sweet-smelling blue liquid. It seems very drinkable...",
+      "isDrinkable": true,
+      "heightMultiplier": 1.25,
+      "drinkMessage": {
+        "1": "You experience a very strange sensation as if all the molecules in your body are rearranging themselves. You feel as if you are being opened up like a retractable aerial. You have grown to five-fourths of your normal size.\n\nThe bottle vanishes into thin air as you drink the last sip.",
+        "0.6": "You have grown a little. You are now three quarters of your original height.\n\nThe bottle has vanished."
+      }
+    },
+    {
+      "name": "PHIAL",
+      "text": "On the ground is a phial of pink liquid. Attached to it by a string is a card which reads 'x 0.6'.",
+      "inventoryText": "A phial labelled 'x 0.6'",
+      "pickUpText": "phial full of pink liquid.",
+      "examineText": "The phial contains a pink liquid. You take a sniff, but can't quite place the scent - it seems to be a mix of cherry-tart, custard, pineapple, roast turkey, toffee, and hot buttered toast.",
+      "isDrinkable": true,
+      "heightMultiplier": 0.6,
+      "drinkMessage": {
+        "1": "You experience a very strange sensation as if all the molecules in your body are rearranging themselves. You feel as if you are being closed up like a retractable aerial. You have shrunk to three-fifths of your normal height.\n\nThe phial vanishes into thin air as you drink the last sip.",
+        "1.25": "Now you are shrinking! You are now only three quarters of your original height.\n\nThe phial has vanished."
+      }
+    }
+  ]
+},
+snooker:{
+  "puzzleId": "snooker",
+  "initialText": "A yellow ball is resting on the spot.",
+  "visitedText": "The yellow ball is resting on the spot.",
+  "triggerPuzzleCommands": [
+    "PLAY SNOOKER",
+    "GET CUE",
+    "HIT BALL",
+    "GET BALL"
+  ]
+},
+lights:{
+  "puzzleId": "lights",
+  "initialText": "An electrician is standing in the room with you.\n\n\"Oh, please can you help me? I have to set these spotlights for this evening's reception. The Drogo Committee will appear in their different coloured costumes and I have to shine the right colours onto them or else they look awful. But one of the four switches doesn't work. Will you help?\"",
+  "visitedText": "\"Oh, it's you again\", says the electrician.  \"Will you help me with these lights?\"",
+  "triggerPuzzleCommands": [
+    "oui",
+    "si"
+  ],
+  "declinePuzzleCommands": [
+    "non",
+    "nooo"
+  ],
+  "turnedDownText": "The electrician turns sadly back to his switches.",
+  "rewardItems": [
+    {
+      "name": "OAR",
+      "text": "There is a wooden oar lying here",
+      "inventoryText": "A wooden oar",
+      "pickUpText": "wooden oar"
+    }
+  ]
+},
+courtyard:{
+  "puzzleId": "turtle",
+  "initialText": "In the centre of the courtyard lies a turtle basking in a shaft of sunlight. He seems to be trying to catch your attention.  Would you like to investigate?",
+  "visitedText": "The turtle is still trying to catch your attention. Will you investigate?",
+  "triggerPuzzleCommands": [
+    "oui",
+    "si"
+  ],
+  "declinePuzzleCommands": [
+    "non",
+    "nooo"
+  ],
+  "turnedDownText": "The turtle looks at you imploringly.",
+  "rewardItems": [
+    {
+      "name": "KEY",
+      "text": "There is a small rusty key lying here",
+      "inventoryText": "A rusty key",
+      "pickUpText": "rusty key"
+    }
+  ],
+  "rewardToInventory": true,
+  "addOnText": "The turtle sleeps soundly in the middle of the courtyard."
+},
+largeKitchen:{
+  "puzzleId": "cook",
+  "initialText": "The cook is sobbing bitterly but, on seeing you, manages to speak.\n\n\"I'm glad to see you. I'm desperately worried. The drogos are having a croquet party, and I have to bake a special cake for their tea on the lawn. The trouble is they insist that it must be at least 25 cm high and I can't get it to rise properly. Will you help me, please?\"",
+  "visitedText": "\"The cook looks up hopefully as you enter. \"Will you help me with this cake, please?\"",
+  "triggerPuzzleCommands": [
+    "oui",
+    "si"
+  ],
+  "declinePuzzleCommands": [
+    "non",
+    "nooo"
+  ],
+  "turnedDownText": "The cook's sobs become more intense.",
+  "rewardItems": [
+    {
+      "name": "ICOSAHEDRON",
+      "text": "On the ground is an icosahedron made of polished jade.",
+      "inventoryText": "A jade icosahedron",
+      "pickUpText": "jade icosahedron"
+    }
+  ],
+  "rewardToInventory": true,
+  "addOnText": "The cook is fast asleep."
+},
+orchard:{
+  "puzzleId": "tree",
+  "initialText": "A man, who looks very much like a gardener, is scratching his head and mumbling to himself about a pile of young fruit trees lying on the ground.\n\n\"I have something here which you are going to need,\" he says. \"But first you must help me. The Drogos have given me firm instructions to plant these 9 trees in the clearing so that there are 10 straight rows with three trees in each row. I can't seem to do it. Can you help me?\"",
+  "visitedText": "The gardener looks up as you approach. \"Have you come back to help me with these trees?\"",
+  "triggerPuzzleCommands": [
+    "oui",
+    "si"
+  ],
+  "declinePuzzleCommands": [
+    "non",
+    "nooo"
+  ],
+  "turnedDownText": "The gardener sighs, and turns back to the clearing.",
+  "rewardItems": [
+    {
+      "name": "LADDER",
+      "text": "There is a rope ladder here",
+      "inventoryText": "A rope ladder",
+      "pickUpText": "rope ladder"
+    }
+  ],
+  "rewardToInventory": true
+},
+broomCupboard:{
+  "puzzleId": "calculator",
+  "initialText": "There is a calculator lying on the ground here.",
+  "triggerPuzzleCommands": [
+    "GET CALCULATOR",
+    "USE CALCULATOR",
+    "PRESS BUTTONS"
+  ],
+  "openDoors": true
+},
+spider:{
+  "puzzleId": "spider",
+  "initialText": "A huge black spider is hanging by a thread from the ceiling.\n\nThe spider says, \"I have something here that may help you, but though Drogos have made it invisible. Would you like me to help you?\"",
+  "visitedText": "The spider looks up as you approach. \"Would you like me to help you?\"",
+  "triggerPuzzleCommands": [
+    "oui",
+    "si"
+  ],
+  "declinePuzzleCommands": [
+    "non",
+    "nooo"
+  ],
+  "turnedDownText": "\"Very well,\" says the spider.",
+  "rewardItems": [
+    {
+      "name": "RING",
+      "text": "A gold ring glistens on the ground",
+      "inventoryText": "A gold ring",
+      "pickUpText": "gold ring",
+      "examineText": "You sense that the ring holds huge magical powers. It feels strangely heavy in your hand."
+    }
+  ]
+},
+pig:{
+  "puzzleId": "pig",
+  "initialText": "A large pig is staring at you. It has a piece of paper attached to its collar.",
+  "triggerPuzzleCommands": [
+    "GET PIG",
+    "CATCH PIG",
+    "READ PAPER",
+    "GET PAPER",
+    "EXAMINE PAPER"
+  ],
+  "addOnText": "The pig is sitting placidly in the centre of the room. On a piece of paper attached to its collar, you can read a single word of text:- NEUMANN"
+},
+computer:{
+  "puzzleId": "computer",
+  "initialText": "\nAs you enter the room a disappearing voice says,\n\n\n\"Listen, OK, I'm going to the toilet, OK.\"\n\n\n\"Don't touch my computer, OK?\"\n\n\n\"This game is OK.\"\n\n\nThere is a computer resting on a large wooden bench.",
+  "triggerPuzzleCommands": [
+    "USE COMPUTER"
+  ]
+},
+}
+
+//triggerTextLocations Info:
+ const triggerTextLocations = 
+{
+telephone:[
+  [
+    "USE TELEPHONE",
+    "USE PHONE",
+    "GET TELEPHONE",
+    "GET PHONE",
+    "DIAL NUMBER",
+    "RING ABBOT"
+  ],
+  "The telephone seems to have stopped working."
+],
+music:[
+  [
+    "PLAY PIANO",
+    "USE PIANO",
+    "PLAY",
+    "PLAY THE PIANO",
+    "SIT STOOL"
+  ],
+  "I'm afraid the mice have gnawed through all the piano strings"
+],
+}
+
+//userInputConversions Info:
+ const userInputConversions = 
+{
+pool:{
+  "JUMP": "D",
+  "IN": "D",
+  "ENTER POOL": "D",
+  "JUMP IN POOL": "D"
+},
+gardenSW:{
+  "ENTER DOOR": "S"
+},
+riverS:{
+  "JUMP IN RIVER": "SWIM",
+  "JUMP": "SWIM"
+},
+riverN:{
+  "JUMP IN RIVER": "SWIM",
+  "JUMP": "SWIM"
+},
+poolFloor:{
+  "ENTER": "IN",
+  "ENTER HOLE": "IN",
+  "OUT": "U",
+  "EXIT": "U"
+},
+granite:{
+  "ENTER": "S",
+  "OPEN DOOR": "S",
+  "UNLOCK DOOR": "USE KEY"
+},
+}
+
+//examinableItems Info:
+ const examinableItems = 
+{
+music:{
+  "TELESCOPE": "The telescope is very old, and the lens is cracked. You notice a small incription on the body. Peering closely, you can just make out the initials, \"J.T\". "
+},
+poolFloor:{
+  "HOLE": "Peering into the hole, you see a small tunnel sloping downhill. If only you could get in!"
+},
+}
+
+//guardbot Info:
+ const guardbot = 
+{
+broomCupboard:{
+  "guardId": 11,
+  "type": "deaf",
+  "initialText": "Also in the cupboard is a Drogo Robot Guard with the number 121 emblazoned on his chest. He stands in front of the door blocking your exit."
+},
+triangle:{
+  "type": "bat",
+  "initialText": "One especially large bat is eyeing you suspiciously.\n\n\"If you want to get out of this room, give me a nice number between 30 and 90,\" says the large bat threateningly.",
+  "openDoors": true,
+  "addOnText": "The large bat ignores you."
+},
+safe:{
+  "guardId": 4096,
+  "type": "safe",
+  "initialText": "The door of the safe is locked.",
+  "openDoors": true,
+  "addOnText": "The door of the safe is open."
+},
+}
+
+//travelText Info:
+ const travelText = 
+{
+mirror:{
+  "E": "As you open the door to leave, the long corridor and all the people vanish!"
+},
+}
+

@@ -1208,16 +1208,17 @@ console.log(
 );
 
 //export roomInfo as ts
-let roomInfo = "";
+let roomInfo = "{";
 for (const [title, map] of Object.entries(storyInfo)) {
-  roomInfo += `//${title} Info:\n const ${title} = \n{\n`;
+  roomInfo += `"${title}" : \n{\n`;
   map.forEach((value, key) => {
-    roomInfo += `${key}:${JSON.stringify(value, null, 2)},\n`;
+    roomInfo += `"${key}":${JSON.stringify(value, null, 2)},\n`;
   });
-  roomInfo += `}\n\n`;
+  roomInfo += `},\n\n`;
 }
+roomInfo += "}";
 
-const roomInfoOutputPath = path.join(__dirname, "../assets/data/roomInfo.ts");
+const roomInfoOutputPath = path.join(__dirname, "../assets/data/roomInfo.json");
 fs.writeFileSync(roomInfoOutputPath, roomInfo, "utf-8");
 console.log(
   `written ${Object.keys(storyInfo).join(", ")}  to ${roomInfoOutputPath}`

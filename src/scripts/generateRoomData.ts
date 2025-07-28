@@ -1184,8 +1184,7 @@ const cleanStoryData = storyData.map((room) => {
   }
   return {
     id: room.id,
-    longDescription: room.text,
-    shortDescription: room.visitedText || room.text,
+    descriptions: { long: room.text, short: room.visitedText || room.text },
     mapText: room.mapName,
     exits: exits,
   };

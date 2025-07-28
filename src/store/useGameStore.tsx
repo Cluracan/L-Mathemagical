@@ -20,7 +20,7 @@ type GameStoreActions = {
   addToRoomsVisited: (roomId: RoomId) => void;
 };
 
-type GameStore = GameStoreState & GameStoreActions;
+export type GameStore = GameStoreState & GameStoreActions;
 
 export const useGameStore = create<GameStore>()(
   persist(

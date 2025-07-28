@@ -1,4 +1,4 @@
-import type { ExitDirection } from "../../assets/data/RoomTypes";
+import { directionAliases, isDirectionAliasKey } from "../constants/directions";
 
 export type Command =
   | "BUDGE"
@@ -27,43 +27,20 @@ const commandDictionary = {
   USE: ["USE", "INSERT", "APPLY"],
 };
 
-const directions: Record<string, ExitDirection> = {
-  N: "N",
-  NORTH: "N",
-  E: "E",
-  EAST: "E",
-  S: "S",
-  SOUTH: "S",
-  W: "W",
-  WEST: "W",
-  U: "U",
-  UP: "U",
-  D: "D",
-  DOWN: "D",
-  NE: "NE",
-  NORTHEAST: "NE",
-  NW: "NW",
-  NORTHEWST: "NW",
-  SE: "SE",
-  SOUTHEAST: "SE",
-  SW: "SW",
-  SOUTHWEST: "SW",
-  IN: "IN",
-  OUT: "OUT",
-};
-
-export const parseInput = (userInput: string) => {
+export const parseInput = (
+  userInput: string
+): { command: Command | null; keyWord: string } => {
   const splitInput = userInput.toUpperCase().trim().split(" ");
   const commandWord = splitInput[0].trim();
   const keyWord = splitInput[splitInput.length - 1].trim();
 
   //Can just type 'N'
-  if (Object.keys(directions).includes(commandWord)) {
-    return { command: "MOVE", arg: `${directions[commandWord]}` };
+  if (isDirectionAliasKey(commandWord)) {
+    return { command: "MOVE", keyWord: `${directionAliases[commandWord]}` };
   }
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {
     if (triggerWords.includes(commandWord)) {
-      return { command, keyWord };
+      return { command, keyWord } as { command: Command; keyWord: string };
     }
   }
   return { command: null, keyWord };

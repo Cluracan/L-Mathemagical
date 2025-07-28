@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import type { RoomId, Room, ExitDirection } from "../../assets/data/RoomTypes";
+import type { RoomId, Room } from "../../assets/data/RoomTypes";
 
 const rooms: Record<RoomId, Room> = JSON.parse(
   readFileSync("../assets/data/rooms.json", "utf8")
@@ -24,13 +24,15 @@ class RoomRegistry {
     return this.rooms[id].exits;
   }
 
-  hasExit(id: RoomId, direction: ExitDirection): boolean {
+  hasExit(id: RoomId, direction: string): boolean {
     return Object.keys(this.rooms[id].exits).includes(direction);
   }
 
-  getExitDestination(id: RoomId, direction: ExitDirection): RoomId | undefined {
-    if (this.hasExit(id, direction)) {
-      return this.rooms[id].exits[direction];
+  getExitDestination(id: RoomId, direction: string): RoomId | undefined {
+    const exitMap = this.rooms[id].exits;
+    if (direction in exitMap) {
+      const newRoomId = exitMap[direction as keyof typeof exitMap];
+      return newRoomId;
     }
   }
 }

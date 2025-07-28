@@ -3,8 +3,8 @@ import { parseInput } from "./parseInput";
 
 describe("parseInput", () => {
   it("parses a MOVE command by direction word", () => {
-    expect(parseInput("NORTH")).toEqual({ command: "MOVE", arg: "N" });
-    expect(parseInput("east")).toEqual({ command: "MOVE", arg: "E" }); // Case-insensitive test if supported
+    expect(parseInput("NORTH")).toEqual({ command: "MOVE", keyWord: "N" });
+    expect(parseInput("east")).toEqual({ command: "MOVE", keyWord: "E" }); // Case-insensitive test if supported
   });
 
   it("parses a GET command with an item", () => {

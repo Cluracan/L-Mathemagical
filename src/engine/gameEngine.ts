@@ -18,18 +18,14 @@ class GameEngine {
     const state = { currentRoom, roomsVisited, stepCount, storyLine };
     const { command, keyWord } = parseInput(userInput);
 
-    if (command === null) {
-      // send I don't understand to the storyline (or pick from a variety)
-    } else {
-      let newState = dispatchCommand({ command, keyWord, state });
-      useGameStore.setState({
-        ...state,
-        currentRoom: newState?.currentRoom,
-        roomsVisited: newState?.roomsVisited,
-        stepCount: newState?.stepCount,
-        storyLine: newState?.storyLine,
-      });
-    }
+    let newState = dispatchCommand({ command, keyWord, state });
+    useGameStore.setState({
+      ...state,
+      currentRoom: newState?.currentRoom,
+      roomsVisited: newState?.roomsVisited,
+      stepCount: newState?.stepCount,
+      storyLine: newState?.storyLine,
+    });
   }
 }
 

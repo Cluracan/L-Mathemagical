@@ -30,12 +30,25 @@ export const dispatchCommand = ({
   keyWord,
   state,
 }: {
-  command: Command;
+  command: Command | null;
   keyWord: string;
   state: GameState;
 }) => {
-  if (Object.keys(commandHandlers).includes(command)) {
+  if (command && isCommandHandlerKey(command)) {
     const handler = commandHandlers[command];
     return handler({ keyWord, state });
+  } else {
+    return handleNull({ keyWord, state });
   }
 };
+
+const isCommandHandlerKey = (
+  key: string
+): key is keyof typeof commandHandlers => {
+  return key in commandHandlers;
+};
+
+//this may work as a DRY for typeguards...need to work out why tho :(
+function createKeyGuard<T extends Record<string, unknown>>(map: T) {
+  return (key: string): key is Extract<keyof T, string> => key in map;
+}

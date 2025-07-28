@@ -11,7 +11,7 @@ import {
   FormControlLabel,
   FormHelperText,
 } from "@mui/material";
-import { useGameMode } from "../../store/useGameMode";
+import { useGameStore } from "../../store/useGameStore";
 import entranceImage from "./images/entrance.png";
 import { Link } from "@tanstack/react-router";
 const validateName = (value: string): boolean => {
@@ -20,11 +20,19 @@ const validateName = (value: string): boolean => {
 };
 
 export const NewGameContent = () => {
+  console.log("loading NewGameContent");
   const [name, setName] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const [helperText, setHelperText] = useState<string>(" ");
 
-  const { modernMode, toggleGameMode } = useGameMode();
+  const {
+    playerName,
+    modernMode,
+    setPlayerName,
+    toggleGameMode,
+    storyLine,
+    sendToStoryLine,
+  } = useGameStore();
   const navigate = useNavigate({ from: "/new" });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -42,9 +50,11 @@ export const NewGameContent = () => {
     } else {
       setError(false);
       setHelperText(" ");
-      navigate({
-        to: "/game",
-      });
+      setPlayerName(name);
+      sendToStoryLine(name);
+      // navigate({
+      //   to: "/game",
+      // });
     }
   };
 
@@ -96,9 +106,7 @@ export const NewGameContent = () => {
         />
         <FormGroup>
           <FormControlLabel
-            control={
-              <Switch defaultChecked={modernMode} onChange={toggleGameMode} />
-            }
+            control={<Switch checked={modernMode} onChange={toggleGameMode} />}
             label={modernMode ? "Modern Mode" : "Classic Mode"}
           />
           <FormHelperText sx={{ height: "4rem" }}>
@@ -114,6 +122,12 @@ export const NewGameContent = () => {
           <Button variant="contained" type="submit">
             Start
           </Button>
+          <Typography>Temporary Check: {playerName}</Typography>
+          <Card>
+            {storyLine.map((line) => {
+              return <Typography>{line}</Typography>;
+            })}
+          </Card>
         </Container>
       </Card>
     </Container>

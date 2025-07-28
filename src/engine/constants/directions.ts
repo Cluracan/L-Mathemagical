@@ -1,7 +1,31 @@
 import type { ExitDirection } from "../../assets/data/RoomTypes";
 
+type DirectionAliasInput =
+  | "N"
+  | "NORTH"
+  | "E"
+  | "EAST"
+  | "S"
+  | "SOUTH"
+  | "W"
+  | "WEST"
+  | "U"
+  | "UP"
+  | "D"
+  | "DOWN"
+  | "NE"
+  | "NORTHEAST"
+  | "NW"
+  | "NORTHWEST"
+  | "SE"
+  | "SOUTHEAST"
+  | "SW"
+  | "SOUTHWEST"
+  | "IN"
+  | "OUT";
+
 // userInput -> ExitDirection
-export const directionAliases: Record<string, ExitDirection> = {
+export const directionAliases: Record<DirectionAliasInput, ExitDirection> = {
   N: "N",
   NORTH: "N",
   E: "E",
@@ -26,13 +50,6 @@ export const directionAliases: Record<string, ExitDirection> = {
   OUT: "OUT",
 };
 
-// type guard
-export function isDirectionAliasKey(
-  key: string
-): key is keyof typeof directionAliases {
-  return key in directionAliases;
-}
-
 // ExitDirection -> storyLine text
 export const directionNarratives: Record<ExitDirection, string> = {
   N: "north",
@@ -50,11 +67,17 @@ export const directionNarratives: Record<ExitDirection, string> = {
 };
 
 // type guard
-export function isDirectionNarrativeKey(
+export const isDirectionAliasKey = (
   key: string
-): key is keyof typeof directionNarratives {
+): key is keyof typeof directionAliases => {
+  return key in directionAliases;
+};
+
+export const isDirectionNarrativeKey = (
+  key: string
+): key is keyof typeof directionNarratives => {
   return key in directionNarratives;
-}
+};
 
 /* Use:
 

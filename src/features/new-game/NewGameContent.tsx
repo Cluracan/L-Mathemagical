@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ChangeEvent } from "react";
-import { useNavigate } from "@tanstack/react-router";
+
 import {
   Card,
   Button,
@@ -33,7 +33,6 @@ export const NewGameContent = () => {
     storyLine,
     sendToStoryLine,
   } = useGameStore();
-  const navigate = useNavigate({ from: "/new" });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();

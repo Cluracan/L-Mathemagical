@@ -41,5 +41,6 @@ export const handleMove: HandleCommand = ({ keyWord, state }) => {
 };
 
 export const handleNull: HandleCommand = ({ keyWord, state }) => {
+  console.log(keyWord);
   return state;
 };

@@ -17,12 +17,14 @@ export const handleMove: HandleCommand = ({ keyWord, state }) => {
         typeof newRoomId !== "undefined" &&
         isDirectionNarrativeKey(keyWord)
       ) {
+        const newRoomsVisited = new Set(state.roomsVisited);
+        newRoomsVisited.add(newRoomId);
         let newState = {
           ...state,
           currentRoom: newRoomId,
-          roomsVisited: new Set(state.roomsVisited).add(newRoomId),
+          roomsVisited: newRoomsVisited,
           stepCount: state.stepCount + 1,
-          storyline: [
+          storyLine: [
             ...state.storyLine,
             `you travel ${directionNarratives[keyWord]}`,
             roomRegistry.getLongDescription(newRoomId),

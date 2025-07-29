@@ -1,4 +1,5 @@
 import type { ExitDirection } from "../../assets/data/RoomTypes";
+import { createKeyGuard } from "../../utils/guards";
 
 type DirectionAliasInput =
   | "N"
@@ -66,25 +67,13 @@ export const directionNarratives: Record<ExitDirection, string> = {
   OUT: "out",
 };
 
-// type guard
-export const isDirectionAliasKey = (
-  key: string
-): key is keyof typeof directionAliases => {
-  return key in directionAliases;
-};
+// type guards
+export const isDirectionAliasKey = createKeyGuard(directionAliases);
 
-export const isDirectionNarrativeKey = (
-  key: string
-): key is keyof typeof directionNarratives => {
-  return key in directionNarratives;
-};
+export const isDirectionNarrativeKey = createKeyGuard(directionNarratives);
 
 /* Use:
-
 if(isDirectionKey(keyWord)){
-
 ..then  directions[keyWord]  is safely an ExitDirection
-
 }
-
 */

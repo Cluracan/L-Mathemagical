@@ -1,6 +1,4 @@
-// Auto-generated from rooms.json — do not edit manually
-export type RoomId = 
-    
+export type RoomId =
   | 'grass'
   | 'hallway'
   | 'kitchen'

@@ -593,7 +593,8 @@
     },
     "mapText": "River S",
     "exits": {
-      "S": "gardenN"
+      "S": "gardenN",
+      "N": "riverN"
     }
   },
   "riverN": {
@@ -604,7 +605,8 @@
     },
     "mapText": "River N",
     "exits": {
-      "NE": "orchard"
+      "NE": "orchard",
+      "S": "riverS"
     }
   },
   "orchard": {

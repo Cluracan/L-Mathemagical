@@ -56,14 +56,6 @@
   "direction": "W",
   "text": "The west door seems to be locked from the other side."
 },
-"riverS":{
-  "direction": "N",
-  "text": "How are you going to cross the river?"
-},
-"riverN":{
-  "direction": "S",
-  "text": "How are you going to cross the river?"
-},
 "poolFloor":{
   "direction": "IN",
   "text": "You can't fit through a hole that small!"

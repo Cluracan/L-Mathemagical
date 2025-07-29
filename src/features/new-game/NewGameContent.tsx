@@ -25,7 +25,8 @@ export const NewGameContent = () => {
   const [error, setError] = useState<boolean>(false);
   const [helperText, setHelperText] = useState<string>(" ");
 
-  const { modernMode, setPlayerName, toggleGameMode } = useGameStore();
+  const { modernMode, setPlayerName, toggleGameMode, resetGameStore } =
+    useGameStore();
   const navigate = useNavigate({ from: "/new" });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -43,6 +44,7 @@ export const NewGameContent = () => {
     } else {
       setError(false);
       setHelperText(" ");
+      resetGameStore();
       setPlayerName(name);
       navigate({
         to: "/game",

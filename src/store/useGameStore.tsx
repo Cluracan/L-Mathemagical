@@ -18,6 +18,7 @@ type GameStoreActions = {
   sendToStoryLine: (storyText: string) => void;
   increaseStepCount: () => void;
   addToRoomsVisited: (roomId: RoomId) => void;
+  resetGameStore: () => void;
 };
 
 export type GameStore = GameStoreState & GameStoreActions;
@@ -42,6 +43,9 @@ export const useGameStore = create<GameStore>()(
         set((state) => ({ stepCount: state.stepCount + 1 })),
       addToRoomsVisited: (roomId: RoomId) =>
         set((state) => ({ roomsVisited: state.roomsVisited.add(roomId) })),
+      resetGameStore: () => {
+        set(useGameStore.getInitialState());
+      },
     }),
     {
       name: "l-game-storage",

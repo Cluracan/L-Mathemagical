@@ -17,8 +17,9 @@ class GameEngine {
       useGameStore.getState();
     const state = { currentRoom, roomsVisited, stepCount, storyLine };
     const { command, keyWord } = parseInput(userInput);
-
+    console.log({ command, keyWord });
     let newState = dispatchCommand({ command, keyWord, state });
+    console.log(newState);
     useGameStore.setState({
       ...state,
       currentRoom: newState?.currentRoom,
@@ -29,6 +30,5 @@ class GameEngine {
   }
 }
 
-export const gameEngine = new GameEngine();
-gameEngine.handleInput("go north");
-gameEngine.handleInput("go north");
+const gameEngine = new GameEngine();
+export const handleInput = gameEngine.handleInput.bind(gameEngine);

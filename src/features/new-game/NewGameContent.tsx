@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ChangeEvent } from "react";
-
+import { useNavigate } from "@tanstack/react-router";
 import {
   Card,
   Button,
@@ -33,6 +33,7 @@ export const NewGameContent = () => {
     storyLine,
     sendToStoryLine,
   } = useGameStore();
+  const navigate = useNavigate({ from: "/new" });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -50,10 +51,9 @@ export const NewGameContent = () => {
       setError(false);
       setHelperText(" ");
       setPlayerName(name);
-      sendToStoryLine(name);
-      // navigate({
-      //   to: "/game",
-      // });
+      navigate({
+        to: "/game",
+      });
     }
   };
 
@@ -121,12 +121,6 @@ export const NewGameContent = () => {
           <Button variant="contained" type="submit">
             Start
           </Button>
-          <Typography>Temporary Check: {playerName}</Typography>
-          <Card>
-            {storyLine.map((line) => {
-              return <Typography>{line}</Typography>;
-            })}
-          </Card>
         </Container>
       </Card>
     </Container>

@@ -32,7 +32,7 @@ export const useGameStore = create<GameStore>()(
         'It is a very hot day. You are sitting on the grass outside a crumbling palace. Your sister is reading a book called "Fractions and the Four Rules-- 5000 Carefully Graded Problems". You are bored, and the heat is making you feel a little sleepy. \n\nSuddenly you see an old man dressed as an abbot. He glances at you nervously and slips through the palace doors to the north.',
       ],
       stepCount: 0,
-      roomsVisited: new Set(),
+      roomsVisited: new Set(["grass"]),
       toggleGameMode: () => set((state) => ({ modernMode: !state.modernMode })),
       setPlayerName: (playerName: string) => set({ playerName }),
       setCurrentRoom: (roomId: RoomId) => set({ currentRoom: roomId }),

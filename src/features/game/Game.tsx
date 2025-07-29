@@ -1,12 +1,18 @@
 import { Box, Card, TextField } from "@mui/material";
 import { useGameStore } from "../../store/useGameStore";
-import { useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { handleInput } from "../../engine/gameEngine";
 
 export const GameContent = () => {
   console.log("rendering Game page");
   const { storyLine } = useGameStore();
   const [userInput, setUserInput] = useState("");
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [storyLine]);
+
   const handleSubmit = (): void => {
     console.log("submitting");
     handleInput(userInput);
@@ -20,10 +26,11 @@ export const GameContent = () => {
   return (
     <>
       <Box height={"80vh"} width={"80vw"}>
-        <Card>
+        <Card sx={{ maxHeight: "60vh", overflowY: "auto" }}>
           {storyLine.map((entry, index) => {
             return <pre key={index}>{entry}</pre>;
           })}
+          <div ref={bottomRef} />
         </Card>
         <TextField
           fullWidth

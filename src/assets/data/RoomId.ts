@@ -1,6 +1,6 @@
 // Auto-generated from rooms.json — do not edit manually
 export type RoomId = 
-    'blocked'
+    
   | 'grass'
   | 'hallway'
   | 'kitchen'

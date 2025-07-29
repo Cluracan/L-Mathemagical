@@ -1,12 +1,9 @@
-import { readFileSync } from "fs";
+import rooms from "../../assets/data/rooms.json";
 import type { RoomId, Room } from "../../assets/data/RoomTypes";
 
-const rooms: Record<RoomId, Room> = JSON.parse(
-  readFileSync("../assets/data/rooms.json", "utf8")
-);
-
+console.log(rooms);
 class RoomRegistry {
-  private rooms: Record<RoomId, Room> = rooms;
+  private rooms: Record<RoomId, Room> = rooms as Record<RoomId, Room>;
 
   getLongDescription(id: RoomId) {
     return this.rooms[id].descriptions.long;

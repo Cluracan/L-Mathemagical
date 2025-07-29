@@ -6,14 +6,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const roomsPath = path.join(__dirname, "../assets/data/rooms.json");
-const outputPath = path.join(__dirname, "../types/RoomId.ts");
+const outputPath = path.join(__dirname, "../assets/data/RoomId.ts");
 
 const roomsRaw = fs.readFileSync(roomsPath, "utf-8");
 const rooms = JSON.parse(roomsRaw);
 
 const roomIds = Object.keys(rooms);
 const roomIdType = `// Auto-generated from rooms.json — do not edit manually
-export type RoomId = \n    'blocked'
+export type RoomId = \n    
 ${roomIds.map((id) => `  | '${id}'`).join("\n")};
 `;
 

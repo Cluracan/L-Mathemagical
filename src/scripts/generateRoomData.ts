@@ -1190,6 +1190,15 @@ const cleanStoryData = storyData.map((room) => {
   };
 });
 
+//create roomId type
+const roomIds = storyData.map((room) => room.id);
+const roomIdType = `export type RoomId =\n  | '${roomIds.join("'\n  | '")}';\n`;
+fs.writeFileSync(
+  path.join(__dirname, "../assets/data/RoomId.ts"),
+  roomIdType,
+  "utf-8"
+);
+
 //export roomData as JSON
 const roomData = {};
 cleanStoryData.forEach((room) => {

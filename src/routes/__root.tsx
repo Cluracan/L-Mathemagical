@@ -30,7 +30,7 @@ export const Route = createRootRoute({
         height: "100vh",
         width: "100vw",
         display: "flex",
-        justifyContent: "space-around",
+        justifyContent: "center",
         alignItems: "center",
       }}
     >

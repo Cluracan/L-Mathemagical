@@ -25,10 +25,8 @@ export const GameContent = () => {
   };
   return (
     <>
-      <Box height={"80vh"} width={"80vw"}>
-        <Card
-          sx={{ maxHeight: "60vh", overflowY: "auto", whiteSpace: "pre-wrap" }}
-        >
+      <Box height={"80vh"} width={"60vw"}>
+        <Card sx={{ height: 1, overflowY: "auto", whiteSpace: "pre-wrap" }}>
           {storyLine.map((entry, index) => {
             return <Box key={index}>{entry}</Box>;
           })}

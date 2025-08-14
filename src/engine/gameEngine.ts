@@ -13,13 +13,17 @@ export type GameState = {
 class GameEngine {
   constructor() {}
   handleInput(userInput: string) {
+    //Take a snapshot of state
     const { currentRoom, roomsVisited, stepCount, storyLine } =
       useGameStore.getState();
     const state = { currentRoom, roomsVisited, stepCount, storyLine };
+    //parse input
     const { command, keyWord } = parseInput(userInput);
     console.log({ command, keyWord });
+    //send to dispatch
     let newState = dispatchCommand({ command, keyWord, state });
     console.log(newState);
+    //update state
     useGameStore.setState({
       ...state,
       currentRoom: newState?.currentRoom,

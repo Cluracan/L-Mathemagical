@@ -1,32 +1,31 @@
 import rooms from "../../assets/data/rooms.json";
 import type { RoomId, Room } from "../../assets/data/RoomTypes";
 
-console.log(rooms);
 class RoomRegistry {
-  private rooms: Record<RoomId, Room> = rooms as Record<RoomId, Room>;
+  private roomData: Record<RoomId, Room> = rooms as Record<RoomId, Room>;
 
   getLongDescription(id: RoomId) {
-    return this.rooms[id].descriptions.long;
+    return this.roomData[id].descriptions.long;
   }
 
   getShortDescription(id: RoomId) {
-    return this.rooms[id].descriptions.short;
+    return this.roomData[id].descriptions.short;
   }
 
   getExitDirections(id: RoomId) {
-    return Object.keys(this.rooms[id].exits);
+    return Object.keys(this.roomData[id].exits);
   }
 
   getExits(id: RoomId) {
-    return this.rooms[id].exits;
+    return this.roomData[id].exits;
   }
 
   hasExit(id: RoomId, direction: string): boolean {
-    return Object.keys(this.rooms[id].exits).includes(direction);
+    return Object.keys(this.roomData[id].exits).includes(direction);
   }
 
   getExitDestination(id: RoomId, direction: string): RoomId | undefined {
-    const exitMap = this.rooms[id].exits;
+    const exitMap = this.roomData[id].exits;
     if (direction in exitMap) {
       const newRoomId = exitMap[direction as keyof typeof exitMap];
       return newRoomId;

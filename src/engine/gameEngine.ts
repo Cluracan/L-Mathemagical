@@ -16,16 +16,24 @@ class GameEngine {
     //Take a snapshot of state
     const { currentRoom, roomsVisited, stepCount, storyLine } =
       useGameStore.getState();
-    const state = { currentRoom, roomsVisited, stepCount, storyLine };
+
+    //Send input to storyLine
+    const gameState = {
+      currentRoom,
+      roomsVisited,
+      stepCount,
+      storyLine: [...storyLine, userInput],
+    };
+
     //parse input
     const { command, keyWord } = parseInput(userInput);
-    console.log({ command, keyWord });
+
     //send to dispatch
-    let newState = dispatchCommand({ command, keyWord, state });
-    console.log(newState);
+    let newState = dispatchCommand({ command, keyWord, gameState });
+
     //update state
     useGameStore.setState({
-      ...state,
+      ...gameState,
       currentRoom: newState?.currentRoom,
       roomsVisited: newState?.roomsVisited,
       stepCount: newState?.stepCount,

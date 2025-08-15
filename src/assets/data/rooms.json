@@ -628,7 +628,8 @@
     },
     "mapText": "In the pool",
     "exits": {
-      "U": "pool"
+      "U": "pool",
+      "IN": "tunnelTop"
     }
   },
   "tunnelTop": {
@@ -928,7 +929,8 @@
     },
     "mapText": "Cell",
     "exits": {
-      "E": "guards"
+      "E": "guards",
+      "D": "countryside"
     }
   },
   "countryside": {

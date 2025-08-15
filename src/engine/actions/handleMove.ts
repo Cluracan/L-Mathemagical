@@ -1,48 +1,119 @@
-import type { HandleCommand } from "./dispatchCommand";
+import type { Command, HandleCommand } from "./dispatchCommand";
 import { roomRegistry } from "../world/roomRegistry";
 import {
   directionAliases,
   directionNarratives,
   isDirectionAliasKey,
-  isDirectionNarrativeKey,
 } from "../constants/directions";
+import type { GameState } from "../gameEngine";
+import type { RoomId } from "../../assets/data/RoomId";
+import type { ExitDirection } from "../../assets/data/RoomTypes";
 
-export const handleMove: HandleCommand = ({ keyWord, state }) => {
-  const roomId = state.currentRoom;
-  if (isDirectionAliasKey(keyWord)) {
-    keyWord = directionAliases[keyWord];
-    if (roomRegistry.hasExit(roomId, keyWord)) {
-      const newRoomId = roomRegistry.getExitDestination(roomId, keyWord);
-      if (
-        typeof newRoomId !== "undefined" &&
-        isDirectionNarrativeKey(keyWord)
-      ) {
-        const newRoomsVisited = new Set(state.roomsVisited);
-        newRoomsVisited.add(newRoomId);
-        let newState = {
-          ...state,
-          currentRoom: newRoomId,
-          roomsVisited: newRoomsVisited,
-          stepCount: state.stepCount + 1,
-          storyLine: [
-            ...state.storyLine,
-            `you travel ${directionNarratives[keyWord]}`,
-            roomRegistry.getLongDescription(newRoomId),
-          ],
-        };
-        return newState;
-      }
-    }
-  }
-
-  let newState = {
-    ...state,
-    storyLine: [...state.storyLine, `You cannot travel in that direction!`],
-  };
-  return newState;
+type Payload = {
+  gameState: GameState;
+  aborted: boolean;
+  nextRoom?: RoomId;
+  command?: Command;
+  keyWord: string;
+  direction?: ExitDirection;
 };
 
-export const handleNull: HandleCommand = ({ keyWord, state }) => {
+type PipelineFunction = (args: Payload) => Payload;
+
+const validateDirection: PipelineFunction = (payload) => {
+  if (isDirectionAliasKey(payload.keyWord)) {
+    return { ...payload, direction: directionAliases[payload.keyWord] };
+  } else {
+    return {
+      ...payload,
+      gameState: {
+        ...payload.gameState,
+        storyLine: [...payload.gameState.storyLine, "That's not a direction!"],
+      },
+      aborted: true,
+    };
+  }
+};
+
+const validateExit: PipelineFunction = (payload) => {
+  if (!payload.direction) {
+    console.log("error in validateExit - no direction");
+    return { ...payload, aborted: true };
+  }
+  const nextRoom = roomRegistry.getExitDestination(
+    payload.gameState.currentRoom,
+    payload.direction
+  );
+  if (nextRoom) {
+    return {
+      ...payload,
+      nextRoom,
+    };
+  } else {
+    return {
+      ...payload,
+      gameState: {
+        ...payload.gameState,
+        storyLine: [
+          ...payload.gameState.storyLine,
+          "You can't travel that way!",
+        ],
+      },
+      aborted: true,
+    };
+  }
+};
+
+const movePlayer: PipelineFunction = (payload) => {
+  if (!payload.nextRoom || !payload.direction) {
+    console.log(
+      `Error in movePlayer: nextRoom is ${payload.nextRoom}, direction is ${payload.direction}`
+    );
+    return { ...payload, aborted: true };
+  }
+
+  return {
+    ...payload,
+    gameState: {
+      ...payload.gameState,
+      currentRoom: payload.nextRoom,
+      roomsVisited: new Set(payload.gameState.roomsVisited).add(
+        payload.nextRoom
+      ),
+      stepCount: payload.gameState.stepCount + 1,
+
+      storyLine: [
+        ...payload.gameState.storyLine,
+        `You travel ${directionNarratives[payload.direction]}`,
+        roomRegistry.getLongDescription(payload.nextRoom),
+      ],
+    },
+  };
+};
+
+const movePipeline: PipelineFunction[] = [
+  validateDirection,
+  validateExit,
+  movePlayer,
+];
+
+export const handleMove: HandleCommand = ({ keyWord, gameState }) => {
+  const payload: Payload = {
+    gameState,
+    command: "MOVE",
+    keyWord,
+    aborted: false,
+  };
+  const finalPayload = movePipeline.reduce(
+    (curPayload: Payload, curFunction: PipelineFunction) => {
+      return curPayload.aborted ? curPayload : curFunction(curPayload);
+    },
+    payload
+  );
+  return finalPayload.gameState;
+};
+
+export const handleNull: HandleCommand = ({ keyWord, gameState }) => {
   console.log(keyWord);
-  return state;
+  return gameState;
 };

@@ -1,17 +1,8 @@
 import { handleMove } from "./handleMove";
 import { handleNull } from "./handleMove";
 import type { GameState } from "../gameEngine";
-import type { Command } from "../parser/parseInput";
 
-export type HandleCommand = ({
-  keyWord,
-  state,
-}: {
-  keyWord: string;
-  state: GameState;
-}) => GameState;
-
-const commandHandlers: Record<Command, HandleCommand> = {
+const commandHandlers = {
   BUDGE: handleNull,
   DRINK: handleNull,
   DROP: handleNull,
@@ -23,27 +14,30 @@ const commandHandlers: Record<Command, HandleCommand> = {
   SWIM: handleNull,
   TELEPORT: handleNull,
   USE: handleNull,
-};
+} as const satisfies Record<string, HandleCommand>;
 
-export const dispatchCommand = ({
-  command,
-  keyWord,
-  state,
-}: {
+export type Command = keyof typeof commandHandlers;
+
+export type HandleCommand = (args: {
+  keyWord: string;
+  gameState: GameState;
+}) => GameState;
+
+type DispatchCommand = (args: {
   command: Command | null;
   keyWord: string;
-  state: GameState;
-}) => {
-  if (command && isCommandHandlerKey(command)) {
-    const handler = commandHandlers[command];
-    return handler({ keyWord, state });
-  } else {
-    return handleNull({ keyWord, state });
-  }
-};
+  gameState: GameState;
+}) => GameState;
 
-const isCommandHandlerKey = (
-  key: string
-): key is keyof typeof commandHandlers => {
-  return key in commandHandlers;
+export const dispatchCommand: DispatchCommand = ({
+  command,
+  keyWord,
+  gameState,
+}) => {
+  if (command) {
+    const handler = commandHandlers[command];
+    return handler({ keyWord, gameState });
+  } else {
+    return handleNull({ keyWord, gameState });
+  }
 };

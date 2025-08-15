@@ -1,19 +1,7 @@
 import { directionAliases, isDirectionAliasKey } from "../constants/directions";
+import type { Command } from "../actions/dispatchCommand";
 
-export type Command =
-  | "BUDGE"
-  | "DRINK"
-  | "DROP"
-  | "GET"
-  | "INVENTORY"
-  | "LOOK"
-  | "MOVE"
-  | "SAY"
-  | "SWIM"
-  | "TELEPORT"
-  | "USE";
-
-const commandDictionary = {
+const commandDictionary: Record<Command, string[]> = {
   BUDGE: ["MOVE", "PUSH", "PULL"],
   DRINK: ["DRINK", "QUAFF", "SWIG", "SIP"],
   DROP: ["DROP", "THROW"],

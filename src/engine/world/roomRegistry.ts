@@ -24,12 +24,10 @@ class RoomRegistry {
     return Object.keys(this.roomData[id].exits).includes(direction);
   }
 
-  getExitDestination(id: RoomId, direction: string): RoomId | undefined {
+  getExitDestination(id: RoomId, direction: string): RoomId | null {
     const exitMap = this.roomData[id].exits;
-    if (direction in exitMap) {
-      const newRoomId = exitMap[direction as keyof typeof exitMap];
-      return newRoomId;
-    }
+    const nextRoom = exitMap[direction as keyof typeof exitMap];
+    return nextRoom || null;
   }
 }
 

@@ -45,10 +45,10 @@ export const directionNarratives: Record<ExitDirection, string> = {
   OUT: "out",
 };
 
-// type guards
+// TODO type guards - if only one, remove utils function?
 export const isDirectionAliasKey = createKeyGuard(directionAliases);
 
-export const isDirectionNarrativeKey = createKeyGuard(directionNarratives);
+// export const isDirectionNarrativeKey = createKeyGuard(directionNarratives);
 
 /* Use:
 if(isDirectionKey(keyWord)){

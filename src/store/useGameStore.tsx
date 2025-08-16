@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { itemData } from "../assets/data/itemData";
+import { initialItemLocation } from "../assets/data/itemData";
+import { initialKeyLocked } from "../assets/data/blockedExitData";
 import { roomRegistry } from "../engine/world/roomRegistry";
 import type { RoomId } from "../assets/data/roomData";
 import type { ItemId } from "../assets/data/itemData";
@@ -9,7 +10,8 @@ type GameStoreState = {
   playerName: string;
   modernMode: boolean;
   currentRoom: RoomId;
-  itemLocation: Record<ItemId, RoomId>;
+  itemLocation: Partial<Record<ItemId, RoomId>>;
+  keyLocked: Partial<Record<ItemId, boolean>>;
   storyLine: string[];
   stepCount: number;
   roomsVisited: Set<RoomId>;
@@ -27,16 +29,12 @@ type GameStoreActions = {
 
 export type GameStore = GameStoreState & GameStoreActions;
 
-const initialItemLocation = Object.values(itemData).reduce(
-  (obj, item) => Object.assign(obj, { [item.id]: item.initialLocation }),
-  {}
-) as Record<ItemId, RoomId>;
-
 const initialGameState: GameStoreState = {
   playerName: "player 1",
   modernMode: false,
   currentRoom: "grass",
   itemLocation: { ...initialItemLocation },
+  keyLocked: { ...initialKeyLocked },
   storyLine: [roomRegistry.getLongDescription("grass")],
   stepCount: 0,
   roomsVisited: new Set(["grass"]),

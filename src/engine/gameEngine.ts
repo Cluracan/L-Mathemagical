@@ -6,7 +6,8 @@ import type { ItemId } from "../assets/data/itemData";
 
 export type GameState = {
   currentRoom: RoomId;
-  itemLocation: Record<ItemId, RoomId>;
+  itemLocation: Partial<Record<ItemId, RoomId>>;
+  keyLocked: Partial<Record<ItemId, boolean>>;
   roomsVisited: Set<RoomId>;
   stepCount: number;
   storyLine: string[];
@@ -16,13 +17,20 @@ class GameEngine {
   constructor() {}
   handleInput(userInput: string) {
     //Take a snapshot of state
-    const { currentRoom, itemLocation, roomsVisited, stepCount, storyLine } =
-      useGameStore.getState();
+    const {
+      currentRoom,
+      itemLocation,
+      keyLocked,
+      roomsVisited,
+      stepCount,
+      storyLine,
+    } = useGameStore.getState();
 
     //Send input to storyLine
     const gameState = {
       currentRoom,
       itemLocation,
+      keyLocked,
       roomsVisited,
       stepCount,
       storyLine: [...storyLine, userInput],

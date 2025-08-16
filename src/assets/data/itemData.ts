@@ -135,6 +135,17 @@ export const itemData = {
     },
     isDrinkable: false,
   },
+  iron: {
+    id: "iron",
+    initialLocation: "pit",
+    descriptions: {
+      floor: "There is an odd-shaped iron key lying here.",
+      inventory: "An iron key",
+      pickUp: "iron key",
+      examine: "This key has been carefully filed to fit multiple locks...",
+    },
+    isDrinkable: false,
+  },
   spectacles: {
     id: "spectacles",
     initialLocation: "code",
@@ -217,5 +228,10 @@ export type Item = {
 };
 
 export const isItemId = createKeyGuard(itemData);
+
+export const initialItemLocation = Object.values(itemData).reduce(
+  (obj, item) => Object.assign(obj, { [item.id]: item.initialLocation }),
+  {}
+) as Partial<Record<ItemId, RoomId>>;
 
 const testItem: Record<ItemId, Item> = itemData;

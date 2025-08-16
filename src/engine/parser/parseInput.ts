@@ -17,10 +17,11 @@ const commandDictionary: Record<Command, string[]> = {
 
 export const parseInput = (
   userInput: string
-): { command: Command | null; keyWord: string } => {
+): { command: Command | null; keyWord: string | null } => {
   const splitInput = userInput.toUpperCase().trim().split(" ");
   const commandWord = splitInput[0].trim();
-  const keyWord = splitInput[splitInput.length - 1].trim();
+  const keyWord =
+    splitInput.length > 1 ? splitInput[splitInput.length - 1].trim() : null;
 
   //Can just type 'N'
   if (isDirectionAliasKey(commandWord)) {

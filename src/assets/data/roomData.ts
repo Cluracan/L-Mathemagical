@@ -1,0 +1,1004 @@
+export const roomData = {
+  grass: {
+    id: "grass",
+    descriptions: {
+      long: 'It is a very hot day. You are sitting on the grass outside a crumbling palace. Your sister is reading a book called "Fractions and the Four Rules-- 5000 Carefully Graded Problems". You are bored, and the heat is making you feel a little sleepy. \n\nSuddenly you see an old man dressed as an abbot. He glances at you nervously and slips through the palace doors to the north.',
+      short: "You are sitting on the grass.",
+    },
+    mapText: "Grass",
+    exits: {
+      N: "hallway",
+    },
+  },
+  hallway: {
+    id: "hallway",
+    descriptions: {
+      long: "You are in a dark hall way. At the south end is an outside door. There is another door at the north end. \n\nThe abbot is just disappearing through the door at the north end.",
+      short: "You are in the hall way.",
+    },
+    mapText: "Hallway",
+    exits: {
+      N: "kitchen",
+      S: "hallway",
+    },
+  },
+  kitchen: {
+    id: "kitchen",
+    descriptions: {
+      long: "You are in a room which once was a kitchen. It has quarry tiles on the floor and there is a cracked sink in one corner. There are doors to the north, south, east and west. \n\nThe east door has just swung closed.",
+      short: "You are in the old kitchen",
+    },
+    mapText: "Kitchen",
+    exits: {
+      N: "lShaped",
+      E: "store",
+      S: "hallway",
+      W: "workshop",
+    },
+  },
+  store: {
+    id: "store",
+    descriptions: {
+      long: "You are in a large store room which has wooden shelves going up to the ceiling.",
+      short:
+        "You are in a large store room which has wooden shelves going up to the ceiling.",
+    },
+    mapText: "Store",
+    exits: {
+      W: "kitchen",
+      U: "shelf",
+    },
+  },
+  shelf: {
+    id: "shelf",
+    descriptions: {
+      long: "You are sitting on the top shelf in the store room. The shelves are quite empty apart from a thick layer of dust and yourself.",
+      short: "You are sitting on the top shelf in the store room.",
+    },
+    mapText: "Shelf",
+    exits: {
+      D: "store",
+    },
+  },
+  workshop: {
+    id: "workshop",
+    descriptions: {
+      long: "You are in a workshop with wooden benches around the walls. The room smells of machine oil and there are oily patches on the floor. Doors lead off to the south, east and west.",
+      short: "You are in the workshop.",
+    },
+    mapText: "Workshop",
+    exits: {
+      E: "kitchen",
+      S: "creeper",
+      W: "narrowPassage",
+    },
+  },
+  creeper: {
+    id: "creeper",
+    descriptions: {
+      long: "You are in a room where a huge creeper has grown through the windows and covers a large area of the room. Doors lead to the north and west",
+      short: "You are in the creeper room.",
+    },
+    mapText: "Creeper",
+    exits: {
+      N: "workshop",
+      W: "narrowPassageS",
+    },
+  },
+  narrowPassageS: {
+    id: "narrowPassageS",
+    descriptions: {
+      long: "You are at the south end of a narrow passage. There are several doors on the east side.",
+      short: "You are at the south end of the narrow passage.",
+    },
+    mapText: "SouthPassage",
+    exits: {
+      N: "narrowPassage",
+      E: "creeper",
+    },
+  },
+  narrowPassage: {
+    id: "narrowPassage",
+    descriptions: {
+      long: "You are in a narrow passage which runs from north to south. There are several doors on the east side.",
+      short: "You are in the middle of the narrow passage.",
+    },
+    mapText: "midPassage",
+    exits: {
+      N: "narrowPassageN",
+      E: "workshop",
+      S: "narrowPassageS",
+    },
+  },
+  narrowPassageN: {
+    id: "narrowPassageN",
+    descriptions: {
+      long: "You are at the north end of a narrow passage. There is a door ahead of you.",
+      short: "You are at the north end of the narrow passage.",
+    },
+    mapText: "northpassage",
+    exits: {
+      N: "telephone",
+      S: "narrowPassage",
+    },
+  },
+  telephone: {
+    id: "telephone",
+    descriptions: {
+      long: "You are in a room containing a heavy black oak chest with intricate carvings on it. There is a telephone resting on it. The only door leads to the south.",
+      short: "You are in the telephone room.",
+    },
+    mapText: "Telephone",
+    exits: {
+      S: "narrowPassageN",
+      D: "cellar00",
+    },
+  },
+  lShaped: {
+    id: "lShaped",
+    descriptions: {
+      long: "You are in an L-shaped room which smells of mice. Doors lead to the west, south and east.",
+      short: "You are in the L-shaped room.",
+    },
+    mapText: "L room",
+    exits: {
+      S: "kitchen",
+      E: "boiler",
+      W: "cupboard",
+    },
+  },
+  cupboard: {
+    id: "cupboard",
+    descriptions: {
+      long: "You are in a large cupboard which once was used for storing linen.",
+      short: "You are in the large cupboard.",
+    },
+    mapText: "Cupboard",
+    exits: {
+      E: "lShaped",
+    },
+  },
+  boiler: {
+    id: "boiler",
+    descriptions: {
+      long: "You are in a boiler room, full of machinery which appears to have been standing idle for some time. In one corner is a spiral staircase which goes up. On the east side, a flight of steps leads down, and to the west, there is a door.",
+      short: "You are in the boiler room.",
+    },
+    mapText: "Boiler",
+    exits: {
+      U: "stairsSpiral",
+      D: "longPassageW",
+      E: "longPassageW",
+      W: "lShaped",
+    },
+  },
+  longPassageW: {
+    id: "longPassageW",
+    descriptions: {
+      long: "You are at the west end of a long passage with dark green tiles and flaky paint. You are standing at the bottom of a flight of steps.",
+      short: "You are at the west end of a long passage.",
+    },
+    mapText: "Passage",
+    exits: {
+      U: "boiler",
+      W: "boiler",
+      E: "longPassageE",
+    },
+  },
+  longPassageE: {
+    id: "longPassageE",
+    descriptions: {
+      long: "You are at the east end of a long passage with dark green tiles and flaky paint. You are standing outside a door.",
+      short: "You are at the east end of a long passage.",
+    },
+    mapText: "Passage",
+    exits: {
+      E: "file",
+      W: "longPassageW",
+    },
+  },
+  file: {
+    id: "file",
+    descriptions: {
+      long: "You are in a room with two doors. To the east is a massive oak door which is many hundreds of years old.  A smaller door leads to the west.",
+      short:
+        "You are in a room with two doors. To the east is a massive oak door which is many hundreds of years old.  A smaller door leads to the west.",
+    },
+    mapText: "File Room",
+    exits: {
+      W: "longPassageE",
+      E: "panelled",
+    },
+  },
+  stairsSpiral: {
+    id: "stairsSpiral",
+    descriptions: {
+      long: "You are at the top of the spiral staircase above the boiler room. A door leads to the east.",
+      short: "You are at the top of the spiral staircase.",
+    },
+    mapText: "Stairs",
+    exits: {
+      E: "pool",
+      D: "boiler",
+    },
+  },
+  pool: {
+    id: "pool",
+    descriptions: {
+      long: "You are in a large room with marble walls and floors. Four classical statues stand at the corners of an indoor swimming pool which is empty. The main door is at the east end, but there is another door leading west.",
+      short: "You are in the room with the pool.",
+    },
+    mapText: "Pool",
+    exits: {
+      E: "lobby",
+      W: "stairsSpiral",
+      D: "poolFloor",
+    },
+  },
+  lobby: {
+    id: "lobby",
+    descriptions: {
+      long: "You are in a lobby with orange walls. Doors lead off to the south, west, and east. A window on the north side looks down on to a shady courtyard. Something seems to be moving around down there but it is too dark to see clearly.",
+      short: "You are in the orange lobby.",
+    },
+    mapText: "Lobby",
+    exits: {
+      E: "music",
+      W: "pool",
+    },
+  },
+  music: {
+    id: "music",
+    descriptions: {
+      long: "You are in the old music room. The walls are blotched with damp and there are holes in the skirting board. A small window is open in the northwest corner of the room, obstructed by an old, battered telescope. There are doors to the east and west.\n\nIn the centre of the room is a rather battered Steinway grand piano.",
+      short: "You are in the old music room.",
+    },
+    mapText: "Music",
+    exits: {
+      E: "solarium",
+      W: "lobby",
+    },
+  },
+  solarium: {
+    id: "solarium",
+    descriptions: {
+      long: "You are in the solarium. The room is flooded with sunlight and the heat is only just bearable. There are doors to the east and west. On the north side a French windows leads out on to a balcony.",
+      short: "You are in the solarium",
+    },
+    mapText: "Solarium",
+    exits: {
+      E: "snooker",
+      W: "music",
+      N: "balcony",
+    },
+  },
+  snooker: {
+    id: "snooker",
+    descriptions: {
+      long: "You are in a room with doors to the south, west and east. An oval-shaped snooker table stands in the centre of the room. A post is fixed to the centre of the table. On one side of this post is the only pocket, and on the other side is a spot for the ball. A cue is attached to the table by a long chain.",
+      short: "You are in the room with the oval snooker table.",
+    },
+    mapText: "Snooker",
+    exits: {
+      E: "stoneLanding",
+      W: "solarium",
+      S: "ante",
+    },
+  },
+  stoneLanding: {
+    id: "stoneLanding",
+    descriptions: {
+      long: "You are on the landing of a stone staircase, with stairs going up and down. A door leads to the west.",
+      short: "You are on the landing of a stone staircase.",
+    },
+    mapText: "Landing",
+    exits: {
+      U: "stoneStairs",
+      W: "snooker",
+      D: "largeKitchen",
+    },
+  },
+  stoneStairs: {
+    id: "stoneStairs",
+    descriptions: {
+      long: "You are at the top of the stone staircase. There is a door on the east side.",
+      short: "You are at the top of the stone staircase.",
+    },
+    mapText: "Stairs",
+    exits: {
+      E: "lights",
+      D: "stoneLanding",
+    },
+  },
+  lights: {
+    id: "lights",
+    descriptions: {
+      long: "You are in a room which has just one door leading west. Through a glass panel, below you, you can see a small theatre. Four coloured spotlights illuminate the empty stage.",
+      short: "You are in the electrician's box.",
+    },
+    mapText: "Lights",
+    exits: {
+      W: "stoneStairs",
+    },
+  },
+  cellar00: {
+    id: "cellar00",
+    descriptions: {
+      long: "You are in a cellar. A ladder leads up to the room above and there is a door to the north. There is a notice on the door:-\n\n\t\t\t CELLAR MAZE.\n\t\t   STRICTLY NO ADMITTANCE.\n\t\t       By order of the\n\t\t   Drogo Central Committee.",
+      short: "You are by the ladder in the cellar.",
+    },
+    mapText: "Cellar",
+    exits: {
+      U: "telephone",
+      N: "cellar01",
+    },
+  },
+  cellar01: {
+    id: "cellar01",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      E: "cellar02",
+      S: "cellar00",
+    },
+  },
+  cellar02: {
+    id: "cellar02",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      E: "cellar03",
+      S: "cellar04",
+      W: "cellar01",
+    },
+  },
+  cellar03: {
+    id: "cellar03",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      E: "cellar08",
+      S: "cellar05",
+      W: "cellar02",
+    },
+  },
+  cellar04: {
+    id: "cellar04",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      N: "cellar02",
+      E: "cellar05",
+    },
+  },
+  cellar05: {
+    id: "cellar05",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      N: "cellar03",
+      E: "cellar06",
+      W: "cellar04",
+    },
+  },
+  cellar06: {
+    id: "cellar06",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      N: "cellar08",
+      E: "cellar10",
+      S: "cellar07",
+      W: "cellar05",
+    },
+  },
+  cellar07: {
+    id: "cellar07",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      N: "cellar06",
+    },
+  },
+  cellar08: {
+    id: "cellar08",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      N: "cellar09",
+      S: "cellar06",
+      W: "cellar03",
+    },
+  },
+  cellar09: {
+    id: "cellar09",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      S: "cellar08",
+    },
+  },
+  cellar10: {
+    id: "cellar10",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      N: "cellar11",
+      W: "cellar06",
+    },
+  },
+  cellar11: {
+    id: "cellar11",
+    descriptions: {
+      long: "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+      short:
+        "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
+    },
+    mapText: "Cellar",
+    exits: {
+      N: "cellar12",
+      S: "cellar10",
+    },
+  },
+  cellar12: {
+    id: "cellar12",
+    descriptions: {
+      long: "You are outside the palace at the bottom of a flight of stone steps. A door leads into the palace.",
+      short: "You are at the bottom of the stone steps.",
+    },
+    mapText: "Cellar",
+    exits: {
+      U: "courtyard",
+      S: "cellar11",
+    },
+  },
+  courtyard: {
+    id: "courtyard",
+    descriptions: {
+      long: "You have entered a large courtyard paved with square slabs, many covered with moss and lichen. Some stone steps lead down to a door in the palace.",
+      short: "You are in the turtle courtyard",
+    },
+    mapText: "Courtyard",
+    exits: {
+      D: "cellar12",
+    },
+  },
+  ante: {
+    id: "ante",
+    descriptions: {
+      long: 'You are in an ante-room having doors to the west and north. Over the west door is an old wooden board displaying a faded warning. It says, "Be warned that all who enter here will see nothing but codes."',
+      short: "You are in the ante-room.",
+    },
+    mapText: "Ante-room",
+    exits: {
+      N: "snooker",
+      W: "code",
+    },
+  },
+  code: {
+    id: "code",
+    descriptions: {
+      long: "You are in the code room. It is a stark, white room whose plaster walls are covered in scribblings. Doors lead east and west.",
+      short: "You are in the code room.",
+    },
+    mapText: "Code room",
+    exits: {
+      E: "ante",
+      W: "oriental",
+    },
+  },
+  oriental: {
+    id: "oriental",
+    descriptions: {
+      long: "You are in an oriental room. Paintings of bamboo and red dragons cover the walls. The only door leads to the east.",
+      short: "You are in the oriental room.",
+    },
+    mapText: "Oriental",
+    exits: {
+      E: "code",
+    },
+  },
+  largeKitchen: {
+    id: "largeKitchen",
+    descriptions: {
+      long: "You have entered a large kitchen. There is a delicious smell of baking. Around the walls are hung enormous metal pans and cooking utensils. In one corner is a large old-fashioned kitchen range giving out a great heat. The only way out is by the stairs.\n\nIn the middle of the room is a scrubbed table, at which sits a cook surrounded by dozens of mixing bowls.",
+      short: "You are in the great kitchen.",
+    },
+    mapText: "Kitchen",
+    exits: {
+      U: "stoneLanding",
+    },
+  },
+  panelled: {
+    id: "panelled",
+    descriptions: {
+      long: "You are in a panelled room. Round the walls are seventeen panels covered by wallpaper with a repeating pattern. Each pattern uses the same basic unit, but the way in which the unit is repeated is different for each panel. Doors lead to the west and north.",
+      short: "You are in the panelled room.",
+    },
+    mapText: "Panelled",
+    exits: {
+      W: "file",
+      N: "gardenSW",
+    },
+  },
+  gardenSW: {
+    id: "gardenSW",
+    descriptions: {
+      long: "You are in the south west corner of the walled garden. Close by, hidden behind a huge ceanothus bush, is a small door leading into the palace.",
+      short: "You are in the south west corner of the walled garden.",
+    },
+    mapText: "Garden",
+    exits: {
+      S: "panelled",
+      N: "gardenN",
+    },
+  },
+  gardenN: {
+    id: "gardenN",
+    descriptions: {
+      long: "You are in a walled garden filled with blue flowers. There are beds of delphiniums and anchusas. The air is filled with the scent of lavender and buddleia. The palace is on the south side of the garden and some stone steps lead up to a balcony. On the north side a path leads through a gap in the wall.",
+      short: "You are in the walled garden",
+    },
+    mapText: "Garden",
+    exits: {
+      N: "riverS",
+      S: "gardenSW",
+      U: "balcony",
+    },
+  },
+  balcony: {
+    id: "balcony",
+    descriptions: {
+      long: "You are on a balcony. A faint perfume is rising from the walled garden beneath you. Some worn steps lead down to the garden and a French window leads back into the palace.",
+      short: "You are on the balcony.",
+    },
+    mapText: "Balcony",
+    exits: {
+      S: "solarium",
+      D: "gardenN",
+    },
+  },
+  riverS: {
+    id: "riverS",
+    descriptions: {
+      long: "You are on a lawn which leads down to a wide river. A notice on the bank reads:--\n\n\t\t\tDANGER\n\t\t     Piranha Fish.\n\nThere are thorny hedges to the east and west. To the south there is a path through a gap in the wall.",
+      short: "You are on the lawn beside the river",
+    },
+    mapText: "River S",
+    exits: {
+      S: "gardenN",
+      N: "riverN",
+    },
+  },
+  riverN: {
+    id: "riverN",
+    descriptions: {
+      long: "You are on the north bank of the river which is covered in brambles. A narrow path winds to the northeast.",
+      short: "You are on the north bank of the river.",
+    },
+    mapText: "River N",
+    exits: {
+      NE: "orchard",
+      S: "riverS",
+    },
+  },
+  orchard: {
+    id: "orchard",
+    descriptions: {
+      long: "You are in a beautiful orchard and are surrounded by trees laden with many different kinds of fruit, some of which you have never seen before. There is a clearing in the centre of the orchard from which a path leads to the southwest.",
+      short: "You are in the orchard.",
+    },
+    mapText: "Gardener",
+    exits: {
+      SW: "riverN",
+    },
+  },
+  poolFloor: {
+    id: "poolFloor",
+    descriptions: {
+      long: "You are standing in the empty swimming pool. It slopes down gently towards the west. On the north side of the pool is a small hole, about 20cm square, which was once covered by a grating.",
+      short: "You are standing in the swimming pool.",
+    },
+    mapText: "In the pool",
+    exits: {
+      U: "pool",
+      IN: "tunnelTop",
+    },
+  },
+  tunnelTop: {
+    id: "tunnelTop",
+    descriptions: {
+      long: "You are at one end of a dark tunnel littered with brick rubble. A small opening leads out into the light. The tunnel slopes downwards and is just wide enough for you to crawl along.",
+      short: "You are at the top of the tunnel.",
+    },
+    mapText: "Tunnel",
+    exits: {
+      OUT: "poolFloor",
+      D: "tunnelBottom",
+    },
+  },
+  tunnelBottom: {
+    id: "tunnelBottom",
+    descriptions: {
+      long: "You are at the bottom of a dark tunnel. It is quite wide here and there is just enough room to stand up. A rough hole knocked through some stonework leads out into the light.",
+      short: "You are at the bottom of the tunnel.",
+    },
+    mapText: "Tunnel",
+    exits: {
+      U: "tunnelTop",
+      S: "granite",
+    },
+  },
+  granite: {
+    id: "granite",
+    descriptions: {
+      long: "You are in a passage with granite walls and a door to the south. A rough hole has been knocked through the stonework at the north end. On one wall there is a wooden noticeboard with the words:-\n\n\t\tNO BREACH OF SECURITY\n\n\t\tIS TOO SMALL TO IGNORE.",
+      short: "You are in a granite passage.",
+    },
+    mapText: "Passage",
+    exits: {
+      N: "tunnelBottom",
+      S: "woodenStairs",
+    },
+  },
+  woodenStairs: {
+    id: "woodenStairs",
+    descriptions: {
+      long: "You are at the bottom of some wooden stairs outside a door which leads north.",
+      short: "You are at the bottom of the wooden stairs.",
+    },
+    mapText: "Stairs",
+    exits: {
+      U: "landing",
+      N: "granite",
+    },
+  },
+  landing: {
+    id: "landing",
+    descriptions: {
+      long: "You are on the landing at the top of some wooden stairs. There is a door to the East here.",
+      short: "You are at the top of the wooden stairs.",
+    },
+    mapText: "woodenLanding",
+    exits: {
+      D: "woodenStairs",
+      E: "circular",
+    },
+  },
+  circular: {
+    id: "circular",
+    descriptions: {
+      long: "You are in a large circular room beneath a glass dome. Eight identical doors lead to the north, northwest, west, southwest, south, southeast, east, and northeast.",
+      short: "You are in the circular room.",
+    },
+    mapText: "Circular",
+    exits: {
+      N: "broomCupboard",
+      NW: "half",
+      W: "landing",
+      SE: "triangle",
+      NE: "safe",
+      E: "hexagon",
+      SW: "computer",
+      S: "guardsPassage",
+    },
+  },
+  broomCupboard: {
+    id: "broomCupboard",
+    descriptions: {
+      long: "You have walked into a broom cupboard.",
+      short: "You are in a broom cupboard.",
+    },
+    mapText: "Cupboard",
+    exits: {
+      S: "circular",
+    },
+  },
+  half: {
+    id: "half",
+    descriptions: {
+      long: "You are in a room which has been left half-decorated. The walls are painted half black and half white. Doors lead to the southeast, west, and north.",
+      short: "You are in the half-decorated room.",
+    },
+    mapText: "Half Room",
+    exits: {
+      SE: "circular",
+      W: "mirror",
+      N: "ladderBottom",
+    },
+  },
+  mirror: {
+    id: "mirror",
+    descriptions: {
+      long: "You have passed through a large door which covers the whole of one side of a wall.\n\nYou are standing in a corridor with several other people. As the door slowly closes behind you, the corridor grows longer and longer, and more people appear. There seem to be doors to the east and west.",
+      short:
+        "You have passed thourh a large door which covers the whole of one side of a wall.\n\nYou seem to be standing in a very long corridor with dozens of other people.",
+    },
+    mapText: "Corridor",
+    exits: {
+      E: "half",
+    },
+  },
+  ladderBottom: {
+    id: "ladderBottom",
+    descriptions: {
+      long: "You are in a cramped space like a chimney. A metal ladder disappears up int the darkness. A wooden door leads south.",
+      short: "You are at the bottom of the metal ladder.",
+    },
+    mapText: "Ladder",
+    exits: {
+      S: "half",
+      U: "ladderTop",
+    },
+  },
+  ladderTop: {
+    id: "ladderTop",
+    descriptions: {
+      long: "It is completely dark. You have reached the top of the ladder. There seems to be a trap door above you.",
+      short: "You are at the top of the metal ladder.",
+    },
+    mapText: "Ladder",
+    exits: {
+      D: "ladderBottom",
+      U: "attic",
+    },
+  },
+  triangle: {
+    id: "triangle",
+    descriptions: {
+      long: "You have entered a grim room with a triangular floor and three slanting triangular walls which meet at a point ghigh above you. Doors in each wall lead off to the south, northeast, and northwest. Hundreds of bats are hanging from the slanting walls.",
+      short: "You are in the triangular room.",
+    },
+    mapText: "Triangle",
+    exits: {
+      NW: "circular",
+      S: "blue",
+      N: "hexagon",
+    },
+  },
+  blue: {
+    id: "blue",
+    descriptions: {
+      long: "You are in a room painted a dark shade of blue. Silver stars cover the high ceiling like the night sky. The only door leads north.",
+      short: "You are in the blue room.",
+    },
+    mapText: "Blue room",
+    exits: {
+      N: "triangle",
+    },
+  },
+  hexagon: {
+    id: "hexagon",
+    descriptions: {
+      long: "You are in a room with six walls. Doors lead to the west and south. On the east wall is a brass plaque engraved with:-\n\n\t\t\t?@3+>*=@\n\t\t\t+33./",
+      short: "You are in the room with six walls.",
+    },
+    mapText: "Hexagon",
+    exits: {
+      W: "circular",
+      S: "triangle",
+    },
+  },
+  safe: {
+    id: "safe",
+    descriptions: {
+      long: "You have entered a room with a stone floor. In the north wall is the large door of a safe, with a numerical keypad fixed to it. There is a door to the southwest.",
+      short: "You are in the room with the safe",
+    },
+    mapText: "Safe",
+    exits: {
+      N: "carpetPassageS",
+      SW: "circular",
+    },
+  },
+  carpetPassageS: {
+    id: "carpetPassageS",
+    descriptions: {
+      long: "You are at the south end of a passage, just inside the safe door. The passage has a strange soft appearance because the floor, walls, and ceiling are completely covered in a deep blue carpet.",
+      short: "You are at the south end of the soft passage.",
+    },
+    mapText: "Passage S",
+    exits: {
+      S: "safe",
+      N: "carpetPassageN",
+    },
+  },
+  carpetPassageN: {
+    id: "carpetPassageN",
+    descriptions: {
+      long: "You are at the north end of the soft passage outside a wooden door.",
+      short: "You are at the north end of the soft passage.",
+    },
+    mapText: "Passage N",
+    exits: {
+      S: "carpetPassageS",
+      N: "spider",
+    },
+  },
+  spider: {
+    id: "spider",
+    descriptions: {
+      long: "You are in a square room which is full of cobwebs. The only door leads south.",
+      short: "You are in the spider room.",
+    },
+    mapText: "Spider",
+    exits: {
+      S: "carpetPassageN",
+    },
+  },
+  attic: {
+    id: "attic",
+    descriptions: {
+      long: 'You are in a tiny attic room with no furniture. A small arched window looks down on to an orchard. There are bars across the window. It is very quiet.\n\nA previous occupant of the room has scratched some numbers on one of the walls:- "121, 49, 196, 25, 64."',
+      short: "You are in an attic room.",
+    },
+    mapText: "Attic",
+    exits: {
+      E: "atticPassage",
+    },
+  },
+  atticPassage: {
+    id: "atticPassage",
+    descriptions: {
+      long: "You are in an attic passage with doors at the east and west ends. There is a faint smell of stale kippers. Paint is peeling from the walls.",
+      short: "You are in the attic passage",
+    },
+    mapText: "Passage",
+    exits: {
+      W: "attic",
+      E: "pig",
+    },
+  },
+  pig: {
+    id: "pig",
+    descriptions: {
+      long: "You are in a green room with a single door to the west. A large chandelier hangs from the ceiling and there are pieces of straw on the floor.",
+      short: "You are in the green room.",
+    },
+    mapText: "Pig",
+    exits: {
+      W: "atticPassage",
+    },
+  },
+  computer: {
+    id: "computer",
+    descriptions: {
+      long: "You are in a room with grey walls and grey carpet tiles. A series of flourescent tubes provide stark lighting along with a low buzzing sound. There is a door to the northeast.",
+      short: "You are in the computer room.",
+    },
+    mapText: "Computer",
+    exits: {
+      NE: "circular",
+    },
+  },
+  guardsPassage: {
+    id: "guardsPassage",
+    descriptions: {
+      long: "You are in a narrow passage running from north to south. The south door is ajar, and through the crack you can see about a dozen Drogo Robot Guards.",
+      short: "You are in a narrow passage.",
+    },
+    mapText: "Passage",
+    exits: {
+      N: "circular",
+      S: "guards",
+    },
+  },
+  guards: {
+    id: "guards",
+    descriptions: {
+      long: "You are in a shabby room decorated with posters. Against one wall are racks of electronic equipment studded with glowing coloured lights. There are doors to the north and west. About a dozen Drogo Robot Guards are in an untidy line, beneath a huge poster of a middle-aged lady who is smiling resolutely.",
+      short: "You are in the guard room.",
+    },
+    mapText: "Guards",
+    exits: {
+      N: "guardsPassage",
+      W: "cell",
+    },
+  },
+  cell: {
+    id: "cell",
+    descriptions: {
+      long: "You are in a sparsely furnished cell. A window is open, but it is too high for you to jump and there is no way to climb down.\n\nA girl with red hair is sitting in one corner.",
+      short: "You are in a cell.",
+    },
+    mapText: "Cell",
+    exits: {
+      E: "guards",
+      D: "countryside",
+    },
+  },
+  countryside: {
+    id: "countryside",
+    descriptions: {
+      long: "You gaze around the countryside, thinking over your adventure. There is still so much to discover: What has happened to the abbot? Who are the Drogos? And what did Runia discover about them? What is in the Kempis room? And what is the meaning of the strange symbols on the pendant which Runia wears around her neck?\n\nBut I am afraid I cannot help you answer thse questions. This adventure is over, and what remains is for your imagination.\n\n\nGoodbye.",
+      short: "You are in the countryside.",
+    },
+    mapText: "Countryside",
+    exits: {},
+  },
+  pit: {
+    id: "pit",
+    descriptions: {
+      long: "This huge pit is used to store unwanted or as yet unused items.  You should not be here!",
+      short:
+        "You are in the pit, although you shouldn't be. How did you get here?",
+    },
+    mapText: "Pit",
+    exits: {},
+  },
+} as const satisfies Record<
+  string,
+  {
+    id: string;
+    descriptions: Record<"long" | "short", string>;
+    mapText: string;
+    exits: Partial<Record<ExitDirection, string>>;
+  }
+>;
+//(above) Can't reference roomData in initialisation (or you just get 'any' type for roomData and an error), so have to widen id: keyof roomData to id: string etc
+
+export type RoomId = keyof typeof roomData;
+
+export type Room = {
+  id: RoomId;
+  descriptions: Record<"long" | "short", string>;
+  mapText: string;
+  exits: Partial<Record<ExitDirection, RoomId>>;
+};
+
+export type ExitDirection =
+  | "N"
+  | "E"
+  | "S"
+  | "W"
+  | "U"
+  | "D"
+  | "IN"
+  | "OUT"
+  | "NE"
+  | "NW"
+  | "SE"
+  | "SW";
+
+//  const _checkRoomData: Record<RoomId, Room> = roomData;
+// This can check for errors in roomData (like mispelt exit or id), but can't locate them!

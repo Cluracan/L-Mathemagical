@@ -1,8 +1,8 @@
-import rooms from "../../assets/data/rooms.json";
-import type { RoomId, Room } from "../../assets/data/RoomTypes";
+import { roomData } from "../../assets/data/roomData";
+import type { Room, RoomId, ExitDirection } from "../../assets/data/roomData";
 
 class RoomRegistry {
-  private roomData: Record<RoomId, Room> = rooms as Record<RoomId, Room>;
+  private roomData: Record<RoomId, Room> = roomData;
 
   getLongDescription(id: RoomId) {
     return this.roomData[id].descriptions.long;
@@ -20,13 +20,13 @@ class RoomRegistry {
     return this.roomData[id].exits;
   }
 
-  hasExit(id: RoomId, direction: string): boolean {
+  hasExit(id: RoomId, direction: ExitDirection): boolean {
     return Object.keys(this.roomData[id].exits).includes(direction);
   }
 
-  getExitDestination(id: RoomId, direction: string): RoomId | null {
+  getExitDestination(id: RoomId, direction: ExitDirection): RoomId | null {
     const exitMap = this.roomData[id].exits;
-    const nextRoom = exitMap[direction as keyof typeof exitMap];
+    const nextRoom = exitMap[direction];
     return nextRoom || null;
   }
 }

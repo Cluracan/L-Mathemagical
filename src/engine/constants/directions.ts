@@ -1,4 +1,4 @@
-import type { ExitDirection } from "../../assets/data/RoomTypes";
+import type { ExitDirection } from "../../assets/data/roomData";
 import { createKeyGuard } from "../../utils/guards";
 
 // userInput -> ExitDirection

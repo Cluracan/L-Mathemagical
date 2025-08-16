@@ -1,27 +1,27 @@
-import type { Command, HandleCommand } from "./dispatchCommand";
 import { roomRegistry } from "../world/roomRegistry";
+
 import {
   directionAliases,
   directionNarratives,
   isDirectionAliasKey,
 } from "../constants/directions";
+import type { Command, HandleCommand } from "./dispatchCommand";
 import type { GameState } from "../gameEngine";
-import type { RoomId } from "../../assets/data/RoomId";
-import type { ExitDirection } from "../../assets/data/RoomTypes";
+import type { RoomId, ExitDirection } from "../../assets/data/roomData";
 
 type Payload = {
   gameState: GameState;
   aborted: boolean;
   nextRoom?: RoomId;
   command?: Command;
-  keyWord: string;
+  keyWord: string | null;
   direction?: ExitDirection;
 };
 
 type PipelineFunction = (args: Payload) => Payload;
 
 const validateDirection: PipelineFunction = (payload) => {
-  if (isDirectionAliasKey(payload.keyWord)) {
+  if (payload.keyWord && isDirectionAliasKey(payload.keyWord)) {
     return { ...payload, direction: directionAliases[payload.keyWord] };
   } else {
     return {
@@ -71,7 +71,15 @@ const movePlayer: PipelineFunction = (payload) => {
     );
     return { ...payload, aborted: true };
   }
-
+  const itemHolder = [];
+  for (const [item, location] of Object.entries(
+    payload.gameState.itemLocation
+  )) {
+    if (location === payload.nextRoom) {
+      itemHolder.push(item);
+    }
+  }
+  console.log(itemHolder);
   return {
     ...payload,
     gameState: {

@@ -1,11 +1,15 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { RoomId } from "../assets/data/RoomId";
+import { itemData } from "../assets/data/itemData";
+import { roomRegistry } from "../engine/world/roomRegistry";
+import type { RoomId } from "../assets/data/roomData";
+import type { ItemId } from "../assets/data/itemData";
 
 type GameStoreState = {
   playerName: string;
   modernMode: boolean;
   currentRoom: RoomId;
+  itemLocation: Record<ItemId, RoomId>;
   storyLine: string[];
   stepCount: number;
   roomsVisited: Set<RoomId>;
@@ -23,17 +27,25 @@ type GameStoreActions = {
 
 export type GameStore = GameStoreState & GameStoreActions;
 
+const initialItemLocation = Object.values(itemData).reduce(
+  (obj, item) => Object.assign(obj, { [item.id]: item.initialLocation }),
+  {}
+) as Record<ItemId, RoomId>;
+
+const initialGameState: GameStoreState = {
+  playerName: "player 1",
+  modernMode: false,
+  currentRoom: "grass",
+  itemLocation: { ...initialItemLocation },
+  storyLine: [roomRegistry.getLongDescription("grass")],
+  stepCount: 0,
+  roomsVisited: new Set(["grass"]),
+};
+
 export const useGameStore = create<GameStore>()(
   persist(
     (set) => ({
-      playerName: "a",
-      modernMode: false,
-      currentRoom: "grass",
-      storyLine: [
-        'It is a very hot day. You are sitting on the grass outside a crumbling palace. Your sister is reading a book called "Fractions and the Four Rules-- 5000 Carefully Graded Problems". You are bored, and the heat is making you feel a little sleepy. \n\nSuddenly you see an old man dressed as an abbot. He glances at you nervously and slips through the palace doors to the north.',
-      ],
-      stepCount: 0,
-      roomsVisited: new Set(["grass"]),
+      ...initialGameState,
       toggleGameMode: () => set((state) => ({ modernMode: !state.modernMode })),
       setPlayerName: (playerName: string) => set({ playerName }),
       setCurrentRoom: (roomId: RoomId) => set({ currentRoom: roomId }),

@@ -19,13 +19,13 @@ const commandHandlers = {
 export type Command = keyof typeof commandHandlers;
 
 export type HandleCommand = (args: {
-  keyWord: string;
+  keyWord: string | null;
   gameState: GameState;
 }) => GameState;
 
 type DispatchCommand = (args: {
   command: Command | null;
-  keyWord: string;
+  keyWord: string | null;
   gameState: GameState;
 }) => GameState;
 

@@ -1,3 +1,5 @@
+import { createKeyGuard } from "../../utils/guards";
+
 export const roomData = {
   grass: {
     id: "grass",
@@ -19,7 +21,7 @@ export const roomData = {
     mapText: "Hallway",
     exits: {
       N: "kitchen",
-      S: "hallway",
+      S: "grass",
     },
   },
   kitchen: {
@@ -999,6 +1001,8 @@ export type ExitDirection =
   | "NW"
   | "SE"
   | "SW";
+
+export const isRoomId = createKeyGuard(roomData);
 
 //  const _checkRoomData: Record<RoomId, Room> = roomData;
 // This can check for errors in roomData (like mispelt exit or id), but can't locate them!

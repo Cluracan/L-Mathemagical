@@ -77,11 +77,11 @@ const movePlayer: PipelineFunction = (payload) => {
     ...payload,
     gameState: {
       ...payload.gameState,
-      currentRoom: payload.nextRoom,
       nextRoom: null,
       roomsVisited: new Set(payload.gameState.roomsVisited).add(
-        payload.nextRoom
+        payload.gameState.currentRoom
       ),
+      currentRoom: payload.nextRoom,
       stepCount: payload.gameState.stepCount + 1,
       storyLine: [
         ...payload.gameState.storyLine,

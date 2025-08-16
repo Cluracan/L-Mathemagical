@@ -1,8 +1,8 @@
 import { useGameStore } from "../store/useGameStore";
 import { parseInput } from "./parser/parseInput";
 import { dispatchCommand } from "./actions/dispatchCommand";
-import type { RoomId } from "../assets/data/RoomId";
-import type { ItemId } from "./world/itemRegistry";
+import type { RoomId } from "../assets/data/roomData";
+import type { ItemId } from "../assets/data/itemData";
 
 export type GameState = {
   currentRoom: RoomId;

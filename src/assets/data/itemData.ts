@@ -1,3 +1,4 @@
+import { createKeyGuard } from "../../utils/guards";
 import type { RoomId } from "./roomData";
 
 export const itemData = {
@@ -214,5 +215,7 @@ export type Item = {
   descriptions: Record<"floor" | "inventory" | "pickUp" | "examine", string>;
   isDrinkable: boolean;
 };
+
+export const isItemId = createKeyGuard(itemData);
 
 const testItem: Record<ItemId, Item> = itemData;

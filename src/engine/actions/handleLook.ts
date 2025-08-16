@@ -1,7 +1,7 @@
 import { roomRegistry } from "../world/roomRegistry";
-import { itemRegistry, type ItemId } from "../world/itemRegistry";
+import { itemRegistry } from "../world/itemRegistry";
 import type { GameState } from "../gameEngine";
-
+import type { ItemId } from "../../assets/data/itemData";
 export const buildRoomDescription = (gameState: GameState) => {
   const roomDescription = [];
   //Add room text

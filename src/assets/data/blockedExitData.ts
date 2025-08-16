@@ -114,7 +114,7 @@ export const blockedExitData = {
   >
 >;
 
-export const initialLockedExitData: Partial<Record<ItemId, boolean>> = {
+export const initialKeyLocked: Partial<Record<ItemId, boolean>> = {
   iron: true,
   rusty: true,
 };

@@ -2,6 +2,7 @@ import { handleMove } from "./handleMove";
 import { handleNull } from "./handleNull";
 import { handleLook } from "./handleLook";
 import type { GameState } from "../gameEngine";
+import { createKeyGuard } from "../../utils/guards";
 
 const commandHandlers = {
   budge: handleNull,

@@ -28,7 +28,7 @@ class GameEngine {
       keyLocked,
       roomsVisited: new Set(roomsVisited),
       stepCount,
-      storyLine: [...storyLine, userInput],
+      storyLine: [...storyLine, userInput.trim()],
     };
 
     //parse input

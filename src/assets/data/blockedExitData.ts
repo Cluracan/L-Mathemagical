@@ -1,3 +1,4 @@
+import { createKeyGuard } from "../../utils/guards";
 import type { ItemId } from "./itemData";
 import { type ExitDirection, type RoomId } from "./roomData";
 
@@ -24,6 +25,7 @@ export const blockedExitData = {
     lockedText: "The door is securely locked",
     keyRequired: "rusty",
   },
+
   //Permanently locked
   hallway: {
     direction: ["s"],
@@ -117,6 +119,8 @@ export const blockedExitData = {
     }
   >
 >;
+
+export const isBlockedRoom = createKeyGuard(blockedExitData);
 
 export const initialKeyLocked: Partial<Record<ItemId, boolean>> = {
   iron: true,

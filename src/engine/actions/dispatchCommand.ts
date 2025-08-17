@@ -1,7 +1,7 @@
 import { handleMove } from "./handleMove";
-import { handleNull } from "./handleMove";
-import type { GameState } from "../gameEngine";
+import { handleNull } from "./handleNull";
 import { handleLook } from "./handleLook";
+import type { GameState } from "../gameEngine";
 
 const commandHandlers = {
   budge: handleNull,

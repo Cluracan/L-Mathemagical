@@ -234,4 +234,4 @@ export const initialItemLocation = Object.values(itemData).reduce(
   {}
 ) as Partial<Record<ItemId, RoomId>>;
 
-const testItem: Record<ItemId, Item> = itemData;
+// const testItem: Record<ItemId, Item> = itemData;

@@ -22,15 +22,14 @@ type ParseInput = (args: string) => {
 };
 
 export const parseInput: ParseInput = (userInput) => {
-  const tokens = userInput.toLowerCase().trim().split(/\s+/);
-  const [commandWord, ...args] = tokens;
+  const [commandWord, ...args] = userInput.toLowerCase().trim().split(/\s+/);
+
   //Can just type 'N'
   if (isDirectionAlias(commandWord)) {
     return { command: "move", target: `${directionAliases[commandWord]}` };
   }
-  //'rusty key' and 'rusty' must return target: 'rusty'
+  //'rusty key' and 'rusty' must return target: 'rusty' (coerce last two words to an item if possible)
   let target;
-
   if (args.length < 1) {
     target = null;
   } else if (isItemId(args[args.length - 1])) {

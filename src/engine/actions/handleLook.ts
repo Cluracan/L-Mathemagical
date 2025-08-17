@@ -3,6 +3,7 @@ import { itemRegistry } from "../world/itemRegistry";
 import { isItemId } from "../../assets/data/itemData";
 import type { GameState } from "../gameEngine";
 import type { Command, HandleCommand } from "./dispatchCommand";
+import { initialKeyLocked } from "../../assets/data/blockedExitData";
 
 export const buildRoomDescription = (gameState: GameState) => {
   const { roomsVisited, currentRoom, itemLocation } = gameState;
@@ -49,6 +50,34 @@ const lookRoom: LookPipelineFunction = (payload) => {
       },
       aborted: true,
     };
+  }
+  return payload;
+};
+
+const lookKey: LookPipelineFunction = (payload) => {
+  const { itemLocation, storyLine, currentRoom } = payload.gameState;
+  if (payload.target === "key") {
+    const keyList = Object.keys(initialKeyLocked);
+    //check for 1 or 2 keys on person or ground
+    let keysOnPerson = keyList.filter(
+      (keyId) =>
+        isItemId(keyId) &&
+        (itemLocation[keyId] === "player" ||
+          itemLocation[keyId] === currentRoom)
+    );
+    if (keysOnPerson.length === 2) {
+      return {
+        ...payload,
+        gameState: {
+          ...payload.gameState,
+          storyLine: [...storyLine, "Which key would you like to examine?"],
+        },
+        aborted: true,
+      };
+    }
+    if (keysOnPerson.length === 1) {
+      return { ...payload, target: keysOnPerson[0] };
+    }
   }
   return payload;
 };
@@ -109,7 +138,14 @@ const lookBath: LookPipelineFunction = (payload) => {
   return payload;
 };
 
-const lookPipline = [lookRoom, lookItem, lookDrogo, lookPuzzleNPC, lookBath];
+const lookPipline = [
+  lookRoom,
+  lookKey,
+  lookItem,
+  lookDrogo,
+  lookPuzzleNPC,
+  lookBath,
+];
 
 export const handleLook: HandleCommand = ({ target, gameState }) => {
   const payload: LookPayload = {
@@ -124,14 +160,4 @@ export const handleLook: HandleCommand = ({ target, gameState }) => {
   }, payload);
 
   return finalPayload.gameState;
-  /*
-  
-    */
-  //Look at room (no target)
-
-  //Look at something in room (RUN ROOMCHECK? SHOULD ALL THESE NOW BE PIPELINES?) <---I think not - just do check for look at puzzleNPC & drogo guard & BATH (these should have examine decriptions on target(arg) as they can then provide clues to stuff)<---which maybne means pipeline as that's 3 things
-
-  //Else you are looking at something I don't know what it is...
-
-  //TODO return below is to be removed
 };

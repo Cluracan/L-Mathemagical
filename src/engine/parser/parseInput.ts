@@ -12,7 +12,7 @@ const commandDictionary: Record<Command, string[]> = {
   move: ["go", "walk", "run"],
   say: ["say", "shout", "yell", "scream"],
   swim: ["swim", "dive"],
-  teleport: ["neumann"],
+  teleport: ["teleport"],
   use: ["use", "insert", "apply"],
 };
 
@@ -43,7 +43,7 @@ export const parseInput: ParseInput = (userInput) => {
     //else just pick last word ('go north')
     target = args[args.length - 1];
   }
-  console.log({ commandWord, target });
+
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {
     if (triggerWords.includes(commandWord)) {
       return { command, target } as {

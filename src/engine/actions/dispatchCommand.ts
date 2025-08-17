@@ -2,6 +2,7 @@ import { handleMove } from "./handleMove";
 import { handleNull } from "./handleNull";
 import { handleLook } from "./handleLook";
 import type { GameState } from "../gameEngine";
+import { handleTeleport } from "./handleTeleport";
 
 const commandHandlers = {
   budge: handleNull,
@@ -13,7 +14,7 @@ const commandHandlers = {
   move: handleMove,
   say: handleNull,
   swim: handleNull,
-  teleport: handleNull,
+  teleport: handleTeleport,
   use: handleNull,
 } as const satisfies Record<string, HandleCommand>;
 
@@ -35,6 +36,7 @@ export const dispatchCommand: DispatchCommand = ({
   target,
   gameState,
 }) => {
+  console.log({ command, target });
   if (command) {
     const handler = commandHandlers[command];
     return handler({ target, gameState });

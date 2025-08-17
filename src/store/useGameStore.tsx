@@ -10,6 +10,7 @@ export type GameStoreState = {
   playerName: string;
   modernMode: boolean;
   currentRoom: RoomId;
+  isInvisible: boolean;
   itemLocation: Partial<Record<ItemId, RoomId | "player">>;
   keyLocked: Partial<Record<ItemId, boolean>>;
   storyLine: string[];
@@ -32,6 +33,7 @@ const initialGameState: GameStoreState = {
   modernMode: false,
   currentRoom: "grass",
   itemLocation: initialItemLocation,
+  isInvisible: false,
   keyLocked: initialKeyLocked,
   storyLine: [roomRegistry.getLongDescription("grass")],
   stepCount: 0,

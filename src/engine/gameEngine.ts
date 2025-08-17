@@ -15,6 +15,7 @@ class GameEngine {
     const {
       currentRoom,
       itemLocation,
+      isInvisible,
       keyLocked,
       roomsVisited,
       stepCount,
@@ -25,6 +26,7 @@ class GameEngine {
     const gameState = {
       currentRoom,
       itemLocation,
+      isInvisible,
       keyLocked,
       roomsVisited: new Set(roomsVisited),
       stepCount,
@@ -41,6 +43,9 @@ class GameEngine {
     useGameStore.setState({
       ...gameState,
       currentRoom: newState.currentRoom,
+      itemLocation: newState.itemLocation,
+      isInvisible: newState.isInvisible,
+      keyLocked: newState.keyLocked,
       roomsVisited: Array.from(newState.roomsVisited.values()),
       stepCount: newState.stepCount,
       storyLine: newState.storyLine,

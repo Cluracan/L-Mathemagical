@@ -1,14 +1,16 @@
+import { handleDrop } from "./handleDrop";
+import { handleGet } from "./handleGet";
+import { handleLook } from "./handleLook";
 import { handleMove } from "./handleMove";
 import { handleNull } from "./handleNull";
-import { handleLook } from "./handleLook";
-import type { GameState } from "../gameEngine";
 import { handleTeleport } from "./handleTeleport";
+import type { GameState } from "../gameEngine";
 
 const commandHandlers = {
   budge: handleNull,
   drink: handleNull,
-  drop: handleNull,
-  get: handleNull,
+  drop: handleDrop,
+  get: handleGet,
   inventory: handleNull,
   look: handleLook,
   move: handleMove,

@@ -246,6 +246,7 @@ export const roomData = {
     mapText: "Lobby",
     exits: {
       e: "music",
+      s: "limbo",
       w: "pool",
     },
   },

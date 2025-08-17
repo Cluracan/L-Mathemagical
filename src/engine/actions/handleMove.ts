@@ -1,28 +1,29 @@
+import { buildRoomDescription } from "./handleLook";
 import { roomRegistry } from "../world/roomRegistry";
+import { runMoveTriggers } from "../events/runMoveTriggers";
 import {
   directionAliases,
   directionNarratives,
-  isDirectionAliasKey,
+  isDirectionAlias,
 } from "../constants/directions";
 
 import type { Command, HandleCommand } from "./dispatchCommand";
 import type { GameState } from "../gameEngine";
 import type { RoomId, ExitDirection } from "../../assets/data/roomData";
-import { buildRoomDescription } from "./handleLook";
 
-type Payload = {
-  aborted: boolean;
+type MovePayload = {
+  command: Command;
   keyWord: string | null;
   gameState: GameState;
-  command?: Command;
-  direction?: ExitDirection;
-  nextRoom?: RoomId;
+  direction: ExitDirection | null;
+  nextRoom: RoomId | null;
+  aborted: boolean;
 };
 
-type PipelineFunction = (args: Payload) => Payload;
+export type MovePipelineFunction = (args: MovePayload) => MovePayload;
 
-const validateDirection: PipelineFunction = (payload) => {
-  if (payload.keyWord && isDirectionAliasKey(payload.keyWord)) {
+const validateDirection: MovePipelineFunction = (payload) => {
+  if (payload.keyWord && isDirectionAlias(payload.keyWord)) {
     return { ...payload, direction: directionAliases[payload.keyWord] };
   } else {
     return {
@@ -36,7 +37,7 @@ const validateDirection: PipelineFunction = (payload) => {
   }
 };
 
-const validateExit: PipelineFunction = (payload) => {
+const validateExit: MovePipelineFunction = (payload) => {
   if (!payload.direction) {
     console.log("error in validateExit - no direction");
     return { ...payload, aborted: true };
@@ -65,7 +66,7 @@ const validateExit: PipelineFunction = (payload) => {
   }
 };
 
-const movePlayer: PipelineFunction = (payload) => {
+const movePlayer: MovePipelineFunction = (payload) => {
   if (!payload.nextRoom || !payload.direction) {
     console.log(
       `Error in movePlayer: nextRoom is ${payload.nextRoom}, direction is ${payload.direction}`
@@ -91,7 +92,7 @@ const movePlayer: PipelineFunction = (payload) => {
   };
 };
 
-const applyRoomDescription: PipelineFunction = (payload) => {
+const applyRoomDescription: MovePipelineFunction = (payload) => {
   const roomDescription = buildRoomDescription(payload.gameState);
   return {
     ...payload,
@@ -105,24 +106,22 @@ const applyRoomDescription: PipelineFunction = (payload) => {
 const movePipeline = [
   validateDirection,
   validateExit,
+  runMoveTriggers,
   movePlayer,
   applyRoomDescription,
 ];
 
 export const handleMove: HandleCommand = ({ keyWord, gameState }) => {
-  const payload: Payload = {
+  const payload: MovePayload = {
     gameState,
     command: "move",
     keyWord,
     aborted: false,
+    direction: null,
+    nextRoom: null,
   };
   const finalPayload = movePipeline.reduce((curPayload, curFunction) => {
     return curPayload.aborted ? curPayload : curFunction(curPayload);
   }, payload);
   return finalPayload.gameState;
-};
-
-export const handleNull: HandleCommand = ({ keyWord, gameState }) => {
-  console.log(keyWord);
-  return gameState;
 };

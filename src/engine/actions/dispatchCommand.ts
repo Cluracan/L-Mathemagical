@@ -1,5 +1,6 @@
 import { handleDrop } from "./handleDrop";
 import { handleGet } from "./handleGet";
+import { handleInventory } from "./handleInventory";
 import { handleLook } from "./handleLook";
 import { handleMove } from "./handleMove";
 import { handleNull } from "./handleNull";
@@ -11,7 +12,7 @@ const commandHandlers = {
   drink: handleNull,
   drop: handleDrop,
   get: handleGet,
-  inventory: handleNull,
+  inventory: handleInventory,
   look: handleLook,
   move: handleMove,
   say: handleNull,

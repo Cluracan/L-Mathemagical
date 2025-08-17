@@ -29,8 +29,16 @@ const dropItem: DropPipelineFunction = (payload) => {
       },
       aborted: true,
     };
+  } else {
+    return {
+      ...payload,
+      gameState: {
+        ...gameState,
+        storyLine: [...storyLine, `You don't have that!`],
+      },
+      aborted: true,
+    };
   }
-  return payload;
 };
 
 const dropPipeline = [runDropTriggers, dropItem];

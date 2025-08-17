@@ -29,8 +29,16 @@ const getItem: GetPipelineFunction = (payload) => {
       },
       aborted: true,
     };
+  } else {
+    return {
+      ...payload,
+      gameState: {
+        ...gameState,
+        storyLine: [...storyLine, `You don't see that here!`],
+      },
+      aborted: true,
+    };
   }
-  return payload;
 };
 
 const getPipeline = [runGetTriggers, getItem];

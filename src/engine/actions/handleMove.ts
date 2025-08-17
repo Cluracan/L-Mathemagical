@@ -112,7 +112,7 @@ const movePipeline = [
 export const handleMove: HandleCommand = ({ keyWord, gameState }) => {
   const payload: Payload = {
     gameState,
-    command: "MOVE",
+    command: "move",
     keyWord,
     aborted: false,
   };

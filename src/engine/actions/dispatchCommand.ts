@@ -1,19 +1,20 @@
 import { handleMove } from "./handleMove";
 import { handleNull } from "./handleMove";
 import type { GameState } from "../gameEngine";
+import { handleLook } from "./handleLook";
 
 const commandHandlers = {
-  BUDGE: handleNull,
-  DRINK: handleNull,
-  DROP: handleNull,
-  GET: handleNull,
-  INVENTORY: handleNull,
-  LOOK: handleNull,
-  MOVE: handleMove,
-  SAY: handleNull,
-  SWIM: handleNull,
-  TELEPORT: handleNull,
-  USE: handleNull,
+  budge: handleNull,
+  drink: handleNull,
+  drop: handleNull,
+  get: handleNull,
+  inventory: handleNull,
+  look: handleLook,
+  move: handleMove,
+  say: handleNull,
+  swim: handleNull,
+  teleport: handleNull,
+  use: handleNull,
 } as const satisfies Record<string, HandleCommand>;
 
 export type Command = keyof typeof commandHandlers;

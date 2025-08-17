@@ -2,30 +2,30 @@ import { directionAliases, isDirectionAliasKey } from "../constants/directions";
 import type { Command } from "../actions/dispatchCommand";
 
 const commandDictionary: Record<Command, string[]> = {
-  BUDGE: ["MOVE", "PUSH", "PULL"],
-  DRINK: ["DRINK", "QUAFF", "SWIG", "SIP"],
-  DROP: ["DROP", "THROW"],
-  GET: ["GET", "PICK", "GRAB", "TAKE"],
-  INVENTORY: ["INV", "INVENTORY"],
-  LOOK: ["LOOK", "SEARCH", "EXAMINE", "READ"],
-  MOVE: ["GO", "WALK", "RUN"],
-  SAY: ["SAY", "SHOUT", "YELL", "SCREAM"],
-  SWIM: ["SWIM", "DIVE"],
-  TELEPORT: ["NEUMANN"],
-  USE: ["USE", "INSERT", "APPLY"],
+  budge: ["move", "push", "pull"],
+  drink: ["drink", "quaff", "swig", "sip"],
+  drop: ["drop", "throw"],
+  get: ["get", "pick", "grab", "take"],
+  inventory: ["inv", "inventory"],
+  look: ["look", "search", "examine", "read"],
+  move: ["go", "walk", "run"],
+  say: ["say", "shout", "yell", "scream"],
+  swim: ["swim", "dive"],
+  teleport: ["neumann"],
+  use: ["use", "insert", "apply"],
 };
 
 export const parseInput = (
   userInput: string
 ): { command: Command | null; keyWord: string | null } => {
-  const splitInput = userInput.toUpperCase().trim().split(" ");
+  const splitInput = userInput.toLowerCase().trim().split(" ");
   const commandWord = splitInput[0].trim();
   const keyWord =
     splitInput.length > 1 ? splitInput[splitInput.length - 1].trim() : null;
 
   //Can just type 'N'
   if (isDirectionAliasKey(commandWord)) {
-    return { command: "MOVE", keyWord: `${directionAliases[commandWord]}` };
+    return { command: "move", keyWord: `${directionAliases[commandWord]}` };
   }
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {
     if (triggerWords.includes(commandWord)) {

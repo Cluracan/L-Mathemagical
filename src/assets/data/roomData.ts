@@ -9,7 +9,7 @@ export const roomData = {
     },
     mapText: "Grass",
     exits: {
-      N: "hallway",
+      n: "hallway",
     },
   },
   hallway: {
@@ -20,8 +20,8 @@ export const roomData = {
     },
     mapText: "Hallway",
     exits: {
-      N: "kitchen",
-      S: "grass",
+      n: "kitchen",
+      s: "grass",
     },
   },
   kitchen: {
@@ -32,10 +32,10 @@ export const roomData = {
     },
     mapText: "Kitchen",
     exits: {
-      N: "lShaped",
-      E: "store",
-      S: "hallway",
-      W: "workshop",
+      n: "lShaped",
+      e: "store",
+      s: "hallway",
+      w: "workshop",
     },
   },
   store: {
@@ -47,8 +47,8 @@ export const roomData = {
     },
     mapText: "Store",
     exits: {
-      W: "kitchen",
-      U: "shelf",
+      w: "kitchen",
+      u: "shelf",
     },
   },
   shelf: {
@@ -59,7 +59,7 @@ export const roomData = {
     },
     mapText: "Shelf",
     exits: {
-      D: "store",
+      d: "store",
     },
   },
   workshop: {
@@ -70,9 +70,9 @@ export const roomData = {
     },
     mapText: "Workshop",
     exits: {
-      E: "kitchen",
-      S: "creeper",
-      W: "narrowPassage",
+      e: "kitchen",
+      s: "creeper",
+      w: "narrowPassage",
     },
   },
   creeper: {
@@ -83,8 +83,8 @@ export const roomData = {
     },
     mapText: "Creeper",
     exits: {
-      N: "workshop",
-      W: "narrowPassageS",
+      n: "workshop",
+      w: "narrowPassageS",
     },
   },
   narrowPassageS: {
@@ -95,8 +95,8 @@ export const roomData = {
     },
     mapText: "SouthPassage",
     exits: {
-      N: "narrowPassage",
-      E: "creeper",
+      n: "narrowPassage",
+      e: "creeper",
     },
   },
   narrowPassage: {
@@ -107,9 +107,9 @@ export const roomData = {
     },
     mapText: "midPassage",
     exits: {
-      N: "narrowPassageN",
-      E: "workshop",
-      S: "narrowPassageS",
+      n: "narrowPassageN",
+      e: "workshop",
+      s: "narrowPassageS",
     },
   },
   narrowPassageN: {
@@ -120,8 +120,8 @@ export const roomData = {
     },
     mapText: "northpassage",
     exits: {
-      N: "telephone",
-      S: "narrowPassage",
+      n: "telephone",
+      s: "narrowPassage",
     },
   },
   telephone: {
@@ -132,8 +132,8 @@ export const roomData = {
     },
     mapText: "Telephone",
     exits: {
-      S: "narrowPassageN",
-      D: "cellar00",
+      s: "narrowPassageN",
+      d: "cellar00",
     },
   },
   lShaped: {
@@ -144,9 +144,9 @@ export const roomData = {
     },
     mapText: "L room",
     exits: {
-      S: "kitchen",
-      E: "boiler",
-      W: "cupboard",
+      s: "kitchen",
+      e: "boiler",
+      w: "cupboard",
     },
   },
   cupboard: {
@@ -157,7 +157,7 @@ export const roomData = {
     },
     mapText: "Cupboard",
     exits: {
-      E: "lShaped",
+      e: "lShaped",
     },
   },
   boiler: {
@@ -168,10 +168,10 @@ export const roomData = {
     },
     mapText: "Boiler",
     exits: {
-      U: "stairsSpiral",
-      D: "longPassageW",
-      E: "longPassageW",
-      W: "lShaped",
+      u: "stairsSpiral",
+      d: "longPassageW",
+      e: "longPassageW",
+      w: "lShaped",
     },
   },
   longPassageW: {
@@ -182,9 +182,9 @@ export const roomData = {
     },
     mapText: "Passage",
     exits: {
-      U: "boiler",
-      W: "boiler",
-      E: "longPassageE",
+      u: "boiler",
+      w: "boiler",
+      e: "longPassageE",
     },
   },
   longPassageE: {
@@ -195,8 +195,8 @@ export const roomData = {
     },
     mapText: "Passage",
     exits: {
-      E: "file",
-      W: "longPassageW",
+      e: "file",
+      w: "longPassageW",
     },
   },
   file: {
@@ -208,8 +208,8 @@ export const roomData = {
     },
     mapText: "File Room",
     exits: {
-      W: "longPassageE",
-      E: "panelled",
+      w: "longPassageE",
+      e: "panelled",
     },
   },
   stairsSpiral: {
@@ -220,8 +220,8 @@ export const roomData = {
     },
     mapText: "Stairs",
     exits: {
-      E: "pool",
-      D: "boiler",
+      e: "pool",
+      d: "boiler",
     },
   },
   pool: {
@@ -232,9 +232,9 @@ export const roomData = {
     },
     mapText: "Pool",
     exits: {
-      E: "lobby",
-      W: "stairsSpiral",
-      D: "poolFloor",
+      e: "lobby",
+      w: "stairsSpiral",
+      d: "poolFloor",
     },
   },
   lobby: {
@@ -245,8 +245,8 @@ export const roomData = {
     },
     mapText: "Lobby",
     exits: {
-      E: "music",
-      W: "pool",
+      e: "music",
+      w: "pool",
     },
   },
   music: {
@@ -257,8 +257,8 @@ export const roomData = {
     },
     mapText: "Music",
     exits: {
-      E: "solarium",
-      W: "lobby",
+      e: "solarium",
+      w: "lobby",
     },
   },
   solarium: {
@@ -269,9 +269,9 @@ export const roomData = {
     },
     mapText: "Solarium",
     exits: {
-      E: "snooker",
-      W: "music",
-      N: "balcony",
+      e: "snooker",
+      w: "music",
+      n: "balcony",
     },
   },
   snooker: {
@@ -282,9 +282,9 @@ export const roomData = {
     },
     mapText: "Snooker",
     exits: {
-      E: "stoneLanding",
-      W: "solarium",
-      S: "ante",
+      e: "stoneLanding",
+      w: "solarium",
+      s: "ante",
     },
   },
   stoneLanding: {
@@ -295,9 +295,9 @@ export const roomData = {
     },
     mapText: "Landing",
     exits: {
-      U: "stoneStairs",
-      W: "snooker",
-      D: "largeKitchen",
+      u: "stoneStairs",
+      w: "snooker",
+      d: "largeKitchen",
     },
   },
   stoneStairs: {
@@ -308,8 +308,8 @@ export const roomData = {
     },
     mapText: "Stairs",
     exits: {
-      E: "lights",
-      D: "stoneLanding",
+      e: "lights",
+      d: "stoneLanding",
     },
   },
   lights: {
@@ -320,7 +320,7 @@ export const roomData = {
     },
     mapText: "Lights",
     exits: {
-      W: "stoneStairs",
+      w: "stoneStairs",
     },
   },
   cellar00: {
@@ -331,8 +331,8 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      U: "telephone",
-      N: "cellar01",
+      u: "telephone",
+      n: "cellar01",
     },
   },
   cellar01: {
@@ -344,8 +344,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      E: "cellar02",
-      S: "cellar00",
+      n: "limbo",
+      e: "cellar02",
+      s: "cellar00",
+      w: "limbo",
     },
   },
   cellar02: {
@@ -357,9 +359,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      E: "cellar03",
-      S: "cellar04",
-      W: "cellar01",
+      n: "limbo",
+      e: "cellar03",
+      s: "cellar04",
+      w: "cellar01",
     },
   },
   cellar03: {
@@ -371,9 +374,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      E: "cellar08",
-      S: "cellar05",
-      W: "cellar02",
+      n: "limbo",
+      e: "cellar08",
+      s: "cellar05",
+      w: "cellar02",
     },
   },
   cellar04: {
@@ -385,8 +389,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      N: "cellar02",
-      E: "cellar05",
+      n: "cellar02",
+      e: "cellar05",
+      s: "limbo",
+      w: "limbo",
     },
   },
   cellar05: {
@@ -398,9 +404,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      N: "cellar03",
-      E: "cellar06",
-      W: "cellar04",
+      n: "cellar03",
+      e: "cellar06",
+      s: "limbo",
+      w: "cellar04",
     },
   },
   cellar06: {
@@ -412,10 +419,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      N: "cellar08",
-      E: "cellar10",
-      S: "cellar07",
-      W: "cellar05",
+      n: "cellar08",
+      e: "cellar10",
+      s: "cellar07",
+      w: "cellar05",
     },
   },
   cellar07: {
@@ -427,7 +434,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      N: "cellar06",
+      n: "cellar06",
+      e: "limbo",
+      s: "limbo",
+      w: "limbo",
     },
   },
   cellar08: {
@@ -439,9 +449,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      N: "cellar09",
-      S: "cellar06",
-      W: "cellar03",
+      n: "cellar09",
+      e: "limbo",
+      s: "cellar06",
+      w: "cellar03",
     },
   },
   cellar09: {
@@ -453,7 +464,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      S: "cellar08",
+      n: "limbo",
+      e: "limbo",
+      s: "cellar08",
+      w: "limbo",
     },
   },
   cellar10: {
@@ -465,8 +479,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      N: "cellar11",
-      W: "cellar06",
+      n: "cellar11",
+      e: "limbo",
+      s: "limbo",
+      w: "cellar06",
     },
   },
   cellar11: {
@@ -478,8 +494,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      N: "cellar12",
-      S: "cellar10",
+      n: "cellar12",
+      e: "limbo",
+      s: "cellar10",
+      w: "limbo",
     },
   },
   cellar12: {
@@ -490,8 +508,10 @@ export const roomData = {
     },
     mapText: "Cellar",
     exits: {
-      U: "courtyard",
-      S: "cellar11",
+      e: "limbo",
+      s: "cellar11",
+      w: "limbo",
+      u: "courtyard",
     },
   },
   courtyard: {
@@ -502,7 +522,7 @@ export const roomData = {
     },
     mapText: "Courtyard",
     exits: {
-      D: "cellar12",
+      d: "cellar12",
     },
   },
   ante: {
@@ -513,8 +533,8 @@ export const roomData = {
     },
     mapText: "Ante-room",
     exits: {
-      N: "snooker",
-      W: "code",
+      n: "snooker",
+      w: "code",
     },
   },
   code: {
@@ -525,8 +545,8 @@ export const roomData = {
     },
     mapText: "Code room",
     exits: {
-      E: "ante",
-      W: "oriental",
+      e: "ante",
+      w: "oriental",
     },
   },
   oriental: {
@@ -537,7 +557,7 @@ export const roomData = {
     },
     mapText: "Oriental",
     exits: {
-      E: "code",
+      e: "code",
     },
   },
   largeKitchen: {
@@ -548,7 +568,7 @@ export const roomData = {
     },
     mapText: "Kitchen",
     exits: {
-      U: "stoneLanding",
+      u: "stoneLanding",
     },
   },
   panelled: {
@@ -559,8 +579,8 @@ export const roomData = {
     },
     mapText: "Panelled",
     exits: {
-      W: "file",
-      N: "gardenSW",
+      w: "file",
+      n: "gardenSW",
     },
   },
   gardenSW: {
@@ -571,8 +591,8 @@ export const roomData = {
     },
     mapText: "Garden",
     exits: {
-      S: "panelled",
-      N: "gardenN",
+      s: "panelled",
+      n: "gardenN",
     },
   },
   gardenN: {
@@ -583,9 +603,9 @@ export const roomData = {
     },
     mapText: "Garden",
     exits: {
-      N: "riverS",
-      S: "gardenSW",
-      U: "balcony",
+      n: "riverS",
+      s: "gardenSW",
+      u: "balcony",
     },
   },
   balcony: {
@@ -596,8 +616,8 @@ export const roomData = {
     },
     mapText: "Balcony",
     exits: {
-      S: "solarium",
-      D: "gardenN",
+      s: "solarium",
+      d: "gardenN",
     },
   },
   riverS: {
@@ -608,8 +628,8 @@ export const roomData = {
     },
     mapText: "River S",
     exits: {
-      S: "gardenN",
-      N: "riverN",
+      s: "gardenN",
+      n: "riverN",
     },
   },
   riverN: {
@@ -620,8 +640,8 @@ export const roomData = {
     },
     mapText: "River N",
     exits: {
-      NE: "orchard",
-      S: "riverS",
+      ne: "orchard",
+      s: "riverS",
     },
   },
   orchard: {
@@ -632,7 +652,7 @@ export const roomData = {
     },
     mapText: "Gardener",
     exits: {
-      SW: "riverN",
+      sw: "riverN",
     },
   },
   poolFloor: {
@@ -643,8 +663,8 @@ export const roomData = {
     },
     mapText: "In the pool",
     exits: {
-      U: "pool",
-      IN: "tunnelTop",
+      u: "pool",
+      in: "tunnelTop",
     },
   },
   tunnelTop: {
@@ -655,8 +675,8 @@ export const roomData = {
     },
     mapText: "Tunnel",
     exits: {
-      OUT: "poolFloor",
-      D: "tunnelBottom",
+      out: "poolFloor",
+      d: "tunnelBottom",
     },
   },
   tunnelBottom: {
@@ -667,8 +687,8 @@ export const roomData = {
     },
     mapText: "Tunnel",
     exits: {
-      U: "tunnelTop",
-      S: "granite",
+      u: "tunnelTop",
+      s: "granite",
     },
   },
   granite: {
@@ -679,8 +699,8 @@ export const roomData = {
     },
     mapText: "Passage",
     exits: {
-      N: "tunnelBottom",
-      S: "woodenStairs",
+      n: "tunnelBottom",
+      s: "woodenStairs",
     },
   },
   woodenStairs: {
@@ -691,8 +711,8 @@ export const roomData = {
     },
     mapText: "Stairs",
     exits: {
-      U: "landing",
-      N: "granite",
+      u: "landing",
+      n: "granite",
     },
   },
   landing: {
@@ -703,8 +723,8 @@ export const roomData = {
     },
     mapText: "woodenLanding",
     exits: {
-      D: "woodenStairs",
-      E: "circular",
+      d: "woodenStairs",
+      e: "circular",
     },
   },
   circular: {
@@ -715,14 +735,14 @@ export const roomData = {
     },
     mapText: "Circular",
     exits: {
-      N: "broomCupboard",
-      NW: "half",
-      W: "landing",
-      SE: "triangle",
-      NE: "safe",
-      E: "hexagon",
-      SW: "computer",
-      S: "guardsPassage",
+      n: "broomCupboard",
+      nw: "half",
+      w: "landing",
+      se: "triangle",
+      ne: "safe",
+      e: "hexagon",
+      sw: "computer",
+      s: "guardsPassage",
     },
   },
   broomCupboard: {
@@ -733,7 +753,7 @@ export const roomData = {
     },
     mapText: "Cupboard",
     exits: {
-      S: "circular",
+      s: "circular",
     },
   },
   half: {
@@ -744,9 +764,9 @@ export const roomData = {
     },
     mapText: "Half Room",
     exits: {
-      SE: "circular",
-      W: "mirror",
-      N: "ladderBottom",
+      se: "circular",
+      w: "mirror",
+      n: "ladderBottom",
     },
   },
   mirror: {
@@ -758,7 +778,7 @@ export const roomData = {
     },
     mapText: "Corridor",
     exits: {
-      E: "half",
+      e: "half",
     },
   },
   ladderBottom: {
@@ -769,8 +789,8 @@ export const roomData = {
     },
     mapText: "Ladder",
     exits: {
-      S: "half",
-      U: "ladderTop",
+      s: "half",
+      u: "ladderTop",
     },
   },
   ladderTop: {
@@ -781,8 +801,8 @@ export const roomData = {
     },
     mapText: "Ladder",
     exits: {
-      D: "ladderBottom",
-      U: "attic",
+      d: "ladderBottom",
+      u: "attic",
     },
   },
   triangle: {
@@ -793,9 +813,9 @@ export const roomData = {
     },
     mapText: "Triangle",
     exits: {
-      NW: "circular",
-      S: "blue",
-      N: "hexagon",
+      nw: "circular",
+      s: "blue",
+      n: "hexagon",
     },
   },
   blue: {
@@ -806,7 +826,7 @@ export const roomData = {
     },
     mapText: "Blue room",
     exits: {
-      N: "triangle",
+      n: "triangle",
     },
   },
   hexagon: {
@@ -817,8 +837,8 @@ export const roomData = {
     },
     mapText: "Hexagon",
     exits: {
-      W: "circular",
-      S: "triangle",
+      w: "circular",
+      s: "triangle",
     },
   },
   safe: {
@@ -829,8 +849,8 @@ export const roomData = {
     },
     mapText: "Safe",
     exits: {
-      N: "carpetPassageS",
-      SW: "circular",
+      n: "carpetPassageS",
+      sw: "circular",
     },
   },
   carpetPassageS: {
@@ -841,8 +861,8 @@ export const roomData = {
     },
     mapText: "Passage S",
     exits: {
-      S: "safe",
-      N: "carpetPassageN",
+      s: "safe",
+      n: "carpetPassageN",
     },
   },
   carpetPassageN: {
@@ -853,8 +873,8 @@ export const roomData = {
     },
     mapText: "Passage N",
     exits: {
-      S: "carpetPassageS",
-      N: "spider",
+      s: "carpetPassageS",
+      n: "spider",
     },
   },
   spider: {
@@ -865,7 +885,7 @@ export const roomData = {
     },
     mapText: "Spider",
     exits: {
-      S: "carpetPassageN",
+      s: "carpetPassageN",
     },
   },
   attic: {
@@ -876,7 +896,7 @@ export const roomData = {
     },
     mapText: "Attic",
     exits: {
-      E: "atticPassage",
+      e: "atticPassage",
     },
   },
   atticPassage: {
@@ -887,8 +907,8 @@ export const roomData = {
     },
     mapText: "Passage",
     exits: {
-      W: "attic",
-      E: "pig",
+      w: "attic",
+      e: "pig",
     },
   },
   pig: {
@@ -899,7 +919,7 @@ export const roomData = {
     },
     mapText: "Pig",
     exits: {
-      W: "atticPassage",
+      w: "atticPassage",
     },
   },
   computer: {
@@ -910,7 +930,7 @@ export const roomData = {
     },
     mapText: "Computer",
     exits: {
-      NE: "circular",
+      ne: "circular",
     },
   },
   guardsPassage: {
@@ -921,8 +941,8 @@ export const roomData = {
     },
     mapText: "Passage",
     exits: {
-      N: "circular",
-      S: "guards",
+      n: "circular",
+      s: "guards",
     },
   },
   guards: {
@@ -933,8 +953,8 @@ export const roomData = {
     },
     mapText: "Guards",
     exits: {
-      N: "guardsPassage",
-      W: "cell",
+      n: "guardsPassage",
+      w: "cell",
     },
   },
   cell: {
@@ -945,8 +965,8 @@ export const roomData = {
     },
     mapText: "Cell",
     exits: {
-      E: "guards",
-      D: "countryside",
+      e: "guards",
+      d: "countryside",
     },
   },
   countryside: {
@@ -966,6 +986,16 @@ export const roomData = {
         "You are in the pit, although you shouldn't be. How did you get here?",
     },
     mapText: "Pit",
+    exits: {},
+  },
+  limbo: {
+    id: "limbo",
+    descriptions: {
+      long: "This room is currently used as a blocked exit destination. Which means you've probably passed through a wall to get here...\n\n ...so unless you are Harry Potter, Hermoine Granger, or a ghost, something has gone wrong...\n\nPlease contact...acutally, please find the code (github) and see if you can fix this issue, then let me know :)",
+      short:
+        "You are in Limbo, which is another classic MUD destination. Well, maybe 'classic' is pushing it a little. Anyway, if you're reading this, you should be able to escape.",
+    },
+    mapText: "Limbo",
     exits: {},
   },
 } as const satisfies Record<
@@ -989,18 +1019,18 @@ export type Room = {
 };
 
 export type ExitDirection =
-  | "N"
-  | "E"
-  | "S"
-  | "W"
-  | "U"
-  | "D"
-  | "IN"
-  | "OUT"
-  | "NE"
-  | "NW"
-  | "SE"
-  | "SW";
+  | "n"
+  | "e"
+  | "s"
+  | "w"
+  | "u"
+  | "d"
+  | "in"
+  | "out"
+  | "ne"
+  | "nw"
+  | "se"
+  | "sw";
 
 export const isRoomId = createKeyGuard(roomData);
 

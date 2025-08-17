@@ -32,10 +32,10 @@ class GameEngine {
     };
 
     //parse input
-    const { command, keyWord } = parseInput(userInput);
+    const { command, target } = parseInput(userInput);
 
     //send to dispatch
-    let newState = dispatchCommand({ command, keyWord, gameState });
+    let newState = dispatchCommand({ command, target, gameState });
 
     //update state
     useGameStore.setState({

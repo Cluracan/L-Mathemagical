@@ -13,7 +13,7 @@ import type { RoomId, ExitDirection } from "../../assets/data/roomData";
 
 type MovePayload = {
   command: Command;
-  keyWord: string | null;
+  target: string | null;
   gameState: GameState;
   direction: ExitDirection | null;
   nextRoom: RoomId | null;
@@ -23,8 +23,8 @@ type MovePayload = {
 export type MovePipelineFunction = (args: MovePayload) => MovePayload;
 
 const validateDirection: MovePipelineFunction = (payload) => {
-  if (payload.keyWord && isDirectionAlias(payload.keyWord)) {
-    return { ...payload, direction: directionAliases[payload.keyWord] };
+  if (payload.target && isDirectionAlias(payload.target)) {
+    return { ...payload, direction: directionAliases[payload.target] };
   } else {
     return {
       ...payload,
@@ -111,11 +111,11 @@ const movePipeline = [
   applyRoomDescription,
 ];
 
-export const handleMove: HandleCommand = ({ keyWord, gameState }) => {
+export const handleMove: HandleCommand = ({ target, gameState }) => {
   const payload: MovePayload = {
     gameState,
     command: "move",
-    keyWord,
+    target,
     aborted: false,
     direction: null,
     nextRoom: null,

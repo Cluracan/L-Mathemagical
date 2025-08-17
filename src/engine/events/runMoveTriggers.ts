@@ -6,13 +6,13 @@ import type { MovePipelineFunction } from "../actions/handleMove";
 
 export const runMoveTriggers: MovePipelineFunction = (payload) => {
   const { currentRoom, keyLocked } = payload.gameState;
-  const keyWord = payload.keyWord;
+  const target = payload.target;
   //blocked room check
-  if (isBlockedRoom(currentRoom) && keyWord) {
+  if (isBlockedRoom(currentRoom) && target) {
     const blockedDirections: string[] = blockedExitData[currentRoom].direction;
     const keyRequired = blockedExitData[currentRoom].keyRequired;
     //check attempting to use blocked exit
-    if (blockedDirections.includes(keyWord)) {
+    if (blockedDirections.includes(target)) {
       //check for blocked door
       if (!keyRequired || keyLocked[keyRequired]) {
         return {

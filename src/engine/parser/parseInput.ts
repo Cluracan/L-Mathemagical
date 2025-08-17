@@ -16,34 +16,41 @@ const commandDictionary: Record<Command, string[]> = {
   use: ["use", "insert", "apply"],
 };
 
-export const parseInput = (
-  userInput: string
-): { command: Command | null; keyWord: string | null } => {
+type ParseInput = (args: string) => {
+  command: Command | null;
+  target: string | null;
+};
+
+export const parseInput: ParseInput = (userInput) => {
   const tokens = userInput.toLowerCase().trim().split(/\s+/);
   const [commandWord, ...args] = tokens;
   //Can just type 'N'
   if (isDirectionAlias(commandWord)) {
-    return { command: "move", keyWord: `${directionAliases[commandWord]}` };
+    return { command: "move", target: `${directionAliases[commandWord]}` };
   }
   //'rusty key' and 'rusty' must return target: 'rusty'
   let target;
+
   if (args.length < 1) {
     target = null;
   } else if (isItemId(args[args.length - 1])) {
+    //last word is item ('get rusty')
     target = args[args.length - 1];
   } else if (args.length > 1 && isItemId(args[args.length - 2])) {
+    //penultimate word is item ('get rusty key')
     target = args[args.length - 2];
   } else {
+    //else just pick last word ('go north')
     target = args[args.length - 1];
   }
   console.log({ commandWord, target });
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {
     if (triggerWords.includes(commandWord)) {
-      return { command, keyWord: target } as {
+      return { command, target } as {
         command: Command;
-        keyWord: string;
+        target: string;
       };
     }
   }
-  return { command: null, keyWord: target };
+  return { command: null, target };
 };

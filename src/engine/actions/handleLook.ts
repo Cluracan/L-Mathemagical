@@ -31,7 +31,7 @@ export const buildRoomDescription = (gameState: GameState) => {
 
 type LookPayload = {
   command: Command;
-  keyWord: string | null;
+  target: string | null;
   gameState: GameState;
   aborted: boolean;
 };
@@ -39,7 +39,7 @@ type LookPayload = {
 type LookPipelineFunction = (args: LookPayload) => LookPayload;
 
 const lookRoom: LookPipelineFunction = (payload) => {
-  if (payload.keyWord === null) {
+  if (payload.target === null) {
     const roomDescription = buildRoomDescription(payload.gameState);
     return {
       ...payload,
@@ -54,31 +54,31 @@ const lookRoom: LookPipelineFunction = (payload) => {
 };
 
 const lookItem: LookPipelineFunction = (payload) => {
-  const { gameState, keyWord } = payload;
+  const { gameState, target } = payload;
   const { itemLocation, currentRoom } = gameState;
 
   //Look at item
-  if (keyWord && isItemId(keyWord)) {
-    if (itemLocation[keyWord] === "player") {
+  if (target && isItemId(target)) {
+    if (itemLocation[target] === "player") {
       return {
         ...payload,
         gameState: {
           ...gameState,
           storyLine: [
             ...gameState.storyLine,
-            itemRegistry.getInventoryDescription(keyWord),
+            itemRegistry.getInventoryDescription(target),
           ],
         },
         aborted: true,
       };
-    } else if (itemLocation[keyWord] === currentRoom) {
+    } else if (itemLocation[target] === currentRoom) {
       return {
         ...payload,
         gameState: {
           ...gameState,
           storyLine: [
             ...gameState.storyLine,
-            itemRegistry.getFloorDescription(keyWord),
+            itemRegistry.getFloorDescription(target),
           ],
         },
         aborted: true,
@@ -111,11 +111,11 @@ const lookBath: LookPipelineFunction = (payload) => {
 
 const lookPipline = [lookRoom, lookItem, lookDrogo, lookPuzzleNPC, lookBath];
 
-export const handleLook: HandleCommand = ({ keyWord, gameState }) => {
+export const handleLook: HandleCommand = ({ target, gameState }) => {
   const payload: LookPayload = {
     gameState,
     command: "look",
-    keyWord,
+    target,
     aborted: false,
   };
 
@@ -127,9 +127,9 @@ export const handleLook: HandleCommand = ({ keyWord, gameState }) => {
   /*
   
     */
-  //Look at room (no keyword)
+  //Look at room (no target)
 
-  //Look at something in room (RUN ROOMCHECK? SHOULD ALL THESE NOW BE PIPELINES?) <---I think not - just do check for look at puzzleNPC & drogo guard & BATH (these should have examine decriptions on keyword(arg) as they can then provide clues to stuff)<---which maybne means pipeline as that's 3 things
+  //Look at something in room (RUN ROOMCHECK? SHOULD ALL THESE NOW BE PIPELINES?) <---I think not - just do check for look at puzzleNPC & drogo guard & BATH (these should have examine decriptions on target(arg) as they can then provide clues to stuff)<---which maybne means pipeline as that's 3 things
 
   //Else you are looking at something I don't know what it is...
 

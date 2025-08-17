@@ -6,15 +6,15 @@ import { roomRegistry } from "../engine/world/roomRegistry";
 import type { RoomId } from "../assets/data/roomData";
 import type { ItemId } from "../assets/data/itemData";
 
-type GameStoreState = {
+export type GameStoreState = {
   playerName: string;
   modernMode: boolean;
   currentRoom: RoomId;
-  itemLocation: Partial<Record<ItemId, RoomId>>;
+  itemLocation: Partial<Record<ItemId, RoomId | "player">>;
   keyLocked: Partial<Record<ItemId, boolean>>;
   storyLine: string[];
   stepCount: number;
-  roomsVisited: Set<RoomId>;
+  roomsVisited: RoomId[];
 };
 
 type GameStoreActions = {
@@ -22,8 +22,6 @@ type GameStoreActions = {
   toggleGameMode: () => void;
   setCurrentRoom: (roomId: RoomId) => void;
   sendToStoryLine: (storyText: string) => void;
-  increaseStepCount: () => void;
-  addToRoomsVisited: (roomId: RoomId) => void;
   resetGameStore: () => void;
 };
 
@@ -33,11 +31,11 @@ const initialGameState: GameStoreState = {
   playerName: "player 1",
   modernMode: false,
   currentRoom: "grass",
-  itemLocation: { ...initialItemLocation },
-  keyLocked: { ...initialKeyLocked },
+  itemLocation: initialItemLocation,
+  keyLocked: initialKeyLocked,
   storyLine: [roomRegistry.getLongDescription("grass")],
   stepCount: 0,
-  roomsVisited: new Set(["grass"]),
+  roomsVisited: ["grass"],
 };
 
 export const useGameStore = create<GameStore>()(
@@ -49,10 +47,6 @@ export const useGameStore = create<GameStore>()(
       setCurrentRoom: (roomId: RoomId) => set({ currentRoom: roomId }),
       sendToStoryLine: (storyText: string) =>
         set((state) => ({ storyLine: [...state.storyLine, storyText] })),
-      increaseStepCount: () =>
-        set((state) => ({ stepCount: state.stepCount + 1 })),
-      addToRoomsVisited: (roomId: RoomId) =>
-        set((state) => ({ roomsVisited: state.roomsVisited.add(roomId) })),
       resetGameStore: () => {
         set(useGameStore.getInitialState());
       },

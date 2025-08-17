@@ -1,17 +1,12 @@
-import { useGameStore } from "../store/useGameStore";
+import { useGameStore, type GameStoreState } from "../store/useGameStore";
 import { parseInput } from "./parser/parseInput";
 import { dispatchCommand } from "./actions/dispatchCommand";
 import type { RoomId } from "../assets/data/roomData";
-import type { ItemId } from "../assets/data/itemData";
 
-export type GameState = {
-  currentRoom: RoomId;
-  itemLocation: Partial<Record<ItemId, RoomId>>;
-  keyLocked: Partial<Record<ItemId, boolean>>;
-  roomsVisited: Set<RoomId>;
-  stepCount: number;
-  storyLine: string[];
-};
+export type GameState = Omit<
+  GameStoreState,
+  "playerName" | "modernMode" | "roomsVisited"
+> & { roomsVisited: Set<RoomId> };
 
 class GameEngine {
   constructor() {}
@@ -31,7 +26,7 @@ class GameEngine {
       currentRoom,
       itemLocation,
       keyLocked,
-      roomsVisited,
+      roomsVisited: new Set(roomsVisited),
       stepCount,
       storyLine: [...storyLine, userInput],
     };
@@ -45,10 +40,10 @@ class GameEngine {
     //update state
     useGameStore.setState({
       ...gameState,
-      currentRoom: newState?.currentRoom,
-      roomsVisited: newState?.roomsVisited,
-      stepCount: newState?.stepCount,
-      storyLine: newState?.storyLine,
+      currentRoom: newState.currentRoom,
+      roomsVisited: Array.from(newState.roomsVisited.values()),
+      stepCount: newState.stepCount,
+      storyLine: newState.storyLine,
     });
   }
 }

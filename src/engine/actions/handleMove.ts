@@ -1,14 +1,14 @@
 import { roomRegistry } from "../world/roomRegistry";
-import { itemRegistry } from "../world/itemRegistry";
 import {
   directionAliases,
   directionNarratives,
   isDirectionAliasKey,
 } from "../constants/directions";
-import { isItemId } from "../../assets/data/itemData";
+
 import type { Command, HandleCommand } from "./dispatchCommand";
 import type { GameState } from "../gameEngine";
 import type { RoomId, ExitDirection } from "../../assets/data/roomData";
+import { buildRoomDescription } from "./handleLook";
 
 type Payload = {
   aborted: boolean;
@@ -92,32 +92,12 @@ const movePlayer: PipelineFunction = (payload) => {
 };
 
 const applyRoomDescription: PipelineFunction = (payload) => {
-  const { roomsVisited, currentRoom, itemLocation } = payload.gameState;
-  const nextStoryLine = payload.gameState.storyLine.slice();
-  //Insert room description
-  nextStoryLine.push(
-    roomsVisited.has(currentRoom)
-      ? roomRegistry.getShortDescription(currentRoom)
-      : roomRegistry.getLongDescription(currentRoom)
-  );
-  //Insert items
-  const itemHolder = [];
-  for (const [item, location] of Object.entries(itemLocation)) {
-    if (location === payload.nextRoom && isItemId(item)) {
-      itemHolder.push(itemRegistry.getFloorDescription(item));
-    }
-  }
-  nextStoryLine.push(...itemHolder);
-  //Insert DrogoGuard
-
-  //Insert PuzzleNPC
-
-  //return payload
+  const roomDescription = buildRoomDescription(payload.gameState);
   return {
     ...payload,
     gameState: {
       ...payload.gameState,
-      storyLine: nextStoryLine,
+      storyLine: [...payload.gameState.storyLine, ...roomDescription],
     },
   };
 };

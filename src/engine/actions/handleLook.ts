@@ -95,7 +95,7 @@ const lookItem: LookPipelineFunction = (payload) => {
           ...gameState,
           storyLine: [
             ...gameState.storyLine,
-            itemRegistry.getInventoryDescription(target),
+            itemRegistry.getExamineDescription(target),
           ],
         },
         aborted: true,

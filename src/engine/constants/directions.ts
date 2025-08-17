@@ -46,7 +46,7 @@ export const directionNarratives: Record<ExitDirection, string> = {
 };
 
 // TODO type guards - if only one, remove utils function?
-export const isDirectionAliasKey = createKeyGuard(directionAliases);
+export const isDirectionAlias = createKeyGuard(directionAliases);
 
 // export const isDirectionNarrativeKey = createKeyGuard(directionNarratives);
 

@@ -1,4 +1,4 @@
-import { directionAliases, isDirectionAliasKey } from "../constants/directions";
+import { directionAliases, isDirectionAlias } from "../constants/directions";
 import type { Command } from "../actions/dispatchCommand";
 
 const commandDictionary: Record<Command, string[]> = {
@@ -24,7 +24,7 @@ export const parseInput = (
     splitInput.length > 1 ? splitInput[splitInput.length - 1].trim() : null;
 
   //Can just type 'N'
-  if (isDirectionAliasKey(commandWord)) {
+  if (isDirectionAlias(commandWord)) {
     return { command: "move", keyWord: `${directionAliases[commandWord]}` };
   }
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {

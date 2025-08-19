@@ -93,7 +93,7 @@ export const roomData = {
       long: "You are at the south end of a narrow passage. There are several doors on the east side.",
       short: "You are at the south end of the narrow passage.",
     },
-    mapText: "SouthPassage",
+    mapText: "Passage",
     exits: {
       n: "narrowPassage",
       e: "creeper",
@@ -105,7 +105,7 @@ export const roomData = {
       long: "You are in a narrow passage which runs from north to south. There are several doors on the east side.",
       short: "You are in the middle of the narrow passage.",
     },
-    mapText: "midPassage",
+    mapText: "Passage",
     exits: {
       n: "narrowPassageN",
       e: "workshop",
@@ -118,7 +118,7 @@ export const roomData = {
       long: "You are at the north end of a narrow passage. There is a door ahead of you.",
       short: "You are at the north end of the narrow passage.",
     },
-    mapText: "northpassage",
+    mapText: "Passage",
     exits: {
       n: "telephone",
       s: "narrowPassage",

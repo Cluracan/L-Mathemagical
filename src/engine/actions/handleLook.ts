@@ -1,16 +1,22 @@
 import { roomRegistry } from "../world/roomRegistry";
 import { itemRegistry } from "../world/itemRegistry";
-import { isItemId } from "../../assets/data/itemData";
+import { isItemId, keyList } from "../../assets/data/itemData";
 import type { GameState } from "../gameEngine";
 import type { Command, HandleCommand } from "./dispatchCommand";
-import { initialKeyLocked } from "../../assets/data/blockedExitData";
 
-export const buildRoomDescription = (gameState: GameState) => {
-  const { roomsVisited, currentRoom, itemLocation } = gameState;
+type BuildRoomDescription = (args: {
+  gameState: GameState;
+  command: Command;
+}) => string[];
+export const buildRoomDescription: BuildRoomDescription = ({
+  gameState,
+  command,
+}) => {
+  const { visitedRooms, currentRoom, itemLocation } = gameState;
   const roomDescription = [];
   //Add room text
   roomDescription.push(
-    roomsVisited.has(currentRoom)
+    visitedRooms.has(currentRoom) && command !== "look"
       ? roomRegistry.getShortDescription(currentRoom)
       : roomRegistry.getLongDescription(currentRoom)
   );
@@ -31,7 +37,6 @@ export const buildRoomDescription = (gameState: GameState) => {
 };
 
 type LookPayload = {
-  command: Command;
   target: string | null;
   gameState: GameState;
   aborted: boolean;
@@ -41,7 +46,10 @@ type LookPipelineFunction = (args: LookPayload) => LookPayload;
 
 const lookRoom: LookPipelineFunction = (payload) => {
   if (payload.target === null) {
-    const roomDescription = buildRoomDescription(payload.gameState);
+    const roomDescription = buildRoomDescription({
+      gameState: payload.gameState,
+      command: "look",
+    });
     return {
       ...payload,
       gameState: {
@@ -57,15 +65,14 @@ const lookRoom: LookPipelineFunction = (payload) => {
 const lookKey: LookPipelineFunction = (payload) => {
   const { itemLocation, storyLine, currentRoom } = payload.gameState;
   if (payload.target === "key") {
-    const keyList = Object.keys(initialKeyLocked);
     //check for 1 or 2 keys on person or ground
-    let keysOnPerson = keyList.filter(
+    let visibleKeys = keyList.filter(
       (keyId) =>
         isItemId(keyId) &&
         (itemLocation[keyId] === "player" ||
           itemLocation[keyId] === currentRoom)
     );
-    if (keysOnPerson.length === 2) {
+    if (visibleKeys.length === 2) {
       return {
         ...payload,
         gameState: {
@@ -75,8 +82,8 @@ const lookKey: LookPipelineFunction = (payload) => {
         aborted: true,
       };
     }
-    if (keysOnPerson.length === 1) {
-      return { ...payload, target: keysOnPerson[0] };
+    if (visibleKeys.length === 1) {
+      return { ...payload, target: visibleKeys[0] };
     }
   }
   return payload;
@@ -150,7 +157,6 @@ const lookPipline = [
 export const handleLook: HandleCommand = ({ target, gameState }) => {
   const payload: LookPayload = {
     gameState,
-    command: "look",
     target,
     aborted: false,
   };

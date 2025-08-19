@@ -5,8 +5,8 @@ import type { RoomId } from "../assets/data/roomData";
 
 export type GameState = Omit<
   GameStoreState,
-  "playerName" | "modernMode" | "roomsVisited"
-> & { roomsVisited: Set<RoomId> };
+  "playerName" | "modernMode" | "visitedRooms"
+> & { visitedRooms: Set<RoomId> };
 
 class GameEngine {
   constructor() {}
@@ -17,7 +17,7 @@ class GameEngine {
       itemLocation,
       isInvisible,
       keyLocked,
-      roomsVisited,
+      visitedRooms,
       stepCount,
       storyLine,
     } = useGameStore.getState();
@@ -28,7 +28,7 @@ class GameEngine {
       itemLocation,
       isInvisible,
       keyLocked,
-      roomsVisited: new Set(roomsVisited),
+      visitedRooms: new Set(visitedRooms),
       stepCount,
       storyLine: [...storyLine, userInput.trim()],
     };
@@ -46,7 +46,7 @@ class GameEngine {
       itemLocation: newState.itemLocation,
       isInvisible: newState.isInvisible,
       keyLocked: newState.keyLocked,
-      roomsVisited: Array.from(newState.roomsVisited.values()),
+      visitedRooms: Array.from(newState.visitedRooms.values()),
       stepCount: newState.stepCount,
       storyLine: newState.storyLine,
     });

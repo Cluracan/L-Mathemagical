@@ -2,10 +2,9 @@ import { isItemId } from "../../assets/data/itemData";
 import { runGetTriggers } from "../events/runGetTriggers";
 import type { GameState } from "../gameEngine";
 import { itemRegistry } from "../world/itemRegistry";
-import type { Command, HandleCommand } from "./dispatchCommand";
+import type { HandleCommand } from "./dispatchCommand";
 
 type GetPayload = {
-  command: Command;
   target: string | null;
   gameState: GameState;
   aborted: boolean;
@@ -46,7 +45,6 @@ const getPipeline = [runGetTriggers, getItem];
 export const handleGet: HandleCommand = ({ target, gameState }) => {
   const payload: GetPayload = {
     gameState,
-    command: "get",
     target,
     aborted: false,
   };

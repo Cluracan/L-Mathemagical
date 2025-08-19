@@ -5,6 +5,7 @@ import { handleLook } from "./handleLook";
 import { handleMove } from "./handleMove";
 import { handleNull } from "./handleNull";
 import { handleTeleport } from "./handleTeleport";
+import { handleUse } from "./handleUse";
 import type { GameState } from "../gameEngine";
 
 const commandHandlers = {
@@ -18,7 +19,7 @@ const commandHandlers = {
   say: handleNull,
   swim: handleNull,
   teleport: handleTeleport,
-  use: handleNull,
+  use: handleUse,
 } as const satisfies Record<string, HandleCommand>;
 
 export type Command = keyof typeof commandHandlers;

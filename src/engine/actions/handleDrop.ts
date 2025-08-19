@@ -2,10 +2,9 @@ import { isItemId } from "../../assets/data/itemData";
 import { runDropTriggers } from "../events/runDropTriggers";
 import type { GameState } from "../gameEngine";
 import { itemRegistry } from "../world/itemRegistry";
-import type { Command, HandleCommand } from "./dispatchCommand";
+import type { HandleCommand } from "./dispatchCommand";
 
 type DropPayload = {
-  command: Command;
   target: string | null;
   gameState: GameState;
   aborted: boolean;
@@ -46,7 +45,6 @@ const dropPipeline = [runDropTriggers, dropItem];
 export const handleDrop: HandleCommand = ({ target, gameState }) => {
   const payload: DropPayload = {
     gameState,
-    command: "drop",
     target,
     aborted: false,
   };

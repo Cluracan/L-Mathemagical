@@ -79,7 +79,7 @@ const movePlayer: MovePipelineFunction = (payload) => {
     gameState: {
       ...payload.gameState,
       nextRoom: null,
-      roomsVisited: new Set(payload.gameState.roomsVisited).add(
+      visitedRooms: new Set(payload.gameState.visitedRooms).add(
         payload.gameState.currentRoom
       ),
       currentRoom: payload.nextRoom,
@@ -93,7 +93,10 @@ const movePlayer: MovePipelineFunction = (payload) => {
 };
 
 const applyRoomDescription: MovePipelineFunction = (payload) => {
-  const roomDescription = buildRoomDescription(payload.gameState);
+  const roomDescription = buildRoomDescription({
+    gameState: payload.gameState,
+    command: "move",
+  });
   return {
     ...payload,
     gameState: {

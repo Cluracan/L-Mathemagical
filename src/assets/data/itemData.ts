@@ -87,7 +87,7 @@ export const itemData = {
       floor:
         "On the ground is a phial of pink liquid. Attached to it by a string is a card which reads 'x 0.6'.",
       inventory: "A phial labelled 'x 0.6'",
-      pickUp: "phial full of pink liquid",
+      pickUp: "phial",
       examine:
         "The phial contains a pink liquid. You take a sniff, but can't quite place the scent - it seems to be a mix of cherry-tart, custard, pineapple, roast turkey, toffee, and hot buttered toast.",
     },
@@ -233,5 +233,12 @@ export const initialItemLocation = Object.values(itemData).reduce(
   (obj, item) => Object.assign(obj, { [item.id]: item.initialLocation }),
   {}
 ) as Partial<Record<ItemId, RoomId>>;
+
+export const initialKeyLocked: Partial<Record<ItemId, boolean>> = {
+  iron: true,
+  rusty: true,
+};
+
+export const keyList = Object.keys(initialKeyLocked);
 
 // const testItem: Record<ItemId, Item> = itemData;

@@ -121,8 +121,3 @@ export const blockedExitData = {
 >;
 
 export const isBlockedRoom = createKeyGuard(blockedExitData);
-
-export const initialKeyLocked: Partial<Record<ItemId, boolean>> = {
-  iron: true,
-  rusty: true,
-};

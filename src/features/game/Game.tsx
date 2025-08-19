@@ -2,6 +2,7 @@ import { Box, Card, TextField } from "@mui/material";
 import { useGameStore } from "../../store/useGameStore";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { handleInput } from "../../engine/gameEngine";
+import { Canvas } from "./Canvas";
 
 export const GameContent = () => {
   console.log("rendering Game page");
@@ -25,6 +26,7 @@ export const GameContent = () => {
   };
   return (
     <>
+      <Canvas />
       <Box height={"80vh"} width={"60vw"}>
         <Card sx={{ height: 1, overflowY: "auto", whiteSpace: "pre-wrap" }}>
           {storyLine.map((entry, index) => {

@@ -1,11 +1,17 @@
 import { useEffect, useRef } from "react";
-import { Mapper } from "./mapper";
-import { useGameStore } from "../../store/useGameStore";
 
-export const Canvas = () => {
+import { useGameStore } from "../../store/useGameStore";
+import { Mapper } from "./mapper";
+
+export const Canvas = ({
+  mapperRef,
+  onAnimationComplete,
+}: {
+  mapperRef: React.RefObject<Mapper | null>;
+  onAnimationComplete: () => void;
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D>(null);
-  const mapperRef = useRef<Mapper | null>(null);
 
   const { currentRoom, visitedRooms } = useGameStore();
 
@@ -16,11 +22,22 @@ export const Canvas = () => {
     mapperRef.current = new Mapper(contextRef.current, 600, 600, currentRoom);
     if (!mapperRef.current) return;
     mapperRef.current.buildDrawableRooms(currentRoom, visitedRooms);
-    mapperRef.current.renderMap();
+    mapperRef.current.renderMap(mapperRef.current.drawableRooms);
   }, []);
+
+  useEffect(() => {
+    if (!mapperRef.current) return;
+    console.log("Starting animation in useEffect");
+    mapperRef.current.moveToRoom(currentRoom, visitedRooms).then((res) => {
+      console.log(res);
+      onAnimationComplete();
+    });
+    console.log("finished animation in useeffect");
+  }, [currentRoom]);
 
   return (
     <>
+      {/* <p>{mapperRef.current?.isAnimating() ? "animating" : "still"}</p> */}
       <canvas ref={canvasRef} width={"600px"} height={"600px"} />
     </>
   );

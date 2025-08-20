@@ -2,11 +2,7 @@ import {
   blockedExitData,
   isBlockedRoom,
 } from "../../assets/data/blockedExitData";
-import {
-  roomData,
-  type ExitDirection,
-  type RoomId,
-} from "../../assets/data/roomData";
+import { roomData, type RoomId } from "../../assets/data/roomData";
 import { useGameStore } from "../../store/useGameStore";
 import { createKeyGuard } from "../../utils/guards";
 
@@ -23,6 +19,7 @@ const animationTime = 800;
 const roomShift = roomConnectorLength / 2 + roomSize;
 
 //types
+type DrawableRoom = { roomId: RoomId; x: number; y: number };
 type ExitInfo = { direction: string; blocked: boolean }[];
 //helper functions
 
@@ -105,37 +102,12 @@ const getExitPosition = (
   return { xStart, yStart, xEnd: xStart + dx, yEnd: yStart + dy };
 };
 
-//TODO RENAME getRoomAdjustment   and maybe alter stepDistance to roomDisplacement or roomShift or shiftDistance? It's calculated as a translation amount in request animation so is a proportion of full translation
-//ALSO TODO - rework nextRoomOffsets and use it here too! ALTHOUGH NOTE AND SORT THE OPPOSITE SIGNS!
-const findRoomAdjustment = (
-  roomDirection: ExitDirection,
+const findRoomOffset = (
+  roomDirection: CompassDirection,
   stepDistance: number
 ) => {
-  switch (roomDirection) {
-    case "n":
-      return { x: 0, y: +stepDistance };
-    case "e":
-      return { x: -stepDistance, y: 0 };
-    case "s":
-      return { x: 0, y: -stepDistance };
-    case "w":
-      return { x: stepDistance, y: 0 };
-    case "ne":
-      return { x: -stepDistance, y: stepDistance };
-    case "se":
-      return { x: -stepDistance, y: -stepDistance };
-    case "sw":
-      return { x: stepDistance, y: -stepDistance };
-    case "nw":
-      return { x: stepDistance, y: stepDistance };
-  }
+  return scaledOffset(roomDirection, -stepDistance);
 };
-
-const isWalkable = (direction: ExitDirection) => {
-  return ["n", "e", "s", "w", "ne", "nw", "se", "sw"].includes(direction);
-};
-
-type DrawableRoom = { roomId: RoomId; x: number; y: number };
 
 export class Mapper {
   private ctx;
@@ -145,6 +117,8 @@ export class Mapper {
   private centerRoomX;
   private centerRoomY;
   public drawableRooms: DrawableRoom[];
+  private animating;
+
   constructor(
     ctx: CanvasRenderingContext2D,
     width: number,
@@ -158,6 +132,7 @@ export class Mapper {
     this.centerRoomX = this.width / 2 - roomSize / 2;
     this.centerRoomY = this.height / 2 - roomSize / 2;
     this.drawableRooms = [];
+    this.animating = false;
   }
   clearCanvas() {
     this.ctx.fillStyle = "white";
@@ -207,8 +182,7 @@ export class Mapper {
     }
   }
 
-  renderMap() {
-    const drawableRooms = this.drawableRooms;
+  renderMap(drawableRooms: DrawableRoom[]) {
     this.clearCanvas();
     drawableRooms.forEach((room) => {
       this.renderRoom(room);
@@ -319,5 +293,105 @@ export class Mapper {
     this.ctx.fill();
   }
 
-  moveToRoom(targetToom: RoomId, visitedRooms: RoomId[]) {}
+  moveToRoom(targetRoomId: RoomId, visitedRooms: RoomId[]) {
+    return new Promise(async (resolve) => {
+      if (targetRoomId === this.currentRoomId) return;
+      const exitDirection = this.getCompassConnection(
+        targetRoomId,
+        this.currentRoomId
+      );
+      if (exitDirection) {
+        this.buildDrawableRooms(this.currentRoomId, visitedRooms);
+        await this.translateTo(targetRoomId, exitDirection);
+        this.currentRoomId = targetRoomId;
+        resolve("done");
+      } else {
+        this.currentRoomId = targetRoomId;
+        this.buildDrawableRooms(this.currentRoomId, [
+          ...visitedRooms,
+          this.currentRoomId,
+        ]);
+        this.renderMap(this.drawableRooms);
+        resolve("done");
+      }
+    });
+  }
+
+  getCompassConnection(targetRoomId: RoomId, currentRoomId: RoomId) {
+    let possibleExits = roomData[currentRoomId].exits;
+    for (const [exitDirection, destininationRoomId] of Object.entries(
+      possibleExits
+    )) {
+      if (
+        isCompassDirection(exitDirection) &&
+        destininationRoomId === targetRoomId
+      ) {
+        return exitDirection as CompassDirection;
+      }
+    }
+    return null;
+  }
+
+  translateTo(targetRoomId: RoomId, exitDirection: CompassDirection) {
+    return new Promise<void>((resolve) => {
+      let startTime: number;
+      let animationFrameId: number;
+      const animateMap = (
+        timeStamp: number,
+        exitDirection: CompassDirection
+      ) => {
+        this.animating = true;
+
+        this.clearCanvas();
+        if (!startTime) {
+          startTime = timeStamp;
+        }
+        const progress = (timeStamp - startTime) / animationTime;
+        const stepDistance = Math.floor(progress * roomShift);
+        const roomOffset = findRoomOffset(exitDirection, stepDistance);
+        if (
+          stepDistance >= 0.5 * roomShift &&
+          !this.drawableRooms.find((room) => room.roomId === targetRoomId)
+        ) {
+          this.addAdjacentRoom(targetRoomId, exitDirection);
+        }
+        const offsetDrawableRooms = this.drawableRooms.map((room) => {
+          return {
+            roomId: room.roomId,
+            x: room.x + roomOffset.dx,
+            y: room.y + roomOffset.dy,
+          };
+        });
+        this.renderMap(offsetDrawableRooms);
+        this.renderUser();
+        if (stepDistance <= roomShift) {
+          requestAnimationFrame(function (timeStamp) {
+            animateMap(timeStamp, exitDirection);
+          });
+        } else {
+          cancelAnimationFrame(animationFrameId);
+          this.animating = false;
+          resolve();
+        }
+      };
+
+      animationFrameId = requestAnimationFrame(function (timeStamp) {
+        animateMap(timeStamp, exitDirection);
+      });
+    });
+  }
+
+  addAdjacentRoom(nextRoomId: RoomId, exitDirection: CompassDirection) {
+    const { x, y } = getNextRoomPosition(
+      this.centerRoomX,
+      this.centerRoomY,
+      exitDirection
+    );
+    this.drawableRooms.push({ roomId: nextRoomId, x, y });
+  }
+
+  isAnimating() {
+    console.log(this.animating);
+    return this.animating;
+  }
 }

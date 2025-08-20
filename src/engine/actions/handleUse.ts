@@ -2,20 +2,15 @@ import {
   blockedExitData,
   isBlockedRoom,
 } from "../../assets/data/blockedExitData";
-import { isItemId, keyList, type ItemId } from "../../assets/data/itemData";
-import type { GameState } from "../gameEngine";
+import { isItemId, keyList } from "../../assets/data/itemData";
 import { itemRegistry } from "../world/itemRegistry";
-import type { HandleCommand } from "./dispatchCommand";
+import type {
+  CommandPayload,
+  HandleCommand,
+  PipelineFunction,
+} from "./dispatchCommand";
 
-type UsePayload = {
-  target: string | null;
-  gameState: GameState;
-  aborted: boolean;
-};
-
-type UsePipelineFunction = (args: UsePayload) => UsePayload;
-
-const runUseKeyCheck: UsePipelineFunction = (payload) => {
+const runUseKeyCheck: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { itemLocation, storyLine, keyLocked, currentRoom } = gameState;
   //If there is a door to lock/unlock...
@@ -55,7 +50,7 @@ const runUseKeyCheck: UsePipelineFunction = (payload) => {
   return payload;
 };
 
-const runUseFailureMessage: UsePipelineFunction = (payload) => {
+const runUseFailureMessage: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { storyLine, itemLocation } = gameState;
   if (target === null) {
@@ -95,8 +90,10 @@ const runUseFailureMessage: UsePipelineFunction = (payload) => {
 
 const UsePipeline = [runUseKeyCheck, runUseFailureMessage];
 
-export const handleUse: HandleCommand = ({ target, gameState }) => {
-  const payload: UsePayload = {
+export const handleUse: HandleCommand = (args) => {
+  const { command, target, gameState } = args;
+  const payload: CommandPayload = {
+    command,
     gameState,
     target,
     aborted: false,
@@ -105,5 +102,5 @@ export const handleUse: HandleCommand = ({ target, gameState }) => {
   const finalPayload = UsePipeline.reduce((curPayload, curFunction) => {
     return curPayload.aborted ? curPayload : curFunction(curPayload);
   }, payload);
-  return finalPayload.gameState;
+  return { gameState: finalPayload.gameState, command, target };
 };

@@ -1,6 +1,13 @@
-import type { HandleCommand } from "./dispatchCommand";
+import type { GameState } from "../gameEngine";
 
-export const handleNull: HandleCommand = ({ target, gameState }) => {
-  console.log(target);
-  return gameState;
+type NullCommandArgs = {
+  command: null;
+  target: string | null;
+  gameState: GameState;
+};
+
+type HandleNullCommand = (args: NullCommandArgs) => NullCommandArgs;
+
+export const handleNull: HandleNullCommand = (args) => {
+  return args;
 };

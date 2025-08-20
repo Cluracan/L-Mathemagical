@@ -1,18 +1,9 @@
 import { isItemId } from "../../assets/data/itemData";
 import { runGetTriggers } from "../events/runGetTriggers";
-import type { GameState } from "../gameEngine";
 import { itemRegistry } from "../world/itemRegistry";
-import type { HandleCommand } from "./dispatchCommand";
+import type { HandleCommand, PipelineFunction } from "./dispatchCommand";
 
-type GetPayload = {
-  target: string | null;
-  gameState: GameState;
-  aborted: boolean;
-};
-
-export type GetPipelineFunction = (args: GetPayload) => GetPayload;
-
-const getItem: GetPipelineFunction = (payload) => {
+const getItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { storyLine, itemLocation, currentRoom } = gameState;
   if (target && isItemId(target) && itemLocation[target] === currentRoom) {
@@ -42,8 +33,10 @@ const getItem: GetPipelineFunction = (payload) => {
 
 const getPipeline = [runGetTriggers, getItem];
 
-export const handleGet: HandleCommand = ({ target, gameState }) => {
-  const payload: GetPayload = {
+export const handleGet: HandleCommand = (args) => {
+  const { command, target, gameState } = args;
+  const payload = {
+    command,
     gameState,
     target,
     aborted: false,

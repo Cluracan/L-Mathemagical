@@ -1,18 +1,9 @@
 import { isItemId } from "../../assets/data/itemData";
 import { runDropTriggers } from "../events/runDropTriggers";
-import type { GameState } from "../gameEngine";
 import { itemRegistry } from "../world/itemRegistry";
-import type { HandleCommand } from "./dispatchCommand";
+import type { HandleCommand, PipelineFunction } from "./dispatchCommand";
 
-type DropPayload = {
-  target: string | null;
-  gameState: GameState;
-  aborted: boolean;
-};
-
-export type DropPipelineFunction = (args: DropPayload) => DropPayload;
-
-const dropItem: DropPipelineFunction = (payload) => {
+const dropItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { storyLine, itemLocation, currentRoom } = gameState;
   if (target && isItemId(target) && itemLocation[target] === "player") {
@@ -42,10 +33,12 @@ const dropItem: DropPipelineFunction = (payload) => {
 
 const dropPipeline = [runDropTriggers, dropItem];
 
-export const handleDrop: HandleCommand = ({ target, gameState }) => {
-  const payload: DropPayload = {
-    gameState,
+export const handleDrop: HandleCommand = (args) => {
+  const { command, target, gameState } = args;
+  const payload = {
+    command,
     target,
+    gameState,
     aborted: false,
   };
 

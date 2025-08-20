@@ -2,7 +2,12 @@ import { roomRegistry } from "../world/roomRegistry";
 import { itemRegistry } from "../world/itemRegistry";
 import { isItemId, keyList } from "../../assets/data/itemData";
 import type { GameState } from "../gameEngine";
-import type { Command, HandleCommand } from "./dispatchCommand";
+import type {
+  Command,
+  CommandPayload,
+  HandleCommand,
+  PipelineFunction,
+} from "./dispatchCommand";
 
 type BuildRoomDescription = (args: {
   gameState: GameState;
@@ -36,15 +41,7 @@ export const buildRoomDescription: BuildRoomDescription = ({
   return roomDescription;
 };
 
-type LookPayload = {
-  target: string | null;
-  gameState: GameState;
-  aborted: boolean;
-};
-
-type LookPipelineFunction = (args: LookPayload) => LookPayload;
-
-const lookRoom: LookPipelineFunction = (payload) => {
+const lookRoom: PipelineFunction = (payload) => {
   if (payload.target === null) {
     const roomDescription = buildRoomDescription({
       gameState: payload.gameState,
@@ -62,7 +59,7 @@ const lookRoom: LookPipelineFunction = (payload) => {
   return payload;
 };
 
-const lookKey: LookPipelineFunction = (payload) => {
+const lookKey: PipelineFunction = (payload) => {
   const { itemLocation, storyLine, currentRoom } = payload.gameState;
   if (payload.target === "key") {
     //check for 1 or 2 keys on person or ground
@@ -89,7 +86,7 @@ const lookKey: LookPipelineFunction = (payload) => {
   return payload;
 };
 
-const lookItem: LookPipelineFunction = (payload) => {
+const lookItem: PipelineFunction = (payload) => {
   const { gameState, target } = payload;
   const { itemLocation, currentRoom } = gameState;
 
@@ -133,15 +130,15 @@ const lookItem: LookPipelineFunction = (payload) => {
   return payload;
 };
 
-const lookDrogo: LookPipelineFunction = (payload) => {
+const lookDrogo: PipelineFunction = (payload) => {
   return payload;
 };
 
-const lookPuzzleNPC: LookPipelineFunction = (payload) => {
+const lookPuzzleNPC: PipelineFunction = (payload) => {
   return payload;
 };
 
-const lookBath: LookPipelineFunction = (payload) => {
+const lookBath: PipelineFunction = (payload) => {
   return payload;
 };
 
@@ -154,8 +151,11 @@ const lookPipline = [
   lookBath,
 ];
 
-export const handleLook: HandleCommand = ({ target, gameState }) => {
-  const payload: LookPayload = {
+export const handleLook: HandleCommand = (args) => {
+  const { command, target, gameState } = args;
+
+  const payload: CommandPayload = {
+    command,
     gameState,
     target,
     aborted: false,
@@ -165,5 +165,5 @@ export const handleLook: HandleCommand = ({ target, gameState }) => {
     return curPayload.aborted ? curPayload : curFunction(curPayload);
   }, payload);
 
-  return finalPayload.gameState;
+  return { gameState: finalPayload.gameState, command, target };
 };

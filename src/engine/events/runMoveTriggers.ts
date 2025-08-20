@@ -2,9 +2,9 @@ import {
   isBlockedRoom,
   blockedExitData,
 } from "../../assets/data/blockedExitData";
-import type { MovePipelineFunction } from "../actions/handleMove";
+import type { PipelineFunction } from "../actions/dispatchCommand";
 
-export const runMoveTriggers: MovePipelineFunction = (payload) => {
+export const runMoveTriggers: PipelineFunction = (payload) => {
   const { currentRoom, keyLocked } = payload.gameState;
   const target = payload.target;
   //blocked room check

@@ -7,22 +7,13 @@ import {
   isDirectionAlias,
 } from "../constants/directions";
 
-import type { Command, HandleCommand } from "./dispatchCommand";
-import type { GameState } from "../gameEngine";
-import type { RoomId, ExitDirection } from "../../assets/data/roomData";
+import type {
+  CommandPayload,
+  HandleCommand,
+  PipelineFunction,
+} from "./dispatchCommand";
 
-type MovePayload = {
-  command: Command;
-  target: string | null;
-  gameState: GameState;
-  direction: ExitDirection | null;
-  nextRoom: RoomId | null;
-  aborted: boolean;
-};
-
-export type MovePipelineFunction = (args: MovePayload) => MovePayload;
-
-const validateDirection: MovePipelineFunction = (payload) => {
+const validateDirection: PipelineFunction = (payload) => {
   if (payload.target && isDirectionAlias(payload.target)) {
     return { ...payload, direction: directionAliases[payload.target] };
   } else {
@@ -37,7 +28,7 @@ const validateDirection: MovePipelineFunction = (payload) => {
   }
 };
 
-const validateExit: MovePipelineFunction = (payload) => {
+const validateExit: PipelineFunction = (payload) => {
   if (!payload.direction) {
     console.log("error in validateExit - no direction");
     return { ...payload, aborted: true };
@@ -66,7 +57,7 @@ const validateExit: MovePipelineFunction = (payload) => {
   }
 };
 
-const movePlayer: MovePipelineFunction = (payload) => {
+const movePlayer: PipelineFunction = (payload) => {
   if (!payload.nextRoom || !payload.direction) {
     console.log(
       `Error in movePlayer: nextRoom is ${payload.nextRoom}, direction is ${payload.direction}`
@@ -92,10 +83,10 @@ const movePlayer: MovePipelineFunction = (payload) => {
   };
 };
 
-const applyRoomDescription: MovePipelineFunction = (payload) => {
+const applyRoomDescription: PipelineFunction = (payload) => {
   const roomDescription = buildRoomDescription({
     gameState: payload.gameState,
-    command: "move",
+    command: payload.command,
   });
   return {
     ...payload,
@@ -114,10 +105,11 @@ const movePipeline = [
   applyRoomDescription,
 ];
 
-export const handleMove: HandleCommand = ({ target, gameState }) => {
-  const payload: MovePayload = {
+export const handleMove: HandleCommand = (args) => {
+  const { command, target, gameState } = args;
+  const payload: CommandPayload = {
     gameState,
-    command: "move",
+    command,
     target,
     aborted: false,
     direction: null,
@@ -126,5 +118,5 @@ export const handleMove: HandleCommand = ({ target, gameState }) => {
   const finalPayload = movePipeline.reduce((curPayload, curFunction) => {
     return curPayload.aborted ? curPayload : curFunction(curPayload);
   }, payload);
-  return finalPayload.gameState;
+  return { gameState: finalPayload.gameState, command, target };
 };

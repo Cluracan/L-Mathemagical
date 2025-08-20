@@ -5,10 +5,12 @@ import { Mapper } from "./mapper";
 
 export const Canvas = ({
   mapperRef,
-  onAnimationComplete,
+  readyForCommandRef,
+  processInputQueue,
 }: {
   mapperRef: React.RefObject<Mapper | null>;
-  onAnimationComplete: () => void;
+  readyForCommandRef: React.RefObject<boolean>;
+  processInputQueue: () => void;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D>(null);
@@ -30,9 +32,13 @@ export const Canvas = ({
     console.log("Starting animation in useEffect");
     mapperRef.current.moveToRoom(currentRoom, visitedRooms).then((res) => {
       console.log(res);
-      onAnimationComplete();
+      console.log(
+        `finished animation in useeffect ready: ${readyForCommandRef.current}`
+      );
+      readyForCommandRef.current = true;
+      console.log(`set ready ${readyForCommandRef.current}`);
+      processInputQueue();
     });
-    console.log("finished animation in useeffect");
   }, [currentRoom]);
 
   return (

@@ -5,7 +5,7 @@ import type { RoomId } from "../assets/data/roomData";
 
 export type GameState = Omit<
   GameStoreState,
-  "playerName" | "modernMode" | "visitedRooms"
+  "playerName" | "modernMode" | "visitedRooms" | "readyForCommand"
 > & { visitedRooms: Set<RoomId> };
 
 class GameEngine {

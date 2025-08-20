@@ -165,5 +165,5 @@ export const handleLook: HandleCommand = (args) => {
     return curPayload.aborted ? curPayload : curFunction(curPayload);
   }, payload);
 
-  return { gameState: finalPayload.gameState, command, target };
+  return finalPayload.gameState;
 };

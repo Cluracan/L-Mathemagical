@@ -102,5 +102,5 @@ export const handleUse: HandleCommand = (args) => {
   const finalPayload = UsePipeline.reduce((curPayload, curFunction) => {
     return curPayload.aborted ? curPayload : curFunction(curPayload);
   }, payload);
-  return { gameState: finalPayload.gameState, command, target };
+  return finalPayload.gameState;
 };

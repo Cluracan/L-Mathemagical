@@ -18,7 +18,7 @@ type CommandArgs = {
   target: string | null;
   gameState: GameState;
 };
-export type HandleCommand = (args: CommandArgs) => CommandArgs;
+export type HandleCommand = (args: CommandArgs) => GameState;
 
 export type CommandPayload = {
   command: Command;
@@ -51,7 +51,7 @@ type DispatchArgs = {
   target: string | null;
   gameState: GameState;
 };
-type DispatchCommand = (args: DispatchArgs) => DispatchArgs;
+type DispatchCommand = (args: DispatchArgs) => GameState;
 
 export const dispatchCommand: DispatchCommand = (args) => {
   const { command, target, gameState } = args;

@@ -45,5 +45,6 @@ export const handleDrop: HandleCommand = (args) => {
   const finalPayload = dropPipeline.reduce((curPayload, curFunction) => {
     return curPayload.aborted ? curPayload : curFunction(curPayload);
   }, payload);
+
   return finalPayload.gameState;
 };

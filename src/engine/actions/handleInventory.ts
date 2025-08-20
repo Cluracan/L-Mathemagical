@@ -13,21 +13,13 @@ export const handleInventory: HandleCommand = (args) => {
   }
   if (inventoryText.length > 0) {
     return {
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, "You are carrying:", ...inventoryText],
-      },
-      command,
-      target,
+      ...gameState,
+      storyLine: [...storyLine, "You are carrying:", ...inventoryText],
     };
   } else {
     return {
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, "You are not carrying anything!"],
-      },
-      command,
-      target,
+      ...gameState,
+      storyLine: [...storyLine, "You are not carrying anything!"],
     };
   }
 };

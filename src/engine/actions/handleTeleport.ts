@@ -13,5 +13,5 @@ export const handleTeleport: HandleCommand = (args) => {
     });
   }
 
-  return args;
+  return args.gameState;
 };

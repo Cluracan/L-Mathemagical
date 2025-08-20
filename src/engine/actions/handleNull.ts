@@ -6,8 +6,8 @@ type NullCommandArgs = {
   gameState: GameState;
 };
 
-type HandleNullCommand = (args: NullCommandArgs) => NullCommandArgs;
+type HandleNullCommand = (args: NullCommandArgs) => GameState;
 
 export const handleNull: HandleNullCommand = (args) => {
-  return args;
+  return args.gameState;
 };

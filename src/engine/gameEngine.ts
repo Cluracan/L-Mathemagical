@@ -37,7 +37,7 @@ class GameEngine {
     const { command, target } = parseInput(userInput);
 
     //send to dispatch
-    let newState = dispatchCommand({ command, target, gameState }).gameState;
+    let newState = dispatchCommand({ command, target, gameState });
 
     //update state
     useGameStore.setState({

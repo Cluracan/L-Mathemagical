@@ -1,6 +1,6 @@
-import type { DropPipelineFunction } from "../actions/handleDrop";
+import type { PipelineFunction } from "../actions/dispatchCommand";
 
-export const runDropTriggers: DropPipelineFunction = (payload) => {
+export const runDropTriggers: PipelineFunction = (payload) => {
   //ring check (precioussss)
   const { target, gameState } = payload;
   const { storyLine, itemLocation, currentRoom } = gameState;

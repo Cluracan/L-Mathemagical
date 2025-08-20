@@ -118,5 +118,5 @@ export const handleMove: HandleCommand = (args) => {
   const finalPayload = movePipeline.reduce((curPayload, curFunction) => {
     return curPayload.aborted ? curPayload : curFunction(curPayload);
   }, payload);
-  return { gameState: finalPayload.gameState, command, target };
+  return finalPayload.gameState;
 };

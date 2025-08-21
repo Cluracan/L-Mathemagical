@@ -3,7 +3,7 @@ import {
   isBlockedRoom,
 } from "../../assets/data/blockedExitData";
 import { isItemId, isKeyType, keyList } from "../../assets/data/itemData";
-import { runKeyConversion } from "../events/runKeyTriggers";
+import { runKeyConversion } from "../events/runKeyConversion";
 import { itemRegistry } from "../world/itemRegistry";
 import type {
   CommandPayload,
@@ -15,48 +15,49 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { itemLocation, storyLine, keyLocked, currentRoom } = gameState;
 
-  if (target && isKeyType(target)) {
-    //If there is a door to lock/unlock...
-    const requiredKey =
-      isBlockedRoom(currentRoom) && blockedExitData[currentRoom].keyRequired;
-    if (requiredKey && itemLocation[requiredKey] === "player") {
-      if (target === requiredKey) {
-        return {
-          ...payload,
-          gameState: {
-            ...gameState,
-            storyLine: [
-              ...storyLine,
-              keyLocked[requiredKey]
-                ? "You unlock and open the door"
-                : "You lock and close the door",
-            ],
-            keyLocked: { ...keyLocked, [requiredKey]: !keyLocked[requiredKey] },
-          },
-          aborted: true,
-        };
-      } else {
-        return {
-          ...payload,
-          gameState: {
-            ...gameState,
-            storyLine: [...storyLine, "That's the wrong key!"],
-          },
-          aborted: true,
-        };
-      }
-    } else {
-      return {
-        ...payload,
-        gameState: {
-          ...gameState,
-          storyLine: [...storyLine, "You don't have the right key!"],
-        },
-        aborted: true,
-      };
-    }
+  const requiredKey =
+    isBlockedRoom(currentRoom) && blockedExitData[currentRoom].keyRequired;
+
+  if (!requiredKey || !target || !isKeyType(target)) {
+    return payload;
   }
-  return payload;
+
+  if (itemLocation[requiredKey] !== "player") {
+    return {
+      ...payload,
+      gameState: {
+        ...gameState,
+        storyLine: [...storyLine, "You don't have the right key!"],
+      },
+      aborted: true,
+    };
+  }
+
+  if (target === requiredKey) {
+    return {
+      ...payload,
+      gameState: {
+        ...gameState,
+        storyLine: [
+          ...storyLine,
+          keyLocked[requiredKey]
+            ? "You unlock and open the door"
+            : "You lock and close the door",
+        ],
+        keyLocked: { ...keyLocked, [requiredKey]: !keyLocked[requiredKey] },
+      },
+      aborted: true,
+    };
+  } else {
+    return {
+      ...payload,
+      gameState: {
+        ...gameState,
+        storyLine: [...storyLine, "That's the wrong key!"],
+      },
+      aborted: true,
+    };
+  }
 };
 
 const runUseFailureMessage: PipelineFunction = (payload) => {

@@ -29,7 +29,7 @@ export const parseInput: ParseInput = (userInput) => {
     return { command: "move", target: `${directionAliases[commandWord]}` };
   }
   //'rusty key' and 'rusty' must return target: 'rusty' (coerce last two words to an item if possible)
-  let target = args[args.length - 1];
+  let target = args[args.length - 1] || null;
 
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {
     if (triggerWords.includes(commandWord)) {

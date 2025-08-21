@@ -8,12 +8,12 @@ import type { ItemId } from "../assets/data/itemData";
 
 export type GameStoreState = {
   playerName: string;
-  playerHeight: "threeFifths" | "threeFourths" | "one" | "fiveFourths";
   modernMode: boolean;
   currentRoom: RoomId;
   isInvisible: boolean;
   itemLocation: Partial<Record<ItemId, RoomId | "player">>;
   keyLocked: Partial<Record<ItemId, boolean>>;
+  playerHeight: "threeFifths" | "threeFourths" | "one" | "fiveFourths";
   storyLine: string[];
   stepCount: number;
   visitedRooms: RoomId[];
@@ -22,8 +22,6 @@ export type GameStoreState = {
 type GameStoreActions = {
   setPlayerName: (playerName: string) => void;
   toggleGameMode: () => void;
-  setCurrentRoom: (roomId: RoomId) => void;
-  sendToStoryLine: (storyText: string) => void;
   resetGameStore: () => void;
 };
 
@@ -31,12 +29,12 @@ export type GameStore = GameStoreState & GameStoreActions;
 
 const initialGameState: GameStoreState = {
   playerName: "player 1",
-  playerHeight: "one",
   modernMode: true,
   currentRoom: "grass",
   itemLocation: initialItemLocation,
   isInvisible: false,
   keyLocked: initialKeyLocked,
+  playerHeight: "one",
   storyLine: [roomRegistry.getLongDescription("grass")],
   stepCount: 0,
   visitedRooms: ["grass"],
@@ -48,9 +46,6 @@ export const useGameStore = create<GameStore>()(
       ...initialGameState,
       toggleGameMode: () => set((state) => ({ modernMode: !state.modernMode })),
       setPlayerName: (playerName: string) => set({ playerName }),
-      setCurrentRoom: (roomId: RoomId) => set({ currentRoom: roomId }),
-      sendToStoryLine: (storyText: string) =>
-        set((state) => ({ storyLine: [...state.storyLine, storyText] })),
       resetGameStore: () => {
         set(useGameStore.getInitialState());
       },

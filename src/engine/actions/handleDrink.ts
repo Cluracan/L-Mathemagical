@@ -5,12 +5,19 @@ export const handleDrink: HandleCommand = (args) => {
   const { gameState, target } = args;
   const { itemLocation } = gameState;
   if (!target)
-    return { ...gameState, storyLine: [...gameState.storyLine, "Drink what?"] };
+    return {
+      ...gameState,
+      storyLine: [...gameState.storyLine, "Drink what?"],
+      success: false,
+      feedback: "no target",
+    };
 
   if (!isItemId(target) || itemLocation[target] !== "player") {
     return {
       ...gameState,
       storyLine: [...gameState.storyLine, "You don't have that..."],
+      success: false,
+      feedback: "itemId not on player",
     };
   }
 
@@ -18,6 +25,8 @@ export const handleDrink: HandleCommand = (args) => {
     return {
       ...gameState,
       storyLine: [...gameState.storyLine, "You can't drink that!"],
+      success: false,
+      feedback: "itemId non-drinkable",
     };
   }
 
@@ -67,6 +76,8 @@ export const handleDrink: HandleCommand = (args) => {
           ...gameState.storyLine,
           "That's strange - nothing happened!",
         ],
+        success: false,
+        feedback: "ERROR",
       };
   }
   return gameState;

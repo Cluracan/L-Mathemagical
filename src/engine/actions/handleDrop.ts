@@ -19,19 +19,14 @@ const dropItem: PipelineFunction = (payload) => {
       aborted: true,
     };
   }
-  return payload;
-};
-
-const runFailureChecks: PipelineFunction = (payload) => {
-  const { target, gameState } = payload;
-  const { storyLine, itemLocation } = gameState;
-
   if (!target) {
     return {
       ...payload,
       gameState: {
         ...gameState,
         storyLine: [...storyLine, "Drop what?"],
+        success: false,
+        feedback: "no target",
       },
       aborted: true,
     };
@@ -42,19 +37,19 @@ const runFailureChecks: PipelineFunction = (payload) => {
       gameState: {
         ...gameState,
         storyLine: [...storyLine, "You don't have that!"],
+        success: false,
+        feedback: "itemId not on player",
       },
       aborted: true,
     };
   }
-  return payload;
+  return {
+    ...payload,
+    gameState: { ...gameState, success: false, feedback: "ERROR in dropItem" },
+  };
 };
 
-const dropPipeline = [
-  runKeyConversion,
-  runRingTriggers,
-  dropItem,
-  runFailureChecks,
-];
+const dropPipeline = [runKeyConversion, runRingTriggers, dropItem];
 
 export const handleDrop: HandleCommand = (args) => {
   const { command, target, gameState } = args;

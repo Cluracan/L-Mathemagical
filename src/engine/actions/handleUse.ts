@@ -19,7 +19,14 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
     isBlockedRoom(currentRoom) && blockedExitData[currentRoom].keyRequired;
 
   if (!requiredKey || !target || !isKeyType(target)) {
-    return payload;
+    return {
+      ...payload,
+      gameState: {
+        ...gameState,
+        success: false,
+        feedback: "no target || target !== key || no lockable door",
+      },
+    };
   }
 
   if (itemLocation[requiredKey] !== "player") {
@@ -28,6 +35,8 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
       gameState: {
         ...gameState,
         storyLine: [...storyLine, "You don't have the right key!"],
+        success: false,
+        feedback: "requiredKey not on player",
       },
       aborted: true,
     };
@@ -54,6 +63,8 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
       gameState: {
         ...gameState,
         storyLine: [...storyLine, "That's the wrong key!"],
+        success: false,
+        feedback: "target !== requiredKey (wrong key choice from inv)",
       },
       aborted: true,
     };
@@ -69,6 +80,8 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
       gameState: {
         ...gameState,
         storyLine: [...storyLine, "Use what?"],
+        success: false,
+        feedback: "no target",
       },
       aborted: true,
     };
@@ -79,10 +92,9 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
       ...payload,
       gameState: {
         ...gameState,
-        storyLine: [
-          ...storyLine,
-          `You can't use ${isItemId(target) ? `the ${itemRegistry.getPickUpDescription(target)}` : "that"} here...`,
-        ],
+        storyLine: [...storyLine, `You can't use that here...`],
+        success: false,
+        feedback: "no use in currentRoom",
       },
       aborted: true,
     };
@@ -92,6 +104,8 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
       gameState: {
         ...gameState,
         storyLine: [...storyLine, "You don't have that!"],
+        success: false,
+        feedback: "target not item || not on player",
       },
       aborted: true,
     };

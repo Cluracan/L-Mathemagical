@@ -4,7 +4,7 @@ import {
 } from "../../assets/data/blockedExitData";
 import type { PipelineFunction } from "../actions/dispatchCommand";
 
-export const runMoveTriggers: PipelineFunction = (payload) => {
+export const runBlockedTriggers: PipelineFunction = (payload) => {
   const { currentRoom, keyLocked } = payload.gameState;
   const target = payload.target;
   //blocked room check

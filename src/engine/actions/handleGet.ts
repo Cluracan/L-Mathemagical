@@ -24,6 +24,8 @@ const getItem: PipelineFunction = (payload) => {
       gameState: {
         ...gameState,
         storyLine: [...storyLine, `You don't see that here!`],
+        success: false,
+        feedback: "no target || target !==itemId || itemId not in location",
       },
       aborted: true,
     };
@@ -33,7 +35,6 @@ const getItem: PipelineFunction = (payload) => {
 const getPipeline = [runKeyConversion, runRingTriggers, getItem];
 
 export const handleGet: HandleCommand = (args) => {
-  console.log("handleGet");
   const { command, target, gameState } = args;
   const payload = {
     command,

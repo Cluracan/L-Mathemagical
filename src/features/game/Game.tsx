@@ -39,7 +39,7 @@ export const GameContent = () => {
       if (userInput) {
         readyForCommandRef.current = false;
         const result = handleInput(userInput);
-        if (result.command !== "move") {
+        if (result.command !== "move" || !result.success) {
           readyForCommandRef.current = true;
         }
       }

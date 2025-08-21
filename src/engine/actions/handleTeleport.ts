@@ -13,5 +13,9 @@ export const handleTeleport: HandleCommand = (args) => {
     });
   }
 
-  return args.gameState;
+  return {
+    ...args.gameState,
+    success: false,
+    feedback: "no target || target !== roomId",
+  };
 };

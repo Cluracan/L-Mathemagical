@@ -1,6 +1,6 @@
 import { roomRegistry } from "../world/roomRegistry";
 import { itemRegistry } from "../world/itemRegistry";
-import { isItemId, keyList } from "../../assets/data/itemData";
+import { isItemId } from "../../assets/data/itemData";
 import type { GameState } from "../gameEngine";
 import type {
   Command,
@@ -9,7 +9,9 @@ import type {
   PipelineFunction,
 } from "./dispatchCommand";
 import { runKeyConversion } from "../events/runKeyConversion";
+import { runPoolTriggers } from "../events/runPoolTriggers";
 
+//Helper function
 type BuildRoomDescription = (args: {
   gameState: GameState;
   command: Command;
@@ -43,6 +45,7 @@ export const buildRoomDescription: BuildRoomDescription = ({
 };
 
 const lookRoom: PipelineFunction = (payload) => {
+  console.log(payload.target);
   if (payload.target === null) {
     const roomDescription = buildRoomDescription({
       gameState: payload.gameState,
@@ -96,6 +99,8 @@ const lookItem: PipelineFunction = (payload) => {
         gameState: {
           ...gameState,
           storyLine: [...gameState.storyLine, "You don't see that here!"],
+          success: false,
+          feedback: "target not visible",
         },
         aborted: true,
       };
@@ -117,6 +122,7 @@ const lookBath: PipelineFunction = (payload) => {
 };
 
 const lookPipline = [
+  runPoolTriggers,
   runKeyConversion,
   lookRoom,
   lookItem,

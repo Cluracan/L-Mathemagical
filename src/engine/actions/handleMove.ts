@@ -1,6 +1,7 @@
 import { buildRoomDescription } from "./handleLook";
 import { roomRegistry } from "../world/roomRegistry";
-import { runMoveTriggers } from "../events/runMoveTriggers";
+import { runBlockedTriggers } from "../events/runBlockedTriggers";
+import { runPoolTriggers } from "../events/runPoolTriggers";
 import {
   directionAliases,
   directionNarratives,
@@ -22,6 +23,8 @@ const validateDirection: PipelineFunction = (payload) => {
       gameState: {
         ...payload.gameState,
         storyLine: [...payload.gameState.storyLine, "That's not a direction!"],
+        success: false,
+        feedback: "not a direction",
       },
       aborted: true,
     };
@@ -30,8 +33,15 @@ const validateDirection: PipelineFunction = (payload) => {
 
 const validateExit: PipelineFunction = (payload) => {
   if (!payload.direction) {
-    console.log("error in validateExit - no direction");
-    return { ...payload, aborted: true };
+    return {
+      ...payload,
+      gameState: {
+        ...payload.gameState,
+        success: false,
+        feedback: "ERROR in validateExit",
+      },
+      aborted: true,
+    };
   }
   const nextRoom = roomRegistry.getExitDestination(
     payload.gameState.currentRoom,
@@ -51,6 +61,8 @@ const validateExit: PipelineFunction = (payload) => {
           ...payload.gameState.storyLine,
           "You can't travel that way!",
         ],
+        success: false,
+        feedback: "exit not available",
       },
       aborted: true,
     };
@@ -59,10 +71,15 @@ const validateExit: PipelineFunction = (payload) => {
 
 const movePlayer: PipelineFunction = (payload) => {
   if (!payload.nextRoom || !payload.direction) {
-    console.log(
-      `Error in movePlayer: nextRoom is ${payload.nextRoom}, direction is ${payload.direction}`
-    );
-    return { ...payload, aborted: true };
+    return {
+      ...payload,
+      gameState: {
+        ...payload.gameState,
+        success: false,
+        feedback: "ERROR in movePlayer",
+      },
+      aborted: true,
+    };
   }
 
   return {
@@ -98,9 +115,10 @@ const applyRoomDescription: PipelineFunction = (payload) => {
 };
 
 const movePipeline = [
+  runPoolTriggers,
   validateDirection,
   validateExit,
-  runMoveTriggers,
+  runBlockedTriggers,
   movePlayer,
   applyRoomDescription,
 ];

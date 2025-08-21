@@ -6,7 +6,11 @@ import type { RoomId } from "../assets/data/roomData";
 export type GameState = Omit<
   GameStoreState,
   "playerName" | "modernMode" | "visitedRooms" | "readyForCommand"
-> & { visitedRooms: Set<RoomId> };
+> & {
+  visitedRooms: Set<RoomId>;
+  success: boolean;
+  feedback: string;
+};
 
 class GameEngine {
   constructor() {}
@@ -24,7 +28,7 @@ class GameEngine {
     } = useGameStore.getState();
 
     //Send input to storyLine
-    const gameState = {
+    const gameState: GameState = {
       currentRoom,
       itemLocation,
       isInvisible,
@@ -33,6 +37,8 @@ class GameEngine {
       stepCount,
       storyLine: [...storyLine, userInput.trim()],
       visitedRooms: new Set(visitedRooms),
+      success: true,
+      feedback: "",
     };
 
     //parse input
@@ -54,8 +60,10 @@ class GameEngine {
       visitedRooms: Array.from(newState.visitedRooms.values()),
     });
     return {
-      success: true,
+      success: newState.success,
+      feedback: newState.feedback,
       command,
+      target,
     };
   }
 }

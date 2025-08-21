@@ -1,21 +1,20 @@
 import { isItemId } from "../../assets/data/itemData";
-import { runGetTriggers } from "../events/runGetTriggers";
+import { runKeyConversion } from "../events/runKeyTriggers";
+import { runRingTriggers } from "../events/runRingTriggers";
 import { itemRegistry } from "../world/itemRegistry";
 import type { HandleCommand, PipelineFunction } from "./dispatchCommand";
 
 const getItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { storyLine, itemLocation, currentRoom } = gameState;
+
   if (target && isItemId(target) && itemLocation[target] === currentRoom) {
     return {
       ...payload,
       gameState: {
         ...gameState,
         itemLocation: { ...itemLocation, [target]: "player" },
-        storyLine: [
-          ...storyLine,
-          `You pick up the ${itemRegistry.getPickUpDescription(target)}`,
-        ],
+        storyLine: [...storyLine, itemRegistry.getPickUpDescription(target)],
       },
       aborted: true,
     };
@@ -31,9 +30,10 @@ const getItem: PipelineFunction = (payload) => {
   }
 };
 
-const getPipeline = [runGetTriggers, getItem];
+const getPipeline = [runKeyConversion, runRingTriggers, getItem];
 
 export const handleGet: HandleCommand = (args) => {
+  console.log("handleGet");
   const { command, target, gameState } = args;
   const payload = {
     command,
@@ -43,6 +43,7 @@ export const handleGet: HandleCommand = (args) => {
   };
 
   const finalPayload = getPipeline.reduce((curPayload, curFunction) => {
+    console.log(curFunction);
     return curPayload.aborted ? curPayload : curFunction(curPayload);
   }, payload);
   return finalPayload.gameState;

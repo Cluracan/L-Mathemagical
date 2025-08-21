@@ -8,6 +8,7 @@ import type {
   HandleCommand,
   PipelineFunction,
 } from "./dispatchCommand";
+import { runKeyConversion } from "../events/runKeyTriggers";
 
 type BuildRoomDescription = (args: {
   gameState: GameState;
@@ -55,33 +56,6 @@ const lookRoom: PipelineFunction = (payload) => {
       },
       aborted: true,
     };
-  }
-  return payload;
-};
-
-const lookKey: PipelineFunction = (payload) => {
-  const { itemLocation, storyLine, currentRoom } = payload.gameState;
-  if (payload.target === "key") {
-    //check for 1 or 2 keys on person or ground
-    let visibleKeys = keyList.filter(
-      (keyId) =>
-        isItemId(keyId) &&
-        (itemLocation[keyId] === "player" ||
-          itemLocation[keyId] === currentRoom)
-    );
-    if (visibleKeys.length === 2) {
-      return {
-        ...payload,
-        gameState: {
-          ...payload.gameState,
-          storyLine: [...storyLine, "Which key would you like to examine?"],
-        },
-        aborted: true,
-      };
-    }
-    if (visibleKeys.length === 1) {
-      return { ...payload, target: visibleKeys[0] };
-    }
   }
   return payload;
 };
@@ -143,8 +117,8 @@ const lookBath: PipelineFunction = (payload) => {
 };
 
 const lookPipline = [
+  runKeyConversion,
   lookRoom,
-  lookKey,
   lookItem,
   lookDrogo,
   lookPuzzleNPC,

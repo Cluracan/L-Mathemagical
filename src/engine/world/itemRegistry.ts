@@ -11,7 +11,10 @@ class ItemRegistry {
     return this.itemData[id].descriptions.inventory;
   }
   getPickUpDescription(id: ItemId) {
-    return this.itemData[id].descriptions.pickUp;
+    return `You pick up the ${this.itemData[id].descriptions.pickUp}`;
+  }
+  getDropDescription(id: ItemId) {
+    return `You drop the ${this.itemData[id].descriptions.pickUp}`;
   }
   getExamineDescription(id: ItemId) {
     return this.itemData[id].descriptions.examine;

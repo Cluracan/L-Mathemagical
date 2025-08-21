@@ -3,7 +3,7 @@ import { itemRegistry } from "../world/itemRegistry";
 import type { HandleCommand } from "./dispatchCommand";
 
 export const handleInventory: HandleCommand = (args) => {
-  const { gameState, command, target } = args;
+  const { gameState } = args;
   const { itemLocation, storyLine } = gameState;
   const inventoryText = [];
   for (const [item, location] of Object.entries(itemLocation)) {

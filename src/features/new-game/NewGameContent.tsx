@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ChangeEvent } from "react";
+import { useState, type FormEvent, type ChangeEvent, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import {
   Card,
@@ -29,6 +29,10 @@ export const NewGameContent = () => {
     useGameStore();
   const navigate = useNavigate({ from: "/new" });
 
+  useEffect(() => {
+    resetGameStore();
+  }, []);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (!name.trim()) {
@@ -44,7 +48,7 @@ export const NewGameContent = () => {
     } else {
       setError(false);
       setHelperText(" ");
-      resetGameStore();
+      // resetGameStore();
       setPlayerName(name);
       navigate({
         to: "/game",

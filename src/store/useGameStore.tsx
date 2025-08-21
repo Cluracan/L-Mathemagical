@@ -8,6 +8,7 @@ import type { ItemId } from "../assets/data/itemData";
 
 export type GameStoreState = {
   playerName: string;
+  playerHeight: "threeFifths" | "threeFourths" | "one" | "fiveFourths";
   modernMode: boolean;
   currentRoom: RoomId;
   isInvisible: boolean;
@@ -30,7 +31,8 @@ export type GameStore = GameStoreState & GameStoreActions;
 
 const initialGameState: GameStoreState = {
   playerName: "player 1",
-  modernMode: false,
+  playerHeight: "one",
+  modernMode: true,
   currentRoom: "grass",
   itemLocation: initialItemLocation,
   isInvisible: false,

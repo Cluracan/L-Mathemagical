@@ -17,9 +17,10 @@ class GameEngine {
       itemLocation,
       isInvisible,
       keyLocked,
-      visitedRooms,
+      playerHeight,
       stepCount,
       storyLine,
+      visitedRooms,
     } = useGameStore.getState();
 
     //Send input to storyLine
@@ -28,9 +29,10 @@ class GameEngine {
       itemLocation,
       isInvisible,
       keyLocked,
-      visitedRooms: new Set(visitedRooms),
+      playerHeight,
       stepCount,
       storyLine: [...storyLine, userInput.trim()],
+      visitedRooms: new Set(visitedRooms),
     };
 
     //parse input
@@ -46,10 +48,15 @@ class GameEngine {
       itemLocation: newState.itemLocation,
       isInvisible: newState.isInvisible,
       keyLocked: newState.keyLocked,
-      visitedRooms: Array.from(newState.visitedRooms.values()),
+      playerHeight: newState.playerHeight,
       stepCount: newState.stepCount,
       storyLine: newState.storyLine,
+      visitedRooms: Array.from(newState.visitedRooms.values()),
     });
+    return {
+      success: true,
+      command,
+    };
   }
 }
 

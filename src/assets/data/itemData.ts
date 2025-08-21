@@ -73,10 +73,10 @@ export const itemData = {
         "The bottle contains a sweet-smelling blue liquid. It seems very drinkable...",
     },
     isDrinkable: true,
-    heightMultiplier: 1.25,
+    heightChange: { threeFifths: "threeFourths", one: "fiveFourths" },
     drinkMessage: {
-      "1": "You experience a very strange sensation as if all the molecules in your body are rearranging themselves. You feel as if you are being opened up like a retractable aerial. You have grown to five-fourths of your normal size.\n\nThe bottle vanishes into thin air as you drink the last sip.",
-      "0.6":
+      one: "You experience a very strange sensation as if all the molecules in your body are rearranging themselves. You feel as if you are being opened up like a retractable aerial. You have grown to five-fourths of your normal size.\n\nThe bottle vanishes into thin air as you drink the last sip.",
+      threeFifths:
         "You have grown a little. You are now three quarters of your original height.\n\nThe bottle has vanished.",
     },
   },
@@ -92,10 +92,10 @@ export const itemData = {
         "The phial contains a pink liquid. You take a sniff, but can't quite place the scent - it seems to be a mix of cherry-tart, custard, pineapple, roast turkey, toffee, and hot buttered toast.",
     },
     isDrinkable: true,
-    heightMultiplier: 0.6,
+    heightChange: { one: "threeFifths", fiveFourths: "threeFourths" },
     drinkMessage: {
-      "1": "You experience a very strange sensation as if all the molecules in your body are rearranging themselves. You feel as if you are being closed up like a retractable aerial. You have shrunk to three-fifths of your normal height.\n\nThe phial vanishes into thin air as you drink the last sip.",
-      "1.25":
+      one: "You experience a very strange sensation as if all the molecules in your body are rearranging themselves. You feel as if you are being closed up like a retractable aerial. You have shrunk to three-fifths of your normal height.\n\nThe phial vanishes into thin air as you drink the last sip.",
+      fiveFourths:
         "Now you are shrinking! You are now only three quarters of your original height.\n\nThe phial has vanished.",
     },
   },
@@ -131,7 +131,7 @@ export const itemData = {
       inventory: "A rusty key",
       pickUp: "rusty key",
       examine:
-        "This key is tarnished by age, but could be very useful, if you find the right door...",
+        "The rusty key is tarnished by age, but could be very useful, if you find the right door...",
     },
     isDrinkable: false,
   },
@@ -142,7 +142,7 @@ export const itemData = {
       floor: "There is an odd-shaped iron key lying here.",
       inventory: "An iron key",
       pickUp: "iron key",
-      examine: "This key has been carefully filed to fit multiple locks...",
+      examine: "The iron key has been carefully filed to fit multiple locks...",
     },
     isDrinkable: false,
   },
@@ -213,8 +213,15 @@ export const itemData = {
     initialLocation: RoomId;
     descriptions: Record<"floor" | "inventory" | "pickUp" | "examine", string>;
     isDrinkable: boolean;
-    heightMultiplier?: number;
-    drinkMessage?: Partial<Record<"0.6" | "1" | "1.25", string>>;
+    heightChange?: Partial<
+      Record<
+        "threeFifths" | "one" | "fiveFourths",
+        "threeFifths" | "threeFourths" | "fiveFourths"
+      >
+    >;
+    drinkMessage?: Partial<
+      Record<"threeFifths" | "one" | "fiveFourths", string>
+    >;
   }
 >;
 
@@ -234,11 +241,13 @@ export const initialItemLocation = Object.values(itemData).reduce(
   {}
 ) as Partial<Record<ItemId, RoomId>>;
 
-export const initialKeyLocked: Partial<Record<ItemId, boolean>> = {
+export const initialKeyLocked = {
   iron: true,
   rusty: true,
 };
 
 export const keyList = Object.keys(initialKeyLocked);
+
+export const isKeyType = createKeyGuard(initialKeyLocked);
 
 // const testItem: Record<ItemId, Item> = itemData;

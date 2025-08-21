@@ -9,7 +9,7 @@ export const handleTeleport: HandleCommand = (args) => {
     return handleLook({
       gameState: { ...gameState, currentRoom: target },
       command,
-      target,
+      target: null,
     });
   }
 

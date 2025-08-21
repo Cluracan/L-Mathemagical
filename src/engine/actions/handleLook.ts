@@ -8,7 +8,7 @@ import type {
   HandleCommand,
   PipelineFunction,
 } from "./dispatchCommand";
-import { runKeyConversion } from "../events/runKeyTriggers";
+import { runKeyConversion } from "../events/runKeyConversion";
 
 type BuildRoomDescription = (args: {
   gameState: GameState;

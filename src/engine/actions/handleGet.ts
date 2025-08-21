@@ -1,5 +1,5 @@
 import { isItemId } from "../../assets/data/itemData";
-import { runKeyConversion } from "../events/runKeyTriggers";
+import { runKeyConversion } from "../events/runKeyConversion";
 import { runRingTriggers } from "../events/runRingTriggers";
 import { itemRegistry } from "../world/itemRegistry";
 import type { HandleCommand, PipelineFunction } from "./dispatchCommand";

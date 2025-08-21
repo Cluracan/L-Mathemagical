@@ -1,11 +1,5 @@
 import type { PipelineFunction } from "../actions/dispatchCommand";
-import {
-  isItemId,
-  isKeyType,
-  itemData,
-  keyList,
-} from "../../assets/data/itemData";
-import { itemRegistry } from "../world/itemRegistry";
+import { isItemId, keyList } from "../../assets/data/itemData";
 
 /*
 Attempt to interpret 'key' (not an item) where possible

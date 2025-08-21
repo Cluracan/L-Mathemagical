@@ -7,7 +7,7 @@ import type { Mapper } from "./mapper";
 
 export const GameContent = () => {
   console.log("rendering Game page");
-  const { storyLine } = useGameStore();
+  const { storyLine, modernMode } = useGameStore();
   const [userInput, setUserInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputQueueRef = useRef<string[]>([]);
@@ -19,10 +19,15 @@ export const GameContent = () => {
   }, [storyLine]);
 
   const handleSubmit = (): void => {
-    console.log("submitting");
-    setUserInput("");
-    inputQueueRef.current.push(userInput);
-    processInputQueue();
+    if (modernMode) {
+      console.log("submitting");
+      setUserInput("");
+      inputQueueRef.current.push(userInput);
+      processInputQueue();
+    } else {
+      setUserInput("");
+      handleInput(userInput);
+    }
   };
 
   const processInputQueue = () => {
@@ -33,7 +38,10 @@ export const GameContent = () => {
       const userInput = inputQueueRef.current.shift();
       if (userInput) {
         readyForCommandRef.current = false;
-        handleInput(userInput);
+        const result = handleInput(userInput);
+        if (result.command !== "move") {
+          readyForCommandRef.current = true;
+        }
       }
     }
   };
@@ -45,12 +53,14 @@ export const GameContent = () => {
 
   return (
     <>
-      <p>{readyForCommandRef ? "Ready" : "Not.."}</p>
-      <Canvas
-        mapperRef={mapperRef}
-        readyForCommandRef={readyForCommandRef}
-        processInputQueue={processInputQueue}
-      />
+      <p>{modernMode ? "Modern Mode" : "Classic Mode"}</p>
+      {modernMode && (
+        <Canvas
+          mapperRef={mapperRef}
+          readyForCommandRef={readyForCommandRef}
+          processInputQueue={processInputQueue}
+        />
+      )}
       <Box height={"80vh"} width={"60vw"}>
         <Card sx={{ height: 1, overflowY: "auto", whiteSpace: "pre-wrap" }}>
           {storyLine.map((entry, index) => {

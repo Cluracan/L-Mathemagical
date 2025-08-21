@@ -29,19 +29,7 @@ export const parseInput: ParseInput = (userInput) => {
     return { command: "move", target: `${directionAliases[commandWord]}` };
   }
   //'rusty key' and 'rusty' must return target: 'rusty' (coerce last two words to an item if possible)
-  let target;
-  if (args.length < 1) {
-    target = null;
-  } else if (isItemId(args[args.length - 1])) {
-    //last word is item ('get rusty')
-    target = args[args.length - 1];
-  } else if (args.length > 1 && isItemId(args[args.length - 2])) {
-    //penultimate word is item ('get rusty key')
-    target = args[args.length - 2];
-  } else {
-    //else just pick last word ('go north')
-    target = args[args.length - 1];
-  }
+  let target = args[args.length - 1];
 
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {
     if (triggerWords.includes(commandWord)) {

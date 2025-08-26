@@ -39,7 +39,10 @@ export const GameContent = () => {
       if (userInput) {
         readyForCommandRef.current = false;
         const result = handleInput(userInput);
-        if (result.command !== "move" || !result.success) {
+        if (
+          (result.command !== "move" && result.feedback !== "move") ||
+          !result.success
+        ) {
           readyForCommandRef.current = true;
         }
       }
@@ -53,7 +56,6 @@ export const GameContent = () => {
 
   return (
     <>
-      <p>{modernMode ? "Modern Mode" : "Classic Mode"}</p>
       {modernMode && (
         <Canvas
           mapperRef={mapperRef}
@@ -61,7 +63,8 @@ export const GameContent = () => {
           processInputQueue={processInputQueue}
         />
       )}
-      <Box height={"80vh"} width={"60vw"}>
+
+      <Box height={"80vh"} width={"60vw"} sx={{ marginLeft: "2rem" }}>
         <Card sx={{ height: 1, overflowY: "auto", whiteSpace: "pre-wrap" }}>
           {storyLine.map((entry, index) => {
             return (

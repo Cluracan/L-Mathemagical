@@ -10,6 +10,9 @@ class ItemRegistry {
   getInventoryDescription(id: ItemId) {
     return this.itemData[id].descriptions.inventory;
   }
+  getItemName(id: ItemId) {
+    return this.itemData[id].descriptions.pickUp;
+  }
   getPickUpDescription(id: ItemId) {
     return `You pick up the ${this.itemData[id].descriptions.pickUp}`;
   }

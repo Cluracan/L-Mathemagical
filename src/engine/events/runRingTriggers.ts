@@ -1,7 +1,7 @@
 import type { PipelineFunction } from "../actions/dispatchCommand";
 
 export const runRingTriggers: PipelineFunction = (payload) => {
-  const { command, target, gameState, nextRoom } = payload;
+  const { command, target, gameState } = payload;
   const { storyLine, itemLocation, currentRoom } = gameState;
   if (target === "ring") {
     switch (command) {

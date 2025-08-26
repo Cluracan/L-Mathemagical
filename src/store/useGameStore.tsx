@@ -5,18 +5,23 @@ import { initialKeyLocked } from "../assets/data/itemData";
 import { roomRegistry } from "../engine/world/roomRegistry";
 import type { RoomId } from "../assets/data/roomData";
 import type { ItemId } from "../assets/data/itemData";
+import {
+  initialBathState,
+  type BathState,
+} from "../engine/events/runBathTriggers";
 
 export type GameStoreState = {
   playerName: string;
   modernMode: boolean;
   currentRoom: RoomId;
   isInvisible: boolean;
-  itemLocation: Partial<Record<ItemId, RoomId | "player">>;
+  itemLocation: Record<ItemId, RoomId | "player">;
   keyLocked: Partial<Record<ItemId, boolean>>;
   playerHeight: "threeFifths" | "threeFourths" | "one" | "fiveFourths";
   storyLine: string[];
   stepCount: number;
   visitedRooms: RoomId[];
+  bathState: BathState;
 };
 
 type GameStoreActions = {
@@ -38,6 +43,7 @@ const initialGameState: GameStoreState = {
   storyLine: [roomRegistry.getLongDescription("grass")],
   stepCount: 0,
   visitedRooms: ["grass"],
+  bathState: initialBathState,
 };
 
 export const useGameStore = create<GameStore>()(

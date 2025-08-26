@@ -23,6 +23,7 @@ export const runBlockedTriggers: PipelineFunction = (payload) => {
               ...payload.gameState.storyLine,
               blockedExitData[currentRoom].lockedText,
             ],
+            success: false,
           },
           aborted: true,
         };

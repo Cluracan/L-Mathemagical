@@ -25,6 +25,7 @@ class GameEngine {
       stepCount,
       storyLine,
       visitedRooms,
+      bathState,
     } = useGameStore.getState();
 
     //Send input to storyLine
@@ -37,6 +38,7 @@ class GameEngine {
       stepCount,
       storyLine: [...storyLine, userInput.trim()],
       visitedRooms: new Set(visitedRooms),
+      bathState,
       success: true,
       feedback: "",
     };

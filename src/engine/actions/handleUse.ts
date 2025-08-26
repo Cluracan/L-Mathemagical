@@ -2,9 +2,10 @@ import {
   blockedExitData,
   isBlockedRoom,
 } from "../../assets/data/blockedExitData";
-import { isItemId, isKeyType, keyList } from "../../assets/data/itemData";
+import { isItemId, isKeyType } from "../../assets/data/itemData";
+import { runBathTriggers } from "../events/runBathTriggers";
 import { runKeyConversion } from "../events/runKeyConversion";
-import { itemRegistry } from "../world/itemRegistry";
+
 import type {
   CommandPayload,
   HandleCommand,
@@ -112,7 +113,12 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
   }
 };
 
-const UsePipeline = [runKeyConversion, runUseKeyCheck, runUseFailureMessage];
+const UsePipeline = [
+  runBathTriggers,
+  runKeyConversion,
+  runUseKeyCheck,
+  runUseFailureMessage,
+];
 
 export const handleUse: HandleCommand = (args) => {
   const { command, target, gameState } = args;

@@ -13,6 +13,7 @@ import type {
   HandleCommand,
   PipelineFunction,
 } from "./dispatchCommand";
+import { runBathTriggers } from "../events/runBathTriggers";
 
 const validateDirection: PipelineFunction = (payload) => {
   if (payload.target && isDirectionAlias(payload.target)) {
@@ -115,6 +116,7 @@ const applyRoomDescription: PipelineFunction = (payload) => {
 };
 
 const movePipeline = [
+  runBathTriggers,
   runPoolTriggers,
   validateDirection,
   validateExit,

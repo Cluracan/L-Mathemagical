@@ -1,6 +1,9 @@
 import { roomRegistry } from "../world/roomRegistry";
 import { itemRegistry } from "../world/itemRegistry";
 import { isItemId } from "../../assets/data/itemData";
+import { runKeyConversion } from "../events/runKeyConversion";
+import { runPoolTriggers } from "../events/runPoolTriggers";
+import { runBathTriggers } from "../events/runBathTriggers";
 import type { GameState } from "../gameEngine";
 import type {
   Command,
@@ -8,8 +11,6 @@ import type {
   HandleCommand,
   PipelineFunction,
 } from "./dispatchCommand";
-import { runKeyConversion } from "../events/runKeyConversion";
-import { runPoolTriggers } from "../events/runPoolTriggers";
 
 //Helper function
 type BuildRoomDescription = (args: {
@@ -93,20 +94,18 @@ const lookItem: PipelineFunction = (payload) => {
         },
         aborted: true,
       };
-    } else {
-      return {
-        ...payload,
-        gameState: {
-          ...gameState,
-          storyLine: [...gameState.storyLine, "You don't see that here!"],
-          success: false,
-          feedback: "target not visible",
-        },
-        aborted: true,
-      };
     }
   }
-  return payload;
+  return {
+    ...payload,
+    gameState: {
+      ...gameState,
+      storyLine: [...gameState.storyLine, "You don't see that here!"],
+      success: false,
+      feedback: "target not visible",
+    },
+    aborted: true,
+  };
 };
 
 const lookDrogo: PipelineFunction = (payload) => {
@@ -122,8 +121,9 @@ const lookBath: PipelineFunction = (payload) => {
 };
 
 const lookPipline = [
-  runPoolTriggers,
+  runBathTriggers,
   runKeyConversion,
+  runPoolTriggers,
   lookRoom,
   lookItem,
   lookDrogo,

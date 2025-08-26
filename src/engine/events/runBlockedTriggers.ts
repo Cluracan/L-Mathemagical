@@ -3,6 +3,7 @@ import {
   blockedExitData,
 } from "../../assets/data/blockedExitData";
 import type { PipelineFunction } from "../actions/dispatchCommand";
+import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
 
 export const runBlockedTriggers: PipelineFunction = (payload) => {
   const { currentRoom, keyLocked } = payload.gameState;
@@ -15,18 +16,11 @@ export const runBlockedTriggers: PipelineFunction = (payload) => {
     if (blockedDirections.includes(target)) {
       //check for blocked door
       if (!keyRequired || keyLocked[keyRequired]) {
-        return {
-          ...payload,
-          gameState: {
-            ...payload.gameState,
-            storyLine: [
-              ...payload.gameState.storyLine,
-              blockedExitData[currentRoom].lockedText,
-            ],
-            success: false,
-          },
-          aborted: true,
-        };
+        return abortWithCommandFailure(
+          payload,
+          blockedExitData[currentRoom].lockedText,
+          "Blocked exit"
+        );
       }
     }
   }

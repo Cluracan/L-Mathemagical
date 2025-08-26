@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import { type ItemId } from "../../assets/data/itemData";
 import { createKeyGuard } from "../../utils/guards";
 import type { PipelineFunction } from "../actions/dispatchCommand";
@@ -174,14 +175,14 @@ export const runBathTriggers: PipelineFunction = (payload) => {
 
   //Use item to fill hole
   if (command === "use" && canFillBathHole(target, gameState)) {
-    bathState[target] = true;
-    itemLocation[target] = "pit";
+    const nextGameState = produce(gameState, (draft) => {
+      draft.itemLocation[target] = "pit";
+      draft.bathState[target] = true;
+      draft.storyLine.push(bathItemDescription[target].filled);
+    });
     return {
       ...payload,
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, bathItemDescription[target].filled],
-      },
+      gameState: nextGameState,
       aborted: true,
     };
   }

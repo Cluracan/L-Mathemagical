@@ -63,7 +63,7 @@ export const handleDrink: HandleCommand = (args) => {
         const newHeight = getValue(itemData[target].heightChange, playerHeight);
         return {
           ...gameState,
-          itemLocation: { ...itemLocation, bottle: "pit" },
+          itemLocation: { ...itemLocation, phial: "pit" },
           playerHeight: newHeight,
           storyLine: [...gameState.storyLine, drinkMessage],
         };

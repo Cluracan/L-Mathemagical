@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import {
   blockedExitData,
   isBlockedRoom,
@@ -11,6 +12,8 @@ import type {
   HandleCommand,
   PipelineFunction,
 } from "./dispatchCommand";
+import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
+import { abortWithCommandSuccess } from "../utils/abortWithCommandSuccess";
 
 const runUseKeyCheck: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
@@ -31,44 +34,34 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
   }
 
   if (itemLocation[requiredKey] !== "player") {
-    return {
-      ...payload,
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, "You don't have the right key!"],
-        success: false,
-        feedback: "requiredKey not on player",
-      },
-      aborted: true,
-    };
+    return abortWithCommandFailure(
+      payload,
+      "You don't have the right key!",
+      "no key"
+    );
   }
 
   if (target === requiredKey) {
+    const nextGameState = produce(gameState, (draft) => {
+      draft.keyLocked[requiredKey] = !draft.keyLocked[requiredKey];
+      draft.storyLine.push(
+        draft.keyLocked[requiredKey]
+          ? "You lock and close the door"
+          : "You unlock and open the door"
+      );
+    });
+
     return {
       ...payload,
-      gameState: {
-        ...gameState,
-        storyLine: [
-          ...storyLine,
-          keyLocked[requiredKey]
-            ? "You unlock and open the door"
-            : "You lock and close the door",
-        ],
-        keyLocked: { ...keyLocked, [requiredKey]: !keyLocked[requiredKey] },
-      },
+      gameState: nextGameState,
       aborted: true,
     };
   } else {
-    return {
-      ...payload,
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, "That's the wrong key!"],
-        success: false,
-        feedback: "target !== requiredKey (wrong key choice from inv)",
-      },
-      aborted: true,
-    };
+    return abortWithCommandFailure(
+      payload,
+      "That's the wrong key!",
+      "wrong key"
+    );
   }
 };
 
@@ -76,40 +69,21 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { storyLine, itemLocation } = gameState;
   if (target === null) {
-    return {
-      ...payload,
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, "Use what?"],
-        success: false,
-        feedback: "no target",
-      },
-      aborted: true,
-    };
+    return abortWithCommandFailure(payload, "Use what?", "no target");
   }
 
   if (isItemId(target) && itemLocation[target] === "player") {
-    return {
-      ...payload,
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, `You can't use that here...`],
-        success: false,
-        feedback: "no use in currentRoom",
-      },
-      aborted: true,
-    };
+    return abortWithCommandFailure(
+      payload,
+      "You can't use that here...",
+      "no use in currentRoom"
+    );
   } else {
-    return {
-      ...payload,
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, "You don't have that!"],
-        success: false,
-        feedback: "target not item || not on player",
-      },
-      aborted: true,
-    };
+    return abortWithCommandFailure(
+      payload,
+      "You don't have that!",
+      "target not item || not on player"
+    );
   }
 };
 

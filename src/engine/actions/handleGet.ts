@@ -1,35 +1,39 @@
+import { produce } from "immer";
 import { isItemId } from "../../assets/data/itemData";
 import { runKeyConversion } from "../events/runKeyConversion";
 import { runRingTriggers } from "../events/runRingTriggers";
 import { itemRegistry } from "../world/itemRegistry";
 import type { HandleCommand, PipelineFunction } from "./dispatchCommand";
+import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
 
 const getItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
-  const { storyLine, itemLocation, currentRoom } = gameState;
+  const { itemLocation, currentRoom } = gameState;
 
-  if (target && isItemId(target) && itemLocation[target] === currentRoom) {
-    return {
-      ...payload,
-      gameState: {
-        ...gameState,
-        itemLocation: { ...itemLocation, [target]: "player" },
-        storyLine: [...storyLine, itemRegistry.getPickUpDescription(target)],
-      },
-      aborted: true,
-    };
-  } else {
-    return {
-      ...payload,
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, `You don't see that here!`],
-        success: false,
-        feedback: "no target || target !==itemId || itemId not in location",
-      },
-      aborted: true,
-    };
+  if (!target) {
+    return abortWithCommandFailure(payload, "Get what?", "no target");
   }
+
+  if (!isItemId(target) || itemLocation[target] !== currentRoom) {
+    return abortWithCommandFailure(
+      payload,
+      "You don't see that here!",
+      "target !==itemId || itemId not in location"
+    );
+  }
+
+  if (isItemId(target) && itemLocation[target] === currentRoom) {
+    const nextGameState = produce(gameState, (draft) => {
+      draft.itemLocation[target] = "player";
+      draft.storyLine.push(itemRegistry.getPickUpDescription(target));
+    });
+    return { ...payload, gameState: nextGameState, aborted: true };
+  }
+
+  return {
+    ...payload,
+    gameState: { ...gameState, success: false, feedback: "ERROR in getItem" },
+  };
 };
 
 const getPipeline = [runKeyConversion, runRingTriggers, getItem];

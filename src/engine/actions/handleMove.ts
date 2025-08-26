@@ -14,21 +14,18 @@ import type {
   PipelineFunction,
 } from "./dispatchCommand";
 import { runBathTriggers } from "../events/runBathTriggers";
+import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
+import { produce } from "immer";
 
 const validateDirection: PipelineFunction = (payload) => {
   if (payload.target && isDirectionAlias(payload.target)) {
     return { ...payload, direction: directionAliases[payload.target] };
   } else {
-    return {
-      ...payload,
-      gameState: {
-        ...payload.gameState,
-        storyLine: [...payload.gameState.storyLine, "That's not a direction!"],
-        success: false,
-        feedback: "not a direction",
-      },
-      aborted: true,
-    };
+    return abortWithCommandFailure(
+      payload,
+      "That's not a direction!",
+      "not a direction"
+    );
   }
 };
 
@@ -54,19 +51,11 @@ const validateExit: PipelineFunction = (payload) => {
       nextRoom,
     };
   } else {
-    return {
-      ...payload,
-      gameState: {
-        ...payload.gameState,
-        storyLine: [
-          ...payload.gameState.storyLine,
-          "You can't travel that way!",
-        ],
-        success: false,
-        feedback: "exit not available",
-      },
-      aborted: true,
-    };
+    return abortWithCommandFailure(
+      payload,
+      "You can't travel that way!",
+      "exit not available"
+    );
   }
 };
 
@@ -82,37 +71,32 @@ const movePlayer: PipelineFunction = (payload) => {
       aborted: true,
     };
   }
-
+  const gameState = payload.gameState;
+  const nextGameState = produce(gameState, (draft) => {
+    draft.visitedRooms.add(gameState.currentRoom);
+    draft.currentRoom = payload.nextRoom!;
+    draft.stepCount = gameState.stepCount + 1;
+    draft.storyLine.push(
+      `You travel ${directionNarratives[payload.direction!]}`
+    );
+  });
   return {
     ...payload,
-    gameState: {
-      ...payload.gameState,
-      nextRoom: null,
-      visitedRooms: new Set(payload.gameState.visitedRooms).add(
-        payload.gameState.currentRoom
-      ),
-      currentRoom: payload.nextRoom,
-      stepCount: payload.gameState.stepCount + 1,
-      storyLine: [
-        ...payload.gameState.storyLine,
-        `You travel ${directionNarratives[payload.direction]}`,
-      ],
-    },
+    gameState: nextGameState,
+    nextRoom: null,
+    direction: null,
+    aborted: true,
   };
 };
 
 const applyRoomDescription: PipelineFunction = (payload) => {
-  const roomDescription = buildRoomDescription({
-    gameState: payload.gameState,
-    command: payload.command,
+  const { gameState, command } = payload;
+  const roomDescription = buildRoomDescription(gameState, command);
+  const nextGameState = produce(gameState, (draft) => {
+    draft.storyLine.push(...roomDescription);
   });
-  return {
-    ...payload,
-    gameState: {
-      ...payload.gameState,
-      storyLine: [...payload.gameState.storyLine, ...roomDescription],
-    },
-  };
+
+  return { ...payload, gameState: nextGameState, aborted: true };
 };
 
 const movePipeline = [

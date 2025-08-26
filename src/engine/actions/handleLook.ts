@@ -11,16 +11,15 @@ import type {
   HandleCommand,
   PipelineFunction,
 } from "./dispatchCommand";
+import { produce } from "immer";
+import { abortWithCommandSuccess } from "../utils/abortWithCommandSuccess";
+import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
 
-//Helper function
-type BuildRoomDescription = (args: {
-  gameState: GameState;
-  command: Command;
-}) => string[];
-export const buildRoomDescription: BuildRoomDescription = ({
-  gameState,
-  command,
-}) => {
+//Helper functions
+export const buildRoomDescription = (
+  gameState: GameState,
+  command: Command
+) => {
   const { visitedRooms, currentRoom, itemLocation } = gameState;
   const roomDescription = [];
   //Add room text
@@ -46,18 +45,14 @@ export const buildRoomDescription: BuildRoomDescription = ({
 };
 
 const lookRoom: PipelineFunction = (payload) => {
-  console.log(payload.target);
   if (payload.target === null) {
-    const roomDescription = buildRoomDescription({
-      gameState: payload.gameState,
-      command: "look",
+    const roomDescription = buildRoomDescription(payload.gameState, "look");
+    const nextGameState = produce(payload.gameState, (draft) => {
+      draft.storyLine.push(...roomDescription);
     });
     return {
       ...payload,
-      gameState: {
-        ...payload.gameState,
-        storyLine: [...payload.gameState.storyLine, ...roomDescription],
-      },
+      gameState: nextGameState,
       aborted: true,
     };
   }
@@ -71,41 +66,22 @@ const lookItem: PipelineFunction = (payload) => {
   //Look at item
   if (target && isItemId(target)) {
     if (itemLocation[target] === "player") {
-      return {
-        ...payload,
-        gameState: {
-          ...gameState,
-          storyLine: [
-            ...gameState.storyLine,
-            itemRegistry.getExamineDescription(target),
-          ],
-        },
-        aborted: true,
-      };
+      return abortWithCommandSuccess(
+        payload,
+        itemRegistry.getInventoryDescription(target)
+      );
     } else if (itemLocation[target] === currentRoom) {
-      return {
-        ...payload,
-        gameState: {
-          ...gameState,
-          storyLine: [
-            ...gameState.storyLine,
-            itemRegistry.getFloorDescription(target),
-          ],
-        },
-        aborted: true,
-      };
+      return abortWithCommandSuccess(
+        payload,
+        itemRegistry.getFloorDescription(target)
+      );
     }
   }
-  return {
-    ...payload,
-    gameState: {
-      ...gameState,
-      storyLine: [...gameState.storyLine, "You don't see that here!"],
-      success: false,
-      feedback: "target not visible",
-    },
-    aborted: true,
-  };
+  return abortWithCommandFailure(
+    payload,
+    "You don't see that here!",
+    "target not visible"
+  );
 };
 
 const lookDrogo: PipelineFunction = (payload) => {

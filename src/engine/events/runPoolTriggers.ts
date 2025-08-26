@@ -41,10 +41,10 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
     case "move":
       if (target === "in") {
         if (playerHeight === "threeFourths") {
-          const nextRoomDescription = buildRoomDescription({
-            gameState: { ...gameState, currentRoom: "tunnelTop" },
-            command,
-          });
+          const nextRoomDescription = buildRoomDescription(
+            { ...gameState, currentRoom: "tunnelTop" },
+            command
+          );
           return {
             ...payload,
             gameState: {

@@ -1,84 +1,70 @@
+import { produce } from "immer";
 import { isItemId, itemData } from "../../assets/data/itemData";
 import type { HandleCommand } from "./dispatchCommand";
 
 export const handleDrink: HandleCommand = (args) => {
   const { gameState, target } = args;
-  const { itemLocation } = gameState;
-  if (!target)
-    return {
-      ...gameState,
-      storyLine: [...gameState.storyLine, "Drink what?"],
-      success: false,
-      feedback: "no target",
-    };
+  const { itemLocation, playerHeight } = gameState;
+  console.log({ playerHeight });
+  if (!target) {
+    const nextGameState = produce(gameState, (draft) => {
+      draft.storyLine.push("Drink what?");
+      draft.success = false;
+      draft.feedback = "no target";
+    });
+    return nextGameState;
+  }
 
   if (!isItemId(target) || itemLocation[target] !== "player") {
-    return {
-      ...gameState,
-      storyLine: [...gameState.storyLine, "You don't have that..."],
-      success: false,
-      feedback: "itemId not on player",
-    };
+    const nextGameState = produce(gameState, (draft) => {
+      draft.storyLine.push("You don't have that...");
+      draft.success = false;
+      draft.feedback = "itemId not on player";
+    });
+    return nextGameState;
   }
 
   if (!itemData[target].isDrinkable) {
-    return {
-      ...gameState,
-      storyLine: [...gameState.storyLine, "You can't drink that!"],
-      success: false,
-      feedback: "itemId non-drinkable",
-    };
+    const nextGameState = produce(gameState, (draft) => {
+      draft.storyLine.push("You can't drink that!");
+      draft.success = false;
+      draft.feedback = "itemId non-drinkable";
+    });
+    return nextGameState;
   }
-
-  const playerHeight = gameState.playerHeight;
-  const getValue = <T extends Record<string, string>, K extends keyof T>(
-    obj: T,
-    key: K
-  ): T[K] => {
-    return obj[key];
-  };
 
   switch (target) {
     case "bottle":
       if (playerHeight === "threeFifths" || playerHeight === "one") {
-        const drinkMessage = getValue(
-          itemData[target].drinkMessage,
-          playerHeight
-        );
-        const newHeight = getValue(itemData[target].heightChange, playerHeight);
-        return {
-          ...gameState,
-          itemLocation: { ...itemLocation, bottle: "pit" },
-          playerHeight: newHeight,
-          storyLine: [...gameState.storyLine, drinkMessage],
-        };
+        const drinkFeedback = itemData["bottle"].drinkMessage[playerHeight];
+        const newHeight = itemData["bottle"].heightChange[playerHeight];
+        const nextGameState = produce(gameState, (draft) => {
+          draft.storyLine.push(drinkFeedback);
+          draft.playerHeight = newHeight;
+          draft.itemLocation.bottle = "pit";
+        });
+        return nextGameState;
       }
       break;
     case "phial":
       if (playerHeight === "one" || playerHeight === "fiveFourths") {
-        const drinkMessage = getValue(
-          itemData[target].drinkMessage,
-          playerHeight
-        );
-        const newHeight = getValue(itemData[target].heightChange, playerHeight);
-        return {
-          ...gameState,
-          itemLocation: { ...itemLocation, phial: "pit" },
-          playerHeight: newHeight,
-          storyLine: [...gameState.storyLine, drinkMessage],
-        };
+        const drinkFeedback = itemData["phial"].drinkMessage[playerHeight];
+        const newHeight = itemData["phial"].heightChange[playerHeight];
+        const nextGameState = produce(gameState, (draft) => {
+          draft.storyLine.push(drinkFeedback);
+          draft.playerHeight = newHeight;
+          draft.itemLocation.bottle = "pit";
+        });
+        return nextGameState;
       }
       break;
     default:
-      return {
-        ...gameState,
-        storyLine: [
-          ...gameState.storyLine,
-          "That's strange - nothing happened!",
-        ],
-        success: false,
-        feedback: "ERROR",
-      };
+      const nextGameState = produce(gameState, (draft) => {
+        draft.storyLine.push("That's strange - nothing happened!");
+        draft.success = false;
+        draft.feedback = "ERROR in handleDrink - drining item not handled";
+      });
+      return nextGameState;
   }
   return gameState;
   //this last return is just to satisfy typescript, which is being super conservative

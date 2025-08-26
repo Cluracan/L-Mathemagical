@@ -56,9 +56,6 @@ export type BathState = Record<keyof typeof initialBathState, boolean>;
 
 //Helper functions
 const isBathItem = createKeyGuard(initialBathState);
-const isBathItemToo = (
-  item: PropertyKey
-): item is keyof typeof initialBathState => item in initialBathState;
 const willFloat = (bath: BathState) =>
   Object.values(bath).every((holeFilled) => holeFilled);
 

@@ -239,7 +239,7 @@ export const isItemId = createKeyGuard(itemData);
 export const initialItemLocation = Object.values(itemData).reduce(
   (obj, item) => Object.assign(obj, { [item.id]: item.initialLocation }),
   {}
-) as Partial<Record<ItemId, RoomId>>;
+) as Record<ItemId, RoomId>;
 
 export const initialKeyLocked = {
   iron: true,

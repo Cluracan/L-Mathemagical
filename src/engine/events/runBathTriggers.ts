@@ -1,10 +1,7 @@
 import { produce } from "immer";
 import { type ItemId } from "../../assets/data/itemData";
 import { createKeyGuard } from "../../utils/guards";
-import type {
-  CommandPayload,
-  PipelineFunction,
-} from "../actions/dispatchCommand";
+import type { PipelineFunction } from "../actions/dispatchCommand";
 import type { GameState } from "../gameEngine";
 import { abortWithCommandSuccess } from "../utils/abortWithCommandSuccess";
 import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";

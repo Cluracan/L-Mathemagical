@@ -15,7 +15,9 @@ import type {
 } from "./dispatchCommand";
 import { runBathTriggers } from "../events/runBathTriggers";
 import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
-import { produce } from "immer";
+import { produce, enableMapSet } from "immer";
+
+enableMapSet();
 
 const validateDirection: PipelineFunction = (payload) => {
   if (payload.target && isDirectionAlias(payload.target)) {
@@ -60,31 +62,32 @@ const validateExit: PipelineFunction = (payload) => {
 };
 
 const movePlayer: PipelineFunction = (payload) => {
-  if (!payload.nextRoom || !payload.direction) {
+  const gameState = payload.gameState;
+  if (!!payload.nextRoom && payload.direction) {
+    const nextGameState = produce(gameState, (draft) => {
+      draft.visitedRooms.add(gameState.currentRoom);
+      draft.currentRoom = payload.nextRoom!;
+      draft.stepCount = gameState.stepCount + 1;
+      draft.storyLine.push(
+        `You travel ${directionNarratives[payload.direction!]}`
+      );
+    });
     return {
       ...payload,
-      gameState: {
-        ...payload.gameState,
-        success: false,
-        feedback: "ERROR in movePlayer",
-      },
-      aborted: true,
+      gameState: nextGameState,
+      nextRoom: null,
+      direction: null,
+      aborted: false,
     };
   }
-  const gameState = payload.gameState;
-  const nextGameState = produce(gameState, (draft) => {
-    draft.visitedRooms.add(gameState.currentRoom);
-    draft.currentRoom = payload.nextRoom!;
-    draft.stepCount = gameState.stepCount + 1;
-    draft.storyLine.push(
-      `You travel ${directionNarratives[payload.direction!]}`
-    );
-  });
+
   return {
     ...payload,
-    gameState: nextGameState,
-    nextRoom: null,
-    direction: null,
+    gameState: {
+      ...payload.gameState,
+      success: false,
+      feedback: "ERROR in movePlayer",
+    },
     aborted: true,
   };
 };

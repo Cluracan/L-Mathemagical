@@ -13,7 +13,7 @@ import { handleDrink } from "./handleDrink";
 import { handleSay } from "./handleSay";
 import { handleSwim } from "./handleSwim";
 
-type CommandArgs = {
+export type CommandArgs = {
   command: Command;
   target: string | null;
   gameState: GameState;

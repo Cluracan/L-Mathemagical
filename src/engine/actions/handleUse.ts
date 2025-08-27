@@ -6,18 +6,17 @@ import {
 import { isItemId, isKeyType } from "../../assets/data/itemData";
 import { runBathTriggers } from "../events/runBathTriggers";
 import { runKeyConversion } from "../events/runKeyConversion";
+import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
 
 import type {
   CommandPayload,
   HandleCommand,
   PipelineFunction,
 } from "./dispatchCommand";
-import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
-import { abortWithCommandSuccess } from "../utils/abortWithCommandSuccess";
 
 const runUseKeyCheck: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
-  const { itemLocation, storyLine, keyLocked, currentRoom } = gameState;
+  const { itemLocation, currentRoom } = gameState;
 
   const requiredKey =
     isBlockedRoom(currentRoom) && blockedExitData[currentRoom].keyRequired;
@@ -67,7 +66,7 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
 
 const runUseFailureMessage: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
-  const { storyLine, itemLocation } = gameState;
+  const { itemLocation } = gameState;
   if (target === null) {
     return abortWithCommandFailure(payload, "Use what?", "no target");
   }

@@ -1,8 +1,8 @@
 import { produce } from "immer";
 import type { PipelineFunction } from "../actions/dispatchCommand";
 
-const ringMessages = {
-  drop: "As you drop the ring, you sense a great magical power blast through you. You see youself fade back into view.",
+const ringFeedback = {
+  drop: "As you drop the ring, you sense a great magical power blast through you. You see yourself fade back into view.",
   get: "As you pick up the ring, you sense a great magical power blast through you.  The ring has made you, and everything you are carrying invisible.",
 } as const;
 
@@ -15,7 +15,7 @@ export const runRingTriggers: PipelineFunction = (payload) => {
         if (itemLocation[target] === "player") {
           const nextGameState = produce(gameState, (draft) => {
             draft.isInvisible = false;
-            draft.storyLine.push(ringMessages.drop);
+            draft.storyLine.push(ringFeedback.drop);
             draft.itemLocation[target] = currentRoom;
           });
           return { ...payload, gameState: nextGameState, done: true };
@@ -25,7 +25,7 @@ export const runRingTriggers: PipelineFunction = (payload) => {
         if (itemLocation[target] === currentRoom) {
           const nextGameState = produce(gameState, (draft) => {
             draft.isInvisible = true;
-            draft.storyLine.push(ringMessages.get);
+            draft.storyLine.push(ringFeedback.get);
             draft.itemLocation[target] = "player";
           });
           return {

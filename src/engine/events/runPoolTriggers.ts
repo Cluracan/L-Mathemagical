@@ -5,7 +5,7 @@ import { failCommand } from "../utils/abortWithCommandFailure";
 import { stopWithSuccess } from "../utils/abortWithCommandSuccess";
 
 const holeAttemptFeedback: Record<
-  "threeFifths" | "threeFourths" | "one" | "fiveFourths",
+  "threeFifths" | "threeFourths" | "one" | "fiveFourths" | "lookHole",
   string
 > = {
   one: "You can't fit through a hole that small!",
@@ -14,6 +14,8 @@ const holeAttemptFeedback: Record<
     "You are small enough to fit through the hole but, as it is some distance above the floor of the pool, it is too high for you to reach.",
   threeFourths:
     "You are only just tall enough to reach the hole, and it is a very tight squeeze to enter it",
+  lookHole:
+    "Peering into the hole, you see a small tunnel sloping downhill. If only you could get in!",
 };
 
 export const runPoolTriggers: PipelineFunction = (payload) => {
@@ -27,10 +29,7 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
   switch (command) {
     case "look":
       if (target && ["hole", "grate", "grating"].includes(target)) {
-        return stopWithSuccess(
-          payload,
-          "Peering into the hole, you see a small tunnel sloping downhill. If only you could get in!"
-        );
+        return stopWithSuccess(payload, holeAttemptFeedback.lookHole);
       }
       break;
 

@@ -47,11 +47,3 @@ export const directionNarratives: Record<ExitDirection, string> = {
 
 // TODO type guards - if only one, remove utils function?
 export const isDirectionAlias = createKeyGuard(directionAliases);
-
-// export const isDirectionNarrativeKey = createKeyGuard(directionNarratives);
-
-/* Use:
-if(isDirectionKey(keyWord)){
-..then  directions[keyWord]  is safely an ExitDirection
-}
-*/

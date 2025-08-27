@@ -2,12 +2,11 @@ import type { PipelineFunction } from "../actions/dispatchCommand";
 import { isItemId, keyList } from "../../assets/data/itemData";
 
 /*
-Attempt to interpret 'key' (not an item) where possible
+Attempts to interpret 'key' (not an item) where possible
 target='key' --> target = 'rusty' | 'iron' 
 */
 
 export const runKeyConversion: PipelineFunction = (payload) => {
-  console.log(`Running ring triggers`);
   const { command, target, gameState } = payload;
   const { storyLine, itemLocation, currentRoom } = gameState;
   //This is just for when a user types 'key' instead of 'iron'

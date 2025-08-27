@@ -13,7 +13,6 @@ const dropItem: PipelineFunction = (payload) => {
   if (!target) {
     return abortWithCommandFailure(payload, "Drop what?", "no target");
   }
-
   if (!isItemId(target) || itemLocation[target] !== "player") {
     return abortWithCommandFailure(
       payload,

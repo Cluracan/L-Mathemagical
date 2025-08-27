@@ -1,8 +1,14 @@
 import { produce } from "immer";
 import { type ItemId } from "../../assets/data/itemData";
 import { createKeyGuard } from "../../utils/guards";
-import type { PipelineFunction } from "../actions/dispatchCommand";
+import type {
+  CommandPayload,
+  PipelineFunction,
+} from "../actions/dispatchCommand";
 import type { GameState } from "../gameEngine";
+import { abortWithCommandSuccess } from "../utils/abortWithCommandSuccess";
+import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
+import type { RoomId } from "../../assets/data/roomData";
 
 //Static data
 export const initialBathState = {
@@ -16,7 +22,7 @@ export const initialBathState = {
 const bathItemDescription = {
   tetrahedron: {
     filled: "The platinum tetrahedron neatly fits the triangular hole",
-    empty: "...it has a trianglular hole",
+    empty: "...it has a triangular hole",
   },
   cube: {
     filled: "The gold cube fills the rectangular hole",
@@ -37,7 +43,7 @@ const bathItemDescription = {
   },
 };
 
-const bathResponse = {
+export const bathResponse = {
   willFloat: "looks watertight and ready to float...\n\n",
   willSink: "won't float as it is not quite watertight...\n\n",
   failure: "How are you going to cross the river?",
@@ -46,7 +52,7 @@ const bathResponse = {
   overLoaded:
     "The bath won't carry that much weight. You must take fewer things with you or you will sink.",
   success: "The bath takes you safely across the river.",
-};
+} as const;
 
 const bathItems = Object.keys(
   initialBathState
@@ -89,103 +95,110 @@ const playerIsOverLoaded = (gameState: GameState) => {
   return inventoryCount > 1;
 };
 
-//Main function
-export const runBathTriggers: PipelineFunction = (payload) => {
-  const { command, target, gameState } = payload;
-  const { itemLocation, currentRoom, bathState, storyLine } = gameState;
+const playerIsAttemptingToCrossRiver = (
+  currentRoom: RoomId,
+  target: string | null
+) => {
+  return (
+    (currentRoom === "riverS" && target === "n") ||
+    (currentRoom === "riverN" && target === "s")
+  );
+};
 
-  if (currentRoom !== "riverS" && currentRoom !== "riverN") return payload;
+const canFillBathHole = (
+  target: string | null,
+  gameState: GameState
+): target is keyof typeof initialBathState => {
+  return (
+    !!target &&
+    isBathItem(target) &&
+    gameState.itemLocation[target] === "player"
+  );
+};
 
-  //Look at bath
-  if (command === "look" && target === "bath") {
-    return {
-      ...payload,
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, getBathDescription(bathState)],
-      },
-      aborted: true,
-    };
-  }
-  //Use Bath/move across river
-  if (
-    (command === "use" && target === "bath") ||
-    (command === "move" && currentRoom === "riverS" && target === "n") ||
-    (command === "move" && currentRoom === "riverN" && target === "s")
-  ) {
-    if (!willFloat(bathState)) {
-      return {
-        ...payload,
-        gameState: {
-          ...gameState,
-          storyLine: [...storyLine, getBathDescription(bathState)],
-          success: false,
-          feedback: "move",
-        },
-        aborted: true,
-      };
-    }
-    if (noOar(gameState)) {
-      return {
-        ...payload,
-        gameState: {
-          ...gameState,
-          storyLine: [...storyLine, bathResponse.noOar],
-          success: false,
-          feedback: "move",
-        },
-        aborted: true,
-      };
-    }
-    if (playerIsOverLoaded(gameState)) {
-      return {
-        ...payload,
-        gameState: {
-          ...gameState,
-          storyLine: [...storyLine, bathResponse.overLoaded],
-          success: false,
-          feedback: "move",
-        },
-        aborted: true,
-      };
+//command handlers
+const bathCommandHandlers = {
+  look: (payload) => {
+    const { gameState, target } = payload;
+    if (
+      target !== "bath" ||
+      (gameState.currentRoom !== "riverS" && gameState.currentRoom !== "riverN")
+    ) {
+      return payload;
     }
 
-    return {
-      ...payload,
-      gameState: {
-        ...gameState,
-        storyLine: [...storyLine, bathResponse.success],
-        currentRoom: currentRoom === "riverN" ? "riverS" : "riverN",
-        feedback: "move",
-      },
-      aborted: true,
-    };
-  }
-
-  const canFillBathHole = (
-    target: string | null,
-    gameState: GameState
-  ): target is keyof typeof initialBathState => {
-    return (
-      !!target &&
-      isBathItem(target) &&
-      gameState.itemLocation[target] === "player"
+    return abortWithCommandSuccess(
+      payload,
+      getBathDescription(gameState.bathState)
     );
-  };
+  },
 
-  //Use item to fill hole
-  if (command === "use" && canFillBathHole(target, gameState)) {
+  use: (payload) => {
+    const { gameState, target } = payload;
+    const { currentRoom, bathState } = gameState;
+    //Using item to fill hole
+    if (target && canFillBathHole(target, gameState)) {
+      const nextGameState = produce(gameState, (draft) => {
+        draft.itemLocation[target] = "pit";
+        draft.bathState[target] = true;
+        draft.storyLine.push(bathItemDescription[target].filled);
+      });
+      return {
+        ...payload,
+        gameState: nextGameState,
+        aborted: true,
+      };
+    }
+
+    if (target !== "bath") {
+      return payload;
+    }
+    //Using bath to cross river
+    if (!willFloat(bathState)) {
+      return abortWithCommandFailure(
+        payload,
+        getBathDescription(bathState),
+        "move"
+      );
+    }
+
+    if (noOar(gameState))
+      return abortWithCommandFailure(payload, bathResponse.noOar, "move");
+
+    if (playerIsOverLoaded(gameState)) {
+      return abortWithCommandFailure(payload, bathResponse.overLoaded, "move");
+    }
+    // move across river
     const nextGameState = produce(gameState, (draft) => {
-      draft.itemLocation[target] = "pit";
-      draft.bathState[target] = true;
-      draft.storyLine.push(bathItemDescription[target].filled);
+      draft.currentRoom = currentRoom === "riverN" ? "riverS" : "riverN";
+      draft.storyLine.push(bathResponse.success);
+      draft.feedback = "move";
     });
     return {
       ...payload,
       gameState: nextGameState,
       aborted: true,
     };
-  }
+  },
 
-  return payload;
+  move: (payload) => {
+    const { gameState, target } = payload;
+    const { currentRoom } = gameState;
+    if (playerIsAttemptingToCrossRiver(currentRoom, target)) {
+      return abortWithCommandFailure(payload, bathResponse.failure, "move");
+    } else {
+      return payload;
+    }
+  },
+} as const satisfies Record<string, PipelineFunction>;
+const isBathCommand = createKeyGuard(bathCommandHandlers);
+
+//Main function
+export const runBathTriggers: PipelineFunction = (payload) => {
+  const { command } = payload;
+  if (isBathCommand(command)) {
+    return bathCommandHandlers[command](payload);
+  } else {
+    return payload;
+  }
 };

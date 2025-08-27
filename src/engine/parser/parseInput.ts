@@ -1,6 +1,5 @@
 import { directionAliases, isDirectionAlias } from "../constants/directions";
 import type { Command } from "../actions/dispatchCommand";
-import { isItemId } from "../../assets/data/itemData";
 
 const commandDictionary: Record<Command, string[]> = {
   budge: ["move", "push", "pull"],
@@ -26,17 +25,14 @@ export const parseInput: ParseInput = (userInput) => {
 
   //Can just type 'N'
   if (isDirectionAlias(commandWord)) {
-    return { command: "move", target: `${directionAliases[commandWord]}` };
+    return { command: "move", target: directionAliases[commandWord] };
   }
   //'rusty key' and 'rusty' must return target: 'rusty' (coerce last two words to an item if possible)
   let target = args[args.length - 1] || null;
 
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {
     if (triggerWords.includes(commandWord)) {
-      return { command, target } as {
-        command: Command;
-        target: string;
-      };
+      return { command: command as Command, target };
     }
   }
   return { command: null, target };

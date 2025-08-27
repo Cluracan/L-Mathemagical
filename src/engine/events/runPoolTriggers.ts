@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import type { PipelineFunction } from "../actions/dispatchCommand";
 import { buildRoomDescription } from "../actions/handleLook";
 
@@ -65,7 +66,7 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
               ...gameState,
               storyLine: [...storyLine, holeAttemptFeedback[playerHeight]],
               success: false,
-              feedback: "height===1",
+              feedback: "wrong playerHeight",
             },
             aborted: true,
           };
@@ -74,15 +75,22 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
       break;
 
     default:
-      return payload;
+      const newGameState = produce(gameState, (draft) => {
+        draft.success = false;
+        draft.feedback = "no triggers fired";
+      });
+      return {
+        ...payload,
+        gameState: newGameState,
+      };
   }
 
+  const newGameState = produce(gameState, (draft) => {
+    draft.success = false;
+    draft.feedback = "ERROR in runPoolTriggers";
+  });
   return {
     ...payload,
-    gameState: {
-      ...gameState,
-      success: false,
-      feedback: "ERROR in runPoolTriggers (bottom)",
-    },
+    gameState: newGameState,
   };
 };

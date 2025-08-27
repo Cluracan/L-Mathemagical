@@ -6,7 +6,7 @@ import {
 import { isItemId, isKeyType } from "../../assets/data/itemData";
 import { runBathTriggers } from "../events/runBathTriggers";
 import { runKeyConversion } from "../events/runKeyConversion";
-import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
+import { failCommand } from "../utils/abortWithCommandFailure";
 
 import type {
   CommandPayload,
@@ -33,11 +33,7 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
   }
 
   if (itemLocation[requiredKey] !== "player") {
-    return abortWithCommandFailure(
-      payload,
-      "You don't have the right key!",
-      "no key"
-    );
+    return failCommand(payload, "You don't have the right key!", "no key");
   }
 
   if (target === requiredKey) {
@@ -53,14 +49,10 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
     return {
       ...payload,
       gameState: nextGameState,
-      aborted: true,
+      done: true,
     };
   } else {
-    return abortWithCommandFailure(
-      payload,
-      "That's the wrong key!",
-      "wrong key"
-    );
+    return failCommand(payload, "That's the wrong key!", "wrong key");
   }
 };
 
@@ -68,17 +60,17 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { itemLocation } = gameState;
   if (target === null) {
-    return abortWithCommandFailure(payload, "Use what?", "no target");
+    return failCommand(payload, "Use what?", "no target");
   }
 
   if (isItemId(target) && itemLocation[target] === "player") {
-    return abortWithCommandFailure(
+    return failCommand(
       payload,
       "You can't use that here...",
       "no use in currentRoom"
     );
   } else {
-    return abortWithCommandFailure(
+    return failCommand(
       payload,
       "You don't have that!",
       "target not item || not on player"
@@ -99,11 +91,11 @@ export const handleUse: HandleCommand = (args) => {
     command,
     gameState,
     target,
-    aborted: false,
+    done: false,
   };
 
   const finalPayload = UsePipeline.reduce((curPayload, curFunction) => {
-    return curPayload.aborted ? curPayload : curFunction(curPayload);
+    return curPayload.done ? curPayload : curFunction(curPayload);
   }, payload);
   return finalPayload.gameState;
 };

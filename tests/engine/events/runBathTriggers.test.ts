@@ -20,7 +20,7 @@ describe("runBathTriggers", () => {
   it("describes bath when looking", () => {
     const result = runBathTriggers(lookBathPayload);
     expect(result.gameState.storyLine.at(-1)).toContain("The bath");
-    expect(result.aborted).toBe(true);
+    expect(result.done).toBe(true);
   });
 
   it("prevents moving across river if bath not sealed", () => {
@@ -38,7 +38,7 @@ describe("runBathTriggers", () => {
       "How are you going to cross the river?"
     );
     expect(result.gameState.success).toBe(false);
-    expect(result.aborted).toBe(true);
+    expect(result.done).toBe(true);
   });
 
   it("prevents moving if no oar", () => {
@@ -125,7 +125,7 @@ it("prevents moving if player is overloaded", () => {
   expect(result.gameState.storyLine.at(-1)).toContain(
     "The bath won't carry that much weight"
   );
-  expect(result.aborted).toBe(true);
+  expect(result.done).toBe(true);
 });
 
 // Edge case: bath not sealed
@@ -145,7 +145,7 @@ it("prevents moving if bath is not sealed", () => {
   });
   const result = runBathTriggers(payload);
   expect(result.gameState.storyLine.at(-1)).toContain("won't float");
-  expect(result.aborted).toBe(true);
+  expect(result.done).toBe(true);
 });
 
 // Edge case: player does not have oar
@@ -164,5 +164,5 @@ it("prevents moving if player does not have oar", () => {
   });
   const result = runBathTriggers(payload);
   expect(result.gameState.storyLine.at(-1)).toBe(bathResponse.noOar);
-  expect(result.aborted).toBe(true);
+  expect(result.done).toBe(true);
 });

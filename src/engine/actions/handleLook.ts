@@ -12,8 +12,8 @@ import type {
   PipelineFunction,
 } from "./dispatchCommand";
 import { produce } from "immer";
-import { abortWithCommandSuccess } from "../utils/abortWithCommandSuccess";
-import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
+import { stopWithSuccess } from "../utils/abortWithCommandSuccess";
+import { failCommand } from "../utils/abortWithCommandFailure";
 
 //Helper functions
 export const buildRoomDescription = (
@@ -53,7 +53,7 @@ const lookRoom: PipelineFunction = (payload) => {
     return {
       ...payload,
       gameState: nextGameState,
-      aborted: true,
+      done: true,
     };
   }
   return payload;
@@ -66,22 +66,15 @@ const lookItem: PipelineFunction = (payload) => {
   //Look at item
   if (target && isItemId(target)) {
     if (itemLocation[target] === "player") {
-      return abortWithCommandSuccess(
+      return stopWithSuccess(
         payload,
         itemRegistry.getInventoryDescription(target)
       );
     } else if (itemLocation[target] === currentRoom) {
-      return abortWithCommandSuccess(
-        payload,
-        itemRegistry.getFloorDescription(target)
-      );
+      return stopWithSuccess(payload, itemRegistry.getFloorDescription(target));
     }
   }
-  return abortWithCommandFailure(
-    payload,
-    "You don't see that here!",
-    "target not visible"
-  );
+  return failCommand(payload, "You don't see that here!", "target not visible");
 };
 
 const lookDrogo: PipelineFunction = (payload) => {
@@ -114,11 +107,11 @@ export const handleLook: HandleCommand = (args) => {
     command,
     gameState,
     target,
-    aborted: false,
+    done: false,
   };
 
   const finalPayload = lookPipline.reduce((curPayload, curFunction) => {
-    return curPayload.aborted ? curPayload : curFunction(curPayload);
+    return curPayload.done ? curPayload : curFunction(curPayload);
   }, payload);
 
   return finalPayload.gameState;

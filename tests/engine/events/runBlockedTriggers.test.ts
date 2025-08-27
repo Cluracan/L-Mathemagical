@@ -29,6 +29,6 @@ it("aborts if moving in a blocked direction without key", () => {
   );
 
   const result = runBlockedTriggers(blockedPayload);
-  expect(result.aborted).toBe(true);
+  expect(result.done).toBe(true);
   expect(result.gameState.success).toBe(false);
 });

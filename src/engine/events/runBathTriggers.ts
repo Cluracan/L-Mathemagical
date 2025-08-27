@@ -3,8 +3,8 @@ import { type ItemId } from "../../assets/data/itemData";
 import { createKeyGuard } from "../../utils/guards";
 import type { PipelineFunction } from "../actions/dispatchCommand";
 import type { GameState } from "../gameEngine";
-import { abortWithCommandSuccess } from "../utils/abortWithCommandSuccess";
-import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
+import { stopWithSuccess } from "../utils/abortWithCommandSuccess";
+import { failCommand } from "../utils/abortWithCommandFailure";
 import type { RoomId } from "../../assets/data/roomData";
 
 //Static data
@@ -124,10 +124,7 @@ const bathCommandHandlers = {
       return payload;
     }
 
-    return abortWithCommandSuccess(
-      payload,
-      getBathDescription(gameState.bathState)
-    );
+    return stopWithSuccess(payload, getBathDescription(gameState.bathState));
   },
 
   use: (payload) => {
@@ -143,7 +140,7 @@ const bathCommandHandlers = {
       return {
         ...payload,
         gameState: nextGameState,
-        aborted: true,
+        done: true,
       };
     }
 
@@ -152,18 +149,14 @@ const bathCommandHandlers = {
     }
     //Using bath to cross river
     if (!willFloat(bathState)) {
-      return abortWithCommandFailure(
-        payload,
-        getBathDescription(bathState),
-        "move"
-      );
+      return failCommand(payload, getBathDescription(bathState), "move");
     }
 
     if (noOar(gameState))
-      return abortWithCommandFailure(payload, bathResponse.noOar, "move");
+      return failCommand(payload, bathResponse.noOar, "move");
 
     if (playerIsOverLoaded(gameState)) {
-      return abortWithCommandFailure(payload, bathResponse.overLoaded, "move");
+      return failCommand(payload, bathResponse.overLoaded, "move");
     }
     // move across river
     const nextGameState = produce(gameState, (draft) => {
@@ -174,7 +167,7 @@ const bathCommandHandlers = {
     return {
       ...payload,
       gameState: nextGameState,
-      aborted: true,
+      done: true,
     };
   },
 
@@ -182,7 +175,7 @@ const bathCommandHandlers = {
     const { gameState, target } = payload;
     const { currentRoom } = gameState;
     if (playerIsAttemptingToCrossRiver(currentRoom, target)) {
-      return abortWithCommandFailure(payload, bathResponse.failure, "move");
+      return failCommand(payload, bathResponse.failure, "move");
     } else {
       return payload;
     }

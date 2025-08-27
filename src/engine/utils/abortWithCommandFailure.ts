@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import type { CommandPayload } from "../actions/dispatchCommand";
 
-export const abortWithCommandFailure = (
+export const failCommand = (
   payload: CommandPayload,
   storyLineMessage: string,
   feedback: string
@@ -15,6 +15,6 @@ export const abortWithCommandFailure = (
   return {
     ...payload,
     gameState: nextGameState,
-    aborted: true,
+    done: true,
   };
 };

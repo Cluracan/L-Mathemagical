@@ -14,8 +14,9 @@ import type {
   PipelineFunction,
 } from "./dispatchCommand";
 import { runBathTriggers } from "../events/runBathTriggers";
-import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
+
 import { produce, enableMapSet } from "immer";
+import { failCommand } from "../utils/abortWithCommandFailure";
 
 enableMapSet();
 
@@ -23,25 +24,13 @@ const validateDirection: PipelineFunction = (payload) => {
   if (payload.target && isDirectionAlias(payload.target)) {
     return { ...payload, direction: directionAliases[payload.target] };
   } else {
-    return abortWithCommandFailure(
-      payload,
-      "That's not a direction!",
-      "not a direction"
-    );
+    return failCommand(payload, "That's not a direction!", "not a direction");
   }
 };
 
 const validateExit: PipelineFunction = (payload) => {
   if (!payload.direction) {
-    return {
-      ...payload,
-      gameState: {
-        ...payload.gameState,
-        success: false,
-        feedback: "ERROR in validateExit",
-      },
-      aborted: true,
-    };
+    throw new Error("validateExit called without direction");
   }
   const nextRoom = roomRegistry.getExitDestination(
     payload.gameState.currentRoom,
@@ -53,7 +42,7 @@ const validateExit: PipelineFunction = (payload) => {
       nextRoom,
     };
   } else {
-    return abortWithCommandFailure(
+    return failCommand(
       payload,
       "You can't travel that way!",
       "exit not available"
@@ -77,19 +66,11 @@ const movePlayer: PipelineFunction = (payload) => {
       gameState: nextGameState,
       nextRoom: null,
       direction: null,
-      aborted: false,
+      done: false,
     };
   }
 
-  return {
-    ...payload,
-    gameState: {
-      ...payload.gameState,
-      success: false,
-      feedback: "ERROR in movePlayer",
-    },
-    aborted: true,
-  };
+  throw new Error("Unexpected code path in movePlayer");
 };
 
 const applyRoomDescription: PipelineFunction = (payload) => {
@@ -99,7 +80,7 @@ const applyRoomDescription: PipelineFunction = (payload) => {
     draft.storyLine.push(...roomDescription);
   });
 
-  return { ...payload, gameState: nextGameState, aborted: true };
+  return { ...payload, gameState: nextGameState, done: true };
 };
 
 const movePipeline = [
@@ -118,12 +99,12 @@ export const handleMove: HandleCommand = (args) => {
     gameState,
     command,
     target,
-    aborted: false,
+    done: false,
     direction: null,
     nextRoom: null,
   };
   const finalPayload = movePipeline.reduce((curPayload, curFunction) => {
-    return curPayload.aborted ? curPayload : curFunction(curPayload);
+    return curPayload.done ? curPayload : curFunction(curPayload);
   }, payload);
   return finalPayload.gameState;
 };

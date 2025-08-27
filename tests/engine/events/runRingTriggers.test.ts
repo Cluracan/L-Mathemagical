@@ -19,7 +19,7 @@ describe("runRingTriggers", () => {
     expect(result.gameState.isInvisible).toBe(true);
     expect(result.gameState.itemLocation.ring).toBe("player");
     expect(result.gameState.storyLine.at(-1)).toContain("pick up the ring");
-    expect(result.aborted).toBe(true);
+    expect(result.done).toBe(true);
   });
 
   it("removes invisibility when dropping the ring", () => {
@@ -36,7 +36,7 @@ describe("runRingTriggers", () => {
     expect(result.gameState.isInvisible).toBe(false);
     expect(result.gameState.itemLocation.ring).toBe("grass");
     expect(result.gameState.storyLine.at(-1)).toContain("drop the ring");
-    expect(result.aborted).toBe(true);
+    expect(result.done).toBe(true);
   });
 
   it("ignores non-ring targets", () => {

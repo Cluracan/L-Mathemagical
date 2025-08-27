@@ -62,10 +62,9 @@ export const handleDrink: HandleCommand = (args) => {
       const nextGameState = produce(gameState, (draft) => {
         draft.storyLine.push("That's strange - nothing happened!");
         draft.success = false;
-        draft.feedback = "ERROR in handleDrink - drining item not handled";
+        draft.feedback = "ERROR in handleDrink - drinking item not handled";
       });
       return nextGameState;
   }
-  return gameState;
-  //this last return is just to satisfy typescript, which is being super conservative
+  throw new Error("Unexpected code path in handleDrink");
 };

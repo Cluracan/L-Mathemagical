@@ -35,7 +35,7 @@ describe("runPoolTriggers", () => {
     expect(result.gameState.storyLine.at(-1)).toContain(
       "Peering into the hole"
     );
-    expect(result.aborted).toBe(true);
+    expect(result.done).toBe(true);
   });
 
   it("moves player to tunnelTop if height is threeFourths and moving in", () => {
@@ -51,7 +51,7 @@ describe("runPoolTriggers", () => {
     expect(
       result.gameState.storyLine.some((line) => line.includes("tight squeeze"))
     ).toBe(true);
-    expect(result.aborted).toBe(true);
+    expect(result.done).toBe(true);
   });
 
   it("prevents moving in if height is not threeFourths", () => {
@@ -65,7 +65,7 @@ describe("runPoolTriggers", () => {
     expect(result.gameState.storyLine.at(-1)).toContain("can't fit");
     expect(result.gameState.success).toBe(false);
     expect(result.gameState.feedback).toBe("wrong playerHeight");
-    expect(result.aborted).toBe(true);
+    expect(result.done).toBe(true);
   });
 
   it("returns payload unchanged for unrelated commands", () => {
@@ -76,7 +76,6 @@ describe("runPoolTriggers", () => {
     });
 
     const result = runPoolTriggers(unrelatedPayload);
-    expect(result.gameState.feedback).toBe("no triggers fired");
-    expect(result.gameState.success).toBe(false);
+    expect(result).toEqual(unrelatedPayload);
   });
 });

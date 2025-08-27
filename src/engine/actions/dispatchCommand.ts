@@ -26,7 +26,7 @@ export type CommandPayload = {
   gameState: GameState;
   direction?: ExitDirection | null;
   nextRoom?: RoomId | null;
-  aborted: boolean;
+  done: boolean;
 };
 
 export type PipelineFunction = (args: CommandPayload) => CommandPayload;

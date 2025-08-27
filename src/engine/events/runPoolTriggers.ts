@@ -1,6 +1,8 @@
 import { produce } from "immer";
 import type { PipelineFunction } from "../actions/dispatchCommand";
 import { buildRoomDescription } from "../actions/handleLook";
+import { failCommand } from "../utils/abortWithCommandFailure";
+import { stopWithSuccess } from "../utils/abortWithCommandSuccess";
 
 const holeAttemptFeedback: Record<
   "threeFifths" | "threeFourths" | "one" | "fiveFourths",
@@ -16,7 +18,7 @@ const holeAttemptFeedback: Record<
 
 export const runPoolTriggers: PipelineFunction = (payload) => {
   const { command, target, gameState } = payload;
-  const { storyLine, playerHeight, currentRoom } = gameState;
+  const { playerHeight, currentRoom } = gameState;
 
   if (currentRoom !== "poolFloor") {
     return payload;
@@ -25,17 +27,10 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
   switch (command) {
     case "look":
       if (target && ["hole", "grate", "grating"].includes(target)) {
-        return {
-          ...payload,
-          gameState: {
-            ...gameState,
-            storyLine: [
-              ...storyLine,
-              "Peering into the hole, you see a small tunnel sloping downhill. If only you could get in!",
-            ],
-          },
-          aborted: true,
-        };
+        return stopWithSuccess(
+          payload,
+          "Peering into the hole, you see a small tunnel sloping downhill. If only you could get in!"
+        );
       }
       break;
 
@@ -46,51 +41,31 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
             { ...gameState, currentRoom: "tunnelTop" },
             command
           );
+          const nextGameState = produce(gameState, (draft) => {
+            draft.currentRoom = "tunnelTop";
+            draft.storyLine.push(
+              holeAttemptFeedback[playerHeight],
+              ...nextRoomDescription
+            );
+          });
           return {
             ...payload,
-            gameState: {
-              ...gameState,
-              storyLine: [
-                ...storyLine,
-                holeAttemptFeedback[playerHeight],
-                ...nextRoomDescription,
-              ],
-              currentRoom: "tunnelTop",
-            },
-            aborted: true,
+            gameState: nextGameState,
+            done: true,
           };
         } else {
-          return {
-            ...payload,
-            gameState: {
-              ...gameState,
-              storyLine: [...storyLine, holeAttemptFeedback[playerHeight]],
-              success: false,
-              feedback: "wrong playerHeight",
-            },
-            aborted: true,
-          };
+          return failCommand(
+            payload,
+            holeAttemptFeedback[playerHeight],
+            "wrong playerHeight"
+          );
         }
       }
       break;
 
     default:
-      const newGameState = produce(gameState, (draft) => {
-        draft.success = false;
-        draft.feedback = "no triggers fired";
-      });
-      return {
-        ...payload,
-        gameState: newGameState,
-      };
+      return payload;
   }
 
-  const newGameState = produce(gameState, (draft) => {
-    draft.success = false;
-    draft.feedback = "ERROR in runPoolTriggers";
-  });
-  return {
-    ...payload,
-    gameState: newGameState,
-  };
+  throw new Error("Unexpected code path in runPoolTriggers");
 };

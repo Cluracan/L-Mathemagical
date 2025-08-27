@@ -4,21 +4,17 @@ import { runKeyConversion } from "../events/runKeyConversion";
 import { runRingTriggers } from "../events/runRingTriggers";
 import { itemRegistry } from "../world/itemRegistry";
 import type { HandleCommand, PipelineFunction } from "./dispatchCommand";
-import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
+import { failCommand } from "../utils/abortWithCommandFailure";
 
 const dropItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { itemLocation, currentRoom } = gameState;
 
   if (!target) {
-    return abortWithCommandFailure(payload, "Drop what?", "no target");
+    return failCommand(payload, "Drop what?", "no target");
   }
   if (!isItemId(target) || itemLocation[target] !== "player") {
-    return abortWithCommandFailure(
-      payload,
-      "You don't have that!",
-      "itemId not on player"
-    );
+    return failCommand(payload, "You don't have that!", "itemId not on player");
   }
   if (target && isItemId(target) && itemLocation[target] === "player") {
     const nextGameState = produce(gameState, (draft) => {
@@ -28,14 +24,11 @@ const dropItem: PipelineFunction = (payload) => {
     return {
       ...payload,
       gameState: nextGameState,
-      aborted: true,
+      done: true,
     };
   }
 
-  return {
-    ...payload,
-    gameState: { ...gameState, success: false, feedback: "ERROR in dropItem" },
-  };
+  throw new Error("Unexpected code path in dropItem");
 };
 
 const dropPipeline = [runKeyConversion, runRingTriggers, dropItem];
@@ -46,11 +39,11 @@ export const handleDrop: HandleCommand = (args) => {
     command,
     target,
     gameState,
-    aborted: false,
+    done: false,
   };
 
   const finalPayload = dropPipeline.reduce((curPayload, curFunction) => {
-    return curPayload.aborted ? curPayload : curFunction(curPayload);
+    return curPayload.done ? curPayload : curFunction(curPayload);
   }, payload);
 
   return finalPayload.gameState;

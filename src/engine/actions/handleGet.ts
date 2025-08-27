@@ -4,18 +4,18 @@ import { runKeyConversion } from "../events/runKeyConversion";
 import { runRingTriggers } from "../events/runRingTriggers";
 import { itemRegistry } from "../world/itemRegistry";
 import type { HandleCommand, PipelineFunction } from "./dispatchCommand";
-import { abortWithCommandFailure } from "../utils/abortWithCommandFailure";
+import { failCommand } from "../utils/abortWithCommandFailure";
 
 const getItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { itemLocation, currentRoom } = gameState;
 
   if (!target) {
-    return abortWithCommandFailure(payload, "Get what?", "no target");
+    return failCommand(payload, "Get what?", "no target");
   }
 
   if (!isItemId(target) || itemLocation[target] !== currentRoom) {
-    return abortWithCommandFailure(
+    return failCommand(
       payload,
       "You don't see that here!",
       "target !==itemId || itemId not in location"
@@ -27,13 +27,10 @@ const getItem: PipelineFunction = (payload) => {
       draft.itemLocation[target] = "player";
       draft.storyLine.push(itemRegistry.getPickUpDescription(target));
     });
-    return { ...payload, gameState: nextGameState, aborted: true };
+    return { ...payload, gameState: nextGameState, done: true };
   }
 
-  return {
-    ...payload,
-    gameState: { ...gameState, success: false, feedback: "ERROR in getItem" },
-  };
+  throw new Error("Unexpected code path in getItem");
 };
 
 const getPipeline = [runKeyConversion, runRingTriggers, getItem];
@@ -44,12 +41,12 @@ export const handleGet: HandleCommand = (args) => {
     command,
     gameState,
     target,
-    aborted: false,
+    done: false,
   };
 
   const finalPayload = getPipeline.reduce((curPayload, curFunction) => {
     console.log(curFunction);
-    return curPayload.aborted ? curPayload : curFunction(curPayload);
+    return curPayload.done ? curPayload : curFunction(curPayload);
   }, payload);
   return finalPayload.gameState;
 };

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   runBathTriggers,
-  bathResponse,
+  bathFeedback,
 } from "../../../src/engine/events/runBathTriggers";
 import { initialCommandPayload } from "../../data/initialCommandPayload";
 import { produce } from "immer";
@@ -163,6 +163,6 @@ it("prevents moving if player does not have oar", () => {
     draft.gameState.currentRoom = "riverS";
   });
   const result = runBathTriggers(payload);
-  expect(result.gameState.storyLine.at(-1)).toBe(bathResponse.noOar);
+  expect(result.gameState.storyLine.at(-1)).toBe(bathFeedback.noOar);
   expect(result.done).toBe(true);
 });

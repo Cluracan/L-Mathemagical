@@ -40,7 +40,7 @@ const bathItemDescription = {
   },
 };
 
-export const bathResponse = {
+export const bathFeedback = {
   willFloat: "looks watertight and ready to float...\n\n",
   willSink: "won't float as it is not quite watertight...\n\n",
   failure: "How are you going to cross the river?",
@@ -66,8 +66,8 @@ const willFloat = (bath: BathState) =>
 const getBathDescription = (bathState: BathState) => {
   let bathText = "The bath ";
   bathText += willFloat(bathState)
-    ? bathResponse.willFloat
-    : bathResponse.willSink;
+    ? bathFeedback.willFloat
+    : bathFeedback.willSink;
   bathItems.forEach((item) => {
     if (bathState[item]) {
       bathText += `${bathItemDescription[item].filled}\n\n`;
@@ -153,15 +153,15 @@ const bathCommandHandlers = {
     }
 
     if (noOar(gameState))
-      return failCommand(payload, bathResponse.noOar, "move");
+      return failCommand(payload, bathFeedback.noOar, "move");
 
     if (playerIsOverLoaded(gameState)) {
-      return failCommand(payload, bathResponse.overLoaded, "move");
+      return failCommand(payload, bathFeedback.overLoaded, "move");
     }
     // move across river
     const nextGameState = produce(gameState, (draft) => {
       draft.currentRoom = currentRoom === "riverN" ? "riverS" : "riverN";
-      draft.storyLine.push(bathResponse.success);
+      draft.storyLine.push(bathFeedback.success);
       draft.feedback = "move";
     });
     return {
@@ -175,7 +175,7 @@ const bathCommandHandlers = {
     const { gameState, target } = payload;
     const { currentRoom } = gameState;
     if (playerIsAttemptingToCrossRiver(currentRoom, target)) {
-      return failCommand(payload, bathResponse.failure, "move");
+      return failCommand(payload, bathFeedback.failure, "move");
     } else {
       return payload;
     }

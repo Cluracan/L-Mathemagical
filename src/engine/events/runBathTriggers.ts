@@ -16,8 +16,8 @@ export const initialBathState = {
 
 //Static data
 export const bathFeedback = {
-  willFloat: "The bath looks watertight and ready to float...\n\n",
-  willSink: "The bath won't float as it is not quite watertight...\n\n",
+  willFloat: "The bath looks watertight and ready to float...",
+  willSink: "The bath won't float as it is not quite watertight...",
   failure: "How are you going to cross the river?",
   noOar:
     "You won't get far without an oar.\n\n(Pirhana fish are said to regard human fingers as a great delicacy.)",
@@ -26,26 +26,25 @@ export const bathFeedback = {
   success: "The bath takes you safely across the river.",
   items: {
     tetrahedron: {
-      filled: "The platinum tetrahedron neatly fits the triangular hole\n\n",
-      empty: "...it has a triangular hole\n\n",
+      filled: "The platinum tetrahedron neatly fits the triangular hole",
+      empty: "...it has a triangular hole",
     },
     cube: {
-      filled: "The gold cube fills the rectangular hole\n\n",
-      empty: "...it has a rectangular hole\n\n",
+      filled: "The gold cube fills the rectangular hole",
+      empty: "...it has a rectangular hole",
     },
     icosahedron: {
-      filled:
-        "The jade icosahedron has plugged the large hole with five sides\n\n",
-      empty: "...it has a large hole with five sides\n\n",
+      filled: "The jade icosahedron has plugged the large hole with five sides",
+      empty: "...it has a large hole with five sides",
     },
     octahedron: {
-      filled: "The ivory octahedron has filled the square hole\n\n",
-      empty: "...it has a square hole\n\n",
+      filled: "The ivory octahedron has filled the square hole",
+      empty: "...it has a square hole",
     },
     dodecahedron: {
       filled:
-        "The diamond dodecahedron fits snugly into the small hole with five sides\n\n",
-      empty: "...it has a small hole with five sides\n\n",
+        "The diamond dodecahedron fits snugly into the small hole with five sides",
+      empty: "...it has a small hole with five sides",
     },
   },
 } as const;
@@ -62,14 +61,15 @@ const isBathItem = createKeyGuard(initialBathState);
 const willFloat = (bath: BathState) =>
   Object.values(bath).every((holeFilled) => holeFilled);
 
-const getBathDescription = (bathState: BathState) => {
-  let bathText = willFloat(bathState)
-    ? bathFeedback.willFloat
-    : bathFeedback.willSink;
+const buildBathDescription = (bathState: BathState) => {
+  let bathText =
+    (willFloat(bathState) ? bathFeedback.willFloat : bathFeedback.willSink) +
+    "\n\n";
   bathItems.forEach((item) => {
-    bathText += bathState[item]
-      ? bathFeedback.items[item].filled
-      : bathFeedback.items[item].empty;
+    bathText +=
+      (bathState[item]
+        ? bathFeedback.items[item].filled
+        : bathFeedback.items[item].empty) + ".\n\n";
   });
   return bathText;
 };
@@ -102,7 +102,7 @@ const bathCommandHandlers = {
     ) {
       return payload;
     }
-    return stopWithSuccess(payload, getBathDescription(gameState.bathState));
+    return stopWithSuccess(payload, buildBathDescription(gameState.bathState));
   },
 
   use: (payload) => {
@@ -127,24 +127,23 @@ const bathCommandHandlers = {
     }
     //Using bath to cross river
     const crossRiverChecks = [
-      [
-        () => !willFloat(bathState),
-        () => failCommand(payload, getBathDescription(bathState), "move"),
-      ],
-      [
-        () => gameState.itemLocation["oar"] !== "player",
-        () => failCommand(payload, bathFeedback.noOar, "move"),
-      ],
-      [
-        () => playerIsOverLoaded(gameState),
-        () => failCommand(payload, bathFeedback.overLoaded, "move"),
-      ],
+      {
+        check: () => !willFloat(bathState),
+        action: () =>
+          failCommand(payload, buildBathDescription(bathState), "move"),
+      },
+      {
+        check: () => gameState.itemLocation["oar"] !== "player",
+        action: () => failCommand(payload, bathFeedback.noOar, "move"),
+      },
+      {
+        check: () => playerIsOverLoaded(gameState),
+        action: () => failCommand(payload, bathFeedback.overLoaded, "move"),
+      },
     ];
 
-    for (const [check, action] of crossRiverChecks) {
-      if (check()) {
-        return action();
-      }
+    for (const { check, action } of crossRiverChecks) {
+      if (check()) return action();
     }
 
     // move across river

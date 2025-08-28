@@ -248,5 +248,5 @@ export const initialKeyLocked = {
 
 export type KeyId = keyof typeof initialKeyLocked;
 export const keyList = Object.keys(initialKeyLocked) as KeyId[];
-
+export const isKeyType = createKeyGuard(initialKeyLocked);
 // const testItem: Record<ItemId, Item> = itemData;

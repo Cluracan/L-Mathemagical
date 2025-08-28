@@ -12,7 +12,10 @@ export type GameState = Omit<
   feedback: string;
 };
 
-//Helper functions
+/** Engine-facing state, derived from GameStoreState.
+ *  - visitedRooms stored as a Set for fast membership checks
+ *  - adds transient fields: success + feedback
+ *  - excludes UI-only fields (playerName, modernMode) */
 const toEngineState = (state: GameStoreState, userInput: string): GameState => {
   const { playerName, modernMode, ...rest } = state;
   return {
@@ -24,6 +27,8 @@ const toEngineState = (state: GameStoreState, userInput: string): GameState => {
   };
 };
 
+/** Convert engine state back to a form the React store can handle.
+ * Strips transient engine fields and converts Sets back to arrays. */
 const toStoreState = (state: GameState): Partial<GameStoreState> => {
   const { success, feedback, ...rest } = state;
   return {

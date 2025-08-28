@@ -60,6 +60,7 @@ class GameEngine {
       stepCount: newState.stepCount,
       storyLine: newState.storyLine,
       visitedRooms: Array.from(newState.visitedRooms.values()),
+      bathState: newState.bathState,
     });
     return {
       success: newState.success,

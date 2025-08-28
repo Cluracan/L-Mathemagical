@@ -244,10 +244,9 @@ export const initialItemLocation = Object.values(itemData).reduce(
 export const initialKeyLocked = {
   iron: true,
   rusty: true,
-};
+} as const;
 
-export const keyList = Object.keys(initialKeyLocked);
-
-export const isKeyType = createKeyGuard(initialKeyLocked);
+export type KeyId = keyof typeof initialKeyLocked;
+export const keyList = Object.keys(initialKeyLocked) as KeyId[];
 
 // const testItem: Record<ItemId, Item> = itemData;

@@ -4,7 +4,7 @@ import { initialItemLocation } from "../assets/data/itemData";
 import { initialKeyLocked } from "../assets/data/itemData";
 import { roomRegistry } from "../engine/world/roomRegistry";
 import type { RoomId } from "../assets/data/roomData";
-import type { ItemId } from "../assets/data/itemData";
+import type { ItemId, KeyId } from "../assets/data/itemData";
 import {
   initialBathState,
   type BathState,
@@ -16,7 +16,7 @@ export type GameStoreState = {
   currentRoom: RoomId;
   isInvisible: boolean;
   itemLocation: Record<ItemId, RoomId | "player">;
-  keyLocked: Partial<Record<ItemId, boolean>>;
+  keyLocked: Record<KeyId, boolean>;
   playerHeight: "threeFifths" | "threeFourths" | "one" | "fiveFourths";
   storyLine: string[];
   stepCount: number;

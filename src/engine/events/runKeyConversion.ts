@@ -2,9 +2,14 @@ import type { PipelineFunction } from "../actions/dispatchCommand";
 import { isItemId, keyList } from "../../assets/data/itemData";
 
 /*
-Attempts to interpret 'key' (not an item) where possible
+Attempts to interpret 'key' (which is not an item) where possible
 target='key' --> target = 'rusty' | 'iron' 
 */
+
+//Static data
+const keyFeedback = {
+  drink: "Drinking a key seems both difficult and unwise...",
+} as const;
 
 export const runKeyConversion: PipelineFunction = (payload) => {
   const { command, target, gameState } = payload;
@@ -12,11 +17,11 @@ export const runKeyConversion: PipelineFunction = (payload) => {
   //This is just for when a user types 'key' instead of 'iron'
   if (target === "key") {
     const keyInRoom = keyList.find(
-      (keyId) => isItemId(keyId) && itemLocation[keyId] === currentRoom
+      (keyId) => itemLocation[keyId] === currentRoom
     );
 
     const keyOnPlayer = keyList.find(
-      (keyId) => isItemId(keyId) && itemLocation[keyId] === "player"
+      (keyId) => itemLocation[keyId] === "player"
     );
     switch (command) {
       case "get":
@@ -33,10 +38,7 @@ export const runKeyConversion: PipelineFunction = (payload) => {
             ...payload,
             gameState: {
               ...gameState,
-              storyLine: [
-                ...storyLine,
-                "Drinking a key seems both difficult and unwise...",
-              ],
+              storyLine: [...storyLine, keyFeedback.drink],
             },
           };
         }

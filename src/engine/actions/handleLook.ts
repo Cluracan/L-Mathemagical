@@ -7,9 +7,10 @@ import { runBathTriggers } from "../events/runBathTriggers";
 import type { GameState } from "../gameEngine";
 import type { Command, HandleCommand } from "../dispatchCommand";
 import { produce } from "immer";
-import { stopWithSuccess } from "../utils/abortWithCommandSuccess";
-import { failCommand } from "../utils/abortWithCommandFailure";
+import { stopWithSuccess } from "../utils/stopWithSuccess";
+import { failCommand } from "../utils/failCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
+import { withPipeline } from "../pipeline/withPipeline";
 
 //Helper functions
 export const buildRoomDescription = (
@@ -85,7 +86,7 @@ const lookBath: PipelineFunction = (payload) => {
   return payload;
 };
 
-const lookPipline = [
+const lookPipeline = [
   runBathTriggers,
   runKeyConversion,
   runPoolTriggers,
@@ -106,9 +107,5 @@ export const handleLook: HandleCommand = (args) => {
     done: false,
   };
 
-  const finalPayload = lookPipline.reduce((curPayload, curFunction) => {
-    return curPayload.done ? curPayload : curFunction(curPayload);
-  }, payload);
-
-  return finalPayload.gameState;
+  return withPipeline(payload, lookPipeline);
 };

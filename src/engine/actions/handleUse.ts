@@ -6,7 +6,7 @@ import {
 import { isItemId, isKeyType } from "../../assets/data/itemData";
 import { runBathTriggers } from "../events/runBathTriggers";
 import { runKeyConversion } from "../events/runKeyConversion";
-import { failCommand } from "../utils/abortWithCommandFailure";
+import { failCommand } from "../utils/failCommand";
 
 import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
@@ -93,5 +93,5 @@ export const handleUse: HandleCommand = (args) => {
     done: false,
   };
 
-  return withPipeline(payload, UsePipeline).gameState;
+  return withPipeline(payload, UsePipeline);
 };

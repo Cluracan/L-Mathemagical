@@ -1,10 +1,10 @@
 import { produce } from "immer";
-import type { CommandPayload } from "../dispatchCommand";
+import type { PipelinePayload } from "../pipeline/types";
 
 export const stopWithSuccess = (
-  payload: CommandPayload,
+  payload: PipelinePayload,
   storyLineMessage: string
-): CommandPayload => {
+): PipelinePayload => {
   const { gameState } = payload;
   const nextGameState = produce(gameState, (draft) => {
     draft.storyLine.push(storyLineMessage);

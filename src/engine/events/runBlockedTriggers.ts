@@ -3,7 +3,7 @@ import {
   blockedExitData,
 } from "../../assets/data/blockedExitData";
 import type { PipelineFunction } from "../dispatchCommand";
-import { failCommand } from "../utils/abortWithCommandFailure";
+import { failCommand } from "../utils/failCommand";
 
 export const runBlockedTriggers: PipelineFunction = (payload) => {
   const { currentRoom, keyLocked } = payload.gameState;

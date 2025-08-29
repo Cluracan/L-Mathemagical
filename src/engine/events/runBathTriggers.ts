@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { createKeyGuard } from "../../utils/guards";
-import { stopWithSuccess } from "../utils/abortWithCommandSuccess";
-import { failCommand } from "../utils/abortWithCommandFailure";
+import { stopWithSuccess } from "../utils/stopWithSuccess";
+import { failCommand } from "../utils/failCommand";
 import type { PipelineFunction } from "../pipeline/types";
 import type { GameState } from "../gameEngine";
 import type { ItemId } from "../../assets/data/itemData";

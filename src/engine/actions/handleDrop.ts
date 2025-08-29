@@ -3,9 +3,10 @@ import { isItemId } from "../../assets/data/itemData";
 import { runKeyConversion } from "../events/runKeyConversion";
 import { runRingTriggers } from "../events/runRingTriggers";
 import { itemRegistry } from "../world/itemRegistry";
-import { failCommand } from "../utils/abortWithCommandFailure";
+import { failCommand } from "../utils/failCommand";
 import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction } from "../pipeline/types";
+import { withPipeline } from "../pipeline/withPipeline";
 
 const dropItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
@@ -43,9 +44,5 @@ export const handleDrop: HandleCommand = (args) => {
     done: false,
   };
 
-  const finalPayload = dropPipeline.reduce((curPayload, curFunction) => {
-    return curPayload.done ? curPayload : curFunction(curPayload);
-  }, payload);
-
-  return finalPayload.gameState;
+  return withPipeline(payload, dropPipeline);
 };

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { failCommand } from "../../../src/engine/utils/abortWithCommandFailure";
+import { failCommand } from "../../../src/engine/utils/failCommand";
 
 describe("abortWithCommandFailure", () => {
   it("marks payload as aborted and adds message", () => {

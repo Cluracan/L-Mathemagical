@@ -1,8 +1,8 @@
 import { produce } from "immer";
 import type { PipelineFunction } from "../dispatchCommand";
 import { buildRoomDescription } from "../actions/handleLook";
-import { failCommand } from "../utils/abortWithCommandFailure";
-import { stopWithSuccess } from "../utils/abortWithCommandSuccess";
+import { failCommand } from "../utils/failCommand";
+import { stopWithSuccess } from "../utils/stopWithSuccess";
 
 const holeAttemptFeedback: Record<
   "threeFifths" | "threeFourths" | "one" | "fiveFourths" | "lookHole",

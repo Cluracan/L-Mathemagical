@@ -1,19 +1,19 @@
-import { buildRoomDescription } from "./handleLook";
-import { roomRegistry } from "../world/roomRegistry";
-import { runBlockedTriggers } from "../events/runBlockedTriggers";
-import { runPoolTriggers } from "../events/runPoolTriggers";
+import { produce, enableMapSet } from "immer";
 import {
   directionAliases,
   directionNarratives,
   isDirectionAlias,
 } from "../constants/directions";
-
-import type { HandleCommand } from "../dispatchCommand";
+import { buildRoomDescription } from "./handleLook";
+import { failCommand } from "../utils/failCommand";
+import { roomRegistry } from "../world/roomRegistry";
+import { runBlockedTriggers } from "../events/runBlockedTriggers";
+import { runPoolTriggers } from "../events/runPoolTriggers";
 import { runBathTriggers } from "../events/runBathTriggers";
 
-import { produce, enableMapSet } from "immer";
-import { failCommand } from "../utils/abortWithCommandFailure";
+import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
+import { withPipeline } from "../pipeline/withPipeline";
 
 enableMapSet();
 
@@ -98,8 +98,5 @@ export const handleMove: HandleCommand = (args) => {
     nextRoom: null,
   };
 
-  const finalPayload = movePipeline.reduce((curPayload, curFunction) => {
-    return curPayload.done ? curPayload : curFunction(curPayload);
-  }, payload);
-  return finalPayload.gameState;
+  return withPipeline(payload, movePipeline);
 };

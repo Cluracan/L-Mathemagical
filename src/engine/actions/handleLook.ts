@@ -5,15 +5,11 @@ import { runKeyConversion } from "../events/runKeyConversion";
 import { runPoolTriggers } from "../events/runPoolTriggers";
 import { runBathTriggers } from "../events/runBathTriggers";
 import type { GameState } from "../gameEngine";
-import type {
-  Command,
-  CommandPayload,
-  HandleCommand,
-  PipelineFunction,
-} from "../dispatchCommand";
+import type { Command, HandleCommand } from "../dispatchCommand";
 import { produce } from "immer";
 import { stopWithSuccess } from "../utils/abortWithCommandSuccess";
 import { failCommand } from "../utils/abortWithCommandFailure";
+import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 
 //Helper functions
 export const buildRoomDescription = (
@@ -103,7 +99,7 @@ const lookPipline = [
 export const handleLook: HandleCommand = (args) => {
   const { command, target, gameState } = args;
 
-  const payload: CommandPayload = {
+  const payload: PipelinePayload = {
     command,
     gameState,
     target,

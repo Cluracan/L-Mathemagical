@@ -61,22 +61,6 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
 const runUseFailureMessage: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { itemLocation } = gameState;
-  /*
-  const useItemChecks = [
-    {
-      check: () => target === null,
-      action: () => failCommand(payload, useFeedback.noTarget, "no target"),
-    },
-    {
-      check: () => isItemId(target!) && itemLocation[target] === "player",
-      action: () =>
-        failCommand(payload, useFeedback.noUse, "no use in currentRoom"),
-    },
-  ];
-  for (const { check, action } of useItemChecks) {
-    if (check()) return action();
-  }
-*/
 
   if (target === null) {
     return failCommand(payload, useFeedback.noTarget, "no target");

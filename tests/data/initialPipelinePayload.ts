@@ -2,9 +2,10 @@ import {
   initialItemLocation,
   initialKeyLocked,
 } from "../../src/assets/data/itemData";
-import type { RoomId } from "../../src/assets/data/roomData";
-import type { PipelinePayload } from "../../src/engine/actions/dispatchCommand";
 import { initialBathState } from "../../src/engine/events/runBathTriggers";
+
+import type { RoomId } from "../../src/assets/data/roomData";
+import type { PipelinePayload } from "../../src/engine/pipeline/types";
 
 export const initialPipelinePayload: PipelinePayload = {
   command: "look",

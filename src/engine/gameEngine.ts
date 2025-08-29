@@ -1,6 +1,6 @@
 import { useGameStore, type GameStoreState } from "../store/useGameStore";
 import { parseInput } from "./parser/parseInput";
-import { dispatchCommand } from "./actions/dispatchCommand";
+import { dispatchCommand } from "./dispatchCommand";
 import type { RoomId } from "../assets/data/roomData";
 
 export type GameState = Omit<
@@ -48,7 +48,7 @@ class GameEngine {
 
     //send to dispatch
     let newState = dispatchCommand({ command, target, gameState: snapshot });
-    console.log(newState);
+
     //update state
     useGameStore.setState(toStoreState(newState));
     return {

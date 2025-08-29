@@ -1,5 +1,5 @@
 import { directionAliases, isDirectionAlias } from "../constants/directions";
-import type { Command } from "../actions/dispatchCommand";
+import type { Command } from "../dispatchCommand";
 
 const commandDictionary: Record<Command, string[]> = {
   budge: ["move", "push", "pull"],

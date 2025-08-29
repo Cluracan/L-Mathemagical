@@ -10,7 +10,7 @@ import type {
   CommandPayload,
   HandleCommand,
   PipelineFunction,
-} from "./dispatchCommand";
+} from "../dispatchCommand";
 import { produce } from "immer";
 import { stopWithSuccess } from "../utils/abortWithCommandSuccess";
 import { failCommand } from "../utils/abortWithCommandFailure";

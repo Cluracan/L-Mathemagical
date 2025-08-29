@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import type { CommandPayload } from "../actions/dispatchCommand";
+import type { CommandPayload } from "../dispatchCommand";
 
 export const stopWithSuccess = (
   payload: CommandPayload,

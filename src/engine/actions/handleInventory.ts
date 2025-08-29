@@ -1,6 +1,6 @@
 import { isItemId } from "../../assets/data/itemData";
 import { itemRegistry } from "../world/itemRegistry";
-import type { HandleCommand } from "./dispatchCommand";
+import type { HandleCommand } from "../dispatchCommand";
 
 export const handleInventory: HandleCommand = (args) => {
   const { gameState } = args;

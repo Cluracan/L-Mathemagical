@@ -8,24 +8,25 @@ import {
   isDirectionAlias,
 } from "../constants/directions";
 
-import type {
-  PipelinePayload,
-  HandleCommand,
-  PipelineFunction,
-} from "./dispatchCommand";
+import type { HandleCommand } from "../dispatchCommand";
 import { runBathTriggers } from "../events/runBathTriggers";
 
 import { produce, enableMapSet } from "immer";
 import { failCommand } from "../utils/abortWithCommandFailure";
+import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 
 enableMapSet();
 
+//Helper functions
+const isValidDirection = (target: string | null) => {
+  return !!target && isDirectionAlias(target);
+};
+
+//Pipeline functions
 const validateDirection: PipelineFunction = (payload) => {
-  if (payload.target && isDirectionAlias(payload.target)) {
-    return { ...payload, direction: directionAliases[payload.target] };
-  } else {
-    return failCommand(payload, "That's not a direction!", "not a direction");
-  }
+  return isValidDirection(payload.target)
+    ? { ...payload, direction: directionAliases[payload.target] }
+    : failCommand(payload, "That's not a direction!", "not a direction");
 };
 
 const validateExit: PipelineFunction = (payload) => {
@@ -36,18 +37,12 @@ const validateExit: PipelineFunction = (payload) => {
     payload.gameState.currentRoom,
     payload.direction
   );
-  if (nextRoom) {
-    return {
-      ...payload,
-      nextRoom,
-    };
-  } else {
-    return failCommand(
-      payload,
-      "You can't travel that way!",
-      "exit not available"
-    );
-  }
+  return nextRoom
+    ? {
+        ...payload,
+        nextRoom,
+      }
+    : failCommand(payload, "You can't travel that way!", "exit not available");
 };
 
 const movePlayer: PipelineFunction = (payload) => {
@@ -69,7 +64,6 @@ const movePlayer: PipelineFunction = (payload) => {
       done: false,
     };
   }
-
   throw new Error("Unexpected code path in movePlayer");
 };
 
@@ -103,6 +97,7 @@ export const handleMove: HandleCommand = (args) => {
     direction: null,
     nextRoom: null,
   };
+
   const finalPayload = movePipeline.reduce((curPayload, curFunction) => {
     return curPayload.done ? curPayload : curFunction(curPayload);
   }, payload);

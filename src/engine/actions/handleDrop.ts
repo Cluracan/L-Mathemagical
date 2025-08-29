@@ -3,8 +3,9 @@ import { isItemId } from "../../assets/data/itemData";
 import { runKeyConversion } from "../events/runKeyConversion";
 import { runRingTriggers } from "../events/runRingTriggers";
 import { itemRegistry } from "../world/itemRegistry";
-import type { HandleCommand, PipelineFunction } from "./dispatchCommand";
 import { failCommand } from "../utils/abortWithCommandFailure";
+import type { HandleCommand } from "../dispatchCommand";
+import type { PipelineFunction } from "../pipeline/types";
 
 const dropItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;

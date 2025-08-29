@@ -1,4 +1,4 @@
-import type { HandleCommand } from "./dispatchCommand";
+import type { HandleCommand } from "../dispatchCommand";
 
 export const handleSwim: HandleCommand = (args) => {
   const { gameState } = args;

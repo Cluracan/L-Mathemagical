@@ -1,5 +1,5 @@
 import { isRoomId } from "../../assets/data/roomData";
-import type { HandleCommand } from "./dispatchCommand";
+import type { HandleCommand } from "../dispatchCommand";
 import { handleLook } from "./handleLook";
 
 export const handleTeleport: HandleCommand = (args) => {

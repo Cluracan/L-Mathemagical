@@ -1,4 +1,4 @@
-import type { PipelineFunction } from "../actions/dispatchCommand";
+import type { PipelineFunction } from "../dispatchCommand";
 import { isItemId, keyList } from "../../assets/data/itemData";
 
 /*

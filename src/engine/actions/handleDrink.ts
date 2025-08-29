@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import { isItemId, itemData } from "../../assets/data/itemData";
-import type { HandleCommand } from "./dispatchCommand";
+import type { HandleCommand } from "../dispatchCommand";
 
 export const handleDrink: HandleCommand = (args) => {
   const { gameState, target } = args;

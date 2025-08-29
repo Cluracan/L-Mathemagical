@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { runPoolTriggers } from "../../../src/engine/events/runPoolTriggers";
 import { produce } from "immer";
-import { initialCommandPayload } from "../../data/initialCommandPayload";
+import { initialPipelinePayload } from "../../data/initialPipelinePayload";
 
 const basePayload = {
   command: "look",
@@ -15,7 +15,7 @@ const basePayload = {
 
 describe("runPoolTriggers", () => {
   it("returns payload unchanged if not in poolFloor", () => {
-    const lookFailPayload = produce(initialCommandPayload, (draft) => {
+    const lookFailPayload = produce(initialPipelinePayload, (draft) => {
       draft.command = "look";
       draft.target = "hole";
     });
@@ -25,7 +25,7 @@ describe("runPoolTriggers", () => {
   });
 
   it("adds storyLine when looking at hole in poolFloor", () => {
-    const lookSuccessPayload = produce(initialCommandPayload, (draft) => {
+    const lookSuccessPayload = produce(initialPipelinePayload, (draft) => {
       draft.command = "look";
       draft.target = "hole";
       draft.gameState.currentRoom = "poolFloor";
@@ -39,7 +39,7 @@ describe("runPoolTriggers", () => {
   });
 
   it("moves player to tunnelTop if height is threeFourths and moving in", () => {
-    const moveSuccessPayload = produce(initialCommandPayload, (draft) => {
+    const moveSuccessPayload = produce(initialPipelinePayload, (draft) => {
       draft.command = "move";
       draft.target = "in";
       draft.gameState.currentRoom = "poolFloor";
@@ -55,7 +55,7 @@ describe("runPoolTriggers", () => {
   });
 
   it("prevents moving in if height is not threeFourths", () => {
-    const moveFailurePayload = produce(initialCommandPayload, (draft) => {
+    const moveFailurePayload = produce(initialPipelinePayload, (draft) => {
       draft.command = "move";
       draft.target = "in";
       draft.gameState.currentRoom = "poolFloor";
@@ -69,7 +69,7 @@ describe("runPoolTriggers", () => {
   });
 
   it("returns payload unchanged for unrelated commands", () => {
-    const unrelatedPayload = produce(initialCommandPayload, (draft) => {
+    const unrelatedPayload = produce(initialPipelinePayload, (draft) => {
       draft.command = "drink";
       draft.target = "bath";
       draft.gameState.currentRoom = "poolFloor";

@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { runRingTriggers } from "../../../src/engine/events/runRingTriggers";
-import { initialCommandPayload } from "../../../tests/data/initialCommandPayload";
-import type { CommandPayload } from "../../../src/engine/actions/dispatchCommand";
+import { initialPipelinePayload } from "../../../tests/data/initialPipelinePayload";
+import type { PipelinePayload } from "../../../src/engine/actions/dispatchCommand";
 import { produce } from "immer";
 
-const getRingPayload: CommandPayload = produce(
-  initialCommandPayload,
+const getRingPayload: PipelinePayload = produce(
+  initialPipelinePayload,
   (draft) => {
     draft.command = "get";
     draft.target = "ring";
@@ -23,8 +23,8 @@ describe("runRingTriggers", () => {
   });
 
   it("removes invisibility when dropping the ring", () => {
-    const dropRingPayload: CommandPayload = produce(
-      initialCommandPayload,
+    const dropRingPayload: PipelinePayload = produce(
+      initialPipelinePayload,
       (draft) => {
         draft.command = "drop";
         draft.target = "ring";

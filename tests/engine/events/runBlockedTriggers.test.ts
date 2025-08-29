@@ -1,13 +1,12 @@
-import { describe, it, expect } from "vitest";
+import { it, expect } from "vitest";
 import { runBlockedTriggers } from "../../../src/engine/events/runBlockedTriggers";
-import { abortWithCommandFailure } from "../../../src/engine/utils/abortWithCommandFailure";
-import { initialCommandPayload } from "../../data/initialCommandPayload";
-import { CommandPayload } from "../../../src/engine/actions/dispatchCommand";
+import { initialPipelinePayload } from "../../data/initialPipelinePayload";
+import { PipelinePayload } from "../../../src/engine/actions/dispatchCommand";
 import { produce } from "immer";
 
 it("returns payload unchanged if not a blocked room", () => {
-  const unblockedPayload: CommandPayload = produce(
-    initialCommandPayload,
+  const unblockedPayload: PipelinePayload = produce(
+    initialPipelinePayload,
     (draft) => {
       draft.command = "move";
       draft.target = "north";
@@ -19,8 +18,8 @@ it("returns payload unchanged if not a blocked room", () => {
 });
 
 it("aborts if moving in a blocked direction without key", () => {
-  const blockedPayload: CommandPayload = produce(
-    initialCommandPayload,
+  const blockedPayload: PipelinePayload = produce(
+    initialPipelinePayload,
     (draft) => {
       draft.command = "move";
       draft.target = "e";

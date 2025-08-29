@@ -9,7 +9,7 @@ import {
 } from "../constants/directions";
 
 import type {
-  CommandPayload,
+  PipelinePayload,
   HandleCommand,
   PipelineFunction,
 } from "./dispatchCommand";
@@ -95,7 +95,7 @@ const movePipeline = [
 
 export const handleMove: HandleCommand = (args) => {
   const { command, target, gameState } = args;
-  const payload: CommandPayload = {
+  const payload: PipelinePayload = {
     gameState,
     command,
     target,

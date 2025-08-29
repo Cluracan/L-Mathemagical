@@ -3,12 +3,12 @@ import {
   runBathTriggers,
   bathFeedback,
 } from "../../../src/engine/events/runBathTriggers";
-import { initialCommandPayload } from "../../data/initialCommandPayload";
+import { initialPipelinePayload } from "../../data/initialPipelinePayload";
 import { produce } from "immer";
-import type { CommandPayload } from "../../../src/engine/actions/dispatchCommand";
+import type { PipelinePayload } from "../../../src/engine/actions/dispatchCommand";
 
-const lookBathPayload: CommandPayload = produce(
-  initialCommandPayload,
+const lookBathPayload: PipelinePayload = produce(
+  initialPipelinePayload,
   (draft) => {
     draft.command = "look";
     draft.target = "bath";
@@ -24,8 +24,8 @@ describe("runBathTriggers", () => {
   });
 
   it("prevents moving across river if bath not sealed", () => {
-    const movePayload: CommandPayload = produce(
-      initialCommandPayload,
+    const movePayload: PipelinePayload = produce(
+      initialPipelinePayload,
       (draft) => {
         draft.command = "move";
         draft.target = "n";
@@ -42,8 +42,8 @@ describe("runBathTriggers", () => {
   });
 
   it("prevents moving if no oar", () => {
-    const noOarPayload: CommandPayload = produce(
-      initialCommandPayload,
+    const noOarPayload: PipelinePayload = produce(
+      initialPipelinePayload,
       (draft) => {
         draft.command = "use";
         draft.target = "bath";
@@ -63,8 +63,8 @@ describe("runBathTriggers", () => {
   });
 
   it("succeeds if bath sealed, player has oar, and not overloaded", () => {
-    const successPayload: CommandPayload = produce(
-      initialCommandPayload,
+    const successPayload: PipelinePayload = produce(
+      initialPipelinePayload,
       (draft) => {
         draft.command = "use";
         draft.target = "bath";
@@ -88,7 +88,7 @@ describe("runBathTriggers", () => {
 
 // Edge case: unrelated command
 it("returns payload unchanged for unrelated commands", () => {
-  const payload = produce(initialCommandPayload, (draft) => {
+  const payload = produce(initialPipelinePayload, (draft) => {
     draft.command = "drink";
     draft.target = "bath";
   });
@@ -98,7 +98,7 @@ it("returns payload unchanged for unrelated commands", () => {
 
 // Edge case: not at river
 it("returns payload unchanged if not at river", () => {
-  const payload = produce(initialCommandPayload, (draft) => {
+  const payload = produce(initialPipelinePayload, (draft) => {
     draft.gameState.currentRoom = "hallway";
   });
   const result = runBathTriggers(payload);
@@ -107,7 +107,7 @@ it("returns payload unchanged if not at river", () => {
 
 // Edge case: player is overloaded
 it("prevents moving if player is overloaded", () => {
-  const payload = produce(initialCommandPayload, (draft) => {
+  const payload = produce(initialPipelinePayload, (draft) => {
     draft.command = "use";
     draft.target = "bath";
     draft.gameState.bathState = {
@@ -130,7 +130,7 @@ it("prevents moving if player is overloaded", () => {
 
 // Edge case: bath not sealed
 it("prevents moving if bath is not sealed", () => {
-  const payload = produce(initialCommandPayload, (draft) => {
+  const payload = produce(initialPipelinePayload, (draft) => {
     draft.command = "use";
     draft.target = "bath";
     draft.gameState.bathState = {
@@ -150,7 +150,7 @@ it("prevents moving if bath is not sealed", () => {
 
 // Edge case: player does not have oar
 it("prevents moving if player does not have oar", () => {
-  const payload = produce(initialCommandPayload, (draft) => {
+  const payload = produce(initialPipelinePayload, (draft) => {
     draft.command = "use";
     draft.target = "bath";
     draft.gameState.bathState = {

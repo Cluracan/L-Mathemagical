@@ -20,7 +20,7 @@ export type CommandArgs = {
 };
 export type HandleCommand = (args: CommandArgs) => GameState;
 
-export type CommandPayload = {
+export type PipelinePayload = {
   command: Command;
   target: string | null;
   gameState: GameState;
@@ -29,7 +29,7 @@ export type CommandPayload = {
   done: boolean;
 };
 
-export type PipelineFunction = (args: CommandPayload) => CommandPayload;
+export type PipelineFunction = (args: PipelinePayload) => PipelinePayload;
 
 const commandHandlers = {
   budge: handleBudge,
@@ -55,10 +55,7 @@ type DispatchCommand = (args: DispatchArgs) => GameState;
 
 export const dispatchCommand: DispatchCommand = (args) => {
   const { command, target, gameState } = args;
-  if (command) {
-    const handler = commandHandlers[command];
-    return handler({ command, target, gameState });
-  } else {
-    return handleNull({ target, gameState, command });
-  }
+  return command
+    ? commandHandlers[command]({ command, target, gameState })
+    : handleNull({ target, gameState, command });
 };

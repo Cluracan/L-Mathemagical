@@ -9,7 +9,7 @@ import { runKeyConversion } from "../events/runKeyConversion";
 import { failCommand } from "../utils/abortWithCommandFailure";
 
 import type {
-  CommandPayload,
+  PipelinePayload,
   HandleCommand,
   PipelineFunction,
 } from "./dispatchCommand";
@@ -87,7 +87,7 @@ const UsePipeline = [
 
 export const handleUse: HandleCommand = (args) => {
   const { command, target, gameState } = args;
-  const payload: CommandPayload = {
+  const payload: PipelinePayload = {
     command,
     gameState,
     target,

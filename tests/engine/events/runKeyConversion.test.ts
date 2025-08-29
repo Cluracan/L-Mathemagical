@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
+import { it, expect } from "vitest";
 import { runKeyConversion } from "../../../src/engine/events/runKeyConversion";
 import { produce } from "immer";
-import { initialCommandPayload } from "../../data/initialCommandPayload";
+import { initialPipelinePayload } from "../../data/initialPipelinePayload";
 
 const basePayload = {
   command: "get",
@@ -14,7 +14,7 @@ const basePayload = {
 };
 
 it("converts 'key' to a specific key in the room for 'get'", () => {
-  const getKeyPayload = produce(initialCommandPayload, (draft) => {
+  const getKeyPayload = produce(initialPipelinePayload, (draft) => {
     draft.command = "get";
     draft.target = "key";
     draft.gameState.currentRoom = "grass";
@@ -25,7 +25,7 @@ it("converts 'key' to a specific key in the room for 'get'", () => {
 });
 
 it("converts 'key' to a specific key on player for 'drop'", () => {
-  const dropKeyPayload = produce(initialCommandPayload, (draft) => {
+  const dropKeyPayload = produce(initialPipelinePayload, (draft) => {
     draft.command = "drop";
     draft.target = "key";
     draft.gameState.currentRoom = "pit";
@@ -37,7 +37,7 @@ it("converts 'key' to a specific key on player for 'drop'", () => {
 });
 
 it("adds a message for 'drink' command", () => {
-  const drinkKeyPayload = produce(initialCommandPayload, (draft) => {
+  const drinkKeyPayload = produce(initialPipelinePayload, (draft) => {
     draft.command = "drink";
     draft.target = "key";
     draft.gameState.itemLocation.rusty = "player";

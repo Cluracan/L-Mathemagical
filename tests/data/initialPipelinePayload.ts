@@ -3,10 +3,10 @@ import {
   initialKeyLocked,
 } from "../../src/assets/data/itemData";
 import type { RoomId } from "../../src/assets/data/roomData";
-import type { CommandPayload } from "../../src/engine/actions/dispatchCommand";
+import type { PipelinePayload } from "../../src/engine/actions/dispatchCommand";
 import { initialBathState } from "../../src/engine/events/runBathTriggers";
 
-export const initialCommandPayload: CommandPayload = {
+export const initialPipelinePayload: PipelinePayload = {
   command: "look",
   target: "bath",
   gameState: {
@@ -22,5 +22,5 @@ export const initialCommandPayload: CommandPayload = {
     success: true,
     feedback: "",
   },
-  aborted: false,
+  done: false,
 };

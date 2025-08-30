@@ -13,15 +13,11 @@ const getItem: PipelineFunction = (payload) => {
   const { itemLocation, currentRoom } = gameState;
 
   if (!target) {
-    return failCommand(payload, "Get what?", "no target");
+    return failCommand(payload, "Get what?");
   }
 
   if (!isItemId(target) || itemLocation[target] !== currentRoom) {
-    return failCommand(
-      payload,
-      "You don't see that here!",
-      "target !==itemId || itemId not in location"
-    );
+    return failCommand(payload, "You don't see that here!");
   }
 
   if (isItemId(target) && itemLocation[target] === currentRoom) {

@@ -54,11 +54,7 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
             done: true,
           };
         } else {
-          return failCommand(
-            payload,
-            holeAttemptFeedback[playerHeight],
-            "wrong playerHeight"
-          );
+          return failCommand(payload, holeAttemptFeedback[playerHeight]);
         }
       }
       break;

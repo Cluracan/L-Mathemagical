@@ -71,7 +71,7 @@ const lookItem: PipelineFunction = (payload) => {
       return stopWithSuccess(payload, itemRegistry.getFloorDescription(target));
     }
   }
-  return failCommand(payload, "You don't see that here!", "target not visible");
+  return failCommand(payload, "You don't see that here!");
 };
 
 const lookDrogo: PipelineFunction = (payload) => {

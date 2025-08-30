@@ -129,16 +129,15 @@ const bathCommandHandlers = {
     const crossRiverChecks = [
       {
         check: () => !willFloat(bathState),
-        action: () =>
-          failCommand(payload, buildBathDescription(bathState), "move"),
+        action: () => failCommand(payload, buildBathDescription(bathState)),
       },
       {
         check: () => gameState.itemLocation["oar"] !== "player",
-        action: () => failCommand(payload, bathFeedback.noOar, "move"),
+        action: () => failCommand(payload, bathFeedback.noOar),
       },
       {
         check: () => playerIsOverLoaded(gameState),
-        action: () => failCommand(payload, bathFeedback.overLoaded, "move"),
+        action: () => failCommand(payload, bathFeedback.overLoaded),
       },
     ];
 
@@ -166,7 +165,7 @@ const bathCommandHandlers = {
       (currentRoom === "riverS" && target === "n") ||
       (currentRoom === "riverN" && target === "s")
     ) {
-      return failCommand(payload, bathFeedback.failure, "move");
+      return failCommand(payload, bathFeedback.failure);
     } else {
       return payload;
     }

@@ -26,7 +26,7 @@ const isValidDirection = (target: string | null) => {
 const validateDirection: PipelineFunction = (payload) => {
   return isValidDirection(payload.target)
     ? { ...payload, direction: directionAliases[payload.target] }
-    : failCommand(payload, "That's not a direction!", "not a direction");
+    : failCommand(payload, "That's not a direction!");
 };
 
 const validateExit: PipelineFunction = (payload) => {
@@ -42,7 +42,7 @@ const validateExit: PipelineFunction = (payload) => {
         ...payload,
         nextRoom,
       }
-    : failCommand(payload, "You can't travel that way!", "exit not available");
+    : failCommand(payload, "You can't travel that way!");
 };
 
 const movePlayer: PipelineFunction = (payload) => {

@@ -35,7 +35,7 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
   if (!requiredKey || !target || !isKeyType(target)) return payload;
 
   if (itemLocation[requiredKey] !== "player") {
-    return failCommand(payload, keyFeedback.noKey, "no key");
+    return failCommand(payload, keyFeedback.noKey);
   }
 
   if (target === requiredKey) {
@@ -54,7 +54,7 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
       done: true,
     };
   } else {
-    return failCommand(payload, keyFeedback.wrongKey, "wrong key");
+    return failCommand(payload, keyFeedback.wrongKey);
   }
 };
 
@@ -63,17 +63,13 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
   const { itemLocation } = gameState;
 
   if (target === null) {
-    return failCommand(payload, useFeedback.noTarget, "no target");
+    return failCommand(payload, useFeedback.noTarget);
   }
 
   if (isItemId(target) && itemLocation[target] === "player") {
-    return failCommand(payload, useFeedback.noUse, "no use in currentRoom");
+    return failCommand(payload, useFeedback.noUse);
   } else {
-    return failCommand(
-      payload,
-      useFeedback.notOnPlayer,
-      "target not item || not on player"
-    );
+    return failCommand(payload, useFeedback.notOnPlayer);
   }
 };
 

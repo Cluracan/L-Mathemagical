@@ -13,10 +13,10 @@ const dropItem: PipelineFunction = (payload) => {
   const { itemLocation, currentRoom } = gameState;
 
   if (!target) {
-    return failCommand(payload, "Drop what?", "no target");
+    return failCommand(payload, "Drop what?");
   }
   if (!isItemId(target) || itemLocation[target] !== "player") {
-    return failCommand(payload, "You don't have that!", "itemId not on player");
+    return failCommand(payload, "You don't have that!");
   }
   if (target && isItemId(target) && itemLocation[target] === "player") {
     const nextGameState = produce(gameState, (draft) => {

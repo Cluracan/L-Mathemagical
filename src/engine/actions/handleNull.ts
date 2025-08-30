@@ -27,5 +27,5 @@ export const handleNull: HandleNullCommand = (args) => {
     draft.feedback = "handleNull";
   });
 
-  return args.gameState;
+  return nextGameState;
 };

@@ -78,10 +78,10 @@ const applyRoomDescription: PipelineFunction = (payload) => {
 };
 
 const movePipeline = [
-  runBathTriggers,
-  runPoolTriggers,
   validateDirection,
   validateExit,
+  runBathTriggers,
+  runPoolTriggers,
   runBlockedTriggers,
   movePlayer,
   applyRoomDescription,

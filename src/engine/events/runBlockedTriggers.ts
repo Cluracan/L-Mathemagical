@@ -2,7 +2,8 @@ import {
   isBlockedRoom,
   blockedExitData,
 } from "../../assets/data/blockedExitData";
-import type { PipelineFunction } from "../dispatchCommand";
+import type { PipelineFunction } from "../pipeline/types";
+
 import { failCommand } from "../utils/failCommand";
 
 export const runBlockedTriggers: PipelineFunction = (payload) => {

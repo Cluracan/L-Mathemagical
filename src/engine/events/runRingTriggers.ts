@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import type { PipelineFunction } from "../dispatchCommand";
+import type { PipelineFunction } from "../pipeline/types";
 
 const ringFeedback = {
   drop: "As you drop the ring, you sense a great magical power blast through you. You see yourself fade back into view.",

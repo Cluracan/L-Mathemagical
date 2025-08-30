@@ -11,6 +11,7 @@ import { stopWithSuccess } from "../utils/stopWithSuccess";
 import { failCommand } from "../utils/failCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
+import { addPuzzleNPC } from "../puzzles/addPuzzleNPC";
 
 //Helper functions
 export const buildRoomDescription = (
@@ -20,6 +21,7 @@ export const buildRoomDescription = (
   const { visitedRooms, currentRoom, itemLocation } = gameState;
   const roomDescription = [];
   //Add room text
+
   roomDescription.push(
     visitedRooms.has(currentRoom) && command !== "look"
       ? roomRegistry.getShortDescription(currentRoom)
@@ -38,6 +40,8 @@ export const buildRoomDescription = (
   //Add drogoGuard
 
   //add puzzleNPC
+  const puzzleNPCDescription = addPuzzleNPC(gameState);
+  if (puzzleNPCDescription) roomDescription.push(puzzleNPCDescription);
   return roomDescription;
 };
 
@@ -74,27 +78,12 @@ const lookItem: PipelineFunction = (payload) => {
   return failCommand(payload, "You don't see that here!");
 };
 
-const lookDrogo: PipelineFunction = (payload) => {
-  return payload;
-};
-
-const lookPuzzleNPC: PipelineFunction = (payload) => {
-  return payload;
-};
-
-const lookBath: PipelineFunction = (payload) => {
-  return payload;
-};
-
 const lookPipeline = [
   runBathTriggers,
   runKeyConversion,
   runPoolTriggers,
   lookRoom,
   lookItem,
-  lookDrogo,
-  lookPuzzleNPC,
-  lookBath,
 ];
 
 export const handleLook: HandleCommand = (args) => {

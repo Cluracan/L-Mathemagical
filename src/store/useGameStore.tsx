@@ -9,6 +9,10 @@ import {
   initialBathState,
   type BathState,
 } from "../engine/events/runBathTriggers";
+import {
+  initialPuzzleState,
+  type PuzzleId,
+} from "../engine/puzzles/puzzleRegistry";
 
 export type GameStoreState = {
   playerName: string;
@@ -23,11 +27,13 @@ export type GameStoreState = {
   isInvisible: boolean;
   bathState: BathState;
   drogoGuard: null | { target: number; turnsUntilCaught: number };
+  puzzleCompleted: Record<PuzzleId, boolean>;
 };
 
 type GameStoreActions = {
   setPlayerName: (playerName: string) => void;
   toggleGameMode: () => void;
+  resetGameStore: () => void;
 };
 
 export type GameStore = GameStoreState & GameStoreActions;
@@ -45,6 +51,7 @@ const initialGameState: GameStoreState = {
   isInvisible: false,
   bathState: initialBathState,
   drogoGuard: null,
+  puzzleCompleted: initialPuzzleState,
 };
 
 export const useGameStore = create<GameStore>()(
@@ -53,6 +60,7 @@ export const useGameStore = create<GameStore>()(
       ...initialGameState,
       toggleGameMode: () => set((state) => ({ modernMode: !state.modernMode })),
       setPlayerName: (playerName: string) => set({ playerName }),
+      resetGameStore: () => set((state) => initialGameState),
     }),
     {
       name: "l-game-storage",

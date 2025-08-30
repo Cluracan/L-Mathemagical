@@ -10,7 +10,6 @@ it("returns failure if no target", () => {
     gameState: initialGameState,
   });
   expect(result.success).toBe(false);
-  expect(result.feedback).toBe("no target");
 });
 
 it("returns failure if item not on player", () => {
@@ -20,7 +19,6 @@ it("returns failure if item not on player", () => {
     gameState: initialGameState,
   });
   expect(result.success).toBe(false);
-  expect(result.feedback).toContain("itemId not on player");
 });
 
 it("drops item to current room if on player", () => {

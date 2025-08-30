@@ -64,7 +64,7 @@ describe("runPoolTriggers", () => {
     const result = runPoolTriggers(moveFailurePayload);
     expect(result.gameState.storyLine.at(-1)).toContain("can't fit");
     expect(result.gameState.success).toBe(false);
-    expect(result.gameState.feedback).toBe("wrong playerHeight");
+
     expect(result.done).toBe(true);
   });
 

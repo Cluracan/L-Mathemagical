@@ -24,7 +24,6 @@ export const handleNull: HandleNullCommand = (args) => {
   const nextGameState = produce(gameState, (draft) => {
     draft.storyLine.push(nullFeedback[rngIndex]);
     draft.success = false;
-    draft.feedback = "handleNull";
   });
 
   return nextGameState;

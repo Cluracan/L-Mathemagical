@@ -10,7 +10,6 @@ export const handleDrink: HandleCommand = (args) => {
     const nextGameState = produce(gameState, (draft) => {
       draft.storyLine.push("Drink what?");
       draft.success = false;
-      draft.feedback = "no target";
     });
     return nextGameState;
   }
@@ -19,7 +18,6 @@ export const handleDrink: HandleCommand = (args) => {
     const nextGameState = produce(gameState, (draft) => {
       draft.storyLine.push("You don't have that...");
       draft.success = false;
-      draft.feedback = "itemId not on player";
     });
     return nextGameState;
   }
@@ -28,7 +26,6 @@ export const handleDrink: HandleCommand = (args) => {
     const nextGameState = produce(gameState, (draft) => {
       draft.storyLine.push("You can't drink that!");
       draft.success = false;
-      draft.feedback = "itemId non-drinkable";
     });
     return nextGameState;
   }
@@ -59,12 +56,7 @@ export const handleDrink: HandleCommand = (args) => {
       }
       break;
     default:
-      const nextGameState = produce(gameState, (draft) => {
-        draft.storyLine.push("That's strange - nothing happened!");
-        draft.success = false;
-        draft.feedback = "ERROR in handleDrink - drinking item not handled";
-      });
-      return nextGameState;
+      throw new Error("default reached in handleDrink");
   }
   throw new Error("Unexpected code path in handleDrink");
 };

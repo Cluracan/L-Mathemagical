@@ -9,7 +9,7 @@ export type GameState = Omit<
 > & {
   visitedRooms: Set<RoomId>;
   success: boolean;
-  feedback: string;
+  feedback: "move" | null;
 };
 
 /** Engine-facing state, derived from GameStoreState.
@@ -23,7 +23,7 @@ const toEngineState = (state: GameStoreState, userInput: string): GameState => {
     storyLine: [...state.storyLine, userInput],
     visitedRooms: new Set(state.visitedRooms),
     success: true,
-    feedback: "",
+    feedback: null,
   };
 };
 

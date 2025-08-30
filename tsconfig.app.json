@@ -27,7 +27,7 @@
     "src",
     "tests/engine/constants/directions.test.ts",
     "tests/engine/events/runBathTriggers.test.ts",
-    "tests/engine/utils/abortWithCommandFailure.test.ts",
+    "tests/engine/utils/failCommand.test.ts",
     "tests/engine/world/roomRegistry.test.ts"
   ]
 }

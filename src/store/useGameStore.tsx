@@ -14,14 +14,15 @@ export type GameStoreState = {
   playerName: string;
   modernMode: boolean;
   currentRoom: RoomId;
-  isInvisible: boolean;
+  visitedRooms: RoomId[];
+  storyLine: string[];
+  stepCount: number;
   itemLocation: Record<ItemId, RoomId | "player">;
   keyLocked: Record<KeyId, boolean>;
   playerHeight: "threeFifths" | "threeFourths" | "one" | "fiveFourths";
-  storyLine: string[];
-  stepCount: number;
-  visitedRooms: RoomId[];
+  isInvisible: boolean;
   bathState: BathState;
+  drogoGuard: null | { target: number; turnsUntilCaught: number };
 };
 
 type GameStoreActions = {
@@ -35,14 +36,15 @@ const initialGameState: GameStoreState = {
   playerName: "player 1",
   modernMode: true,
   currentRoom: "grass",
-  itemLocation: initialItemLocation,
-  isInvisible: false,
-  keyLocked: initialKeyLocked,
-  playerHeight: "one",
+  visitedRooms: ["grass"],
   storyLine: [roomRegistry.getLongDescription("grass")],
   stepCount: 0,
-  visitedRooms: ["grass"],
+  itemLocation: initialItemLocation,
+  keyLocked: initialKeyLocked,
+  playerHeight: "one",
+  isInvisible: false,
   bathState: initialBathState,
+  drogoGuard: null,
 };
 
 export const useGameStore = create<GameStore>()(

@@ -27,7 +27,6 @@ export type GameStoreState = {
 type GameStoreActions = {
   setPlayerName: (playerName: string) => void;
   toggleGameMode: () => void;
-  resetGameStore: () => void;
 };
 
 export type GameStore = GameStoreState & GameStoreActions;
@@ -52,9 +51,6 @@ export const useGameStore = create<GameStore>()(
       ...initialGameState,
       toggleGameMode: () => set((state) => ({ modernMode: !state.modernMode })),
       setPlayerName: (playerName: string) => set({ playerName }),
-      resetGameStore: () => {
-        set(useGameStore.getInitialState());
-      },
     }),
     {
       name: "l-game-storage",

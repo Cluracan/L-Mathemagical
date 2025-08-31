@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import type { PipelinePayload } from "../pipeline/types";
+import type { PipelinePayload } from "./types";
 
 export const failCommand = (
   payload: PipelinePayload,

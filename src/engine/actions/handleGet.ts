@@ -3,7 +3,7 @@ import { isItemId } from "../../assets/data/itemData";
 import { runKeyConversion } from "../events/runKeyConversion";
 import { runRingTriggers } from "../events/runRingTriggers";
 import { itemRegistry } from "../world/itemRegistry";
-import { failCommand } from "../utils/failCommand";
+import { failCommand } from "../pipeline/failCommand";
 import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";

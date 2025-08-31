@@ -1,8 +1,8 @@
 import { produce } from "immer";
 
 import { buildRoomDescription } from "../actions/handleLook";
-import { failCommand } from "../utils/failCommand";
-import { stopWithSuccess } from "../utils/stopWithSuccess";
+import { failCommand } from "../pipeline/failCommand";
+import { stopWithSuccess } from "../pipeline/stopWithSuccess";
 import type { PipelineFunction } from "../pipeline/types";
 
 const holeAttemptFeedback: Record<

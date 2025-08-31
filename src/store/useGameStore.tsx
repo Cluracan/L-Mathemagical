@@ -60,7 +60,7 @@ export const useGameStore = create<GameStore>()(
       ...initialGameState,
       toggleGameMode: () => set((state) => ({ modernMode: !state.modernMode })),
       setPlayerName: (playerName: string) => set({ playerName }),
-      resetGameStore: () => set((state) => initialGameState),
+      resetGameStore: () => set(() => initialGameState),
     }),
     {
       name: "l-game-storage",

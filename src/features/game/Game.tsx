@@ -1,52 +1,24 @@
 import { Box, Card, TextField } from "@mui/material";
 import { useGameStore } from "../../store/useGameStore";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
-import { handleInput } from "../../engine/gameEngine";
 import { Canvas } from "./Canvas";
-import type { Mapper } from "./mapper";
+// import type { Mapper } from "./mapper";
+import { useGameController } from "../../middleware/useGameController";
 
 export const GameContent = () => {
-  console.log("rendering Game page");
   const { storyLine, modernMode } = useGameStore();
   const [userInput, setUserInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
-  const inputQueueRef = useRef<string[]>([]);
-  const mapperRef = useRef<Mapper | null>(null);
-  const readyForCommandRef = useRef<boolean>(true);
+  // const mapperRef = useRef<Mapper | null>(null);
 
+  const { submitInput, reportAnimationComplete } = useGameController();
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [storyLine]);
 
   const handleSubmit = (): void => {
-    if (modernMode) {
-      console.log("submitting");
-      setUserInput("");
-      inputQueueRef.current.push(userInput);
-      processInputQueue();
-    } else {
-      setUserInput("");
-      handleInput(userInput);
-    }
-  };
-
-  const processInputQueue = () => {
-    while (readyForCommandRef.current && inputQueueRef.current.length > 0) {
-      console.log(
-        `processing Input queue  ${inputQueueRef.current.join(",")} ready ${readyForCommandRef.current} input ${inputQueueRef.current.length}`
-      );
-      const userInput = inputQueueRef.current.shift();
-      if (userInput) {
-        readyForCommandRef.current = false;
-        const result = handleInput(userInput);
-        if (
-          (result.command !== "move" && result.feedback !== "move") ||
-          !result.success
-        ) {
-          readyForCommandRef.current = true;
-        }
-      }
-    }
+    submitInput(userInput);
+    setUserInput("");
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -58,9 +30,8 @@ export const GameContent = () => {
     <>
       {modernMode && (
         <Canvas
-          mapperRef={mapperRef}
-          readyForCommandRef={readyForCommandRef}
-          processInputQueue={processInputQueue}
+          reportAnimationComplete={reportAnimationComplete}
+          // mapperRef={mapperRef}
         />
       )}
 

@@ -6,7 +6,6 @@ export const Canvas = ({
   reportAnimationComplete,
 }: {
   reportAnimationComplete: () => void;
-  // mapperRef: React.RefObject<Mapper | null>;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D>(null);
@@ -14,7 +13,6 @@ export const Canvas = ({
   const { currentRoom, visitedRooms } = useGameStore();
 
   useEffect(() => {
-    console.log("redraw");
     if (!canvasRef.current) return;
     contextRef.current = canvasRef.current.getContext("2d");
     if (!contextRef.current) return;

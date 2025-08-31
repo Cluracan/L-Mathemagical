@@ -2,16 +2,14 @@ import { Box, Card, TextField } from "@mui/material";
 import { useGameStore } from "../../store/useGameStore";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { Canvas } from "./Canvas";
-// import type { Mapper } from "./mapper";
 import { useGameController } from "../../middleware/useGameController";
 
 export const GameContent = () => {
   const { storyLine, modernMode } = useGameStore();
   const [userInput, setUserInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
-  // const mapperRef = useRef<Mapper | null>(null);
-
   const { submitInput, reportAnimationComplete } = useGameController();
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [storyLine]);
@@ -29,10 +27,7 @@ export const GameContent = () => {
   return (
     <>
       {modernMode && (
-        <Canvas
-          reportAnimationComplete={reportAnimationComplete}
-          // mapperRef={mapperRef}
-        />
+        <Canvas reportAnimationComplete={reportAnimationComplete} />
       )}
 
       <Box height={"80vh"} width={"60vw"} sx={{ marginLeft: "2rem" }}>

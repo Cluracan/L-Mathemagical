@@ -1,0 +1,25 @@
+import type { ItemId } from "../../assets/data/itemData";
+import type { RoomId } from "../../assets/data/roomData";
+import type { Command } from "../dispatchCommand";
+import type { PuzzleId } from "./puzzleRegistry";
+
+export type PuzzleNPC = {
+  puzzleId: PuzzleId;
+  description: {
+    completed: string;
+    long: string;
+    short: string;
+  };
+  triggerPuzzleCommand: Command;
+  acceptPuzzleText: string[];
+  rejectPuzzleText: string[];
+  feedback: {
+    failPuzzleAccept: string | null;
+    puzzleAccept: string;
+    puzzleReject: string;
+    puzzleComplete: string;
+    blockedExits: string | null;
+  };
+  examinableItems: Record<string, string>;
+  rewardItems: Partial<Record<ItemId, "player" | "floor" | RoomId>> | null;
+};

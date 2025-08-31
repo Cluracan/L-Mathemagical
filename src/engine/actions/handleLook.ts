@@ -7,11 +7,12 @@ import { runBathTriggers } from "../events/runBathTriggers";
 import type { GameState } from "../gameEngine";
 import type { Command, HandleCommand } from "../dispatchCommand";
 import { produce } from "immer";
-import { stopWithSuccess } from "../utils/stopWithSuccess";
-import { failCommand } from "../utils/failCommand";
+import { stopWithSuccess } from "../pipeline/stopWithSuccess";
+import { failCommand } from "../pipeline/failCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
 import { addPuzzleNPC } from "../puzzles/addPuzzleNPC";
+import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 
 //Helper functions
 export const buildRoomDescription = (
@@ -19,30 +20,25 @@ export const buildRoomDescription = (
   command: Command
 ) => {
   const { visitedRooms, currentRoom, itemLocation } = gameState;
-  const roomDescription = [];
-  //Add room text
 
-  roomDescription.push(
+  const roomText =
     visitedRooms.has(currentRoom) && command !== "look"
       ? roomRegistry.getShortDescription(currentRoom)
-      : roomRegistry.getLongDescription(currentRoom)
-  );
+      : roomRegistry.getLongDescription(currentRoom);
 
-  //Add items
-  const itemsPresent = [];
+  const itemsPresent: string[] = [];
   for (const [item, location] of Object.entries(itemLocation)) {
     if (location === currentRoom && isItemId(item)) {
       itemsPresent.push(itemRegistry.getFloorDescription(item));
     }
   }
-  roomDescription.push(...itemsPresent);
 
   //Add drogoGuard
 
   //add puzzleNPC
-  const puzzleNPCDescription = addPuzzleNPC(gameState);
-  if (puzzleNPCDescription) roomDescription.push(puzzleNPCDescription);
-  return roomDescription;
+  const puzzleNPCText = addPuzzleNPC(gameState);
+
+  return [roomText, ...itemsPresent, ...(puzzleNPCText ? [puzzleNPCText] : [])];
 };
 
 const lookRoom: PipelineFunction = (payload) => {
@@ -79,6 +75,7 @@ const lookItem: PipelineFunction = (payload) => {
 };
 
 const lookPipeline = [
+  runPuzzleTriggers,
   runBathTriggers,
   runKeyConversion,
   runPoolTriggers,

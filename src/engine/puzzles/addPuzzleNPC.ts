@@ -7,8 +7,8 @@ export const addPuzzleNPC = (gameState: GameState): string | null => {
 
   const { puzzleId, puzzleNPC } = puzzleRegistry[currentRoom];
   return puzzleCompleted[puzzleId]
-    ? puzzleNPC.descriptions.completed
+    ? puzzleNPC.description.completed
     : visitedRooms.has(currentRoom)
-      ? puzzleNPC.descriptions.short
-      : puzzleNPC.descriptions.long;
+      ? puzzleNPC.description.short
+      : puzzleNPC.description.long;
 };

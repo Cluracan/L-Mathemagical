@@ -6,11 +6,12 @@ import {
 import { isItemId, isKeyType } from "../../assets/data/itemData";
 import { runBathTriggers } from "../events/runBathTriggers";
 import { runKeyConversion } from "../events/runKeyConversion";
-import { failCommand } from "../utils/failCommand";
+import { failCommand } from "../pipeline/failCommand";
 
 import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
+import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 
 const keyFeedback = {
   noKey: "You don't have the right key!",
@@ -74,6 +75,7 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
 };
 
 const UsePipeline = [
+  runPuzzleTriggers,
   runBathTriggers,
   runKeyConversion,
   runUseKeyCheck,

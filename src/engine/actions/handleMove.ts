@@ -5,7 +5,7 @@ import {
   isDirectionAlias,
 } from "../constants/directions";
 import { buildRoomDescription } from "./handleLook";
-import { failCommand } from "../utils/failCommand";
+import { failCommand } from "../pipeline/failCommand";
 import { roomRegistry } from "../world/roomRegistry";
 import { runBlockedTriggers } from "../events/runBlockedTriggers";
 import { runPoolTriggers } from "../events/runPoolTriggers";
@@ -14,6 +14,7 @@ import { runBathTriggers } from "../events/runBathTriggers";
 import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
+import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 
 enableMapSet();
 
@@ -80,6 +81,7 @@ const applyRoomDescription: PipelineFunction = (payload) => {
 const movePipeline = [
   validateDirection,
   validateExit,
+  runPuzzleTriggers,
   runBathTriggers,
   runPoolTriggers,
   runBlockedTriggers,

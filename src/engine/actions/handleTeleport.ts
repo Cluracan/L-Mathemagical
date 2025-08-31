@@ -7,7 +7,12 @@ export const handleTeleport: HandleCommand = (args) => {
   const { command, target, gameState } = args;
   if (target && isRoomId(target)) {
     return handleLook({
-      gameState: { ...gameState, currentRoom: target },
+      gameState: {
+        ...gameState,
+        feedback: "move",
+        visitedRooms: gameState.visitedRooms.add(gameState.currentRoom),
+        currentRoom: target,
+      },
       command,
       target: null,
     });

@@ -28,6 +28,8 @@ export type GameStoreState = {
   bathState: BathState;
   drogoGuard: null | { target: number; turnsUntilCaught: number };
   puzzleCompleted: Record<PuzzleId, boolean>;
+  currentPuzzle: PuzzleId | null;
+  showDialog: boolean;
 };
 
 type GameStoreActions = {
@@ -52,6 +54,8 @@ const initialGameState: GameStoreState = {
   bathState: initialBathState,
   drogoGuard: null,
   puzzleCompleted: initialPuzzleState,
+  currentPuzzle: null,
+  showDialog: false,
 };
 
 export const useGameStore = create<GameStore>()(

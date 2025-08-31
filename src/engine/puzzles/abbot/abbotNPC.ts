@@ -2,6 +2,7 @@ import type { PuzzleNPC } from "../types";
 
 export const abbotNPC: PuzzleNPC = {
   puzzleId: "abbot",
+  usesDialog: false,
   description: {
     completed: "",
     long: 'The abbot is standing in one corner. He asks, "Can you help me, please?".',
@@ -16,7 +17,7 @@ export const abbotNPC: PuzzleNPC = {
     puzzleReject: "The abbot sniffs sadly.",
     puzzleComplete:
       "A strange sound behind you attracts your attention. When you turn back the abbot has vanished.",
-    blockedExits: "You are tempporatily stranded",
+    blockedExits: "You are temporarily stranded",
   },
   examinableItems: {
     abbot:

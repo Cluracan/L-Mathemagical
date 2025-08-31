@@ -2,6 +2,7 @@ import type { PuzzleNPC } from "../types";
 
 export const lightsNPC: PuzzleNPC = {
   puzzleId: "lights",
+  usesDialog: true,
   description: {
     completed:
       "The electrician is busy fiddling with some wires, and doesn't seem to notice you.",

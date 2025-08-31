@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import { failCommand } from "../pipeline/failCommand";
 import { stopWithSuccess } from "../pipeline/stopWithSuccess";
 import type { PipelineFunction } from "../pipeline/types";
@@ -5,10 +6,25 @@ import { isPuzzleLocation, puzzleRegistry } from "./puzzleRegistry";
 
 export const runPuzzleTriggers: PipelineFunction = (payload) => {
   const { gameState, command, target } = payload;
-  const { puzzleCompleted, currentRoom } = gameState;
+  const { puzzleCompleted, currentRoom, currentPuzzle, showDialog } = gameState;
+  console.log(gameState);
+  //not in a puzzle room
   if (!isPuzzleLocation(currentRoom) || !target) return payload;
+
+  // Puzzle in progress
+  if (
+    currentPuzzle &&
+    !showDialog &&
+    puzzleRegistry[currentRoom].puzzleId === currentPuzzle &&
+    puzzleRegistry[currentRoom].pipelineFunction
+  ) {
+    console.log("puzzle in progess");
+    return puzzleRegistry[currentRoom].pipelineFunction(payload);
+  }
+
   const { puzzleId, puzzleNPC } = puzzleRegistry[currentRoom];
   const {
+    usesDialog,
     triggerPuzzleCommand,
     acceptPuzzleText,
     rejectPuzzleText,
@@ -31,8 +47,12 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
         command === triggerPuzzleCommand &&
         acceptPuzzleText.includes(target)
       ) {
-        console.log("start puzzle");
-        return stopWithSuccess(payload, feedback.puzzleAccept);
+        const nextGameState = produce(gameState, (draft) => {
+          draft.currentPuzzle = puzzleId;
+          draft.showDialog = usesDialog;
+          draft.storyLine.push(feedback.puzzleAccept);
+        });
+        return { ...payload, gameState: nextGameState, done: true };
       }
       //reject puzzle
       if (

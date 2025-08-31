@@ -5,6 +5,7 @@ import type { PuzzleId } from "./puzzleRegistry";
 
 export type PuzzleNPC = {
   puzzleId: PuzzleId;
+  usesDialog: boolean;
   description: {
     completed: string;
     long: string;

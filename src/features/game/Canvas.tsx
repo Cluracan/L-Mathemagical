@@ -18,6 +18,7 @@ export const Canvas = ({
   const { currentRoom, visitedRooms } = useGameStore();
 
   useEffect(() => {
+    console.log("redraw");
     if (!canvasRef.current) return;
     contextRef.current = canvasRef.current.getContext("2d");
     if (!contextRef.current) return;

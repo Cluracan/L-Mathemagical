@@ -50,6 +50,6 @@ export type PuzzleId =
 
 export const isPuzzleLocation = createKeyGuard(puzzleRegistry);
 
-export const initialPuzzleState = Object.fromEntries(
+export const initialPuzzleCompletedState = Object.fromEntries(
   Object.values(puzzleRegistry).map((puzzle) => [puzzle.puzzleId, false])
 ) as Record<PuzzleId, boolean>;

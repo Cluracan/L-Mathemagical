@@ -10,7 +10,7 @@ import {
   type BathState,
 } from "../engine/events/runBathTriggers";
 import {
-  initialPuzzleState,
+  initialPuzzleCompletedState,
   type PuzzleId,
 } from "../engine/puzzles/puzzleRegistry";
 
@@ -29,6 +29,10 @@ export type GameStoreState = {
   drogoGuard: null | { target: number; turnsUntilCaught: number };
   puzzleCompleted: Record<PuzzleId, boolean>;
   currentPuzzle: PuzzleId | null;
+  puzzleState: {
+    abbot: { dialogIndex: number };
+    lights: { currentCofigutation: string[] };
+  };
   showDialog: boolean;
 };
 
@@ -53,8 +57,12 @@ const initialGameState: GameStoreState = {
   isInvisible: false,
   bathState: initialBathState,
   drogoGuard: null,
-  puzzleCompleted: initialPuzzleState,
+  puzzleCompleted: initialPuzzleCompletedState,
   currentPuzzle: null,
+  puzzleState: {
+    abbot: { dialogIndex: 0 },
+    lights: { currentCofigutation: ["a", "b"] },
+  },
   showDialog: false,
 };
 

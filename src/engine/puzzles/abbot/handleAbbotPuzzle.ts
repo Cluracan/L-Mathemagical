@@ -1,58 +1,54 @@
 import { produce } from "immer";
-import { stopWithSuccess } from "../../pipeline/stopWithSuccess";
+
 import type { PipelineFunction } from "../../pipeline/types";
-import { puzzleRegistry } from "../puzzleRegistry";
 
-class AbbotPuzzle {
-  dialogIndex: number;
-  dialog: string[];
+const dialog = [
+  "The abbot says he would like to find Runia but he is an old man and needs your help. She is somewhere in the palace. He warns you that there are many dangers, such as the Drogo Robot Guards, who are impossible to defeat unless you can find the personal secret number which each guard cannot bear to hear. You will come up against many weird and puzzling situations before you can find Runia.\n\nThe abbot asks you again if you will help.",
+  "A strange sound behind you attracts your attention. When you turn back the abbot has vanished",
+];
 
-  constructor() {
-    this.dialogIndex = 0;
-    this.dialog = [
-      "The abbot says he would like to find Runia but he is an old man and needs your help. She is somewhere in the palace. He warns you that there are many dangers, such as the Drogo Robot Guards, who are impossible to defeat unless you can find the personal secret number which each guard cannot bear to hear. You will come up against many weird and puzzling situations before you can find Runia.\n\nThe abbot asks you again if you will help.",
-      "A strange sound behind you attracts your attention. When you turn back the abbot has vanished",
-    ];
-  }
-  handleAbbotPuzzle: PipelineFunction = (payload) => {
-    const { command, target, gameState } = payload;
-    const { puzzleCompleted } = gameState;
-    console.log(puzzleCompleted);
-    switch (command) {
-      case "say":
-        if (target && ["y", "yes"].includes(target)) {
-          if (this.dialogIndex === this.dialog.length - 1) {
-            const nextGameState = produce(gameState, (draft) => {
-              draft.puzzleCompleted.abbot = true;
-              draft.storyLine.push(this.dialog[this.dialogIndex]);
-            });
-            return { ...payload, gameState: nextGameState };
-          } else {
-            return stopWithSuccess(payload, this.dialog[this.dialogIndex++]);
-          }
-        } else if (target && ["n", "no"].includes(target)) {
+export const handleAbbotPuzzle: PipelineFunction = (payload) => {
+  const { command, target, gameState } = payload;
+  const { puzzleCompleted, puzzleState } = gameState;
+  console.log(puzzleCompleted);
+  switch (command) {
+    case "say":
+      if (target && ["y", "yes"].includes(target)) {
+        if (puzzleState.abbot.dialogIndex === dialog.length - 1) {
           const nextGameState = produce(gameState, (draft) => {
             draft.puzzleCompleted.abbot = true;
-            draft.storyLine.push(this.dialog[this.dialog.length - 1]);
+            draft.storyLine.push(dialog[puzzleState.abbot.dialogIndex]);
           });
-          return { ...payload, gameState: nextGameState, done: true };
+          return { ...payload, gameState: nextGameState };
         } else {
           const nextGameState = produce(gameState, (draft) => {
-            draft.puzzleCompleted.abbot = true;
-            draft.storyLine.push("Hmm? Says the abbot");
+            draft.storyLine.push(dialog[puzzleState.abbot.dialogIndex]);
+            draft.puzzleState.abbot.dialogIndex += 1;
           });
-          return { ...payload, gameState: nextGameState, done: true };
+          return { ...payload, gameState: nextGameState };
         }
-      case "move":
+      } else if (target && ["n", "no"].includes(target)) {
         const nextGameState = produce(gameState, (draft) => {
           draft.puzzleCompleted.abbot = true;
-          draft.storyLine.push(this.dialog[this.dialog.length - 1]);
+          draft.currentPuzzle = null;
+          draft.storyLine.push(dialog[dialog.length - 1]);
         });
-        return { ...payload, gameState: nextGameState };
-    }
-    return payload;
-  };
-}
-
-const abbotPuzzle = new AbbotPuzzle();
-export const handleAbbotPuzzle = abbotPuzzle.handleAbbotPuzzle;
+        return { ...payload, gameState: nextGameState, done: true };
+      } else {
+        const nextGameState = produce(gameState, (draft) => {
+          draft.puzzleCompleted.abbot = true;
+          draft.currentPuzzle = null;
+          draft.storyLine.push("Hmm? Says the abbot");
+        });
+        return { ...payload, gameState: nextGameState, done: true };
+      }
+    case "move":
+      const nextGameState = produce(gameState, (draft) => {
+        draft.puzzleCompleted.abbot = true;
+        draft.currentPuzzle = null;
+        draft.storyLine.push(dialog[dialog.length - 1]);
+      });
+      return { ...payload, gameState: nextGameState };
+  }
+  return payload;
+};

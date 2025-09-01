@@ -17,7 +17,7 @@ export const abbotNPC: PuzzleNPC = {
     puzzleReject: "The abbot sniffs sadly.",
     puzzleComplete:
       "A strange sound behind you attracts your attention. When you turn back the abbot has vanished.",
-    blockedExits: "You are temporarily stranded",
+    blockedExits: null,
   },
   examinableItems: {
     abbot:

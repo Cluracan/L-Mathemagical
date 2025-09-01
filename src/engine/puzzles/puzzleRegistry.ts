@@ -1,4 +1,4 @@
-import { abbotNPC } from "./abbot/abbotNPC";
+import { abbotHallwayNPC, abbotKitchenNPC, abbotNPC } from "./abbot/abbotNPC";
 import { handleAbbotPuzzle } from "./abbot/handleAbbotPuzzle";
 import { lightsNPC } from "./lights/lightsNPC";
 import { LightsPuzzle } from "./lights/LightsPuzzle";
@@ -12,6 +12,19 @@ export const puzzleRegistry = {
     puzzleId: "abbot",
     puzzleNPC: abbotNPC,
     pipelineFunction: handleAbbotPuzzle,
+    component: null,
+  },
+
+  hallway: {
+    puzzleId: "abbot",
+    puzzleNPC: abbotHallwayNPC,
+    pipelineFunction: null,
+    component: null,
+  },
+  kitchen: {
+    puzzleId: "abbot",
+    puzzleNPC: abbotKitchenNPC,
+    pipelineFunction: null,
     component: null,
   },
   lights: {

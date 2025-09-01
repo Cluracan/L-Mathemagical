@@ -20,12 +20,12 @@ export const buildRoomDescription = (
   command: Command
 ) => {
   const { visitedRooms, currentRoom, itemLocation } = gameState;
-
+  //Add room description
   const roomText =
     visitedRooms.has(currentRoom) && command !== "look"
       ? roomRegistry.getShortDescription(currentRoom)
       : roomRegistry.getLongDescription(currentRoom);
-
+  //Add items
   const itemsPresent: string[] = [];
   for (const [item, location] of Object.entries(itemLocation)) {
     if (location === currentRoom && isItemId(item)) {

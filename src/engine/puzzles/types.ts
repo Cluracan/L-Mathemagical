@@ -7,7 +7,7 @@ export type PuzzleNPC = {
   puzzleId: PuzzleId;
   usesDialog: boolean;
   description: {
-    completed: string;
+    completed: string | null;
     long: string;
     short: string;
   };

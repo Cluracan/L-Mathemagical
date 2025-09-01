@@ -15,7 +15,7 @@ export const roomData = {
   hallway: {
     id: "hallway",
     descriptions: {
-      long: "You are in a dark hall way. At the south end is an outside door. There is another door at the north end. \n\nThe abbot is just disappearing through the door at the north end.",
+      long: "You are in a dark hall way. At the south end is an outside door. There is another door at the north end.",
       short: "You are in the hall way.",
     },
     mapText: "Hallway",
@@ -27,7 +27,7 @@ export const roomData = {
   kitchen: {
     id: "kitchen",
     descriptions: {
-      long: "You are in a room which once was a kitchen. It has quarry tiles on the floor and there is a cracked sink in one corner. There are doors to the north, south, east and west. \n\nThe east door has just swung closed.",
+      long: "You are in a room which once was a kitchen. It has quarry tiles on the floor and there is a cracked sink in one corner. There are doors to the north, south, east and west.",
       short: "You are in the old kitchen",
     },
     mapText: "Kitchen",

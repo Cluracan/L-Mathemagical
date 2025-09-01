@@ -14,8 +14,9 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
   // Puzzle in progress
   if (
     currentPuzzle &&
-    !showDialog &&
+    !puzzleCompleted[currentPuzzle] &&
     puzzleRegistry[currentRoom].puzzleId === currentPuzzle &&
+    !showDialog &&
     puzzleRegistry[currentRoom].pipelineFunction
   ) {
     console.log("puzzle in progess");

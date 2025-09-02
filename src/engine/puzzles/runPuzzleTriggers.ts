@@ -7,7 +7,6 @@ import { isPuzzleLocation, puzzleRegistry } from "./puzzleRegistry";
 export const runPuzzleTriggers: PipelineFunction = (payload) => {
   const { gameState, command, target } = payload;
   const { puzzleCompleted, currentRoom, currentPuzzle, showDialog } = gameState;
-  console.log(gameState);
   //not in a puzzle room
   if (!isPuzzleLocation(currentRoom) || !target) return payload;
 
@@ -19,7 +18,6 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
     !showDialog &&
     puzzleRegistry[currentRoom].pipelineFunction
   ) {
-    console.log("puzzle in progess");
     return puzzleRegistry[currentRoom].pipelineFunction(payload);
   }
 

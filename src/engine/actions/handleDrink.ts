@@ -5,7 +5,6 @@ import type { HandleCommand } from "../dispatchCommand";
 export const handleDrink: HandleCommand = (args) => {
   const { gameState, target } = args;
   const { itemLocation, playerHeight } = gameState;
-  console.log({ playerHeight });
   if (!target) {
     const nextGameState = produce(gameState, (draft) => {
       draft.storyLine.push("Drink what?");

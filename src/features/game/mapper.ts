@@ -391,7 +391,6 @@ export class Mapper {
   }
 
   isAnimating() {
-    console.log(this.animating);
     return this.animating;
   }
 }

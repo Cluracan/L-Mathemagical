@@ -10,7 +10,6 @@ const dialog = [
 export const handleAbbotPuzzle: PipelineFunction = (payload) => {
   const { command, target, gameState } = payload;
   const { puzzleCompleted, puzzleState } = gameState;
-  console.log(puzzleCompleted);
   switch (command) {
     case "say":
       if (target && ["y", "yes"].includes(target)) {

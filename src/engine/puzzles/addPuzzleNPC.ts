@@ -1,11 +1,11 @@
 import type { GameState } from "../gameEngine";
-import { isPuzzleLocation, puzzleRegistry } from "./puzzleRegistry";
+import { isPuzzleLocation, puzzleAtLocation } from "./puzzleRegistry";
 
 export const addPuzzleNPC = (gameState: GameState): string | null => {
   const { visitedRooms, currentRoom, puzzleCompleted } = gameState;
   if (!isPuzzleLocation(currentRoom)) return null;
 
-  const { puzzleId, puzzleNPC } = puzzleRegistry[currentRoom];
+  const { puzzleId, puzzleNPC } = puzzleAtLocation[currentRoom];
   return puzzleCompleted[puzzleId]
     ? puzzleNPC.description.completed
     : visitedRooms.has(currentRoom)

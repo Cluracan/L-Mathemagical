@@ -16,8 +16,6 @@ export const lightsNPC: PuzzleNPC = {
     failPuzzleAccept: null,
     puzzleAccept: "You agree to help the electrician.",
     puzzleReject: "The electrician turns sadly back to her switches.",
-    puzzleComplete:
-      'The electrician thanks you for your help. She wishes you luck and warns you to be careful.\n\n"These Drogos aren\'t to be trusted."\n\nYour attention is caught by a roughly-carved wooden oar which is propped up in one corner of the room. The electrician notices your interest and says, "You can have that if you want it."',
     blockedExits: null,
   },
   examinableItems: {

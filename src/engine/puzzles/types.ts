@@ -17,8 +17,7 @@ export type PuzzleNPC = {
   feedback: {
     failPuzzleAccept: string | null;
     puzzleAccept: string;
-    puzzleReject: string;
-    puzzleComplete: string;
+    puzzleReject: string | null;
     blockedExits: string | null;
   };
   examinableItems: Record<string, string>;

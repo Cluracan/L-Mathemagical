@@ -15,8 +15,6 @@ export const abbotNPC: PuzzleNPC = {
     failPuzzleAccept: null,
     puzzleAccept: `The abbot tells you he is looking for a girl called Runia, who has been captured by the Grey Drogos who inhabit the palace.  The Drogos have taken Runia because they fear she is dangerous to them. Partly they fear her long red hair, but mostly they are afraid because she has discovered the Drogo's one weakness and, if she is allowed to reveal this, someone may challenge the Drogos' power.\n\n"Shall I go on?" asks the abbot.`,
     puzzleReject: "The abbot sniffs sadly.",
-    puzzleComplete:
-      "A strange sound behind you attracts your attention. When you turn back the abbot has vanished.",
     blockedExits: null,
   },
   examinableItems: {
@@ -41,7 +39,6 @@ export const abbotHallwayNPC: PuzzleNPC = {
     failPuzzleAccept: null,
     puzzleAccept: "",
     puzzleReject: "",
-    puzzleComplete: "",
     blockedExits: null,
   },
   examinableItems: {},
@@ -63,7 +60,6 @@ export const abbotKitchenNPC: PuzzleNPC = {
     failPuzzleAccept: null,
     puzzleAccept: "",
     puzzleReject: "",
-    puzzleComplete: "",
     blockedExits: null,
   },
   examinableItems: {},

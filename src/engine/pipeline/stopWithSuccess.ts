@@ -3,11 +3,11 @@ import type { PipelinePayload } from "../pipeline/types";
 
 export const stopWithSuccess = (
   payload: PipelinePayload,
-  storyLineMessage: string
+  storyLineMessage: string | null
 ): PipelinePayload => {
   const { gameState } = payload;
   const nextGameState = produce(gameState, (draft) => {
-    draft.storyLine.push(storyLineMessage);
+    if (storyLineMessage) draft.storyLine.push(storyLineMessage);
   });
   return {
     ...payload,

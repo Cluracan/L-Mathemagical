@@ -2,7 +2,11 @@ import { produce } from "immer";
 import { failCommand } from "../pipeline/failCommand";
 import { stopWithSuccess } from "../pipeline/stopWithSuccess";
 import type { PipelineFunction } from "../pipeline/types";
-import { isPuzzleLocation, puzzleRegistry } from "./puzzleRegistry";
+import {
+  isPuzzleLocation,
+  puzzleAtLocation,
+  puzzleRegistry,
+} from "./puzzleRegistry";
 
 export const runPuzzleTriggers: PipelineFunction = (payload) => {
   const { gameState, command, target } = payload;
@@ -14,14 +18,16 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
   if (
     currentPuzzle &&
     !puzzleCompleted[currentPuzzle] &&
-    puzzleRegistry[currentRoom].puzzleId === currentPuzzle &&
+    puzzleAtLocation[currentRoom].puzzleId === currentPuzzle &&
     !showDialog &&
-    puzzleRegistry[currentRoom].pipelineFunction
+    puzzleRegistry[currentPuzzle].pipelineFunction
   ) {
-    return puzzleRegistry[currentRoom].pipelineFunction(payload);
+    return puzzleRegistry[currentPuzzle].pipelineFunction(payload);
   }
 
-  const { puzzleId, puzzleNPC } = puzzleRegistry[currentRoom];
+  //else get puzzleID & NPC
+  const { puzzleId, puzzleNPC } = puzzleAtLocation[currentRoom];
+
   const {
     usesDialog,
     triggerPuzzleCommand,
@@ -30,6 +36,7 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
     feedback,
     examinableItems,
   } = puzzleNPC;
+
   switch (puzzleCompleted[puzzleId]) {
     case true:
       if (
@@ -51,6 +58,7 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
           draft.showDialog = usesDialog;
           draft.storyLine.push(feedback.puzzleAccept);
         });
+        console.log(puzzleRegistry[nextGameState.currentPuzzle!!].component);
         return { ...payload, gameState: nextGameState, done: true };
       }
       //reject puzzle

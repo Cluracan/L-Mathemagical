@@ -6,32 +6,30 @@ import { createKeyGuard } from "../../utils/guards";
 import type { PuzzleNPC } from "./types";
 import type { PipelineFunction } from "../pipeline/types";
 import type { RoomId } from "../../assets/data/roomData";
+import { fileNPC } from "./file/fileNPC";
+import { FilePuzzle } from "./file/FilePuzzle";
 
-export const puzzleRegistry = {
+export const puzzleAtLocation = {
   store: {
     puzzleId: "abbot",
     puzzleNPC: abbotNPC,
-    pipelineFunction: handleAbbotPuzzle,
-    component: null,
   },
 
   hallway: {
     puzzleId: "abbot",
     puzzleNPC: abbotHallwayNPC,
-    pipelineFunction: null,
-    component: null,
   },
   kitchen: {
     puzzleId: "abbot",
     puzzleNPC: abbotKitchenNPC,
-    pipelineFunction: null,
-    component: null,
   },
   lights: {
     puzzleId: "lights",
     puzzleNPC: lightsNPC,
-    pipelineFunction: null,
-    component: LightsPuzzle,
+  },
+  file: {
+    puzzleId: "file",
+    puzzleNPC: fileNPC,
   },
 } as const satisfies Partial<
   Record<
@@ -39,17 +37,37 @@ export const puzzleRegistry = {
     {
       puzzleId: string;
       puzzleNPC: PuzzleNPC;
-      pipelineFunction: PipelineFunction | null;
-      component: React.FunctionComponent | null;
     }
   >
 >;
 
-export type PuzzleId =
-  (typeof puzzleRegistry)[keyof typeof puzzleRegistry]["puzzleId"];
+export const puzzleRegistry = {
+  abbot: {
+    pipelineFunction: handleAbbotPuzzle,
+    component: null,
+  },
+  lights: {
+    pipelineFunction: null,
+    component: LightsPuzzle,
+  },
+  file: {
+    pipelineFunction: null,
+    component: FilePuzzle,
+  },
+} as const satisfies Partial<
+  Record<
+    string,
+    {
+      pipelineFunction: PipelineFunction | null;
+      component: React.FunctionComponent<{ visible: boolean }> | null;
+    }
+  >
+>;
 
-export const isPuzzleLocation = createKeyGuard(puzzleRegistry);
+export type PuzzleId = keyof typeof puzzleRegistry;
+
+export const isPuzzleLocation = createKeyGuard(puzzleAtLocation);
 
 export const initialPuzzleCompletedState = Object.fromEntries(
-  Object.values(puzzleRegistry).map((puzzle) => [puzzle.puzzleId, false])
+  Object.keys(puzzleRegistry).map((puzzle) => [puzzle, false])
 ) as Record<PuzzleId, boolean>;

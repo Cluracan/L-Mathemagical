@@ -4,9 +4,11 @@ import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { Canvas } from "./Canvas";
 import { useGameController } from "../../middleware/useGameController";
 import { LightsPuzzle } from "../../engine/puzzles/lights/LightsPuzzle";
+import { puzzleRegistry } from "../../engine/puzzles/puzzleRegistry";
+import { PuzzleDialog } from "./PuzzleDialog";
 
 export const GameContent = () => {
-  const { storyLine, modernMode, showDialog } = useGameStore();
+  const { storyLine, modernMode, showDialog, currentPuzzle } = useGameStore();
   const [userInput, setUserInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
   const { submitInput, reportAnimationComplete } = useGameController();
@@ -58,10 +60,8 @@ export const GameContent = () => {
           value={userInput}
         ></TextField>
       </Box>
-      {modernMode && showDialog && (
-        <Dialog open={showDialog} fullWidth={true} maxWidth={"lg"}>
-          <LightsPuzzle visible={true} />
-        </Dialog>
+      {currentPuzzle && (
+        <PuzzleDialog puzzleId={currentPuzzle} showDialog={showDialog} />
       )}
     </>
   );

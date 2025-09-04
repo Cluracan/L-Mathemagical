@@ -53,7 +53,7 @@ const isSwitchIndex = createKeyGuard(applySwitch);
 const isCorrectOrder = (curOrder: string[]) =>
   targetOrder.every((color, index) => curOrder[index] === color);
 
-export const LightsPuzzle = ({ visible }: { visible: boolean }) => {
+export const LightsPuzzle = () => {
   console.log("rendering lightspuzzle");
   const { puzzleState } = useGameStore();
   const { curOrder, turns, feedback, switchesActive } = puzzleState.lights;
@@ -64,8 +64,6 @@ export const LightsPuzzle = ({ visible }: { visible: boolean }) => {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [feedback]);
-
-  if (!visible) return null;
 
   const handleClick = (switchIndex: number) => {
     if (isSwitchIndex(switchIndex)) {

@@ -11,7 +11,7 @@ import "@fontsource/courier-prime/400.css";
 const darkTheme = createTheme({
   typography: {
     fontSize: 18,
-    fontFamily: ["Roboto"].join(","),
+    fontFamily: "Lucida Console",
   },
   palette: {
     mode: "dark",

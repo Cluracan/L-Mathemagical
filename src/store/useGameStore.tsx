@@ -13,7 +13,7 @@ import {
   initialPuzzleCompletedState,
   type PuzzleId,
 } from "../engine/puzzles/puzzleRegistry";
-import { produce } from "immer";
+
 import {
   initialLightsFeedback,
   initialLightsOrder,
@@ -42,6 +42,7 @@ export type GameStoreState = {
       turns: number;
       switchesActive: boolean;
     };
+    file: {};
   };
   showDialog: boolean;
 };
@@ -77,6 +78,7 @@ const initialGameState: GameStoreState = {
       turns: 0,
       switchesActive: true,
     },
+    file: {},
   },
   showDialog: false,
 };

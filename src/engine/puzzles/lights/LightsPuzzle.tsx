@@ -34,7 +34,7 @@ const lightsFeedback = {
   ],
   reset: [`"OK, let's start again." says the electrician.`],
   storyLineSuccess: [
-    "The elecrician thanks you for your help, and turns back to the sound system.",
+    "The electrician thanks you for your help, and turns back to the sound system.",
   ],
   storyLineFailure: [
     'The electrician looks hopefully at you - "Will you have another go?"',
@@ -109,6 +109,7 @@ export const LightsPuzzle = ({ visible }: { visible: boolean }) => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         draft.showDialog = false;
+        draft.currentPuzzle = null;
         if (isCorrectOrder(curOrder) && turns === 4) {
           draft.itemLocation.oar = "lights";
           draft.puzzleCompleted.lights = true;

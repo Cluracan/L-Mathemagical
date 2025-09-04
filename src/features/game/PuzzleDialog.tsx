@@ -14,12 +14,12 @@ export const PuzzleDialog = (props: PuzzleDialogProps) => {
   if (!showDialog || !puzzleId || puzzleRegistry[puzzleId].component === null)
     return null;
 
-  const puzzleComponent = puzzleRegistry[puzzleId].component;
+  const PuzzleComponent = puzzleRegistry[puzzleId].component;
 
   return (
     <>
       <Dialog open={showDialog} fullWidth={true} maxWidth={"lg"}>
-        {puzzleComponent()}
+        <PuzzleComponent />
       </Dialog>
     </>
   );

@@ -6,8 +6,13 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "@fontsource/mystery-quest/400.css";
+import "@fontsource/courier-prime/400.css";
 
 const darkTheme = createTheme({
+  typography: {
+    fontSize: 18,
+    fontFamily: ["Roboto"].join(","),
+  },
   palette: {
     mode: "dark",
     primary: {
@@ -16,10 +21,6 @@ const darkTheme = createTheme({
       dark: "hsla(66, 61%, 37%, 1.00)",
       contrastText: "#211e08",
     },
-
-    // background: {
-    //   default: "#14181b",
-    // },
   },
 });
 
@@ -42,3 +43,5 @@ export const Route = createRootRoute({
     </Box>
   ),
 });
+
+//["Lucida Console", "DejaVu Sans Mono", "FreeMono", "Open Sans", "Arial", "Helvetica", "sans-serif"

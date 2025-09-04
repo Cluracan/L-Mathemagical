@@ -13,6 +13,11 @@ import {
   initialPuzzleCompletedState,
   type PuzzleId,
 } from "../engine/puzzles/puzzleRegistry";
+import { produce } from "immer";
+import {
+  initialLightsFeedback,
+  initialLightsOrder,
+} from "../engine/puzzles/lights/LightsPuzzle";
 
 export type GameStoreState = {
   playerName: string;
@@ -31,7 +36,12 @@ export type GameStoreState = {
   currentPuzzle: PuzzleId | null;
   puzzleState: {
     abbot: { dialogIndex: number };
-    lights: { currentCofigutation: string[] };
+    lights: {
+      curOrder: string[];
+      feedback: string[];
+      turns: number;
+      switchesActive: boolean;
+    };
   };
   showDialog: boolean;
 };
@@ -61,7 +71,12 @@ const initialGameState: GameStoreState = {
   currentPuzzle: null,
   puzzleState: {
     abbot: { dialogIndex: 0 },
-    lights: { currentCofigutation: ["a", "b"] },
+    lights: {
+      curOrder: initialLightsOrder,
+      feedback: initialLightsFeedback,
+      turns: 0,
+      switchesActive: true,
+    },
   },
   showDialog: false,
 };

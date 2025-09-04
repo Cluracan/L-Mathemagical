@@ -1,11 +1,12 @@
-import { Box, Card, TextField } from "@mui/material";
+import { Box, Card, Dialog, TextField } from "@mui/material";
 import { useGameStore } from "../../store/useGameStore";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { Canvas } from "./Canvas";
 import { useGameController } from "../../middleware/useGameController";
+import { LightsPuzzle } from "../../engine/puzzles/lights/LightsPuzzle";
 
 export const GameContent = () => {
-  const { storyLine, modernMode } = useGameStore();
+  const { storyLine, modernMode, showDialog } = useGameStore();
   const [userInput, setUserInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
   const { submitInput, reportAnimationComplete } = useGameController();
@@ -31,7 +32,14 @@ export const GameContent = () => {
       )}
 
       <Box height={"80vh"} width={"60vw"} sx={{ marginLeft: "2rem" }}>
-        <Card sx={{ height: 1, overflowY: "auto", whiteSpace: "pre-wrap" }}>
+        <Card
+          sx={{
+            height: 1,
+            padding: "1rem",
+            overflowY: "auto",
+            whiteSpace: "pre-wrap",
+          }}
+        >
           {storyLine.map((entry, index) => {
             return (
               <Box key={index} sx={{ marginBottom: "1.5rem" }}>
@@ -50,6 +58,11 @@ export const GameContent = () => {
           value={userInput}
         ></TextField>
       </Box>
+      {modernMode && showDialog && (
+        <Dialog open={showDialog} fullWidth={true} maxWidth={"lg"}>
+          <LightsPuzzle visible={true} />
+        </Dialog>
+      )}
     </>
   );
 };

@@ -1,6 +1,6 @@
 import type { PuzzleNPC } from "../types";
 
-export const fileNPC: PuzzleNPC = {
+export const keyNPC: PuzzleNPC = {
   puzzleId: "lights",
   usesDialog: true,
   description: {

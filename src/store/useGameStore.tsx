@@ -18,6 +18,7 @@ import {
   initialLightsFeedback,
   initialLightsOrder,
 } from "../engine/puzzles/lights/LightsPuzzle";
+import { initialKeyBlankData } from "../engine/puzzles/key/KeyPuzzle";
 
 export type GameStoreState = {
   playerName: string;
@@ -42,7 +43,7 @@ export type GameStoreState = {
       turns: number;
       switchesActive: boolean;
     };
-    file: {};
+    key: { keyBlankData: boolean[] };
   };
   showDialog: boolean;
 };
@@ -78,7 +79,7 @@ const initialGameState: GameStoreState = {
       turns: 0,
       switchesActive: true,
     },
-    file: {},
+    key: { keyBlankData: initialKeyBlankData },
   },
   showDialog: false,
 };

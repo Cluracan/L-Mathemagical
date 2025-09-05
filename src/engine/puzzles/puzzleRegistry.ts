@@ -6,8 +6,8 @@ import { createKeyGuard } from "../../utils/guards";
 import type { PuzzleNPC } from "./types";
 import type { PipelineFunction } from "../pipeline/types";
 import type { RoomId } from "../../assets/data/roomData";
-import { fileNPC } from "./file/fileNPC";
-import { FilePuzzle } from "./file/FilePuzzle";
+import { keyNPC } from "./key/KeyNPC";
+import { KeyPuzzle } from "./key/KeyPuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -28,8 +28,8 @@ export const puzzleAtLocation = {
     puzzleNPC: lightsNPC,
   },
   file: {
-    puzzleId: "file",
-    puzzleNPC: fileNPC,
+    puzzleId: "key",
+    puzzleNPC: keyNPC,
   },
 } as const satisfies Partial<
   Record<
@@ -50,9 +50,9 @@ export const puzzleRegistry = {
     pipelineFunction: null,
     component: LightsPuzzle,
   },
-  file: {
+  key: {
     pipelineFunction: null,
-    component: FilePuzzle,
+    component: KeyPuzzle,
   },
 } as const satisfies Partial<
   Record<

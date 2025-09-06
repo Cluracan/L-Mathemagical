@@ -1,7 +1,17 @@
-import { Box, DialogContentText, DialogTitle, styled } from "@mui/material";
-import { memo, useCallback } from "react";
+import {
+  Box,
+  Button,
+  DialogContentText,
+  DialogTitle,
+  Snackbar,
+  Stack,
+  styled,
+} from "@mui/material";
+import { memo, useCallback, useState } from "react";
 import { useGameStore } from "../../../store/useGameStore";
+import { produce } from "immer";
 
+//Keyholes data
 const fourKeyCols = 21;
 const fourKeyRows = 10;
 const fourKeyFiledCells = new Set([
@@ -101,19 +111,83 @@ for (let i = 0; i < fourKeyRows; i++) {
   }
 }
 
-export const initialKeyBlankSelectedCells = [9, 29];
+//Key blank data
+const KeyBlankSelectedCells = [9, 29];
 const keyBlankCols = 10;
 const keyBlankRows = 3;
 const keyBlankSolution = [
   0, 1, 2, 3, 4, 5, 6, 8, 9, 14, 21, 22, 26, 27, 28, 29,
 ];
 
-export const initialKeyBlankData = Array.from(
+export const initialSelectedCells = Array.from(
   { length: keyBlankCols * keyBlankRows },
-  (_, i) => [9, 29].includes(i)
+  (_, i) => KeyBlankSelectedCells.includes(i)
 );
 
+const keyFeedback = {
+  default:
+    "Click on a cell to use the file. You can test, reset, or leave at any time.",
+  doesNotFit: "The key will not fit into all the locks.",
+  willNotTurn:
+    "The key fits into all the keyholes but will not turn all the locks.",
+  success: "You\'ve done it! The key can now be used to open the oak door!. ",
+  storyLineSuccess: "You look proudly at the key you have made.",
+  storyLineFailure:
+    "You stare at the file and key blanks, wondering if you should try again.",
+};
+
 export const KeyPuzzle = () => {
+  const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.key);
+  const [feedback, setFeedback] = useState(keyFeedback.default);
+  const [showFeedback, setShowFeedback] = useState(false);
+
+  const handleReset = () => {
+    useGameStore.setState((state) => ({
+      ...state,
+      puzzleState: {
+        ...state.puzzleState,
+        key: { selectedCells: initialSelectedCells },
+      },
+    }));
+  };
+
+  const handleLeave = () => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.showDialog = false;
+        draft.currentPuzzle = null;
+        if (state.puzzleCompleted.key) {
+          draft.itemLocation.iron = "player";
+          draft.storyLine.push(keyFeedback.storyLineSuccess);
+        } else {
+          draft.storyLine.push(keyFeedback.storyLineFailure);
+          draft.puzzleState.key.selectedCells = initialSelectedCells;
+        }
+      })
+    );
+  };
+
+  const handleTestKey = () => {
+    const selectedCells = useGameStore.getState().puzzleState.key.selectedCells;
+    if (keyBlankSolution.every((cellIndex) => selectedCells[cellIndex])) {
+      const selectedCellsCount = selectedCells.filter(
+        (cell) => cell === true
+      ).length;
+      if (selectedCellsCount === keyBlankSolution.length) {
+        useGameStore.setState((state) => ({
+          ...state,
+          puzzleCompleted: { ...state.puzzleCompleted, key: true },
+        }));
+        setFeedback(keyFeedback.success);
+      } else {
+        setFeedback(keyFeedback.willNotTurn);
+      }
+    } else {
+      setFeedback(keyFeedback.doesNotFit);
+    }
+    setShowFeedback(true);
+  };
+
   return (
     <>
       <Box
@@ -141,6 +215,28 @@ export const KeyPuzzle = () => {
             <KeyCell key={i} index={i} />
           ))}
         </Box>
+        <Snackbar
+          open={showFeedback}
+          onClose={() => setShowFeedback(false)}
+          autoHideDuration={4000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          message={feedback}
+        />
+
+        <Stack
+          direction="row"
+          width={"100%"}
+          padding={"2rem"}
+          sx={{ justifyContent: "space-around" }}
+        >
+          <Button disabled={puzzleCompleted} onClick={handleReset}>
+            Reset
+          </Button>
+          <Button variant="contained" size="large" onClick={handleTestKey}>
+            Test key
+          </Button>
+          <Button onClick={handleLeave}>Leave</Button>
+        </Stack>
       </Box>
     </>
   );
@@ -186,18 +282,19 @@ const FourKeyMap = memo(() => {
 
 const KeyCell = memo(({ index }: { index: number }) => {
   const cellSelected = useGameStore(
-    (state) => state.puzzleState.key.keyBlankData[index]
+    (state) => state.puzzleState.key.selectedCells[index]
   );
   const handleClick = useCallback(() => {
+    if (useGameStore.getState().puzzleCompleted.key) return;
     useGameStore.setState((state) => {
-      if (state.puzzleState.key.keyBlankData[index]) return state;
-      const newKeyBlankData = [...state.puzzleState.key.keyBlankData];
-      newKeyBlankData[index] = true;
+      if (state.puzzleState.key.selectedCells[index]) return state;
+      const newSelectedCells = [...state.puzzleState.key.selectedCells];
+      newSelectedCells[index] = true;
       return {
         ...state,
         puzzleState: {
           ...state.puzzleState,
-          key: { keyBlankData: newKeyBlankData },
+          key: { selectedCells: newSelectedCells },
         },
       };
     });

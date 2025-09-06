@@ -58,7 +58,7 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
           draft.showDialog = usesDialog;
           draft.storyLine.push(feedback.puzzleAccept);
         });
-        console.log(puzzleRegistry[nextGameState.currentPuzzle!!].component);
+
         return { ...payload, gameState: nextGameState, done: true };
       }
       //reject puzzle

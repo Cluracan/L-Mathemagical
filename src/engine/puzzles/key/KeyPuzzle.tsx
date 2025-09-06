@@ -12,9 +12,9 @@ import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
 
 //Keyholes data
-const fourKeyCols = 21;
-const fourKeyRows = 10;
-const fourKeyFiledCells = new Set([
+const lockDisplayCols = 21;
+const lockDisplayRows = 10;
+const lockPatternCells = new Set([
   "0x0",
   "0x1",
   "0x6",
@@ -104,15 +104,15 @@ const fourKeyFiledCells = new Set([
   "9x19",
 ]);
 
-const fourKeyData: string[] = [];
-for (let i = 0; i < fourKeyRows; i++) {
-  for (let j = 0; j < fourKeyCols; j++) {
-    fourKeyData.push(fourKeyFiledCells.has(`${i}x${j}`) ? "black" : "white");
+const lockDisplayData: string[] = [];
+for (let i = 0; i < lockDisplayRows; i++) {
+  for (let j = 0; j < lockDisplayCols; j++) {
+    lockDisplayData.push(lockPatternCells.has(`${i}x${j}`) ? "black" : "white");
   }
 }
 
 //Key blank data
-const KeyBlankSelectedCells = [9, 29];
+const INITIAL_SELECTED_CELLS = [9, 29];
 const keyBlankCols = 10;
 const keyBlankRows = 3;
 const keyBlankSolution = [
@@ -121,7 +121,7 @@ const keyBlankSolution = [
 
 export const initialSelectedCells = Array.from(
   { length: keyBlankCols * keyBlankRows },
-  (_, i) => KeyBlankSelectedCells.includes(i)
+  (_, i) => INITIAL_SELECTED_CELLS.includes(i)
 );
 
 const keyFeedback = {
@@ -203,7 +203,7 @@ export const KeyPuzzle = () => {
         <DialogContentText>
           File the key blank to make a key that will fit all locks
         </DialogContentText>
-        <FourKeyMap />
+        <LockDisplay />
         <Box
           sx={{
             display: "grid",
@@ -242,7 +242,7 @@ export const KeyPuzzle = () => {
   );
 };
 
-const FourKeyMap = memo(() => {
+const LockDisplay = memo(() => {
   return (
     <>
       <Box
@@ -258,21 +258,21 @@ const FourKeyMap = memo(() => {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: `repeat(${fourKeyCols},1fr)`,
+            gridTemplateColumns: `repeat(${lockDisplayCols},1fr)`,
             padding: "1rem 2rem",
             marginRight: "4rem",
             backgroundColor: "white",
           }}
         >
-          {fourKeyData.map((color, index) => (
-            <Box
+          {lockDisplayData.map((color, index) => (
+            <div
               key={index}
-              sx={{
+              style={{
                 height: "1.5rem",
                 width: "1.5rem",
                 backgroundColor: color,
               }}
-            ></Box>
+            ></div>
           ))}
         </Box>
       </Box>

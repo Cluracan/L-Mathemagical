@@ -142,13 +142,11 @@ export const KeyPuzzle = () => {
   const [showFeedback, setShowFeedback] = useState(false);
 
   const handleReset = () => {
-    useGameStore.setState((state) => ({
-      ...state,
-      puzzleState: {
-        ...state.puzzleState,
-        key: { selectedCells: initialSelectedCells },
-      },
-    }));
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.puzzleState.key.selectedCells = initialSelectedCells;
+      })
+    );
   };
 
   const handleLeave = () => {
@@ -309,7 +307,8 @@ const KeyCell = memo(({ index }: { index: number }) => {
   );
 });
 
-const StyledCell = styled("div")(() => ({
+// https://mui.com/system/styled/
+const StyledCell = styled("div")({
   width: "1.5rem",
   height: "1.5rem",
   border: "1px solid #ccc",
@@ -323,4 +322,4 @@ const StyledCell = styled("div")(() => ({
   "&:hover": {
     border: "1px dashed black",
   },
-}));
+});

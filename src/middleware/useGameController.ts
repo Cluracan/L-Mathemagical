@@ -5,7 +5,7 @@ import { handleInput } from "../engine/gameEngine";
 export const useGameController = () => {
   const readyForInputRef = useRef<boolean>(true);
   const inputQueueRef = useRef<string[]>([]);
-  const { modernMode } = useGameStore();
+  const modernMode = useGameStore((state) => state.modernMode);
 
   const submitInput = (userInput: string) => {
     inputQueueRef.current.push(userInput);

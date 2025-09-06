@@ -1,7 +1,7 @@
 import type { PuzzleNPC } from "../types";
 
 export const keyNPC: PuzzleNPC = {
-  puzzleId: "lights",
+  puzzleId: "key",
   usesDialog: true,
   description: {
     completed: null,

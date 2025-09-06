@@ -7,7 +7,10 @@ import { useGameController } from "../../middleware/useGameController";
 import { PuzzleDialog } from "./PuzzleDialog";
 
 export const GameContent = memo(() => {
-  const storyLine = useGameStore((state) => state.storyLine);
+  const storyLine = useGameStore((state) => {
+    // console.log(`call storyLine length ${state.storyLine.length}`);
+    return state.storyLine;
+  });
   const modernMode = useGameStore((state) => state.modernMode);
   const showDialog = useGameStore((state) => state.showDialog);
   const currentPuzzle = useGameStore((state) => state.currentPuzzle);

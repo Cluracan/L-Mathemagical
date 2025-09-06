@@ -10,8 +10,9 @@ export const Canvas = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D>(null);
   const mapperRef = useRef<Mapper | null>(null);
-  const { currentRoom, visitedRooms } = useGameStore();
 
+  const currentRoom = useGameStore((state) => state.currentRoom);
+  const visitedRooms = useGameStore((state) => state.visitedRooms);
   useEffect(() => {
     if (!canvasRef.current) return;
     contextRef.current = canvasRef.current.getContext("2d");

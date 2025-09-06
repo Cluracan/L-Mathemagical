@@ -1,16 +1,10 @@
-import {
-  Box,
-  Card,
-  CardActionArea,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
+import { Box, DialogContentText, DialogTitle, styled } from "@mui/material";
+import { memo, useCallback } from "react";
 import { useGameStore } from "../../../store/useGameStore";
-import { produce } from "immer";
 
 const fourKeyCols = 21;
 const fourKeyRows = 10;
-const fourKeyFiledCells = [
+const fourKeyFiledCells = new Set([
   "0x0",
   "0x1",
   "0x6",
@@ -98,12 +92,14 @@ const fourKeyFiledCells = [
   "9x7",
   "9x13",
   "9x19",
-];
-const fourKeyData = Array.from({ length: fourKeyRows }, (_, i) =>
-  Array.from({ length: fourKeyCols }, (_, j) =>
-    fourKeyFiledCells.includes(`${i}x${j}`) ? "black" : "white"
-  )
-);
+]);
+
+const fourKeyData: string[] = [];
+for (let i = 0; i < fourKeyRows; i++) {
+  for (let j = 0; j < fourKeyCols; j++) {
+    fourKeyData.push(fourKeyFiledCells.has(`${i}x${j}`) ? "black" : "white");
+  }
+}
 
 export const initialKeyBlankSelectedCells = [9, 29];
 const keyBlankCols = 10;
@@ -117,22 +113,7 @@ export const initialKeyBlankData = Array.from(
   (_, i) => [9, 29].includes(i)
 );
 
-console.log(initialKeyBlankData);
 export const KeyPuzzle = () => {
-  const { puzzleState } = useGameStore();
-  const { keyBlankData } = puzzleState.key;
-
-  console.log("render key puzzle");
-
-  const handleClick = (cell: number) => {
-    console.log(cell);
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.key.keyBlankData[cell] = true;
-      })
-    );
-  };
-
   return (
     <>
       <Box
@@ -156,39 +137,16 @@ export const KeyPuzzle = () => {
             backgroundColor: "white",
           }}
         >
-          {keyBlankData.map((selected, i) => {
-            return (
-              <Card
-                sx={{
-                  borderRadius: 0,
-                }}
-                key={`keyBlank${i}`}
-              >
-                <CardActionArea
-                  sx={{
-                    height: "1.5rem",
-                    width: "1.5rem",
-                    borderRadius: 0,
-                    backgroundColor: selected ? "#393939" : "yellow",
-                    ":hover": {
-                      border: 1,
-                      borderColor: "black",
-                      borderStyle: "dashed",
-                    },
-                  }}
-                  onClick={() => handleClick(i)}
-                ></CardActionArea>
-              </Card>
-            );
-          })}
+          {Array.from({ length: keyBlankCols * keyBlankRows }, (_, i) => (
+            <KeyCell key={i} index={i} />
+          ))}
         </Box>
       </Box>
     </>
   );
 };
 
-const FourKeyMap = () => {
-  console.log("draw fourKeys");
+const FourKeyMap = memo(() => {
   return (
     <>
       <Box
@@ -210,21 +168,62 @@ const FourKeyMap = () => {
             backgroundColor: "white",
           }}
         >
-          {fourKeyData.map((rowData, i) => {
-            console.log("render");
-            return rowData.map((cell, j) => (
-              <Box
-                key={`${i}x${j}`}
-                sx={{
-                  height: "1.5rem",
-                  width: "1.5rem",
-                  backgroundColor: cell,
-                }}
-              ></Box>
-            ));
-          })}
+          {fourKeyData.map((color, index) => (
+            <Box
+              key={index}
+              sx={{
+                height: "1.5rem",
+                width: "1.5rem",
+                backgroundColor: color,
+              }}
+            ></Box>
+          ))}
         </Box>
       </Box>
     </>
   );
-};
+});
+
+const KeyCell = memo(({ index }: { index: number }) => {
+  const cellSelected = useGameStore(
+    (state) => state.puzzleState.key.keyBlankData[index]
+  );
+  const handleClick = useCallback(() => {
+    useGameStore.setState((state) => {
+      if (state.puzzleState.key.keyBlankData[index]) return state;
+      const newKeyBlankData = [...state.puzzleState.key.keyBlankData];
+      newKeyBlankData[index] = true;
+      return {
+        ...state,
+        puzzleState: {
+          ...state.puzzleState,
+          key: { keyBlankData: newKeyBlankData },
+        },
+      };
+    });
+  }, [index]);
+
+  return (
+    <StyledCell
+      key={index}
+      onClick={handleClick}
+      className={cellSelected ? "filled" : "empty"}
+    />
+  );
+});
+
+const StyledCell = styled("div")(() => ({
+  width: "1.5rem",
+  height: "1.5rem",
+  border: "1px solid #ccc",
+  cursor: "pointer",
+  "&.filled": {
+    backgroundColor: "#393939",
+  },
+  "&.empty": {
+    backgroundColor: "yellow",
+  },
+  "&:hover": {
+    border: "1px dashed black",
+  },
+}));

@@ -3,13 +3,14 @@ import {
   puzzleRegistry,
   type PuzzleId,
 } from "../../engine/puzzles/puzzleRegistry";
+import { memo } from "react";
 
 type PuzzleDialogProps = {
   puzzleId: PuzzleId;
   showDialog: boolean;
 };
 
-export const PuzzleDialog = (props: PuzzleDialogProps) => {
+export const PuzzleDialog = memo((props: PuzzleDialogProps) => {
   const { puzzleId, showDialog } = props;
   if (!showDialog || !puzzleId || puzzleRegistry[puzzleId].component === null)
     return null;
@@ -23,4 +24,4 @@ export const PuzzleDialog = (props: PuzzleDialogProps) => {
       </Dialog>
     </>
   );
-};
+});

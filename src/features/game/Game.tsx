@@ -1,14 +1,16 @@
-import { Box, Card, Dialog, TextField } from "@mui/material";
+import { Box, Card, TextField } from "@mui/material";
 import { useGameStore } from "../../store/useGameStore";
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { memo, useEffect, useRef, useState, type ChangeEvent } from "react";
 import { Canvas } from "./Canvas";
 import { useGameController } from "../../middleware/useGameController";
-import { LightsPuzzle } from "../../engine/puzzles/lights/LightsPuzzle";
-import { puzzleRegistry } from "../../engine/puzzles/puzzleRegistry";
+
 import { PuzzleDialog } from "./PuzzleDialog";
 
-export const GameContent = () => {
-  const { storyLine, modernMode, showDialog, currentPuzzle } = useGameStore();
+export const GameContent = memo(() => {
+  const storyLine = useGameStore((state) => state.storyLine);
+  const modernMode = useGameStore((state) => state.modernMode);
+  const showDialog = useGameStore((state) => state.showDialog);
+  const currentPuzzle = useGameStore((state) => state.currentPuzzle);
   const [userInput, setUserInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
   const { submitInput, reportAnimationComplete } = useGameController();
@@ -65,4 +67,6 @@ export const GameContent = () => {
       )}
     </>
   );
-};
+});
+
+GameContent.displayName = "GameContent";

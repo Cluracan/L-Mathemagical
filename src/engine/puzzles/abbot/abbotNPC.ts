@@ -17,8 +17,11 @@ export const abbotNPC: PuzzleNPC = {
     exitsBlocked: null,
   },
   examinableItems: {
-    abbot:
-      'The abbot is wearing a long, flowing robe. He looks at you hopefully - "Will you help me please?"',
+    abbot: {
+      puzzleIncomplete:
+        'The abbot is wearing a long, flowing robe. He looks at you hopefully - "Will you help me please?"',
+      puzzleComplete: null,
+    },
   },
   rewardItems: null,
 };

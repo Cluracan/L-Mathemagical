@@ -19,9 +19,15 @@ export const turtleNPC: PuzzleNPC = {
     exitsBlocked: null,
   },
   examinableItems: {
-    turtle:
-      "The turtle looks back at you. It seems to have a logo on its shell, but you can't make it out.",
-    logo: "You can't make it out...",
+    turtle: {
+      puzzleIncomplete:
+        "The turtle looks back at you. It seems to have a logo on its shell, but you can't make it out.",
+      puzzleComplete: "The turtle is sleeping soundly",
+    },
+    logo: {
+      puzzleIncomplete: "You can't make it out...",
+      puzzleComplete: null,
+    },
   },
   rewardItems: {
     rusty: "player",

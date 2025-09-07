@@ -17,13 +17,30 @@ export const keyNPC: PuzzleNPC = {
     exitsBlocked: null,
   },
   examinableItems: {
-    file: "This small file looks like it has been used recently. There are some metal filings scattered nearby.",
-    blank:
-      "This key blank is a small rectangular piece of metal - it could be used to create a key...",
-    blanks:
-      "These key blanks are small rectangular pieces of metal - they could be used to create keys...",
-    filings:
-      "These tiny bits of metal suggest that someone has used the nearby file recently...",
+    file: {
+      puzzleIncomplete:
+        "This small file looks like it has been used recently...",
+      puzzleComplete:
+        "This small file has been used recently. There are some metal filings scattered nearby",
+    },
+    blank: {
+      puzzleIncomplete:
+        "This key blank is a small rectangular piece of metal - it could be used to create a key...",
+      puzzleComplete:
+        "This key blank is a small rectangular piece of metal - it could be used to create a key...",
+    },
+    blanks: {
+      puzzleIncomplete:
+        "These key blanks are small rectangular pieces of metal - they could be used to create keys...",
+      puzzleComplete:
+        "These key blanks are small rectanular pieces of metal. It looks like someone has used one recently...",
+    },
+    filings: {
+      puzzleIncomplete:
+        "There are traces of iron filings on the file - perhaps someone has been here before you?",
+      puzzleComplete:
+        "These tiny bits of metal suggest that someone has used the nearby file recently...",
+    },
   },
   rewardItems: {
     iron: "floor",

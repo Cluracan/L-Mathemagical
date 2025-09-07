@@ -18,8 +18,12 @@ export const lightsNPC: PuzzleNPC = {
     exitsBlocked: null,
   },
   examinableItems: {
-    electrician:
-      'The electrician appear to be very busy fitting a sound system for tonight\'s entertainment. She turns to you hopefully - "Will you help me with the lighting please?"',
+    electrician: {
+      puzzleIncomplete:
+        'The electrician appear to be very busy fitting a sound system for tonight\'s entertainment. She turns to you hopefully - "Will you help me with the lighting please?"',
+      puzzleComplete:
+        'The electrician is staring intently at the sound system. She glances up and smiles gratefully - "Many thanks for the help earlier."',
+    },
   },
   rewardItems: {
     oar: "floor",

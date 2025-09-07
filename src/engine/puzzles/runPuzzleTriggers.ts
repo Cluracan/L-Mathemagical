@@ -10,7 +10,7 @@ import {
 
 export const runPuzzleTriggers: PipelineFunction = (payload) => {
   const { gameState, command, target } = payload;
-  const { puzzleCompleted, currentRoom, currentPuzzle, showDialog } = gameState;
+  const { puzzleCompleted, currentRoom, currentPuzzle } = gameState;
 
   //not in a puzzle room
   if (!isPuzzleLocation(currentRoom)) return payload;
@@ -20,7 +20,6 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
     currentPuzzle &&
     !puzzleCompleted[currentPuzzle] &&
     puzzleAtLocation[currentRoom].puzzleId === currentPuzzle &&
-    !showDialog &&
     puzzleRegistry[currentPuzzle].pipelineFunction
   ) {
     return puzzleRegistry[currentPuzzle].pipelineFunction(payload);
@@ -49,6 +48,10 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
       ) {
         return stopWithSuccess(payload, feedback.puzzleIsComplete);
       }
+      if (command === "look" && examinableItems[target].puzzleComplete) {
+        return stopWithSuccess(payload, examinableItems[target].puzzleComplete);
+      }
+
       break;
     case false:
       //start puzzle
@@ -72,8 +75,14 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
         return stopWithSuccess(payload, feedback.puzzleReject);
       }
       //examine clues
-      if (command === "look" && Object.keys(examinableItems).includes(target)) {
-        return stopWithSuccess(payload, examinableItems[target]);
+      if (
+        command === "look" &&
+        examinableItems[target].puzzleIncomplete !== null
+      ) {
+        return stopWithSuccess(
+          payload,
+          examinableItems[target].puzzleIncomplete
+        );
       }
       //move check
       if (command === "move" && feedback.exitsBlocked) {

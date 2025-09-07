@@ -18,6 +18,9 @@ export type PuzzleNPC = {
     puzzleIsComplete: string | null;
     exitsBlocked: string | null;
   };
-  examinableItems: Record<string, string>;
+  examinableItems: Record<
+    string,
+    { puzzleIncomplete: string; puzzleComplete: string | null }
+  >;
   rewardItems: Partial<Record<ItemId, "player" | "floor" | RoomId>> | null;
 };

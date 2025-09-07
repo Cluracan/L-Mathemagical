@@ -48,6 +48,13 @@ export const handleAbbotPuzzle: PipelineFunction = (payload) => {
         draft.storyLine.push(dialog[dialog.length - 1]);
       });
       return { ...payload, gameState: nextGameState };
+    case "look":
+      if (target === null || target === "abbot") {
+        const nextGameState = produce(gameState, (draft) => {
+          draft.storyLine.push('"Shall I continue?" asks the abbot');
+        });
+        return { ...payload, gameState: nextGameState, done: true };
+      }
   }
   return payload;
 };

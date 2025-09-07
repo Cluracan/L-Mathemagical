@@ -41,10 +41,9 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
     case true:
       if (
         command === triggerPuzzleCommand &&
-        acceptPuzzleText.includes(target) &&
-        feedback.failPuzzleAccept
+        acceptPuzzleText.includes(target)
       ) {
-        return stopWithSuccess(payload, feedback.failPuzzleAccept);
+        return stopWithSuccess(payload, feedback.puzzleIsComplete);
       }
       break;
     case false:
@@ -73,8 +72,8 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
         return stopWithSuccess(payload, examinableItems[target]);
       }
       //move check
-      if (command === "move" && feedback.blockedExits) {
-        return failCommand(payload, feedback.blockedExits);
+      if (command === "move" && feedback.exitsBlocked) {
+        return failCommand(payload, feedback.exitsBlocked);
       }
       break;
   }

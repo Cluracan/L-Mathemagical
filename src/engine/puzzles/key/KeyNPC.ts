@@ -1,21 +1,20 @@
 import type { PuzzleNPC } from "../types";
 
 export const keyNPC: PuzzleNPC = {
-  puzzleId: "key",
   usesDialog: true,
   description: {
-    completed: null,
     long: "On the mantlepiece there are several key blanks and a small file.",
     short: "On the mantlepiece there are several key blanks and a small file.",
+    completed: null,
   },
   triggerPuzzleCommand: "use",
   acceptPuzzleText: ["file", "blank", "blanks"],
   rejectPuzzleText: [],
   feedback: {
-    failPuzzleAccept: null,
     puzzleAccept: "You pick up the file, and try to make a key.",
     puzzleReject: null,
-    blockedExits: null,
+    puzzleIsComplete: null,
+    exitsBlocked: null,
   },
   examinableItems: {
     file: "This small file looks like it has been used recently. There are some metal filings scattered nearby.",

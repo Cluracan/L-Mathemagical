@@ -27,7 +27,12 @@ export const parseInput: ParseInput = (userInput) => {
   if (isDirectionAlias(commandWord)) {
     return { command: "move", target: directionAliases[commandWord] };
   }
-  //'rusty key' and 'rusty' must return target: 'rusty' (coerce last two words to an item if possible)
+
+  //Interpret 'yes' and 'no'
+  if (commandWord === "yes") return { command: "say", target: "yes" };
+  if (commandWord === "no") return { command: "say", target: "no" };
+
+  //'rusty key' and 'rusty' must return target: 'rusty' (process last two words to an item if possible)
   let target = args[args.length - 1] || null;
 
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {

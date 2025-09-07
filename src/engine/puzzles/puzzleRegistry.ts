@@ -8,6 +8,8 @@ import type { PipelineFunction } from "../pipeline/types";
 import type { RoomId } from "../../assets/data/roomData";
 import { keyNPC } from "./key/KeyNPC";
 import { KeyPuzzle } from "./key/KeyPuzzle";
+import { turtleNPC } from "./turtle/turtleNPC";
+import { handleTurtlePuzzle } from "./turtle/handleTurtlePuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -31,6 +33,10 @@ export const puzzleAtLocation = {
     puzzleId: "key",
     puzzleNPC: keyNPC,
   },
+  courtyard: {
+    puzzleId: "turtle",
+    puzzleNPC: turtleNPC,
+  },
 } as const satisfies Partial<
   Record<
     RoomId,
@@ -53,6 +59,10 @@ export const puzzleRegistry = {
   key: {
     pipelineFunction: null,
     component: KeyPuzzle,
+  },
+  turtle: {
+    pipelineFunction: handleTurtlePuzzle,
+    component: null,
   },
 } as const satisfies Partial<
   Record<

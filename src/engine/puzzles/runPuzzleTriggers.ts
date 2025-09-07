@@ -11,8 +11,9 @@ import {
 export const runPuzzleTriggers: PipelineFunction = (payload) => {
   const { gameState, command, target } = payload;
   const { puzzleCompleted, currentRoom, currentPuzzle, showDialog } = gameState;
+
   //not in a puzzle room
-  if (!isPuzzleLocation(currentRoom) || !target) return payload;
+  if (!isPuzzleLocation(currentRoom)) return payload;
 
   // Puzzle in progress
   if (
@@ -36,6 +37,9 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
     feedback,
     examinableItems,
   } = puzzleNPC;
+
+  //puzzleHandler above (turtle) needed option of unique response to 'look'
+  if (!target) return payload;
 
   switch (puzzleCompleted[puzzleId]) {
     case true:

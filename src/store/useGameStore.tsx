@@ -19,6 +19,7 @@ import {
   initialLightsOrder,
 } from "../engine/puzzles/lights/LightsPuzzle";
 import { initialSelectedCells } from "../engine/puzzles/key/KeyPuzzle";
+import { initialTurtleDisplacement } from "../engine/puzzles/turtle/handleTurtlePuzzle";
 
 export type GameStoreState = {
   playerName: string;
@@ -37,13 +38,14 @@ export type GameStoreState = {
   currentPuzzle: PuzzleId | null;
   puzzleState: {
     abbot: { dialogIndex: number };
+    key: { selectedCells: boolean[] };
     lights: {
       curOrder: string[];
       feedback: string[];
       turns: number;
       switchesActive: boolean;
     };
-    key: { selectedCells: boolean[] };
+    turtle: { displacement: { x: number; y: number } };
   };
   showDialog: boolean;
 };
@@ -73,13 +75,14 @@ const initialGameState: GameStoreState = {
   currentPuzzle: null,
   puzzleState: {
     abbot: { dialogIndex: 0 },
+    key: { selectedCells: initialSelectedCells },
     lights: {
       curOrder: initialLightsOrder,
       feedback: initialLightsFeedback,
       turns: 0,
       switchesActive: true,
     },
-    key: { selectedCells: initialSelectedCells },
+    turtle: { displacement: initialTurtleDisplacement },
   },
   showDialog: false,
 };

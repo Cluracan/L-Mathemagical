@@ -54,9 +54,9 @@ const isCorrectOrder = (curOrder: string[]) =>
   targetOrder.every((color, index) => curOrder[index] === color);
 
 export const LightsPuzzle = () => {
-  console.log("rendering lightspuzzle");
-  const { puzzleState } = useGameStore();
-  const { curOrder, turns, feedback, switchesActive } = puzzleState.lights;
+  const { curOrder, turns, feedback, switchesActive } = useGameStore(
+    (state) => state.puzzleState.lights
+  );
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const isOptimalSolution = isCorrectOrder(curOrder) && turns === 4;

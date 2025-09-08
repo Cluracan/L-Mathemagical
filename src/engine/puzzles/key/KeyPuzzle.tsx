@@ -119,7 +119,7 @@ const keyBlankSolution = [
   0, 1, 2, 3, 4, 5, 6, 8, 9, 14, 21, 22, 26, 27, 28, 29,
 ];
 
-export const initialSelectedCells = Array.from(
+export const initialKeySelectedCells = Array.from(
   { length: keyBlankCols * keyBlankRows },
   (_, i) => INITIAL_SELECTED_CELLS.includes(i)
 );
@@ -144,7 +144,7 @@ export const KeyPuzzle = () => {
   const handleReset = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        draft.puzzleState.key.selectedCells = initialSelectedCells;
+        draft.puzzleState.key.selectedCells = initialKeySelectedCells;
       })
     );
   };
@@ -159,7 +159,7 @@ export const KeyPuzzle = () => {
           draft.storyLine.push(keyFeedback.storyLineSuccess);
         } else {
           draft.storyLine.push(keyFeedback.storyLineFailure);
-          draft.puzzleState.key.selectedCells = initialSelectedCells;
+          draft.puzzleState.key.selectedCells = initialKeySelectedCells;
         }
       })
     );

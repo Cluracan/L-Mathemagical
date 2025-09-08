@@ -5,7 +5,7 @@ import {
 } from "../../../src/engine/events/runBathTriggers";
 import { initialPipelinePayload } from "../../data/initialPipelinePayload";
 import { produce } from "immer";
-import type { PipelinePayload } from "../../../src/engine/dispatchCommand";
+import type { PipelinePayload } from "../../../src/engine/pipeline/types";
 
 const lookBathPayload: PipelinePayload = produce(
   initialPipelinePayload,

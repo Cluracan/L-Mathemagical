@@ -5,7 +5,7 @@ import type { PipelineFunction } from "../pipeline/types";
 const drogoFreeRooms: RoomId[] = [];
 
 export const runDrogoTriggers: PipelineFunction = (payload) => {
-  const { command, gameState, target, nextRoom } = payload;
+  const { command, gameState, nextRoom } = payload;
   const { drogoGuard } = gameState;
 
   //Check for new guard

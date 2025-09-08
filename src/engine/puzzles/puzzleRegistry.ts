@@ -10,6 +10,8 @@ import { keyNPC } from "./key/KeyNPC";
 import { KeyPuzzle } from "./key/KeyPuzzle";
 import { turtleNPC } from "./turtle/turtleNPC";
 import { handleTurtlePuzzle } from "./turtle/handleTurtlePuzzle";
+import { treeNPC } from "./tree/treeNPC";
+import { TreePuzzle } from "./tree/TreePuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -37,6 +39,10 @@ export const puzzleAtLocation = {
     puzzleId: "turtle",
     puzzleNPC: turtleNPC,
   },
+  orchard: {
+    puzzleId: "tree",
+    puzzleNPC: treeNPC,
+  },
 } as const satisfies Partial<
   Record<
     RoomId,
@@ -63,6 +69,10 @@ export const puzzleRegistry = {
   turtle: {
     pipelineFunction: handleTurtlePuzzle,
     component: null,
+  },
+  tree: {
+    pipelineFunction: null,
+    component: TreePuzzle,
   },
 } as const satisfies Partial<
   Record<

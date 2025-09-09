@@ -2,14 +2,15 @@ import {
   Box,
   Button,
   Card,
-  DialogContent,
+  DialogContentText,
   DialogTitle,
   Stack,
   styled,
 } from "@mui/material";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import { useGameStore } from "../../../store/useGameStore";
 import tree from "../../../assets/images/tree.svg";
+import { produce } from "immer";
 
 const ORCHARD_SIZE = 25;
 const ORCHARD_WIDTH = 5;
@@ -19,27 +20,184 @@ export const initialTreeSelectedCells = Array.from(
   () => false
 );
 
-const curTreeCount = (selectedCells: boolean[]) => {
-  return selectedCells.filter((cell) => cell === true).length;
+export const initialTreeFeedback = [
+  '"Right," says the gardener.  Click on a square and I\'ll either plant or remove a tree there. Click CHECK if you think you are finished, RESET if you want me to start from scratch, or LEAVE if you want a break.',
+];
+
+const treeFeedback = {
+  success: [
+    '"Thank goodness," sighs the gardener, "I was beginning to think it was impossible. Now I have something to give you."',
+    "He hands you a rope ladder which is rolled up into a neat bundle. Then he walks away.",
+  ],
+  reset: [
+    "The gardener sighs, and removes all trees from the orchard.",
+    '"Ok, let\'s try again!"',
+  ],
+  leaveWithSuccess: [
+    "The gardener thanks you for your help, and then wanders off to tend some other fruit trees.",
+  ],
+  leaveWithFailure: [
+    'The gardener looks around at the pile of trees - "Do come back when you are ready to try again please!"',
+  ],
+};
+
+const countTrees = (selectedCells: boolean[]) => {
+  let count = 0;
+  for (let i = 0; i < selectedCells.length; i++) {
+    if (selectedCells[i]) count++;
+  }
+  return count;
+};
+
+const checkRows = [
+  [2, 6, 10],
+  [3, 7, 11, 15],
+  [4, 8, 12, 16, 20],
+  [9, 13, 17, 22],
+  [14, 16, 22],
+  [2, 8, 14],
+  [1, 7, 13, 19],
+  [0, 6, 12, 18, 24],
+  [5, 11, 17, 23],
+  [10, 16, 22],
+  [0, 7, 14],
+  [5, 12, 19],
+  [10, 17, 24],
+  [4, 7, 10],
+  [9, 12, 15],
+  [14, 17, 20],
+  [0, 11, 22],
+  [1, 12, 23],
+  [2, 13, 24],
+  [2, 11, 20],
+  [3, 12, 21],
+  [4, 13, 22],
+  [0, 1, 2, 3, 4],
+  [5, 6, 7, 8, 9],
+  [10, 11, 12, 13, 14],
+  [15, 16, 17, 18, 19],
+  [20, 21, 22, 23, 24],
+  [0, 5, 10, 15, 20],
+  [1, 6, 11, 16, 21],
+  [2, 7, 12, 17, 22],
+  [3, 8, 13, 18, 23],
+  [4, 9, 14, 19, 24],
+];
+const countLines = (selectedCells: boolean[]) => {
+  let numberOfLines = 0;
+  checkRows.forEach((checkList) => {
+    let treeCount = 0;
+    checkList.forEach((searchIndex) => {
+      if (selectedCells[searchIndex]) {
+        treeCount++;
+      }
+    });
+    if (treeCount >= 3) {
+      numberOfLines++;
+    }
+  });
+  return numberOfLines;
 };
 
 export const TreePuzzle = () => {
   const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.tree);
-  const handleReset = () => {};
-  const handleLeave = () => {};
-  const handleTreeCheck = () => {};
+  const feedback = useGameStore((state) => state.puzzleState.tree.feedback);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [feedback.length]);
+
+  const handleReset = () => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.puzzleState.tree.feedback.push(...treeFeedback.reset);
+        draft.puzzleState.tree.selectedCells = initialTreeSelectedCells;
+      })
+    );
+  };
+
+  const handleLeave = () => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.showDialog = false;
+        draft.currentPuzzle = null;
+        if (puzzleCompleted) {
+          draft.storyLine.push(...treeFeedback.leaveWithSuccess);
+        } else {
+          draft.storyLine.push(...treeFeedback.leaveWithFailure);
+          draft.puzzleState.tree.selectedCells = initialTreeSelectedCells;
+          draft.puzzleState.tree.feedback = initialTreeFeedback;
+        }
+      })
+    );
+  };
+
+  const handleTreeCheck = () => {
+    const selectedCells =
+      useGameStore.getState().puzzleState.tree.selectedCells;
+    const treeCount = countTrees(selectedCells);
+    const lineCount = countLines(selectedCells);
+    const nextFeedback = [" ", "You ask the gardener to check the trees..."];
+    if (lineCount === 10) {
+      nextFeedback.push(...treeFeedback.success);
+      useGameStore.setState((state) =>
+        produce(state, (draft) => {
+          draft.puzzleState.tree.feedback.push(...nextFeedback);
+          draft.puzzleCompleted.tree = true;
+          draft.itemLocation.oar = "player";
+        })
+      );
+    } else {
+      if (lineCount === 0) {
+        nextFeedback.push(
+          'The gardener looks puzzled. "I can\'t see any lines of trees yet!"'
+        );
+      } else if (treeCount < 9) {
+        nextFeedback.push(
+          `The gardener looks at you. "I can only see ${lineCount} ${
+            lineCount === 1 ? "line" : "lines"
+          } of trees, but then you've only used ${treeCount} ${
+            treeCount === 1 ? "tree" : "trees"
+          } so far...`
+        );
+      } else {
+        nextFeedback.push(
+          `"Hmm." says the gardener. "You've used all the trees, but I can only see ${lineCount} ${
+            lineCount === 1 ? "line" : "lines"
+          } so far...maybe you could rearrange them?"`
+        );
+      }
+      useGameStore.setState((state) =>
+        produce(state, (draft) => {
+          draft.puzzleState.tree.feedback.push(...nextFeedback);
+        })
+      );
+    }
+  };
+
   return (
     <>
-      <Stack sx={{ alignItems: "center", width: "100%" }}>
+      <Stack
+        sx={{
+          alignItems: "center",
+          width: "100%",
+          height: "90vh",
+          padding: "1rem",
+
+          overflow: "hidden",
+        }}
+      >
         <DialogTitle>Tree Puzzle</DialogTitle>
-        <DialogContent>Place the trees in 10 lines of 3</DialogContent>
+        <DialogContentText>Place the trees in 10 lines of 3</DialogContentText>
         <Box
           sx={{
             display: "grid",
             gridTemplateColumns: `repeat(${ORCHARD_WIDTH},1fr)`,
             backgroundColor: "rgb(87, 125, 61)",
             gap: "1px",
-            width: "30%",
+            width: "40vh",
+            margin: "1rem",
           }}
         >
           {Array.from({ length: ORCHARD_SIZE }, (_, i) => i).map((i) => (
@@ -48,15 +206,19 @@ export const TreePuzzle = () => {
         </Box>
         <Card
           sx={{
-            width: "50%",
-            height: "3rem",
-            lineHeight: "3rem",
-            textAlign: "center",
-            margin: "2rem auto",
+            width: "80%",
+            p: 2,
+            flex: 1,
+            overflowY: "auto",
+            whiteSpace: "pre-wrap",
           }}
         >
-          Feedback in here
+          {feedback.map((entry, index) => (
+            <Box key={index}>{entry}</Box>
+          ))}
+          <div ref={bottomRef} />
         </Card>
+
         <Stack
           direction="row"
           width={"100%"}
@@ -84,14 +246,12 @@ const TreeCell = memo(({ index }: { index: number }) => {
   const handleClick = useCallback(() => {
     if (useGameStore.getState().puzzleCompleted.tree) return;
     useGameStore.setState((state) => {
-      const newSelectedCells = useGameStore
-        .getState()
-        .puzzleState.tree.selectedCells.slice();
+      const newSelectedCells = [...state.puzzleState.tree.selectedCells];
 
       //all trees planted
       if (
         !useGameStore.getState().puzzleState.tree.selectedCells[index] &&
-        curTreeCount(newSelectedCells) === TREE_COUNT
+        countTrees(newSelectedCells) === TREE_COUNT
       )
         return state;
 
@@ -100,7 +260,7 @@ const TreeCell = memo(({ index }: { index: number }) => {
         ...state,
         puzzleState: {
           ...state.puzzleState,
-          tree: { selectedCells: newSelectedCells },
+          tree: { ...state.puzzleState.tree, selectedCells: newSelectedCells },
         },
       };
     });
@@ -110,6 +270,7 @@ const TreeCell = memo(({ index }: { index: number }) => {
       {cellSelected && (
         <img
           src={tree}
+          alt="tree"
           style={{
             maxWidth: "90%",
             maxHeight: "90%",

@@ -33,10 +33,10 @@ const lightsFeedback = {
     "Will you try again? (RESET or LEAVE)",
   ],
   reset: [`"OK, let's start again." says the electrician.`],
-  storyLineSuccess: [
+  leaveWithSuccess: [
     "The electrician thanks you for your help, and turns back to the sound system.",
   ],
-  storyLineFailure: [
+  leaveWithFailure: [
     'The electrician looks hopefully at you - "Will you have another go?"',
   ],
 };
@@ -111,13 +111,13 @@ export const LightsPuzzle = () => {
         if (isCorrectOrder(curOrder) && turns === 4) {
           draft.itemLocation.oar = "lights";
           draft.puzzleCompleted.lights = true;
-          draft.storyLine.push(...lightsFeedback.storyLineSuccess);
+          draft.storyLine.push(...lightsFeedback.leaveWithSuccess);
         } else {
           draft.puzzleState.lights.feedback = initialLightsFeedback;
           draft.puzzleState.lights.curOrder = initialLightsOrder;
           draft.puzzleState.lights.turns = 0;
           draft.puzzleState.lights.switchesActive = true;
-          draft.storyLine.push(...lightsFeedback.storyLineFailure);
+          draft.storyLine.push(...lightsFeedback.leaveWithFailure);
         }
       })
     );

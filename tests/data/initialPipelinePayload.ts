@@ -12,7 +12,10 @@ import {
   initialLightsFeedback,
   initialLightsOrder,
 } from "../../src/engine/puzzles/lights/LightsPuzzle";
-import { initialTreeSelectedCells } from "../../src/engine/puzzles/tree/TreePuzzle";
+import {
+  initialTreeFeedback,
+  initialTreeSelectedCells,
+} from "../../src/engine/puzzles/tree/TreePuzzle";
 import { initialTurtleDisplacement } from "../../src/engine/puzzles/turtle/handleTurtlePuzzle";
 
 export const initialPipelinePayload: PipelinePayload = {
@@ -40,7 +43,10 @@ export const initialPipelinePayload: PipelinePayload = {
         turns: 0,
         switchesActive: true,
       },
-      tree: { selectedCells: initialTreeSelectedCells },
+      tree: {
+        selectedCells: initialTreeSelectedCells,
+        feedback: initialTreeFeedback,
+      },
       turtle: { displacement: initialTurtleDisplacement },
     },
     showDialog: false,

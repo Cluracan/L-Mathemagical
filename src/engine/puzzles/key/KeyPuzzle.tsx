@@ -10,6 +10,7 @@ import {
 import { memo, useCallback, useState } from "react";
 import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
+import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 
 //Keyholes data
 const lockDisplayCols = 21;
@@ -220,21 +221,15 @@ export const KeyPuzzle = () => {
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           message={feedback}
         />
-
-        <Stack
-          direction="row"
-          width={"100%"}
-          padding={"2rem"}
-          sx={{ justifyContent: "space-around" }}
+        <PuzzleActions
+          handleReset={handleReset}
+          handleLeave={handleLeave}
+          puzzleCompleted={puzzleCompleted}
         >
-          <Button disabled={puzzleCompleted} onClick={handleReset}>
-            Reset
-          </Button>
           <Button variant="contained" size="large" onClick={handleTestKey}>
             Test key
           </Button>
-          <Button onClick={handleLeave}>Leave</Button>
-        </Stack>
+        </PuzzleActions>
       </Box>
     </>
   );

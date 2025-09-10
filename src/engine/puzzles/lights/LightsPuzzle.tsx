@@ -1,18 +1,13 @@
-import {
-  Box,
-  Button,
-  Card,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
+import { Box, Button, Card } from "@mui/material";
 import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
 import { createKeyGuard } from "../../../utils/guards";
 import { useEffect, useRef } from "react";
+import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
+import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
+import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 
 export const initialLightsOrder = ["Yellow", "Red", "Green", "Blue"];
-
-const targetOrder = ["Blue", "Green", "Red", "Yellow"];
 
 export const initialLightsFeedback = [
   "Right. You see the lights as they are but they should be like this:",
@@ -21,6 +16,8 @@ export const initialLightsFeedback = [
   "Try pressing the switches below...",
   " ",
 ];
+
+const targetOrder = ["Blue", "Green", "Red", "Yellow"];
 
 const lightsFeedback = {
   optimised: [
@@ -58,8 +55,7 @@ export const LightsPuzzle = () => {
     (state) => state.puzzleState.lights
   );
   const bottomRef = useRef<HTMLDivElement>(null);
-
-  const isOptimalSolution = isCorrectOrder(curOrder) && turns === 4;
+  const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.lights);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -73,20 +69,23 @@ export const LightsPuzzle = () => {
         `"That's ${nextTurns} ${nextTurns > 1 ? 'turns"' : 'turn"'}`,
       ];
       const nextOrder = applySwitch[switchIndex](curOrder);
-
+      let nextPuzzleCompleted = false;
       if (isCorrectOrder(nextOrder)) {
         if (nextTurns === 4) {
           nextFeedback.push(...lightsFeedback.optimised);
+          nextPuzzleCompleted = true;
         } else {
           nextFeedback.push(...lightsFeedback.subOptimal);
         }
       }
+
       useGameStore.setState((state) =>
         produce(state, (draft) => {
           draft.puzzleState.lights.curOrder = nextOrder;
           draft.puzzleState.lights.turns = nextTurns;
           draft.puzzleState.lights.feedback.push(...nextFeedback);
           draft.puzzleState.lights.switchesActive = !isCorrectOrder(nextOrder);
+          draft.puzzleCompleted.lights = nextPuzzleCompleted;
         })
       );
     }
@@ -125,19 +124,11 @@ export const LightsPuzzle = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          height: "80vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <DialogTitle>Lights Puzzle</DialogTitle>
-        <DialogContentText>
-          Put the lights into alphabetical order
-        </DialogContentText>
+      <PuzzleContainer>
+        <PuzzleHeader
+          title="Lights Puzzle"
+          description="Put the lights into alphabetical order"
+        />
         <Box
           sx={{
             display: "flex",
@@ -180,17 +171,11 @@ export const LightsPuzzle = () => {
           ))}
           <div ref={bottomRef} />
         </Card>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-around",
-            width: 1,
-            padding: "2rem",
-          }}
+        <PuzzleActions
+          puzzleCompleted={puzzleCompleted}
+          handleReset={handleReset}
+          handleLeave={handleLeave}
         >
-          <Button disabled={isOptimalSolution} onClick={handleReset}>
-            Reset
-          </Button>
           <Box>
             {[1, 2, 3, 4].map((value) => (
               <Button
@@ -205,9 +190,8 @@ export const LightsPuzzle = () => {
               </Button>
             ))}
           </Box>
-          <Button onClick={handleLeave}>Leave</Button>
-        </Box>
-      </Box>
+        </PuzzleActions>
+      </PuzzleContainer>
     </>
   );
 };

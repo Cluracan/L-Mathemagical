@@ -1,16 +1,11 @@
-import {
-  Box,
-  Button,
-  Card,
-  DialogContentText,
-  DialogTitle,
-  Stack,
-  styled,
-} from "@mui/material";
+import { Box, Button, Card, Stack, styled } from "@mui/material";
 import { memo, useCallback, useEffect, useRef } from "react";
 import { useGameStore } from "../../../store/useGameStore";
 import tree from "../../../assets/images/tree.svg";
 import { produce } from "immer";
+import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
+import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
+import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 
 const ORCHARD_SIZE = 25;
 const ORCHARD_WIDTH = 5;
@@ -53,7 +48,7 @@ const checkRows = [
   [2, 6, 10],
   [3, 7, 11, 15],
   [4, 8, 12, 16, 20],
-  [9, 13, 17, 22],
+  [9, 13, 17, 21],
   [14, 16, 22],
   [2, 8, 14],
   [1, 7, 13, 19],
@@ -178,18 +173,12 @@ export const TreePuzzle = () => {
 
   return (
     <>
-      <Stack
-        sx={{
-          alignItems: "center",
-          width: "100%",
-          height: "90vh",
-          padding: "1rem",
+      <PuzzleContainer>
+        <PuzzleHeader
+          title="Tree Puzzle"
+          description="Place the trees in ten lines of three"
+        />
 
-          overflow: "hidden",
-        }}
-      >
-        <DialogTitle>Tree Puzzle</DialogTitle>
-        <DialogContentText>Place the trees in 10 lines of 3</DialogContentText>
         <Box
           sx={{
             display: "grid",
@@ -218,22 +207,16 @@ export const TreePuzzle = () => {
           ))}
           <div ref={bottomRef} />
         </Card>
-
-        <Stack
-          direction="row"
-          width={"100%"}
-          padding={"2rem"}
-          sx={{ justifyContent: "space-around" }}
+        <PuzzleActions
+          handleReset={handleReset}
+          handleLeave={handleLeave}
+          puzzleCompleted={puzzleCompleted}
         >
-          <Button disabled={puzzleCompleted} onClick={handleReset}>
-            Reset
-          </Button>
           <Button variant="contained" size="large" onClick={handleTreeCheck}>
             Check Trees
           </Button>
-          <Button onClick={handleLeave}>Leave</Button>
-        </Stack>
-      </Stack>
+        </PuzzleActions>
+      </PuzzleContainer>
     </>
   );
 };

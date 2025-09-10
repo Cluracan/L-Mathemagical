@@ -1,11 +1,12 @@
-import { Box, Button, Card, Stack, styled } from "@mui/material";
-import { memo, useCallback, useEffect, useRef } from "react";
+import { Box, Button, styled } from "@mui/material";
+import { memo, useCallback } from "react";
 import { useGameStore } from "../../../store/useGameStore";
 import tree from "../../../assets/images/tree.svg";
 import { produce } from "immer";
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
+import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 
 const ORCHARD_SIZE = 25;
 const ORCHARD_WIDTH = 5;
@@ -97,11 +98,6 @@ const countLines = (selectedCells: boolean[]) => {
 export const TreePuzzle = () => {
   const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.tree);
   const feedback = useGameStore((state) => state.puzzleState.tree.feedback);
-  const bottomRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [feedback.length]);
 
   const handleReset = () => {
     useGameStore.setState((state) =>
@@ -193,20 +189,8 @@ export const TreePuzzle = () => {
             <TreeCell key={i} index={i} />
           ))}
         </Box>
-        <Card
-          sx={{
-            width: "80%",
-            p: 2,
-            flex: 1,
-            overflowY: "auto",
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          {feedback.map((entry, index) => (
-            <Box key={index}>{entry}</Box>
-          ))}
-          <div ref={bottomRef} />
-        </Card>
+        <PuzzleFeedback feedback={feedback} />
+
         <PuzzleActions
           handleReset={handleReset}
           handleLeave={handleLeave}

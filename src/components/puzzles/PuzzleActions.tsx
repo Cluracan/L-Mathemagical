@@ -1,7 +1,7 @@
 import { Button, Stack } from "@mui/material";
 import type { PropsWithChildren } from "react";
 
-type PuzzleActions = {
+type PuzzleActionProps = {
   puzzleCompleted: boolean;
   handleReset: () => void;
   handleLeave: () => void;
@@ -12,7 +12,7 @@ export const PuzzleActions = ({
   handleReset,
   handleLeave,
   children,
-}: PropsWithChildren<PuzzleActions>) => {
+}: PropsWithChildren<PuzzleActionProps>) => {
   return (
     <Stack
       direction="row"

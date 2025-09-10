@@ -1,11 +1,12 @@
-import { Box, Button, Card } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
 import { createKeyGuard } from "../../../utils/guards";
-import { useEffect, useRef } from "react";
+
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
+import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 
 export const initialLightsOrder = ["Yellow", "Red", "Green", "Blue"];
 
@@ -54,12 +55,8 @@ export const LightsPuzzle = () => {
   const { curOrder, turns, feedback, switchesActive } = useGameStore(
     (state) => state.puzzleState.lights
   );
-  const bottomRef = useRef<HTMLDivElement>(null);
-  const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.lights);
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [feedback]);
+  const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.lights);
 
   const handleClick = (switchIndex: number) => {
     if (isSwitchIndex(switchIndex)) {
@@ -155,22 +152,8 @@ export const LightsPuzzle = () => {
             </Box>
           ))}
         </Box>
-        <Card
-          sx={{
-            width: "80%",
-            flex: 1,
-            overflowY: "auto",
-            whiteSpace: "pre-wrap",
-            padding: "1rem",
-          }}
-        >
-          {feedback.map((entry, index) => (
-            <Box key={index} sx={{ marginBottom: "1.5rem" }}>
-              {entry}
-            </Box>
-          ))}
-          <div ref={bottomRef} />
-        </Card>
+        <PuzzleFeedback feedback={feedback} />
+
         <PuzzleActions
           puzzleCompleted={puzzleCompleted}
           handleReset={handleReset}

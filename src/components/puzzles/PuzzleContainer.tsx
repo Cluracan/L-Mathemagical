@@ -5,11 +5,10 @@ export const PuzzleContainer = ({ children, ...props }: StackProps) => {
   return (
     <Stack
       sx={{
-        // width: "100%",
         height: "80vh",
         alignItems: "center",
+        justifyContent: "space-between",
         p: theme.spacing(2),
-        // overflow: "hidden",
       }}
       {...props}
     >

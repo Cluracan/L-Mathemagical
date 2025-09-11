@@ -1,15 +1,10 @@
-import {
-  Box,
-  Button,
-  DialogContentText,
-  DialogTitle,
-  Snackbar,
-  styled,
-} from "@mui/material";
+import { Box, Button, Snackbar, styled } from "@mui/material";
 import { memo, useCallback, useState } from "react";
 import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
+import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
+import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 
 //Keyholes data
 const lockDisplayCols = 21;
@@ -139,7 +134,7 @@ const keyFeedback = {
 export const KeyPuzzle = () => {
   const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.key);
   const [feedback, setFeedback] = useState(keyFeedback.default);
-  const [showFeedback, setShowFeedback] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(true);
 
   const handleReset = () => {
     useGameStore.setState((state) =>
@@ -187,50 +182,42 @@ export const KeyPuzzle = () => {
   };
 
   return (
-    <>
+    <PuzzleContainer>
+      <PuzzleHeader
+        title="Key Puzzle"
+        description="File the key blank to make a key that will fit all locks"
+      />
+
+      <LockDisplay />
       <Box
         sx={{
-          height: "80vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          alignItems: "center",
+          display: "grid",
+          gridTemplateColumns: `repeat(${keyBlankCols},1fr)`,
+          backgroundColor: "white",
         }}
       >
-        <DialogTitle>Key Puzzle</DialogTitle>
-        <DialogContentText>
-          File the key blank to make a key that will fit all locks
-        </DialogContentText>
-        <LockDisplay />
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: `repeat(${keyBlankCols},1fr)`,
-            backgroundColor: "white",
-          }}
-        >
-          {Array.from({ length: keyBlankCols * keyBlankRows }, (_, i) => (
-            <KeyCell key={i} index={i} />
-          ))}
-        </Box>
-        <Snackbar
-          open={showFeedback}
-          onClose={() => setShowFeedback(false)}
-          autoHideDuration={4000}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          message={feedback}
-        />
-        <PuzzleActions
-          handleReset={handleReset}
-          handleLeave={handleLeave}
-          puzzleCompleted={puzzleCompleted}
-        >
-          <Button variant="contained" size="large" onClick={handleTestKey}>
-            Test key
-          </Button>
-        </PuzzleActions>
+        {Array.from({ length: keyBlankCols * keyBlankRows }, (_, i) => (
+          <KeyCell key={i} index={i} />
+        ))}
       </Box>
-    </>
+
+      <Snackbar
+        open={showFeedback}
+        onClose={() => setShowFeedback(false)}
+        autoHideDuration={4000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        message={feedback}
+      />
+      <PuzzleActions
+        handleReset={handleReset}
+        handleLeave={handleLeave}
+        puzzleCompleted={puzzleCompleted}
+      >
+        <Button variant="contained" size="large" onClick={handleTestKey}>
+          Test key
+        </Button>
+      </PuzzleActions>
+    </PuzzleContainer>
   );
 };
 

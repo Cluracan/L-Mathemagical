@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
 import { createKeyGuard } from "../../../utils/guards";
@@ -55,7 +55,7 @@ export const LightsPuzzle = () => {
   const { curOrder, turns, feedback, switchesActive } = useGameStore(
     (state) => state.puzzleState.lights
   );
-
+  const theme = useTheme();
   const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.lights);
 
   const handleClick = (switchIndex: number) => {
@@ -75,7 +75,6 @@ export const LightsPuzzle = () => {
           nextFeedback.push(...lightsFeedback.subOptimal);
         }
       }
-
       useGameStore.setState((state) =>
         produce(state, (draft) => {
           draft.puzzleState.lights.curOrder = nextOrder;
@@ -130,26 +129,27 @@ export const LightsPuzzle = () => {
           sx={{
             display: "flex",
             flexDirection: "row",
-            width: "48rem",
+            width: "80%",
             justifyContent: "space-around",
-            padding: "2rem",
+            p: 4,
           }}
         >
           {curOrder.map((color) => (
-            <Box
+            <div
               key={color}
-              sx={{
+              style={{
                 color: "black",
                 backgroundColor: color,
                 borderRadius: "100%",
-                height: "6rem",
-                width: "6rem",
-                textAlign: "center",
-                lineHeight: "6rem",
+                height: theme.spacing(12),
+                width: theme.spacing(12),
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               {color}
-            </Box>
+            </div>
           ))}
         </Box>
         <PuzzleFeedback feedback={feedback} />
@@ -165,7 +165,7 @@ export const LightsPuzzle = () => {
                 variant="contained"
                 size="large"
                 key={value}
-                sx={{ margin: "1rem" }}
+                sx={{ m: 2 }}
                 onClick={() => handleClick(value)}
                 disabled={!switchesActive}
               >

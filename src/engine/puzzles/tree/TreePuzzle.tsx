@@ -189,7 +189,7 @@ export const TreePuzzle = () => {
             <TreeCell key={i} index={i} />
           ))}
         </Box>
-        <PuzzleFeedback feedback={feedback} />
+        <PuzzleFeedback feedback={feedback} height="15vh" />
 
         <PuzzleActions
           handleReset={handleReset}

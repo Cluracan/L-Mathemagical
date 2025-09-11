@@ -1,9 +1,9 @@
 import { Card, Typography } from "@mui/material";
 import { useEffect, useRef } from "react";
 
-type PuzzleFeedbackProps = { feedback: string[] };
+type PuzzleFeedbackProps = { feedback: string[]; height: string };
 
-export const PuzzleFeedback = ({ feedback }: PuzzleFeedbackProps) => {
+export const PuzzleFeedback = ({ feedback, height }: PuzzleFeedbackProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -13,8 +13,9 @@ export const PuzzleFeedback = ({ feedback }: PuzzleFeedbackProps) => {
     <Card
       sx={{
         width: "80%",
+        height: { height },
         p: 2,
-        flex: 1,
+        // flex: 1,
         overflowY: "auto",
         whiteSpace: "pre-wrap",
       }}

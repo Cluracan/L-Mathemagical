@@ -1,4 +1,4 @@
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, Stack, useTheme } from "@mui/material";
 import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
 import { createKeyGuard } from "../../../utils/guards";
@@ -125,13 +125,13 @@ export const LightsPuzzle = () => {
           title="Lights Puzzle"
           description="Put the lights into alphabetical order"
         />
-        <Box
+        <Stack
+          direction={"row"}
+          width={"80%"}
+          p={4}
+          m={2}
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            width: "80%",
             justifyContent: "space-around",
-            p: 4,
           }}
         >
           {curOrder.map((color) => (
@@ -151,8 +151,8 @@ export const LightsPuzzle = () => {
               {color}
             </div>
           ))}
-        </Box>
-        <PuzzleFeedback feedback={feedback} />
+        </Stack>
+        <PuzzleFeedback feedback={feedback} height="30vh" />
 
         <PuzzleActions
           puzzleCompleted={puzzleCompleted}

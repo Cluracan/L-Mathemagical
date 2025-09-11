@@ -1,4 +1,4 @@
-import { Box, Button, Snackbar, styled } from "@mui/material";
+import { Box, Button, Snackbar, Stack, styled, useTheme } from "@mui/material";
 import { memo, useCallback, useState } from "react";
 import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
@@ -193,7 +193,6 @@ export const KeyPuzzle = () => {
         sx={{
           display: "grid",
           gridTemplateColumns: `repeat(${keyBlankCols},1fr)`,
-          backgroundColor: "white",
         }}
       >
         {Array.from({ length: keyBlankCols * keyBlankRows }, (_, i) => (
@@ -222,24 +221,25 @@ export const KeyPuzzle = () => {
 };
 
 const LockDisplay = memo(() => {
+  const theme = useTheme();
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Box sx={{ color: "green", margin: "4rem", width: "4rem" }}>
+      <Stack direction="row" sx={{ alignItems: "center" }}>
+        <Box
+          sx={{
+            color: theme.palette.secondary.main,
+            mr: 8,
+            width: theme.spacing(8),
+          }}
+        >
           Four key holes
         </Box>
         <Box
           sx={{
             display: "grid",
             gridTemplateColumns: `repeat(${lockDisplayCols},1fr)`,
-            padding: "1rem 2rem",
-            marginRight: "4rem",
+            p: 2,
+            mr: 8,
             backgroundColor: "white",
           }}
         >
@@ -247,14 +247,14 @@ const LockDisplay = memo(() => {
             <div
               key={index}
               style={{
-                height: "1.5rem",
-                width: "1.5rem",
+                height: theme.spacing(3),
+                width: theme.spacing(3),
                 backgroundColor: color,
               }}
             ></div>
           ))}
         </Box>
-      </Box>
+      </Stack>
     </>
   );
 });
@@ -289,13 +289,13 @@ const KeyCell = memo(({ index }: { index: number }) => {
 });
 
 // https://mui.com/system/styled/
-const StyledCell = styled("div")({
-  width: "1.5rem",
-  height: "1.5rem",
+const StyledCell = styled("div")(({ theme }) => ({
+  width: theme.spacing(3),
+  height: theme.spacing(3),
   border: "1px solid #ccc",
   cursor: "pointer",
   "&.filled": {
-    backgroundColor: "#393939",
+    backgroundColor: "transparent",
   },
   "&.empty": {
     backgroundColor: "yellow",
@@ -303,4 +303,4 @@ const StyledCell = styled("div")({
   "&:hover": {
     border: "1px dashed black",
   },
-});
+}));

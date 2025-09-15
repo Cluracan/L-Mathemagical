@@ -24,6 +24,10 @@ import {
   initialTreeFeedback,
   initialTreeSelectedCells,
 } from "../engine/puzzles/tree/TreePuzzle";
+import {
+  initialCalculatorState,
+  type CalculatorState,
+} from "../engine/puzzles/calculator/CalculatorPuzzle";
 
 export type GameStoreState = {
   playerName: string;
@@ -42,6 +46,7 @@ export type GameStoreState = {
   currentPuzzle: PuzzleId | null;
   puzzleState: {
     abbot: { dialogIndex: number };
+    calculator: CalculatorState;
     key: { selectedCells: boolean[] };
     lights: {
       curOrder: string[];
@@ -80,6 +85,7 @@ const initialGameState: GameStoreState = {
   currentPuzzle: null,
   puzzleState: {
     abbot: { dialogIndex: 0 },
+    calculator: initialCalculatorState,
     key: { selectedCells: initialKeySelectedCells },
     lights: {
       curOrder: initialLightsOrder,

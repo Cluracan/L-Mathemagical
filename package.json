@@ -13,9 +13,9 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@fontsource/courier-prime": "^5.2.6",
+    "@fontsource/dseg7": "^4.5.4",
     "@fontsource/mystery-quest": "^5.2.6",
-    "@fontsource/roboto": "^5.2.6",
+    "@fontsource/orbitron": "^5.2.7",
     "@mui/material": "^7.2.0",
     "@tanstack/react-router": "^1.129.0",
     "immer": "^10.1.1",

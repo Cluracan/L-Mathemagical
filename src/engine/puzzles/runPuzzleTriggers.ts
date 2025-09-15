@@ -37,7 +37,7 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
     examinableItems,
   } = puzzleNPC;
 
-  //puzzleHandler above (turtle) needed option of unique response to 'look'
+  //puzzleHandler above (turtle) needed option of unique response to 'look' (ie null target)
   if (!target) return payload;
 
   switch (puzzleCompleted[puzzleId]) {
@@ -48,10 +48,13 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
       ) {
         return stopWithSuccess(payload, feedback.puzzleIsComplete);
       }
-      if (command === "look" && examinableItems[target].puzzleComplete) {
+      if (
+        command === "look" &&
+        examinableItems[target] &&
+        examinableItems[target].puzzleComplete
+      ) {
         return stopWithSuccess(payload, examinableItems[target].puzzleComplete);
       }
-
       break;
     case false:
       //start puzzle
@@ -67,6 +70,7 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
 
         return { ...payload, gameState: nextGameState, done: true };
       }
+
       //reject puzzle
       if (
         command === triggerPuzzleCommand &&
@@ -74,9 +78,11 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
       ) {
         return stopWithSuccess(payload, feedback.puzzleReject);
       }
+
       //examine clues
       if (
         command === "look" &&
+        examinableItems[target] &&
         examinableItems[target].puzzleIncomplete !== null
       ) {
         return stopWithSuccess(
@@ -84,6 +90,7 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
           examinableItems[target].puzzleIncomplete
         );
       }
+
       //move check
       if (command === "move" && feedback.exitsBlocked) {
         return failCommand(payload, feedback.exitsBlocked);

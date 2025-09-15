@@ -7,6 +7,7 @@ import { failCommand } from "../pipeline/failCommand";
 import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
+import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 
 const getItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
@@ -31,7 +32,12 @@ const getItem: PipelineFunction = (payload) => {
   throw new Error("Unexpected code path in getItem");
 };
 
-const getPipeline = [runKeyConversion, runRingTriggers, getItem];
+const getPipeline = [
+  runPuzzleTriggers,
+  runKeyConversion,
+  runRingTriggers,
+  getItem,
+];
 
 export const handleGet: HandleCommand = (args) => {
   const { command, target, gameState } = args;

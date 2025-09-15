@@ -1,0 +1,35 @@
+import type { PuzzleNPC } from "../types";
+
+export const calculatorNPC: PuzzleNPC = {
+  usesDialog: true,
+  description: {
+    long: "Also in the cupboard is a Drogo Robot Guard with the number 121 emblazoned on his chest. He stands in front of the door, blocking your exit.\n\nThere is a calulator lying on the ground here.",
+    short:
+      "Also in the cupboard is a Drogo Robot Guard with the number 121 emblazoned on his chest. He stands in front of the door, blocking your exit.\n\nThere is a calulator lying on the ground here.",
+    completed: null,
+  },
+  triggerPuzzleCommand: "get",
+  acceptPuzzleText: ["calculator"],
+  rejectPuzzleText: [],
+  feedback: {
+    puzzleAccept: "You pick up the calculator",
+    puzzleReject: null,
+    puzzleIsComplete: null,
+    exitsBlocked: "The guard is blocking your way",
+  },
+  examinableItems: {
+    calculator: {
+      puzzleIncomplete:
+        "The tiny calculator looks well-used, but it appears to be working. It is just within reach...",
+      puzzleComplete:
+        "All you can see are a few scattered buttons, and half the external case. This, is an ex-calculator.",
+    },
+    guard: {
+      puzzleIncomplete:
+        "The guard is staring at some point a long way in the distance. He doesn't seem willing to move.",
+      puzzleComplete:
+        "The guard has left the room, but you think you can still hear his screams from elsewhere in the palace.",
+    },
+  },
+  rewardItems: null,
+};

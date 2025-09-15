@@ -127,7 +127,7 @@ export const roomData = {
   telephone: {
     id: "telephone",
     descriptions: {
-      long: "You are in a room containing a heavy black oak chest with intricate carvings on it. There is a telephone resting on it. The only door leads to the south.",
+      long: "You are in a room containing a heavy black oak chest with intricate carvings on it. The only door leads to the south.",
       short: "You are in the telephone room.",
     },
     mapText: "Telephone",

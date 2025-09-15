@@ -45,12 +45,12 @@ function assertIsOperator(value: any): asserts value is Operator {
   }
 }
 
-//Puzzle Constants
+//Constants
 const INPUT_TARGET = "11";
 const WORKING_CALCULATOR_BUTTONS = new Set(["4", "7", "*", "-", "AC", "="]);
 const CALCULATOR_DISPLAY_LENGTH = 12;
 
-//Static data
+//Static Data
 const calculatorFeedback = {
   instructions:
     "The calculator is very old and many of its keys are broken. The only ones which seem to work are 4, 7, -, *, AC, and =",
@@ -119,7 +119,7 @@ const calculate = {
   "/": (a: number, b: number) => a / b,
 };
 
-//State
+//Initial State
 export const initialCalculatorState: CalculatorState = {
   currentInput: "0",
   feedback: calculatorFeedback.default,
@@ -128,7 +128,7 @@ export const initialCalculatorState: CalculatorState = {
   tokens: [],
 };
 
-//Helper functions
+//Helper Functions
 const isValidInputType = (button: InputButton, lastInputType: InputType) => {
   switch (calculatorButtons[button].type) {
     case "number":
@@ -192,6 +192,7 @@ function evaluateRPN(tokensRPN: Token[]) {
   return stack[0];
 }
 
+//Main Component
 function calculatorReducer(
   state: CalculatorState,
   action: { type: "input"; button: keyof typeof calculatorButtons }

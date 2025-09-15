@@ -1,5 +1,4 @@
 import {
-  accordionActionsClasses,
   Box,
   Button,
   Snackbar,
@@ -192,13 +191,13 @@ function evaluateRPN(tokensRPN: Token[]) {
   return stack[0];
 }
 
-//Main Component
 function calculatorReducer(
   state: CalculatorState,
   action: { type: "input"; button: keyof typeof calculatorButtons }
 ) {
   //currently only 'input' type available, so no switch wrapper on type
-  let { currentInput, feedback, lastInputType, showFeedback, tokens } = state;
+  let { currentInput, feedback, lastInputType, showFeedback } = state;
+  let newTokens = [...state.tokens];
   let puzzleCompleted = false;
   const button = action.button;
 
@@ -214,17 +213,17 @@ function calculatorReducer(
         break;
       case "operator":
         assertIsOperator(button);
-        tokens.push({ type: "number", value: parseFloat(currentInput) });
-        tokens.push({ type: "operator", value: button });
+        newTokens.push({ type: "number", value: parseFloat(currentInput) });
+        newTokens.push({ type: "operator", value: button });
         lastInputType = "operator";
         currentInput = "";
         break;
       case "evaluate":
-        tokens.push({ type: "number", value: parseInt(currentInput) });
-        const tokensRPN = applyShuntingYard(tokens);
+        newTokens.push({ type: "number", value: parseInt(currentInput) });
+        const tokensRPN = applyShuntingYard(newTokens);
         currentInput = evaluateRPN(tokensRPN).toString();
         lastInputType = "evaluate";
-        tokens = [];
+        newTokens = [];
         if (currentInput === INPUT_TARGET) {
           puzzleCompleted = true;
           feedback = calculatorFeedback.success;
@@ -236,21 +235,23 @@ function calculatorReducer(
       case "reset":
         currentInput = "0";
         lastInputType = "evaluate";
-        tokens = [];
+        newTokens = [];
     }
   }
   return {
     newState: {
+      ...state,
       currentInput,
       feedback,
       showFeedback,
       lastInputType,
-      tokens,
+      tokens: newTokens,
     },
     puzzleCompleted,
   };
 }
 
+//Main Component
 export const CalculatorPuzzle = () => {
   const theme = useTheme();
   const feedback = useGameStore(

@@ -22,10 +22,12 @@ export const initialTreeFeedback = [
 
 const treeFeedback = {
   success: [
+    " ",
     '"Thank goodness," sighs the gardener, "I was beginning to think it was impossible. Now I have something to give you."',
-    "He hands you a rope ladder which is rolled up into a neat bundle. Then he walks away.",
+    "He hands you a rope ladder which is rolled up into a neat bundle.",
   ],
   reset: [
+    " ",
     "The gardener sighs, and removes all trees from the orchard.",
     '"Ok, let\'s try again!"',
   ],
@@ -181,7 +183,7 @@ export const TreePuzzle = () => {
             gridTemplateColumns: `repeat(${ORCHARD_WIDTH},1fr)`,
             backgroundColor: "rgb(87, 125, 61)",
             gap: "1px",
-            width: "40vh",
+            width: "50vh",
             margin: "1rem",
           }}
         >

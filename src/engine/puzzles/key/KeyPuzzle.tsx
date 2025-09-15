@@ -224,7 +224,7 @@ const LockDisplay = memo(() => {
   const theme = useTheme();
   return (
     <>
-      <Stack direction="row" sx={{ alignItems: "center" }}>
+      <Stack direction="row" p={2} sx={{ alignItems: "center" }}>
         <Box
           sx={{
             color: theme.palette.secondary.main,

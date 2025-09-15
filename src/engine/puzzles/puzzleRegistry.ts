@@ -6,12 +6,14 @@ import { createKeyGuard } from "../../utils/guards";
 import type { PuzzleNPC } from "./types";
 import type { PipelineFunction } from "../pipeline/types";
 import type { RoomId } from "../../assets/data/roomData";
-import { keyNPC } from "./key/KeyNPC";
+import { keyNPC } from "./key/keyNPC";
 import { KeyPuzzle } from "./key/KeyPuzzle";
 import { turtleNPC } from "./turtle/turtleNPC";
 import { handleTurtlePuzzle } from "./turtle/handleTurtlePuzzle";
 import { treeNPC } from "./tree/treeNPC";
 import { TreePuzzle } from "./tree/TreePuzzle";
+import { calculatorNPC } from "./calculator/calculatorNPC";
+import { CalculatorPuzzle } from "./calculator/CalculatorPuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -43,6 +45,10 @@ export const puzzleAtLocation = {
     puzzleId: "tree",
     puzzleNPC: treeNPC,
   },
+  broomCupboard: {
+    puzzleId: "calculator",
+    puzzleNPC: calculatorNPC,
+  },
 } as const satisfies Partial<
   Record<
     RoomId,
@@ -57,6 +63,10 @@ export const puzzleRegistry = {
   abbot: {
     pipelineFunction: handleAbbotPuzzle,
     component: null,
+  },
+  calculator: {
+    pipelineFunction: null,
+    component: CalculatorPuzzle,
   },
   lights: {
     pipelineFunction: null,

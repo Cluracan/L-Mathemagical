@@ -20,7 +20,7 @@ export const lightsNPC: PuzzleNPC = {
   examinableItems: {
     electrician: {
       puzzleIncomplete:
-        'The electrician appear to be very busy fitting a sound system for tonight\'s entertainment. She turns to you hopefully - "Will you help me with the lighting please?"',
+        'The electrician appears to be very busy fitting a sound system for tonight\'s entertainment. She turns to you hopefully - "Will you help me with the lighting please?"',
       puzzleComplete:
         'The electrician is staring intently at the sound system. She glances up and smiles gratefully - "Many thanks for the help earlier."',
     },

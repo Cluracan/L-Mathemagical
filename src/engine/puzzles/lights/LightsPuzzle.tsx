@@ -1,6 +1,6 @@
 import { Box, Button, Stack, useTheme } from "@mui/material";
 import { useGameStore } from "../../../store/useGameStore";
-import { produce } from "immer";
+import { produce, produceWithPatches } from "immer";
 import { createKeyGuard } from "../../../utils/guards";
 
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
@@ -8,19 +8,26 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 
-export const initialLightsOrder = ["Yellow", "Red", "Green", "Blue"];
+//Types
+export type LightsState = {
+  curOrder: string[];
+  feedback: string[];
+  turns: number;
+  switchesActive: boolean;
+};
+//Constants
+const INITAL_ORDER = ["Yellow", "Red", "Green", "Blue"];
+const TARGET_ORDER = ["Blue", "Green", "Red", "Yellow"];
 
-export const initialLightsFeedback = [
-  "Right. You see the lights as they are but they should be like this:",
-  "           BLUE, GREEN, RED, YELLOW",
-  "That's in alphabetical order. We have to use switches 1,2,3 and 4 to do this.",
-  "Try pressing the switches below...",
-  " ",
-];
-
-const targetOrder = ["Blue", "Green", "Red", "Yellow"];
-
+//Static Data
 const lightsFeedback = {
+  initial: [
+    "Right. You see the lights as they are but they should be like this:",
+    "           BLUE, GREEN, RED, YELLOW",
+    "That's in alphabetical order. We have to use switches 1,2,3 and 4 to do this.",
+    "Try pressing the switches below...",
+    " ",
+  ],
   optimised: [
     "The electrician thanks you for your help. She wishes you luck and warns you to be careful.",
     `"These Drogos aren't to be trusted"`,
@@ -39,6 +46,14 @@ const lightsFeedback = {
   ],
 };
 
+//Initial State
+export const initialLightsState = {
+  curOrder: INITAL_ORDER,
+  feedback: lightsFeedback.initial,
+  turns: 0,
+  switchesActive: true,
+};
+
 const applySwitch: Record<1 | 2 | 3 | 4, (colors: string[]) => string[]> = {
   1: (curColors) => [curColors[1], curColors[0], curColors[2], curColors[3]],
   2: (curColors) => [curColors[0], curColors[2], curColors[3], curColors[1]],
@@ -46,10 +61,65 @@ const applySwitch: Record<1 | 2 | 3 | 4, (colors: string[]) => string[]> = {
   4: (curColors) => [curColors[0], curColors[1], curColors[3], curColors[2]],
 };
 
+//Helper Functions
 const isSwitchIndex = createKeyGuard(applySwitch);
 
 const isCorrectOrder = (curOrder: string[]) =>
-  targetOrder.every((color, index) => curOrder[index] === color);
+  TARGET_ORDER.every((color, index) => curOrder[index] === color);
+
+function lightsReducer(
+  state: LightsState,
+  action: { type: "input"; button: number } | { type: "reset" }
+) {
+  let { curOrder, turns, switchesActive } = state;
+  let nextFeedback = [...state.feedback];
+  switch (action.type) {
+    case "input":
+      if (isSwitchIndex(action.button)) {
+        turns++;
+        nextFeedback.push(
+          `You press switch ${action.button}`,
+          `"That's ${turns} ${turns > 1 ? 'turns"' : 'turn"'}`
+        );
+        const nextOrder = applySwitch[action.button](curOrder);
+        let puzzleCompleted = false;
+        if (isCorrectOrder(nextOrder)) {
+          if (turns === 4) {
+            puzzleCompleted = true;
+            switchesActive = false;
+            nextFeedback.push(...lightsFeedback.optimised);
+          } else {
+            switchesActive = false;
+            nextFeedback.push(...lightsFeedback.subOptimal);
+          }
+        }
+        return {
+          newState: {
+            ...state,
+            curOrder: nextOrder,
+            feedback: nextFeedback,
+            turns,
+            switchesActive,
+          },
+          puzzleCompleted,
+        };
+      }
+      break;
+    case "reset":
+      nextFeedback.push(...lightsFeedback.reset);
+      return {
+        newState: {
+          ...state,
+          curOrder: INITAL_ORDER,
+          feedback: nextFeedback,
+          turns: 0,
+          switchesActive: true,
+        },
+        puzzleCompleted: false,
+      };
+  }
+  return { newState: state, puzzleCompleted: false };
+}
 
 export const LightsPuzzle = () => {
   const { curOrder, turns, feedback, switchesActive } = useGameStore(
@@ -59,38 +129,24 @@ export const LightsPuzzle = () => {
   const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.lights);
 
   const handleClick = (switchIndex: number) => {
-    if (isSwitchIndex(switchIndex)) {
-      const nextTurns = turns + 1;
-      const nextFeedback = [
-        `You press switch ${switchIndex}`,
-        `"That's ${nextTurns} ${nextTurns > 1 ? 'turns"' : 'turn"'}`,
-      ];
-      const nextOrder = applySwitch[switchIndex](curOrder);
-      let nextPuzzleCompleted = false;
-      if (isCorrectOrder(nextOrder)) {
-        if (nextTurns === 4) {
-          nextFeedback.push(...lightsFeedback.optimised);
-          nextPuzzleCompleted = true;
-        } else {
-          nextFeedback.push(...lightsFeedback.subOptimal);
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        const { newState, puzzleCompleted } = lightsReducer(
+          draft.puzzleState.lights,
+          { type: "input", button: switchIndex }
+        );
+        draft.puzzleState.lights = newState;
+        if (puzzleCompleted) {
+          draft.puzzleCompleted.lights = true;
         }
-      }
-      useGameStore.setState((state) =>
-        produce(state, (draft) => {
-          draft.puzzleState.lights.curOrder = nextOrder;
-          draft.puzzleState.lights.turns = nextTurns;
-          draft.puzzleState.lights.feedback.push(...nextFeedback);
-          draft.puzzleState.lights.switchesActive = !isCorrectOrder(nextOrder);
-          draft.puzzleCompleted.lights = nextPuzzleCompleted;
-        })
-      );
-    }
+      })
+    );
   };
 
   const handleReset = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        draft.puzzleState.lights.curOrder = initialLightsOrder;
+        draft.puzzleState.lights.curOrder = INITAL_ORDER;
         draft.puzzleState.lights.turns = 0;
         draft.puzzleState.lights.switchesActive = true;
         draft.puzzleState.lights.feedback.push(...lightsFeedback.reset);
@@ -108,8 +164,8 @@ export const LightsPuzzle = () => {
           draft.puzzleCompleted.lights = true;
           draft.storyLine.push(...lightsFeedback.leaveWithSuccess);
         } else {
-          draft.puzzleState.lights.feedback = initialLightsFeedback;
-          draft.puzzleState.lights.curOrder = initialLightsOrder;
+          draft.puzzleState.lights.feedback = lightsFeedback.initial;
+          draft.puzzleState.lights.curOrder = INITAL_ORDER;
           draft.puzzleState.lights.turns = 0;
           draft.puzzleState.lights.switchesActive = true;
           draft.storyLine.push(...lightsFeedback.leaveWithFailure);

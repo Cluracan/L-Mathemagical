@@ -1,6 +1,6 @@
 import { Box, Button, Stack, useTheme } from "@mui/material";
 import { useGameStore } from "../../../store/useGameStore";
-import { produce, produceWithPatches } from "immer";
+import { produce } from "immer";
 import { createKeyGuard } from "../../../utils/guards";
 
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
@@ -94,7 +94,7 @@ function lightsReducer(
           }
         }
         return {
-          newState: {
+          nextState: {
             ...state,
             curOrder: nextOrder,
             feedback: nextFeedback,
@@ -106,19 +106,15 @@ function lightsReducer(
       }
       break;
     case "reset":
-      nextFeedback.push(...lightsFeedback.reset);
       return {
-        newState: {
-          ...state,
-          curOrder: INITAL_ORDER,
-          feedback: nextFeedback,
-          turns: 0,
-          switchesActive: true,
+        nextState: {
+          ...initialLightsState,
+          feedback: [...nextFeedback, ...lightsFeedback.reset],
         },
         puzzleCompleted: false,
       };
   }
-  return { newState: state, puzzleCompleted: false };
+  return { nextState: state, puzzleCompleted: false };
 }
 
 export const LightsPuzzle = () => {
@@ -131,11 +127,11 @@ export const LightsPuzzle = () => {
   const handleClick = (switchIndex: number) => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        const { newState, puzzleCompleted } = lightsReducer(
+        const { nextState, puzzleCompleted } = lightsReducer(
           draft.puzzleState.lights,
           { type: "input", button: switchIndex }
         );
-        draft.puzzleState.lights = newState;
+        draft.puzzleState.lights = nextState;
         if (puzzleCompleted) {
           draft.puzzleCompleted.lights = true;
         }
@@ -146,10 +142,10 @@ export const LightsPuzzle = () => {
   const handleReset = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        draft.puzzleState.lights.curOrder = INITAL_ORDER;
-        draft.puzzleState.lights.turns = 0;
-        draft.puzzleState.lights.switchesActive = true;
-        draft.puzzleState.lights.feedback.push(...lightsFeedback.reset);
+        const { nextState } = lightsReducer(draft.puzzleState.lights, {
+          type: "reset",
+        });
+        draft.puzzleState.lights = nextState;
       })
     );
   };

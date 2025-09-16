@@ -239,7 +239,7 @@ function calculatorReducer(
     }
   }
   return {
-    newState: {
+    nextState: {
       ...state,
       currentInput,
       feedback,
@@ -268,11 +268,11 @@ export const CalculatorPuzzle = () => {
     if (useGameStore.getState().puzzleCompleted.calculator) return;
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        const { newState, puzzleCompleted } = calculatorReducer(
+        const { nextState, puzzleCompleted } = calculatorReducer(
           draft.puzzleState.calculator,
           { type: "input", button }
         );
-        draft.puzzleState.calculator = newState;
+        draft.puzzleState.calculator = nextState;
 
         if (puzzleCompleted) {
           draft.puzzleCompleted.calculator = true;

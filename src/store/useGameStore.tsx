@@ -30,7 +30,7 @@ import {
 import {
   initialCalculatorState,
   type CalculatorState,
-} from "../engine/puzzles/calculator/CalculatorPuzzle";
+} from "../engine/puzzles/calculator/calculatorLogic";
 
 export type GameStoreState = {
   playerName: string;

@@ -2,8 +2,19 @@ import { produce } from "immer";
 import { createKeyGuard } from "../../../utils/guards";
 import type { PipelineFunction } from "../../pipeline/types";
 
-export const initialTurtleDisplacement = { x: 6, y: 4 };
+//Types
+export type TurtleState = {
+  displacement: { x: number; y: number };
+  puzzleCompleted: boolean;
+};
 
+//Initial State
+export const initialTurtleState: TurtleState = {
+  displacement: { x: 6, y: 4 },
+  puzzleCompleted: false,
+};
+
+//Constants
 const turtleMovement = {
   n: { dx: 0, dy: 1, direction: "north" },
   e: { dx: 1, dy: 0, direction: "east" },

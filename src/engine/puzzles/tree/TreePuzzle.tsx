@@ -8,16 +8,19 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 
+//Types
 export type TreeState = {
   selectedCells: boolean[];
   feedback: string[];
   puzzleCompleted: boolean;
 };
 
+//Constants
 const ORCHARD_SIZE = 25;
 const ORCHARD_WIDTH = 5;
 const TREE_COUNT = 9;
 
+//Static Data
 const treeFeedback = {
   default: [
     '"Right," says the gardener.  Click on a square and I\'ll either plant or remove a tree there. Click CHECK if you think you are finished, RESET if you want me to start from scratch, or LEAVE if you want a break.',
@@ -40,12 +43,14 @@ const treeFeedback = {
   ],
 };
 
+//Initial State
 export const initialTreeState: TreeState = {
   selectedCells: Array.from({ length: ORCHARD_SIZE }, () => false),
   feedback: treeFeedback.default,
   puzzleCompleted: false,
 };
 
+//Helper Functions
 const countTrees = (selectedCells: boolean[]) => {
   let count = 0;
   for (let i = 0; i < selectedCells.length; i++) {
@@ -105,8 +110,11 @@ const countLines = (selectedCells: boolean[]) => {
   return numberOfLines;
 };
 
+//Main Component
 export const TreePuzzle = () => {
-  const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.tree);
+  const puzzleCompleted = useGameStore(
+    (state) => state.puzzleState.tree.puzzleCompleted
+  );
   const feedback = useGameStore((state) => state.puzzleState.tree.feedback);
 
   const handleReset = () => {
@@ -145,7 +153,7 @@ export const TreePuzzle = () => {
       useGameStore.setState((state) =>
         produce(state, (draft) => {
           draft.puzzleState.tree.feedback.push(...nextFeedback);
-          draft.puzzleCompleted.tree = true;
+          draft.puzzleState.tree.puzzleCompleted = true;
           draft.itemLocation.oar = "player";
         })
       );
@@ -189,10 +197,10 @@ export const TreePuzzle = () => {
           sx={{
             display: "grid",
             gridTemplateColumns: `repeat(${ORCHARD_WIDTH},1fr)`,
-            backgroundColor: "rgb(87, 125, 61)",
             gap: "1px",
             width: "50vh",
-            margin: "1rem",
+            margin: 1,
+            backgroundColor: "rgb(87, 125, 61)",
           }}
         >
           {Array.from({ length: ORCHARD_SIZE }, (_, i) => i).map((i) => (
@@ -221,7 +229,7 @@ const TreeCell = memo(({ index }: { index: number }) => {
   );
 
   const handleClick = useCallback(() => {
-    if (useGameStore.getState().puzzleCompleted.tree) return;
+    if (useGameStore.getState().puzzleState.tree.puzzleCompleted) return;
     useGameStore.setState((state) => {
       const newSelectedCells = [...state.puzzleState.tree.selectedCells];
 
@@ -261,13 +269,13 @@ const TreeCell = memo(({ index }: { index: number }) => {
 });
 
 const StyledCell = styled("div")({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
   width: "100%",
   aspectRatio: "1 / 1",
   backgroundColor: "rgb(116, 188, 67)",
   cursor: "pointer",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
   "&:hover": {
     border: "2px dotted rgb(32,120,9)",
   },

@@ -56,6 +56,7 @@ export const initialLightsState: LightsState = {
   puzzleCompleted: false,
 };
 
+//Helper Functions
 const applySwitch: Record<1 | 2 | 3 | 4, (colors: string[]) => string[]> = {
   1: (curColors) => [curColors[1], curColors[0], curColors[2], curColors[3]],
   2: (curColors) => [curColors[0], curColors[2], curColors[3], curColors[1]],
@@ -63,7 +64,6 @@ const applySwitch: Record<1 | 2 | 3 | 4, (colors: string[]) => string[]> = {
   4: (curColors) => [curColors[0], curColors[1], curColors[3], curColors[2]],
 };
 
-//Helper Functions
 const isSwitchIndex = createKeyGuard(applySwitch);
 
 const isCorrectOrder = (curOrder: string[]) =>
@@ -118,6 +118,7 @@ function lightsReducer(
   return { nextState: state };
 }
 
+//Main Component
 export const LightsPuzzle = () => {
   const { curOrder, feedback, switchesActive, puzzleCompleted } = useGameStore(
     (state) => state.puzzleState.lights

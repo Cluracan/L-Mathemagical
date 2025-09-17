@@ -1,6 +1,11 @@
 import { produce } from "immer";
-
 import type { PipelineFunction } from "../../pipeline/types";
+
+export type AbbotState = { dialogIndex: number; puzzleCompleted: boolean };
+export const initialAbbotState: AbbotState = {
+  dialogIndex: 0,
+  puzzleCompleted: false,
+};
 
 const dialog = [
   "The abbot says he would like to find Runia but he is an old man and needs your help. She is somewhere in the palace. He warns you that there are many dangers, such as the Drogo Robot Guards, who are impossible to defeat unless you can find the personal secret number which each guard cannot bear to hear. You will come up against many weird and puzzling situations before you can find Runia.\n\nThe abbot asks you again if you will help.",

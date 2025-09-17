@@ -16,9 +16,7 @@ export const PuzzleActions = ({
   return (
     <Stack
       direction="row"
-      width={"100%"}
-      padding={"2rem"}
-      sx={{ justifyContent: "space-around" }}
+      sx={{ justifyContent: "space-around", width: "100%", padding: 3 }}
     >
       <Button disabled={puzzleCompleted} onClick={handleReset}>
         Reset

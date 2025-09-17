@@ -14,10 +14,39 @@ export type KeyState = {
   showFeedback: boolean;
 };
 
-//Keyholes data
+//Constants
+const INITIAL_SELECTED_CELLS = [9, 29];
+const KEYBLANK_COLS = 10;
+const KEYBLANK_ROWS = 3;
+const KEYBLANK_SOLUTION = [
+  0, 1, 2, 3, 4, 5, 6, 8, 9, 14, 21, 22, 26, 27, 28, 29,
+];
+
+//Static Data
+const keyFeedback = {
+  default:
+    "Click on a cell to use the file. You can test, reset, or leave at any time.",
+  doesNotFit: "The key will not fit into all the locks.",
+  willNotTurn:
+    "The key fits into all the keyholes but will not turn all the locks.",
+  success: "You\'ve done it! The key can now be used to open the oak door!. ",
+  storyLineSuccess: "You look proudly at the key you have made.",
+  storyLineFailure:
+    "You stare at the file and key blanks, wondering if you should try again.",
+};
+
+export const initialKeyState: KeyState = {
+  selectedCells: Array.from({ length: KEYBLANK_COLS * KEYBLANK_ROWS }, (_, i) =>
+    INITIAL_SELECTED_CELLS.includes(i)
+  ),
+  puzzleCompleted: false,
+  feedback: keyFeedback.default,
+  showFeedback: true,
+};
+
 const lockDisplayCols = 21;
 const lockDisplayRows = 10;
-const lockPatternCells = new Set([
+const lockDisplayCells = new Set([
   "0x0",
   "0x1",
   "0x6",
@@ -106,43 +135,14 @@ const lockPatternCells = new Set([
   "9x13",
   "9x19",
 ]);
-
 const lockDisplayData: string[] = [];
 for (let i = 0; i < lockDisplayRows; i++) {
   for (let j = 0; j < lockDisplayCols; j++) {
-    lockDisplayData.push(lockPatternCells.has(`${i}x${j}`) ? "black" : "white");
+    lockDisplayData.push(lockDisplayCells.has(`${i}x${j}`) ? "black" : "white");
   }
 }
 
-//Key blank data
-const INITIAL_SELECTED_CELLS = [9, 29];
-const keyBlankCols = 10;
-const keyBlankRows = 3;
-const keyBlankSolution = [
-  0, 1, 2, 3, 4, 5, 6, 8, 9, 14, 21, 22, 26, 27, 28, 29,
-];
-
-const keyFeedback = {
-  default:
-    "Click on a cell to use the file. You can test, reset, or leave at any time.",
-  doesNotFit: "The key will not fit into all the locks.",
-  willNotTurn:
-    "The key fits into all the keyholes but will not turn all the locks.",
-  success: "You\'ve done it! The key can now be used to open the oak door!. ",
-  storyLineSuccess: "You look proudly at the key you have made.",
-  storyLineFailure:
-    "You stare at the file and key blanks, wondering if you should try again.",
-};
-
-export const initialKeyState: KeyState = {
-  selectedCells: Array.from({ length: keyBlankCols * keyBlankRows }, (_, i) =>
-    INITIAL_SELECTED_CELLS.includes(i)
-  ),
-  puzzleCompleted: false,
-  feedback: keyFeedback.default,
-  showFeedback: true,
-};
-
+//Main Component
 export const KeyPuzzle = () => {
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.key.puzzleCompleted
@@ -180,11 +180,11 @@ export const KeyPuzzle = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         const selectedCells = draft.puzzleState.key.selectedCells;
-        if (keyBlankSolution.every((cellIndex) => selectedCells[cellIndex])) {
+        if (KEYBLANK_SOLUTION.every((cellIndex) => selectedCells[cellIndex])) {
           const selectedCellsCount = selectedCells.filter(
             (cell) => cell === true
           ).length;
-          if (selectedCellsCount === keyBlankSolution.length) {
+          if (selectedCellsCount === KEYBLANK_SOLUTION.length) {
             draft.puzzleState.key.puzzleCompleted = true;
             draft.puzzleState.key.feedback = keyFeedback.success;
           } else {
@@ -215,10 +215,10 @@ export const KeyPuzzle = () => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: `repeat(${keyBlankCols},1fr)`,
+          gridTemplateColumns: `repeat(${KEYBLANK_COLS},1fr)`,
         }}
       >
-        {Array.from({ length: keyBlankCols * keyBlankRows }, (_, i) => (
+        {Array.from({ length: KEYBLANK_COLS * KEYBLANK_ROWS }, (_, i) => (
           <KeyCell key={i} index={i} />
         ))}
       </Box>
@@ -244,15 +244,15 @@ export const KeyPuzzle = () => {
 };
 
 const LockDisplay = memo(() => {
-  const theme = useTheme();
+  const theme = useTheme(); //I'm using div so don't have access to sx={{}}, style requires this workaround (though see styledCell below for alt)
   return (
     <>
-      <Stack direction="row" p={2} sx={{ alignItems: "center" }}>
+      <Stack direction="row" sx={{ alignItems: "center", padding: 2 }}>
         <Box
           sx={{
-            color: theme.palette.secondary.main,
+            width: 8,
             mr: 8,
-            width: theme.spacing(8),
+            color: theme.palette.secondary.main,
           }}
         >
           Four key holes
@@ -261,7 +261,7 @@ const LockDisplay = memo(() => {
           sx={{
             display: "grid",
             gridTemplateColumns: `repeat(${lockDisplayCols},1fr)`,
-            p: 2,
+            padding: 2,
             mr: 8,
             backgroundColor: "white",
           }}

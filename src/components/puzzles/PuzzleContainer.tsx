@@ -1,14 +1,13 @@
-import { Stack, useTheme, type StackProps } from "@mui/material";
+import { Stack, type StackProps } from "@mui/material";
 
 export const PuzzleContainer = ({ children, ...props }: StackProps) => {
-  const theme = useTheme();
   return (
     <Stack
       sx={{
-        minHeight: "60vh",
         alignItems: "center",
         justifyContent: "space-between",
-        p: theme.spacing(2),
+        minHeight: "60vh",
+        padding: 2,
       }}
       {...props}
     >

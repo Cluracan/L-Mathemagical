@@ -10,7 +10,7 @@ import {
 
 export const runPuzzleTriggers: PipelineFunction = (payload) => {
   const { gameState, command, target } = payload;
-  const { puzzleCompleted, currentRoom, currentPuzzle } = gameState;
+  const { currentRoom, currentPuzzle, puzzleState } = gameState;
 
   //not in a puzzle room
   if (!isPuzzleLocation(currentRoom)) return payload;
@@ -18,7 +18,7 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
   // Puzzle in progress
   if (
     currentPuzzle &&
-    !puzzleCompleted[currentPuzzle] &&
+    !puzzleState[currentPuzzle].puzzleCompleted &&
     puzzleAtLocation[currentRoom].puzzleId === currentPuzzle &&
     puzzleRegistry[currentPuzzle].pipelineFunction
   ) {
@@ -40,7 +40,7 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
   //puzzleHandler above (turtle) needed option of unique response to 'look' (ie null target)
   if (!target) return payload;
 
-  switch (puzzleCompleted[puzzleId]) {
+  switch (puzzleState[puzzleId].puzzleCompleted) {
     case true:
       if (
         command === triggerPuzzleCommand &&

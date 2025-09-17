@@ -22,13 +22,20 @@ import {
   initialKeyState,
   type KeyState,
 } from "../engine/puzzles/key/KeyPuzzle";
-import { initialTurtleDisplacement } from "../engine/puzzles/turtle/handleTurtlePuzzle";
+import {
+  initialTurtleState,
+  type TurtleState,
+} from "../engine/puzzles/turtle/handleTurtlePuzzle";
 import {
   initialTreeState,
   type TreeState,
 } from "../engine/puzzles/tree/TreePuzzle";
 import { initialCalculatorState } from "../engine/puzzles/calculator/calculatorLogic";
 import type { CalculatorState } from "../engine/puzzles/calculator/calculatorConstants";
+import {
+  initialAbbotState,
+  type AbbotState,
+} from "../engine/puzzles/abbot/handleAbbotPuzzle";
 
 export type GameStoreState = {
   playerName: string;
@@ -46,12 +53,12 @@ export type GameStoreState = {
   puzzleCompleted: Record<PuzzleId, boolean>;
   currentPuzzle: PuzzleId | null;
   puzzleState: {
-    abbot: { dialogIndex: number; puzzleCompleted: boolean };
+    abbot: AbbotState;
     calculator: CalculatorState;
     key: KeyState;
     lights: LightsState;
     tree: TreeState;
-    turtle: { displacement: { x: number; y: number } };
+    turtle: TurtleState;
   };
   showDialog: boolean;
 };
@@ -80,12 +87,12 @@ const initialGameState: GameStoreState = {
   puzzleCompleted: initialPuzzleCompletedState,
   currentPuzzle: null,
   puzzleState: {
-    abbot: { dialogIndex: 0, puzzleCompleted: false },
+    abbot: initialAbbotState,
     calculator: initialCalculatorState,
     key: initialKeyState,
     lights: initialLightsState,
     tree: initialTreeState,
-    turtle: { displacement: initialTurtleDisplacement },
+    turtle: initialTurtleState,
   },
   showDialog: false,
 };

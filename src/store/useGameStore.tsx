@@ -21,7 +21,7 @@ import {
 import {
   initialKeyState,
   type KeyState,
-} from "../engine/puzzles/key/KeyPuzzle";
+} from "../engine/puzzles/key/keyConstants";
 import {
   initialTurtleState,
   type TurtleState,

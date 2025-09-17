@@ -1,0 +1,135 @@
+//types
+export type KeyState = {
+  selectedCells: boolean[];
+  puzzleCompleted: boolean;
+  feedback: string;
+  showFeedback: boolean;
+};
+
+//Constants
+const INITIAL_SELECTED_CELLS = [9, 29];
+export const KEYBLANK_COLS = 10;
+export const KEYBLANK_ROWS = 3;
+export const KEYBLANK_SOLUTION = [
+  0, 1, 2, 3, 4, 5, 6, 8, 9, 14, 21, 22, 26, 27, 28, 29,
+];
+
+//Static Data
+export const keyFeedback = {
+  default:
+    "Click on a cell to use the file. You can test, reset, or leave at any time.",
+  doesNotFit: "The key will not fit into all the locks.",
+  willNotTurn:
+    "The key fits into all the keyholes but will not turn all the locks.",
+  success: "You\'ve done it! The key can now be used to open the oak door!. ",
+  storyLineSuccess: "You look proudly at the key you have made.",
+  storyLineFailure:
+    "You stare at the file and key blanks, wondering if you should try again.",
+};
+
+export const initialKeyState: KeyState = {
+  selectedCells: Array.from({ length: KEYBLANK_COLS * KEYBLANK_ROWS }, (_, i) =>
+    INITIAL_SELECTED_CELLS.includes(i)
+  ),
+  puzzleCompleted: false,
+  feedback: keyFeedback.default,
+  showFeedback: true,
+};
+
+export const lockDisplayCols = 21;
+const lockDisplayRows = 10;
+const lockDisplayCells = new Set([
+  "0x0",
+  "0x1",
+  "0x6",
+  "0x7",
+  "0x8",
+  "0x12",
+  "0x13",
+  "0x14",
+  "0x18",
+  "0x19",
+  "1x1",
+  "1x2",
+  "1x7",
+  "1x12",
+  "1x13",
+  "1x18",
+  "1x19",
+  "1x20",
+  "2x0",
+  "2x1",
+  "2x6",
+  "2x7",
+  "2x8",
+  "2x13",
+  "2x14",
+  "2x19",
+  "3x0",
+  "3x1",
+  "3x2",
+  "3x6",
+  "3x7",
+  "3x12",
+  "3x13",
+  "3x14",
+  "3x18",
+  "3x19",
+  "3x20",
+  "4x0",
+  "4x1",
+  "4x2",
+  "4x6",
+  "4x7",
+  "4x12",
+  "4x18",
+  "4x19",
+  "4x20",
+  "5x0",
+  "5x1",
+  "5x6",
+  "5x7",
+  "5x8",
+  "5x12",
+  "5x13",
+  "5x18",
+  "5x19",
+  "5x20",
+  "6x1",
+  "6x2",
+  "6x7",
+  "6x8",
+  "6x12",
+  "6x13",
+  "6x19",
+  "7x0",
+  "7x1",
+  "7x2",
+  "7x6",
+  "7x7",
+  "7x8",
+  "7x13",
+  "7x14",
+  "7x18",
+  "7x19",
+  "7x20",
+  "8x1",
+  "8x2",
+  "8x7",
+  "8x12",
+  "8x13",
+  "8x14",
+  "8x18",
+  "8x19",
+  "8x20",
+  "9x1",
+  "9x7",
+  "9x13",
+  "9x19",
+]);
+export const lockDisplayData: string[] = [];
+for (let i = 0; i < lockDisplayRows; i++) {
+  for (let j = 0; j < lockDisplayCols; j++) {
+    lockDisplayData.push(lockDisplayCells.has(`${i}x${j}`) ? "black" : "white");
+  }
+}

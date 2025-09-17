@@ -15,7 +15,7 @@ export const handleAbbotPuzzle: PipelineFunction = (payload) => {
       if (target && ["y", "yes"].includes(target)) {
         if (puzzleState.abbot.dialogIndex === dialog.length - 1) {
           return produce(payload, (draft) => {
-            draft.gameState.puzzleCompleted.abbot = true;
+            draft.gameState.puzzleState.abbot.puzzleCompleted = true;
             draft.gameState.storyLine.push(
               dialog[puzzleState.abbot.dialogIndex]
             );
@@ -30,20 +30,20 @@ export const handleAbbotPuzzle: PipelineFunction = (payload) => {
         }
       } else if (target && ["n", "no"].includes(target)) {
         return produce(payload, (draft) => {
-          draft.gameState.puzzleCompleted.abbot = true;
+          draft.gameState.puzzleState.abbot.puzzleCompleted = true;
           draft.gameState.currentPuzzle = null;
           draft.gameState.storyLine.push(dialog[dialog.length - 1]);
         });
       } else {
         return produce(payload, (draft) => {
-          draft.gameState.puzzleCompleted.abbot = true;
+          draft.gameState.puzzleState.abbot.puzzleCompleted = true;
           draft.gameState.currentPuzzle = null;
           draft.gameState.storyLine.push("Hmm? Says the abbot");
         });
       }
     case "move":
       return produce(payload, (draft) => {
-        draft.gameState.puzzleCompleted.abbot = true;
+        draft.gameState.puzzleState.abbot.puzzleCompleted = true;
         draft.gameState.currentPuzzle = null;
         draft.gameState.storyLine.push(dialog[dialog.length - 1]);
       });

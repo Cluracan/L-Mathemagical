@@ -8,19 +8,20 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 
+export type TreeState = {
+  selectedCells: boolean[];
+  feedback: string[];
+  puzzleCompleted: boolean;
+};
+
 const ORCHARD_SIZE = 25;
 const ORCHARD_WIDTH = 5;
 const TREE_COUNT = 9;
-export const initialTreeSelectedCells = Array.from(
-  { length: ORCHARD_SIZE },
-  () => false
-);
-
-export const initialTreeFeedback = [
-  '"Right," says the gardener.  Click on a square and I\'ll either plant or remove a tree there. Click CHECK if you think you are finished, RESET if you want me to start from scratch, or LEAVE if you want a break.',
-];
 
 const treeFeedback = {
+  default: [
+    '"Right," says the gardener.  Click on a square and I\'ll either plant or remove a tree there. Click CHECK if you think you are finished, RESET if you want me to start from scratch, or LEAVE if you want a break.',
+  ],
   success: [
     " ",
     '"Thank goodness," sighs the gardener, "I was beginning to think it was impossible. Now I have something to give you."',
@@ -37,6 +38,12 @@ const treeFeedback = {
   leaveWithFailure: [
     'The gardener looks around at the pile of trees - "Do come back when you are ready to try again please!"',
   ],
+};
+
+export const initialTreeState: TreeState = {
+  selectedCells: Array.from({ length: ORCHARD_SIZE }, () => false),
+  feedback: treeFeedback.default,
+  puzzleCompleted: false,
 };
 
 const countTrees = (selectedCells: boolean[]) => {
@@ -81,6 +88,7 @@ const checkRows = [
   [3, 8, 13, 18, 23],
   [4, 9, 14, 19, 24],
 ];
+
 const countLines = (selectedCells: boolean[]) => {
   let numberOfLines = 0;
   checkRows.forEach((checkList) => {
@@ -105,7 +113,7 @@ export const TreePuzzle = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         draft.puzzleState.tree.feedback.push(...treeFeedback.reset);
-        draft.puzzleState.tree.selectedCells = initialTreeSelectedCells;
+        draft.puzzleState.tree.selectedCells = initialTreeState.selectedCells;
       })
     );
   };
@@ -119,8 +127,8 @@ export const TreePuzzle = () => {
           draft.storyLine.push(...treeFeedback.leaveWithSuccess);
         } else {
           draft.storyLine.push(...treeFeedback.leaveWithFailure);
-          draft.puzzleState.tree.selectedCells = initialTreeSelectedCells;
-          draft.puzzleState.tree.feedback = initialTreeFeedback;
+          draft.puzzleState.tree.selectedCells = initialTreeState.selectedCells;
+          draft.puzzleState.tree.feedback = initialTreeState.feedback;
         }
       })
     );

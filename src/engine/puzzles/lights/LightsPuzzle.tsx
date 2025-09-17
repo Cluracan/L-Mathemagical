@@ -14,6 +14,7 @@ export type LightsState = {
   feedback: string[];
   turns: number;
   switchesActive: boolean;
+  puzzleCompleted: boolean;
 };
 //Constants
 const INITAL_ORDER = ["Yellow", "Red", "Green", "Blue"];
@@ -47,11 +48,12 @@ const lightsFeedback = {
 };
 
 //Initial State
-export const initialLightsState = {
+export const initialLightsState: LightsState = {
   curOrder: INITAL_ORDER,
   feedback: lightsFeedback.initial,
   turns: 0,
   switchesActive: true,
+  puzzleCompleted: false,
 };
 
 const applySwitch: Record<1 | 2 | 3 | 4, (colors: string[]) => string[]> = {
@@ -71,7 +73,7 @@ function lightsReducer(
   state: LightsState,
   action: { type: "input"; button: number } | { type: "reset" }
 ) {
-  let { curOrder, turns, switchesActive } = state;
+  let { curOrder, turns, switchesActive, puzzleCompleted } = state;
   let nextFeedback = [...state.feedback];
   switch (action.type) {
     case "input":
@@ -82,7 +84,7 @@ function lightsReducer(
           `"That's ${turns} ${turns > 1 ? 'turns"' : 'turn"'}`
         );
         const nextOrder = applySwitch[action.button](curOrder);
-        let puzzleCompleted = false;
+
         if (isCorrectOrder(nextOrder)) {
           if (turns === 4) {
             puzzleCompleted = true;
@@ -100,8 +102,8 @@ function lightsReducer(
             feedback: nextFeedback,
             turns,
             switchesActive,
+            puzzleCompleted,
           },
-          puzzleCompleted,
         };
       }
       break;
@@ -111,30 +113,25 @@ function lightsReducer(
           ...initialLightsState,
           feedback: [...nextFeedback, ...lightsFeedback.reset],
         },
-        puzzleCompleted: false,
       };
   }
-  return { nextState: state, puzzleCompleted: false };
+  return { nextState: state };
 }
 
 export const LightsPuzzle = () => {
-  const { curOrder, turns, feedback, switchesActive } = useGameStore(
+  const { curOrder, feedback, switchesActive, puzzleCompleted } = useGameStore(
     (state) => state.puzzleState.lights
   );
   const theme = useTheme();
-  const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.lights);
 
   const handleClick = (switchIndex: number) => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        const { nextState, puzzleCompleted } = lightsReducer(
-          draft.puzzleState.lights,
-          { type: "input", button: switchIndex }
-        );
+        const { nextState } = lightsReducer(draft.puzzleState.lights, {
+          type: "input",
+          button: switchIndex,
+        });
         draft.puzzleState.lights = nextState;
-        if (puzzleCompleted) {
-          draft.puzzleCompleted.lights = true;
-        }
       })
     );
   };
@@ -151,19 +148,16 @@ export const LightsPuzzle = () => {
   };
 
   const handleLeave = () => {
+    console.log(puzzleCompleted);
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         draft.showDialog = false;
         draft.currentPuzzle = null;
-        if (isCorrectOrder(curOrder) && turns === 4) {
+        if (draft.puzzleState.lights.puzzleCompleted) {
           draft.itemLocation.oar = "lights";
-          draft.puzzleCompleted.lights = true;
           draft.storyLine.push(...lightsFeedback.leaveWithSuccess);
         } else {
-          draft.puzzleState.lights.feedback = lightsFeedback.initial;
-          draft.puzzleState.lights.curOrder = INITAL_ORDER;
-          draft.puzzleState.lights.turns = 0;
-          draft.puzzleState.lights.switchesActive = true;
+          draft.puzzleState.lights = initialLightsState;
           draft.storyLine.push(...lightsFeedback.leaveWithFailure);
         }
       })

@@ -1,10 +1,18 @@
 import { Box, Button, Snackbar, Stack, styled, useTheme } from "@mui/material";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback } from "react";
 import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
+
+//types
+export type KeyState = {
+  selectedCells: boolean[];
+  puzzleCompleted: boolean;
+  feedback: string;
+  showFeedback: boolean;
+};
 
 //Keyholes data
 const lockDisplayCols = 21;
@@ -114,11 +122,6 @@ const keyBlankSolution = [
   0, 1, 2, 3, 4, 5, 6, 8, 9, 14, 21, 22, 26, 27, 28, 29,
 ];
 
-export const initialKeySelectedCells = Array.from(
-  { length: keyBlankCols * keyBlankRows },
-  (_, i) => INITIAL_SELECTED_CELLS.includes(i)
-);
-
 const keyFeedback = {
   default:
     "Click on a cell to use the file. You can test, reset, or leave at any time.",
@@ -131,15 +134,28 @@ const keyFeedback = {
     "You stare at the file and key blanks, wondering if you should try again.",
 };
 
+export const initialKeyState: KeyState = {
+  selectedCells: Array.from({ length: keyBlankCols * keyBlankRows }, (_, i) =>
+    INITIAL_SELECTED_CELLS.includes(i)
+  ),
+  puzzleCompleted: false,
+  feedback: keyFeedback.default,
+  showFeedback: true,
+};
+
 export const KeyPuzzle = () => {
-  const puzzleCompleted = useGameStore((state) => state.puzzleCompleted.key);
-  const [feedback, setFeedback] = useState(keyFeedback.default);
-  const [showFeedback, setShowFeedback] = useState(true);
+  const puzzleCompleted = useGameStore(
+    (state) => state.puzzleState.key.puzzleCompleted
+  );
+  const feedback = useGameStore((state) => state.puzzleState.key.feedback);
+  const showFeedback = useGameStore(
+    (state) => state.puzzleState.key.showFeedback
+  );
 
   const handleReset = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        draft.puzzleState.key.selectedCells = initialKeySelectedCells;
+        draft.puzzleState.key.selectedCells = initialKeyState.selectedCells;
       })
     );
   };
@@ -149,38 +165,45 @@ export const KeyPuzzle = () => {
       produce(state, (draft) => {
         draft.showDialog = false;
         draft.currentPuzzle = null;
-        if (state.puzzleCompleted.key) {
+        if (state.puzzleState.key.puzzleCompleted) {
           draft.itemLocation.iron = "player";
           draft.storyLine.push(keyFeedback.storyLineSuccess);
         } else {
           draft.storyLine.push(keyFeedback.storyLineFailure);
-          draft.puzzleState.key.selectedCells = initialKeySelectedCells;
+          draft.puzzleState.key.selectedCells = initialKeyState.selectedCells;
         }
       })
     );
   };
 
   const handleTestKey = () => {
-    const selectedCells = useGameStore.getState().puzzleState.key.selectedCells;
-    if (keyBlankSolution.every((cellIndex) => selectedCells[cellIndex])) {
-      const selectedCellsCount = selectedCells.filter(
-        (cell) => cell === true
-      ).length;
-      if (selectedCellsCount === keyBlankSolution.length) {
-        useGameStore.setState((state) => ({
-          ...state,
-          puzzleCompleted: { ...state.puzzleCompleted, key: true },
-        }));
-        setFeedback(keyFeedback.success);
-      } else {
-        setFeedback(keyFeedback.willNotTurn);
-      }
-    } else {
-      setFeedback(keyFeedback.doesNotFit);
-    }
-    setShowFeedback(true);
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        const selectedCells = draft.puzzleState.key.selectedCells;
+        if (keyBlankSolution.every((cellIndex) => selectedCells[cellIndex])) {
+          const selectedCellsCount = selectedCells.filter(
+            (cell) => cell === true
+          ).length;
+          if (selectedCellsCount === keyBlankSolution.length) {
+            draft.puzzleState.key.puzzleCompleted = true;
+            draft.puzzleState.key.feedback = keyFeedback.success;
+          } else {
+            draft.puzzleState.key.feedback = keyFeedback.willNotTurn;
+          }
+        } else {
+          draft.puzzleState.key.feedback = keyFeedback.doesNotFit;
+        }
+        draft.puzzleState.key.showFeedback = true;
+      })
+    );
   };
-
+  const closeFeedback = () => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.puzzleState.key.showFeedback = false;
+      })
+    );
+  };
   return (
     <PuzzleContainer>
       <PuzzleHeader
@@ -202,7 +225,7 @@ export const KeyPuzzle = () => {
 
       <Snackbar
         open={showFeedback}
-        onClose={() => setShowFeedback(false)}
+        onClose={closeFeedback}
         autoHideDuration={4000}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         message={feedback}
@@ -264,7 +287,7 @@ const KeyCell = memo(({ index }: { index: number }) => {
     (state) => state.puzzleState.key.selectedCells[index]
   );
   const handleClick = useCallback(() => {
-    if (useGameStore.getState().puzzleCompleted.key) return;
+    if (useGameStore.getState().puzzleState.key.puzzleCompleted) return;
     useGameStore.setState((state) => {
       if (state.puzzleState.key.selectedCells[index]) return state;
       const newSelectedCells = [...state.puzzleState.key.selectedCells];
@@ -273,7 +296,7 @@ const KeyCell = memo(({ index }: { index: number }) => {
         ...state,
         puzzleState: {
           ...state.puzzleState,
-          key: { selectedCells: newSelectedCells },
+          key: { ...state.puzzleState.key, selectedCells: newSelectedCells },
         },
       };
     });

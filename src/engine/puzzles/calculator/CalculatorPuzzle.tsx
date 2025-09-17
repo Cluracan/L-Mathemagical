@@ -27,6 +27,7 @@ export type CalculatorState = {
   showFeedback: boolean;
   lastInputType: InputType;
   tokens: Token[];
+  puzzleCompleted: boolean;
 };
 
 //Type Assertions
@@ -125,6 +126,7 @@ export const initialCalculatorState: CalculatorState = {
   showFeedback: true,
   lastInputType: "evaluate",
   tokens: [],
+  puzzleCompleted: false,
 };
 
 //Helper Functions
@@ -196,9 +198,10 @@ function calculatorReducer(
   action: { type: "input"; button: keyof typeof calculatorButtons }
 ) {
   //currently only 'input' type available, so no switch wrapper on type
-  let { currentInput, feedback, lastInputType, showFeedback } = state;
+  let { currentInput, feedback, lastInputType, showFeedback, puzzleCompleted } =
+    state;
   let newTokens = [...state.tokens];
-  let puzzleCompleted = false;
+
   const button = action.button;
 
   if (isValidInputType(action.button, lastInputType)) {
@@ -246,8 +249,8 @@ function calculatorReducer(
       showFeedback,
       lastInputType,
       tokens: newTokens,
+      puzzleCompleted,
     },
-    puzzleCompleted,
   };
 }
 
@@ -261,22 +264,17 @@ export const CalculatorPuzzle = () => {
     (state) => state.puzzleState.calculator.showFeedback
   );
   const puzzleCompleted = useGameStore(
-    (state) => state.puzzleCompleted.calculator
+    (state) => state.puzzleState.calculator.puzzleCompleted
   );
 
   const handleInput: HandleInput = useCallback((button) => {
-    if (useGameStore.getState().puzzleCompleted.calculator) return;
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        const { nextState, puzzleCompleted } = calculatorReducer(
-          draft.puzzleState.calculator,
-          { type: "input", button }
-        );
+        const { nextState } = calculatorReducer(draft.puzzleState.calculator, {
+          type: "input",
+          button,
+        });
         draft.puzzleState.calculator = nextState;
-
-        if (puzzleCompleted) {
-          draft.puzzleCompleted.calculator = true;
-        }
       })
     );
   }, []);
@@ -286,7 +284,7 @@ export const CalculatorPuzzle = () => {
       produce(state, (draft) => {
         draft.showDialog = false;
         draft.currentPuzzle = null;
-        if (state.puzzleCompleted.calculator) {
+        if (state.puzzleState.calculator.puzzleCompleted) {
           draft.storyLine.push(calculatorFeedback.storyLineSuccess);
         } else {
           draft.storyLine.push(calculatorFeedback.storyLineFailure);
@@ -294,6 +292,15 @@ export const CalculatorPuzzle = () => {
       })
     );
   };
+
+  const closeFeedback = () => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.puzzleState.calculator.showFeedback = false;
+      })
+    );
+  };
+
   return (
     <>
       <PuzzleContainer>
@@ -321,13 +328,7 @@ export const CalculatorPuzzle = () => {
       </PuzzleContainer>
       <Snackbar
         open={showFeedback}
-        onClose={() =>
-          useGameStore.setState((state) =>
-            produce(state, (draft) => {
-              draft.puzzleState.calculator.showFeedback = false;
-            })
-          )
-        }
+        onClose={closeFeedback}
         autoHideDuration={4000}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         message={feedback}

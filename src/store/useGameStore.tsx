@@ -18,11 +18,14 @@ import {
   initialLightsState,
   type LightsState,
 } from "../engine/puzzles/lights/LightsPuzzle";
-import { initialKeySelectedCells } from "../engine/puzzles/key/KeyPuzzle";
+import {
+  initialKeyState,
+  type KeyState,
+} from "../engine/puzzles/key/KeyPuzzle";
 import { initialTurtleDisplacement } from "../engine/puzzles/turtle/handleTurtlePuzzle";
 import {
-  initialTreeFeedback,
-  initialTreeSelectedCells,
+  initialTreeState,
+  type TreeState,
 } from "../engine/puzzles/tree/TreePuzzle";
 import {
   initialCalculatorState,
@@ -45,11 +48,11 @@ export type GameStoreState = {
   puzzleCompleted: Record<PuzzleId, boolean>;
   currentPuzzle: PuzzleId | null;
   puzzleState: {
-    abbot: { dialogIndex: number };
+    abbot: { dialogIndex: number; puzzleCompleted: boolean };
     calculator: CalculatorState;
-    key: { selectedCells: boolean[] };
+    key: KeyState;
     lights: LightsState;
-    tree: { selectedCells: boolean[]; feedback: string[] };
+    tree: TreeState;
     turtle: { displacement: { x: number; y: number } };
   };
   showDialog: boolean;
@@ -79,14 +82,11 @@ const initialGameState: GameStoreState = {
   puzzleCompleted: initialPuzzleCompletedState,
   currentPuzzle: null,
   puzzleState: {
-    abbot: { dialogIndex: 0 },
+    abbot: { dialogIndex: 0, puzzleCompleted: false },
     calculator: initialCalculatorState,
-    key: { selectedCells: initialKeySelectedCells },
+    key: initialKeyState,
     lights: initialLightsState,
-    tree: {
-      selectedCells: initialTreeSelectedCells,
-      feedback: initialTreeFeedback,
-    },
+    tree: initialTreeState,
     turtle: { displacement: initialTurtleDisplacement },
   },
   showDialog: false,

@@ -24,7 +24,12 @@ export const PuzzleActions = ({
         Reset
       </Button>
       {children}
-      <Button onClick={handleLeave}>Leave</Button>
+      <Button
+        onClick={handleLeave}
+        color={puzzleCompleted ? "success" : "primary"}
+      >
+        Leave
+      </Button>
     </Stack>
   );
 };

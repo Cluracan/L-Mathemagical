@@ -1,15 +1,13 @@
 import {
+  INPUT_TARGET,
   calculatorButtons,
   calculatorFeedback,
-  INPUT_TARGET,
+  type CalculatorState,
   type InputButton,
   type InputType,
+  type Operator,
+  type Token,
 } from "./calculatorConstants";
-
-//Types
-export type Token =
-  | { type: "number"; value: number }
-  | { type: "operator"; value: Operator };
 
 //Type Assertions
 function assertIsOperatorToken(
@@ -26,7 +24,7 @@ function assertIsOperator(value: any): asserts value is Operator {
   }
 }
 
-//constants
+//Constants
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence
 const operatorPrecedence = {
   "+": 11,
@@ -34,22 +32,12 @@ const operatorPrecedence = {
   "/": 12,
   "*": 12,
 };
-type Operator = keyof typeof operatorPrecedence;
 
-const calculate = {
+const calculate: Record<Operator, (a: number, b: number) => number> = {
   "+": (a: number, b: number) => a + b,
   "-": (a: number, b: number) => a - b,
   "*": (a: number, b: number) => a * b,
   "/": (a: number, b: number) => a / b,
-};
-
-export type CalculatorState = {
-  currentInput: string;
-  feedback: string;
-  showFeedback: boolean;
-  lastInputType: InputType;
-  tokens: Token[];
-  puzzleCompleted: boolean;
 };
 
 //Initial State
@@ -134,7 +122,6 @@ export function calculatorReducer(
   let { currentInput, feedback, lastInputType, showFeedback, puzzleCompleted } =
     state;
   let newTokens = [...state.tokens];
-
   const button = action.button;
 
   if (isValidInputType(action.button, lastInputType)) {

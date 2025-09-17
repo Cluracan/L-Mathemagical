@@ -10,8 +10,9 @@ import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
-import { memo, useCallback, useMemo } from "react";
 import { produce } from "immer";
+import { memo, useCallback, useMemo } from "react";
+import { calculatorReducer } from "./calculatorLogic";
 import {
   CALCULATOR_DISPLAY_LENGTH,
   WORKING_CALCULATOR_BUTTONS,
@@ -19,8 +20,8 @@ import {
   calculatorButtons,
   calculatorFeedback,
   type InputButton,
+  type Token,
 } from "./calculatorConstants";
-import { calculatorReducer, type Token } from "./calculatorLogic";
 
 //Types
 type HandleInput = (button: InputButton) => void;

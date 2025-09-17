@@ -27,10 +27,8 @@ import {
   initialTreeState,
   type TreeState,
 } from "../engine/puzzles/tree/TreePuzzle";
-import {
-  initialCalculatorState,
-  type CalculatorState,
-} from "../engine/puzzles/calculator/calculatorLogic";
+import { initialCalculatorState } from "../engine/puzzles/calculator/calculatorLogic";
+import type { CalculatorState } from "../engine/puzzles/calculator/calculatorConstants";
 
 export type GameStoreState = {
   playerName: string;

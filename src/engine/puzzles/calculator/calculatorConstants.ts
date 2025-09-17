@@ -1,5 +1,18 @@
 //Types
 export type InputType = "number" | "operator" | "evaluate" | "reset";
+export type Token =
+  | { type: "number"; value: number }
+  | { type: "operator"; value: Operator };
+export type CalculatorState = {
+  currentInput: string;
+  feedback: string;
+  showFeedback: boolean;
+  lastInputType: InputType;
+  tokens: Token[];
+  puzzleCompleted: boolean;
+};
+export type Operator = "+" | "-" | "*" | "/";
+export type InputButton = keyof typeof calculatorButtons;
 
 //Constants
 export const INPUT_TARGET = "11";
@@ -11,7 +24,7 @@ export const WORKING_CALCULATOR_BUTTONS = new Set([
   "AC",
   "=",
 ]);
-export const CALCULATOR_DISPLAY_LENGTH = 12;
+export const CALCULATOR_DISPLAY_LENGTH = 11;
 
 //Static Data
 export const calculatorFeedback = {
@@ -46,7 +59,6 @@ export const calculatorButtons = {
   "=": { type: "evaluate", display: "=" },
   "+": { type: "operator", display: "+" },
 } as const satisfies Record<string, { type: InputType; display: string }>;
-export type InputButton = keyof typeof calculatorButtons;
 
 export const buttonOrder: (keyof typeof calculatorButtons)[] = [
   "7",

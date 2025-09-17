@@ -132,36 +132,38 @@ const Calculator = ({ handleInput }: CalculatorProps) => {
   return (
     <>
       <Stack
-        m={4}
-        padding={"24px"}
-        borderRadius={"8px"}
         sx={{
+          margin: 4,
+          padding: 3,
+          borderRadius: 1,
           backgroundColor: "rgb(251, 241, 122)",
           boxShadow: "inset 1px -1px 4px 2px rgba(107, 102, 31, 0.82)",
         }}
       >
         <Typography
-          textAlign={"right"}
-          lineHeight={2}
-          border={"3px solid rgba(71, 71, 71, 1)"}
-          borderRadius={1}
-          fontSize={"2rem"}
-          fontFamily={"DSEG7"}
-          px={1}
-          py={1}
-          my={2}
           sx={{
+            px: 1,
+            py: 1,
+            my: 2,
+            border: "3px solid rgba(71, 71, 71, 1)",
+            borderRadius: 1,
             color: "rgb(60, 60, 60)",
             backgroundColor: "rgb(189, 212, 189)",
             boxShadow: "inset -10px -5px 64px -32px #2b382e",
+            fontFamily: "DSEG7",
+            fontSize: "2rem",
+            lineHeight: 2,
+            textAlign: "right",
           }}
         >
           {calculatorDisplay}
         </Typography>
         <Typography
-          fontFamily={"Impact,Arial,Tahoma"}
-          variant="overline"
-          color="black"
+          sx={{
+            fontFamily: "Impact,Arial,Tahoma",
+            variant: "overline",
+            color: "black",
+          }}
         >
           CASIO MICRO MINI
         </Typography>
@@ -201,14 +203,14 @@ const CalculatorButton = memo(
           WORKING_CALCULATOR_BUTTONS.has(value) && handleInput(value)
         }
         sx={{
-          fontFamily: "Orbitron",
+          height: "3rem",
+          paddingBottom: "4px",
           border: "3px solid rgb(47, 47, 47)",
           borderRadius: "5px",
-          backgroundColor: "rgb(60, 60, 60)",
           color: "ivory",
+          backgroundColor: "rgb(60, 60, 60)",
           boxShadow: " inset 0px 0px 3px 0px #bdbdba",
-          paddingBottom: "4px",
-          height: "3rem",
+          fontFamily: "Orbitron",
           "&:hover": {
             boxShadow: "inset 0px 0px 6px 0px #bdbdba",
           },

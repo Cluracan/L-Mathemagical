@@ -29,7 +29,7 @@ import {
 import {
   initialTreeState,
   type TreeState,
-} from "../engine/puzzles/tree/TreePuzzle";
+} from "../engine/puzzles/tree/treeConstants";
 import { initialCalculatorState } from "../engine/puzzles/calculator/calculatorLogic";
 import type { CalculatorState } from "../engine/puzzles/calculator/calculatorConstants";
 import {

@@ -29,7 +29,4 @@ export const turtleNPC: PuzzleNPC = {
       puzzleComplete: null,
     },
   },
-  rewardItems: {
-    rusty: "player",
-  },
 };

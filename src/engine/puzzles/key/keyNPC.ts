@@ -42,7 +42,4 @@ export const keyNPC: PuzzleNPC = {
         "These tiny bits of metal suggest that someone has used the nearby file recently...",
     },
   },
-  rewardItems: {
-    iron: "floor",
-  },
 };

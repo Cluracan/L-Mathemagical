@@ -31,5 +31,4 @@ export const calculatorNPC: PuzzleNPC = {
         "The guard has left the room, but you think you can still hear his screams from elsewhere in the palace.",
     },
   },
-  rewardItems: null,
 };

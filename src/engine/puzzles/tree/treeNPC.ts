@@ -25,7 +25,4 @@ export const treeNPC: PuzzleNPC = {
         'The gardener beams at you gratefully. "That was very clever of you!"',
     },
   },
-  rewardItems: {
-    ladder: "player",
-  },
 };

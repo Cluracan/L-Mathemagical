@@ -25,7 +25,4 @@ export const lightsNPC: PuzzleNPC = {
         'The electrician is staring intently at the sound system. She glances up and smiles gratefully - "Many thanks for the help earlier."',
     },
   },
-  rewardItems: {
-    oar: "floor",
-  },
 };

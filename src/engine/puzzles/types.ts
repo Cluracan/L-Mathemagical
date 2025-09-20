@@ -1,5 +1,3 @@
-import type { ItemId } from "../../assets/data/itemData";
-import type { RoomId } from "../../assets/data/roomData";
 import type { Command } from "../dispatchCommand";
 
 export type PuzzleNPC = {
@@ -22,5 +20,4 @@ export type PuzzleNPC = {
     string,
     { puzzleIncomplete: string; puzzleComplete: string | null }
   >;
-  rewardItems: Partial<Record<ItemId, "player" | "floor" | RoomId>> | null;
 };

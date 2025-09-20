@@ -37,5 +37,4 @@ export const telephoneNPC: PuzzleNPC = {
         "You must have been playing wiuth the cord whilst you were using the phone!  It is now tangled beyond repair...",
     },
   },
-  rewardItems: null,
 };

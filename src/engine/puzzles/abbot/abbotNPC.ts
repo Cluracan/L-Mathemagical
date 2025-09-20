@@ -8,7 +8,7 @@ export const abbotNPC: PuzzleNPC = {
     completed: null,
   },
   triggerPuzzleCommand: "say",
-  acceptPuzzleText: ["yes", "y", "ok", "o.k.", "o.k"],
+  acceptPuzzleText: ["yes", "y"],
   rejectPuzzleText: ["no", "n"],
   feedback: {
     puzzleAccept: `The abbot tells you he is looking for a girl called Runia, who has been captured by the Grey Drogos who inhabit the palace.  The Drogos have taken Runia because they fear she is dangerous to them. Partly they fear her long red hair, but mostly they are afraid because she has discovered the Drogo's one weakness and, if she is allowed to reveal this, someone may challenge the Drogos' power.\n\n"Shall I go on?" asks the abbot.`,
@@ -23,7 +23,6 @@ export const abbotNPC: PuzzleNPC = {
       puzzleComplete: null,
     },
   },
-  rewardItems: null,
 };
 
 export const abbotHallwayNPC: PuzzleNPC = {
@@ -43,7 +42,6 @@ export const abbotHallwayNPC: PuzzleNPC = {
     exitsBlocked: null,
   },
   examinableItems: {},
-  rewardItems: null,
 };
 
 export const abbotKitchenNPC: PuzzleNPC = {
@@ -63,5 +61,4 @@ export const abbotKitchenNPC: PuzzleNPC = {
     exitsBlocked: null,
   },
   examinableItems: {},
-  rewardItems: null,
 };

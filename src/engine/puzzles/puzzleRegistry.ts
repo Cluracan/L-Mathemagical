@@ -15,6 +15,10 @@ import { TreePuzzle } from "./tree/TreePuzzle";
 import { calculatorNPC } from "./calculator/calculatorNPC";
 import { CalculatorPuzzle } from "./calculator/CalculatorPuzzle";
 import { keyNPC } from "./key/keyNPC";
+import { cookNPC } from "./cook/cookNPC";
+import { CookPuzzle } from "./cook/CookPuzzle";
+import { pianoNPC } from "./piano/pianoNPC";
+import { PianoPuzzle } from "./piano/PianoPuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -30,6 +34,7 @@ export const puzzleAtLocation = {
     puzzleId: "abbot",
     puzzleNPC: abbotKitchenNPC,
   },
+  largeKitchen: { puzzleId: "cook", puzzleNPC: cookNPC },
   lights: {
     puzzleId: "lights",
     puzzleNPC: lightsNPC,
@@ -37,6 +42,10 @@ export const puzzleAtLocation = {
   file: {
     puzzleId: "key",
     puzzleNPC: keyNPC,
+  },
+  music: {
+    puzzleId: "piano",
+    puzzleNPC: pianoNPC,
   },
   courtyard: {
     puzzleId: "turtle",
@@ -69,6 +78,10 @@ export const puzzleRegistry = {
     pipelineFunction: null,
     component: CalculatorPuzzle,
   },
+  cook: {
+    pipelineFunction: null,
+    component: CookPuzzle,
+  },
   lights: {
     pipelineFunction: null,
     component: LightsPuzzle,
@@ -76,6 +89,10 @@ export const puzzleRegistry = {
   key: {
     pipelineFunction: null,
     component: KeyPuzzle,
+  },
+  piano: {
+    pipelineFunction: null,
+    component: PianoPuzzle,
   },
   turtle: {
     pipelineFunction: handleTurtlePuzzle,

@@ -253,7 +253,7 @@ export const roomData = {
   music: {
     id: "music",
     descriptions: {
-      long: "You are in the old music room. The walls are blotched with damp and there are holes in the skirting board. A small window is open in the northwest corner of the room, obstructed by an old, battered telescope. There are doors to the east and west.\n\nIn the centre of the room is a rather battered Steinway grand piano.",
+      long: "You are in the old music room. The walls are blotched with damp and there are holes in the skirting board. A small window is open in the northwest corner of the room, obstructed by an old, battered telescope. There are doors to the east and west.",
       short: "You are in the old music room.",
     },
     mapText: "Music",

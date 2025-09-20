@@ -36,6 +36,14 @@ import {
   initialAbbotState,
   type AbbotState,
 } from "../engine/puzzles/abbot/handleAbbotPuzzle";
+import {
+  initialCookState,
+  type CookState,
+} from "../engine/puzzles/cook/cookConstants";
+import {
+  initialPianoState,
+  type PianoState,
+} from "../engine/puzzles/piano/pianoConstants";
 
 export type GameStoreState = {
   playerName: string;
@@ -55,8 +63,10 @@ export type GameStoreState = {
   puzzleState: {
     abbot: AbbotState;
     calculator: CalculatorState;
+    cook: CookState;
     key: KeyState;
     lights: LightsState;
+    piano: PianoState;
     tree: TreeState;
     turtle: TurtleState;
   };
@@ -89,8 +99,10 @@ const initialGameState: GameStoreState = {
   puzzleState: {
     abbot: initialAbbotState,
     calculator: initialCalculatorState,
+    cook: initialCookState,
     key: initialKeyState,
     lights: initialLightsState,
+    piano: initialPianoState,
     tree: initialTreeState,
     turtle: initialTurtleState,
   },

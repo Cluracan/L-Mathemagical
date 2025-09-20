@@ -26,18 +26,18 @@ export const TARGET_MELODY: NoteName[] = [
 //Static Data
 
 export const pianoKeys = {
-  C4: { noteName: "C", display: "C", color: "white" },
-  Db4: { noteName: "Db", display: "Db", color: "black" },
-  D4: { noteName: "D", display: "D", color: "white" },
-  Eb4: { noteName: "Eb", display: "Eb", color: "black" },
-  E4: { noteName: "E", display: "E", color: "white" },
-  F4: { noteName: "F", display: "F", color: "white" },
-  Gb4: { noteName: "Gb", display: "Gb", color: "black" },
-  G4: { noteName: "G", display: "G", color: "white" },
-  Ab4: { noteName: "Ab", display: "Ab", color: "black" },
-  A4: { noteName: "A", display: "A", color: "white" },
-  Bb4: { noteName: "Bb", display: "Bb", color: "black" },
-  B4: { noteName: "B", display: "B", color: "white" },
+  C4: { noteName: "C", display: "C", color: "white", offset: false },
+  Db4: { noteName: "Db", display: "Db", color: "black", offset: false },
+  D4: { noteName: "D", display: "D", color: "white", offset: true },
+  Eb4: { noteName: "Eb", display: "Eb", color: "black", offset: false },
+  E4: { noteName: "E", display: "E", color: "white", offset: true },
+  F4: { noteName: "F", display: "F", color: "white", offset: false },
+  Gb4: { noteName: "Gb", display: "Gb", color: "black", offset: false },
+  G4: { noteName: "G", display: "G", color: "white", offset: true },
+  Ab4: { noteName: "Ab", display: "Ab", color: "black", offset: false },
+  A4: { noteName: "A", display: "A", color: "white", offset: true },
+  Bb4: { noteName: "Bb", display: "Bb", color: "black", offset: false },
+  B4: { noteName: "B", display: "B", color: "white", offset: true },
 } as const;
 export type NoteId = keyof typeof pianoKeys;
 export type NoteName = (typeof pianoKeys)[NoteId]["noteName"];

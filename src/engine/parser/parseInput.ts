@@ -32,7 +32,11 @@ export const parseInput: ParseInput = (userInput) => {
   if (commandWord === "yes") return { command: "say", target: "yes" };
   if (commandWord === "no") return { command: "say", target: "no" };
 
-  //'rusty key' and 'rusty' must return target: 'rusty' (process last two words to an item if possible)
+  //Interpret numbers (guards, telephone puzzle)
+  if (!isNaN(Number(commandWord))) {
+    return { command: "say", target: commandWord };
+  }
+
   let target = args[args.length - 1] || null;
 
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {

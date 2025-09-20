@@ -149,7 +149,6 @@ export const LightsPuzzle = () => {
   };
 
   const handleLeave = () => {
-    console.log(puzzleCompleted);
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         draft.showDialog = false;

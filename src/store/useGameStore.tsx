@@ -9,10 +9,7 @@ import {
   initialBathState,
   type BathState,
 } from "../engine/events/runBathTriggers";
-import {
-  initialPuzzleCompletedState,
-  type PuzzleId,
-} from "../engine/puzzles/puzzleRegistry";
+import { type PuzzleId } from "../engine/puzzles/puzzleRegistry";
 
 import {
   initialLightsState,
@@ -58,7 +55,6 @@ export type GameStoreState = {
   isInvisible: boolean;
   bathState: BathState;
   drogoGuard: null | { target: number; turnsUntilCaught: number };
-  puzzleCompleted: Record<PuzzleId, boolean>;
   currentPuzzle: PuzzleId | null;
   puzzleState: {
     abbot: AbbotState;
@@ -94,7 +90,6 @@ const initialGameState: GameStoreState = {
   isInvisible: false,
   bathState: initialBathState,
   drogoGuard: null,
-  puzzleCompleted: initialPuzzleCompletedState,
   currentPuzzle: null,
   puzzleState: {
     abbot: initialAbbotState,

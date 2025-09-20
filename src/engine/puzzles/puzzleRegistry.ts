@@ -115,7 +115,3 @@ export const puzzleRegistry = {
 export type PuzzleId = keyof typeof puzzleRegistry;
 
 export const isPuzzleLocation = createKeyGuard(puzzleAtLocation);
-
-export const initialPuzzleCompletedState = Object.fromEntries(
-  Object.keys(puzzleRegistry).map((puzzle) => [puzzle, false])
-) as Record<PuzzleId, boolean>;

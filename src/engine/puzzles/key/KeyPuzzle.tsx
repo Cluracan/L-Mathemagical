@@ -25,6 +25,25 @@ export const KeyPuzzle = () => {
     (state) => state.puzzleState.key.showFeedback
   );
 
+  const handleCellClick = useCallback(
+    (index: number) => {
+      if (puzzleCompleted) return;
+      useGameStore.setState((state) => {
+        if (state.puzzleState.key.selectedCells[index]) return state;
+        const newSelectedCells = [...state.puzzleState.key.selectedCells];
+        newSelectedCells[index] = true;
+        return {
+          ...state,
+          puzzleState: {
+            ...state.puzzleState,
+            key: { ...state.puzzleState.key, selectedCells: newSelectedCells },
+          },
+        };
+      });
+    },
+    [puzzleCompleted]
+  );
+
   const handleReset = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
@@ -70,6 +89,7 @@ export const KeyPuzzle = () => {
       })
     );
   };
+
   const closeFeedback = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
@@ -77,6 +97,7 @@ export const KeyPuzzle = () => {
       })
     );
   };
+
   return (
     <PuzzleContainer>
       <PuzzleHeader
@@ -92,7 +113,7 @@ export const KeyPuzzle = () => {
         }}
       >
         {Array.from({ length: KEYBLANK_COLS * KEYBLANK_ROWS }, (_, i) => (
-          <KeyCell key={i} index={i} />
+          <KeyCell key={i} index={i} onCellClick={handleCellClick} />
         ))}
       </Box>
 
@@ -155,25 +176,19 @@ const LockDisplay = memo(() => {
   );
 });
 
-const KeyCell = memo(({ index }: { index: number }) => {
+type KeyCellProps = {
+  index: number;
+  onCellClick: (index: number) => void;
+};
+
+const KeyCell = memo(({ index, onCellClick }: KeyCellProps) => {
   const cellSelected = useGameStore(
     (state) => state.puzzleState.key.selectedCells[index]
   );
+
   const handleClick = useCallback(() => {
-    if (useGameStore.getState().puzzleState.key.puzzleCompleted) return;
-    useGameStore.setState((state) => {
-      if (state.puzzleState.key.selectedCells[index]) return state;
-      const newSelectedCells = [...state.puzzleState.key.selectedCells];
-      newSelectedCells[index] = true;
-      return {
-        ...state,
-        puzzleState: {
-          ...state.puzzleState,
-          key: { ...state.puzzleState.key, selectedCells: newSelectedCells },
-        },
-      };
-    });
-  }, [index]);
+    onCellClick(index);
+  }, [index, onCellClick]);
 
   return (
     <StyledCell

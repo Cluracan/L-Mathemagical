@@ -5,12 +5,10 @@ import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import {
-  assertIsNoteId,
   audioCache,
   pianoKeys,
   TARGET_MELODY,
   type NoteId,
-  type NoteName,
 } from "./pianoConstants";
 import { produce } from "immer";
 
@@ -44,8 +42,7 @@ export const PianoPuzzle = () => {
     <PuzzleContainer>
       <PuzzleHeader title="Piano Puzzle" description="Play the right tune." />
       <Stack direction={"row"}>
-        {Object.keys(pianoKeys).map((noteId) => {
-          assertIsNoteId(noteId);
+        {(Object.keys(pianoKeys) as NoteId[]).map((noteId) => {
           return (
             <Button key={noteId} onClick={() => handleNotePress(noteId)}>
               {pianoKeys[noteId].display}

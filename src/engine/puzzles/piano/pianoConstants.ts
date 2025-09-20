@@ -5,11 +5,6 @@ export type PianoState = {
   puzzleCompleted: boolean;
 };
 
-//TypeAssertions
-export function assertIsNoteId(noteId: string): asserts noteId is NoteId {
-  if (!Object.keys(pianoKeys).includes(noteId)) throw new Error("");
-}
-
 //Constants
 export const TARGET_MELODY: NoteName[] = [
   "C",

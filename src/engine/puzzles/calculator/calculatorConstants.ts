@@ -3,6 +3,9 @@ export type InputType = "number" | "operator" | "evaluate" | "reset";
 export type Token =
   | { type: "number"; value: number }
   | { type: "operator"; value: Operator };
+export type Operator = "+" | "-" | "*" | "/";
+export type InputButton = keyof typeof calculatorButtons;
+
 export type CalculatorState = {
   currentInput: string;
   feedback: string;
@@ -11,8 +14,6 @@ export type CalculatorState = {
   tokens: Token[];
   puzzleCompleted: boolean;
 };
-export type Operator = "+" | "-" | "*" | "/";
-export type InputButton = keyof typeof calculatorButtons;
 
 //Constants
 export const INPUT_TARGET = "11";

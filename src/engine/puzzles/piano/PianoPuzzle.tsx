@@ -5,8 +5,10 @@ import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import {
+  assertIsNoteId,
   audioCache,
   pianoKeys,
+  TARGET_MELODY,
   type NoteId,
   type NoteName,
 } from "./pianoConstants";
@@ -25,10 +27,15 @@ export const PianoPuzzle = () => {
     console.log("leave");
   };
 
-  const handleNotePress = (note: NoteName) => {
+  const handleNotePress = (note: NoteId) => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         let nextPlayedNotes = [...draft.puzzleState.piano.playedNotes];
+        //max notes played
+        if (nextPlayedNotes.length >= TARGET_MELODY.length) return draft;
+        console.log(`Played ${note}`);
+        nextPlayedNotes.push(pianoKeys[note].noteName);
+        playAudioNote(note);
       })
     );
   };
@@ -37,14 +44,14 @@ export const PianoPuzzle = () => {
     <PuzzleContainer>
       <PuzzleHeader title="Piano Puzzle" description="Play the right tune." />
       <Stack direction={"row"}>
-        {Object.values(pianoKeys).map((pianoKeyInfo) => (
-          <Button
-            key={pianoKeyInfo.audioId}
-            onClick={() => playAudioNote(pianoKeyInfo.audioId)}
-          >
-            {pianoKeyInfo.display}
-          </Button>
-        ))}
+        {Object.keys(pianoKeys).map((noteId) => {
+          assertIsNoteId(noteId);
+          return (
+            <Button key={noteId} onClick={() => handleNotePress(noteId)}>
+              {pianoKeys[noteId].display}
+            </Button>
+          );
+        })}
       </Stack>
       <PuzzleFeedback height="20vh" feedback={feedback} />
       <PuzzleActions

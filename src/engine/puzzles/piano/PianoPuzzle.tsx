@@ -4,6 +4,7 @@ import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
+import { pianoKeys, type NoteId } from "./pianoConstants";
 
 export const PianoPuzzle = () => {
   const feedback = useGameStore((state) => state.puzzleState.piano.feedback);
@@ -18,15 +19,18 @@ export const PianoPuzzle = () => {
     console.log("leave");
   };
 
-  //   const handleClickNote = () => {};
+  //   const handleNotePress = () => {};
 
   return (
     <PuzzleContainer>
       <PuzzleHeader title="Piano Puzzle" description="Play the right tune." />
       <Stack direction={"row"}>
-        {Object.values(pianoKeys).map((keyInfo) => (
-          <Button key={keyInfo.id} onClick={() => playNote(keyInfo.id)}>
-            {keyInfo.display}
+        {Object.values(pianoKeys).map((pianoKeyInfo) => (
+          <Button
+            key={pianoKeyInfo.audioId}
+            onClick={() => playAudioNote(pianoKeyInfo.audioId)}
+          >
+            {pianoKeyInfo.display}
           </Button>
         ))}
       </Stack>
@@ -42,31 +46,15 @@ export const PianoPuzzle = () => {
 
 // const PianoKeyboard = () => {};
 
-const pianoKeys = {
-  C: { id: "C4", display: "C", color: "white" },
-  Db: { id: "Db4", display: "Db", color: "black" },
-  D: { id: "D4", display: "D", color: "white" },
-  Eb: { id: "Eb4", display: "Eb", color: "black" },
-  E: { id: "E4", display: "E", color: "white" },
-  F: { id: "F4", display: "F", color: "white" },
-  Gb: { id: "Gb4", display: "Gb", color: "black" },
-  G: { id: "G4", display: "G", color: "white" },
-  Ab: { id: "Ab4", display: "Ab", color: "black" },
-  A: { id: "A4", display: "A", color: "white" },
-  Bb: { id: "Bb4", display: "Bb", color: "black" },
-  B: { id: "B4", display: "B", color: "white" },
-} as const;
-
-type KeyName = keyof typeof pianoKeys;
-type keyId = (typeof pianoKeys)[KeyName]["id"];
-
-const audioSamples: Record<string, HTMLAudioElement> = {};
+const audioCache: Record<string, HTMLAudioElement> = {};
 Object.values(pianoKeys).forEach((keyInfo) => {
-  audioSamples[keyInfo.id] = new Audio(`/assets/piano/${keyInfo.id}.mp3`);
+  audioCache[keyInfo.audioId] = new Audio(
+    `/assets/piano/${keyInfo.audioId}.mp3`
+  );
 });
 
-const playNote = (note: keyId) => {
-  const audio = audioSamples[note];
+const playAudioNote = (note: NoteId) => {
+  const audio = audioCache[note];
   if (!audio) return;
   (audio.cloneNode(true) as HTMLAudioElement).play();
 };

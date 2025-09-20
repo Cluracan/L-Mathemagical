@@ -78,7 +78,7 @@ export const CalculatorPuzzle = () => {
       <PuzzleContainer>
         <PuzzleHeader
           title="Calculator Puzzle"
-          description="display the correct number"
+          description="Display the correct number"
         />
         <Calculator handleInput={handleInput} />
         <Stack

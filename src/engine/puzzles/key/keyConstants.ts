@@ -21,7 +21,7 @@ export const keyFeedback = {
   doesNotFit: "The key will not fit into all the locks.",
   willNotTurn:
     "The key fits into all the keyholes but will not turn all the locks.",
-  success: "You\'ve done it! The key can now be used to open the oak door!. ",
+  success: "You\'ve done it! The key can now be used to open the oak door!",
   storyLineSuccess: "You look proudly at the key you have made.",
   storyLineFailure:
     "You stare at the file and key blanks, wondering if you should try again.",

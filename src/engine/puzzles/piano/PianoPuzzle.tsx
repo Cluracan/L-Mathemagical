@@ -4,7 +4,13 @@ import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
-import { pianoKeys, type NoteId } from "./pianoConstants";
+import {
+  audioCache,
+  pianoKeys,
+  type NoteId,
+  type NoteName,
+} from "./pianoConstants";
+import { produce } from "immer";
 
 export const PianoPuzzle = () => {
   const feedback = useGameStore((state) => state.puzzleState.piano.feedback);
@@ -19,7 +25,13 @@ export const PianoPuzzle = () => {
     console.log("leave");
   };
 
-  //   const handleNotePress = () => {};
+  const handleNotePress = (note: NoteName) => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        let nextPlayedNotes = [...draft.puzzleState.piano.playedNotes];
+      })
+    );
+  };
 
   return (
     <PuzzleContainer>
@@ -45,13 +57,6 @@ export const PianoPuzzle = () => {
 };
 
 // const PianoKeyboard = () => {};
-
-const audioCache: Record<string, HTMLAudioElement> = {};
-Object.values(pianoKeys).forEach((keyInfo) => {
-  audioCache[keyInfo.audioId] = new Audio(
-    `/assets/piano/${keyInfo.audioId}.mp3`
-  );
-});
 
 const playAudioNote = (note: NoteId) => {
   const audio = audioCache[note];

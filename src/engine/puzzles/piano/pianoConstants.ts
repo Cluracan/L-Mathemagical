@@ -16,6 +16,13 @@ export const pianoKeys = {
 export type NoteName = keyof typeof pianoKeys;
 export type NoteId = (typeof pianoKeys)[NoteName]["audioId"];
 
+export const audioCache: Record<string, HTMLAudioElement> = {};
+Object.values(pianoKeys).forEach((keyInfo) => {
+  audioCache[keyInfo.audioId] = new Audio(
+    `/assets/piano/${keyInfo.audioId}.mp3`
+  );
+});
+
 export type PianoState = {
   playedNotes: NoteName[];
   feedback: string[];

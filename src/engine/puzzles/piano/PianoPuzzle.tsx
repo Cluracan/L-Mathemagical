@@ -22,14 +22,11 @@ export const PianoPuzzle = () => {
   );
   const handleReset = () => {
     useGameStore.setState((state) =>
-      produce(
-        state,
-        (draft) =>
-          (draft.puzzleState.piano = calculatorReducer({
-            state: draft.puzzleState.piano,
-            type: "reset",
-          }))
-      )
+      produce(state, (draft) => {
+        draft.puzzleState.piano = pianoReducer(draft.puzzleState.piano, {
+          type: "reset",
+        });
+      })
     );
   };
 
@@ -42,15 +39,10 @@ export const PianoPuzzle = () => {
       if (puzzleCompleted) return;
       useGameStore.setState((state) =>
         produce(state, (draft) => {
-          let nextPlayedNotes = [...draft.puzzleState.piano.playedNotes];
-          //max notes played
-          if (nextPlayedNotes.length >= TARGET_MELODY.length) return draft;
-          console.log(
-            `Played ${note} nextplayedNoteslength ${nextPlayedNotes.length}`
-          );
-          nextPlayedNotes.push(pianoKeys[note].noteName);
-          playAudioNote(note);
-          draft.puzzleState.piano.playedNotes = nextPlayedNotes;
+          draft.puzzleState.piano = pianoReducer(draft.puzzleState.piano, {
+            type: "play",
+            note,
+          });
         })
       );
     },
@@ -130,14 +122,47 @@ const playAudioNote = (note: NoteId) => {
   (audio.cloneNode(true) as HTMLAudioElement).play();
 };
 
-function pianoReducer(
-  state: PianoState,
-  action: { type: "play"; note: NoteName } | { type: "reset" }
-) {
+type PianoAction = { type: "play"; note: NoteId } | { type: "reset" };
+function pianoReducer(state: PianoState, action: PianoAction) {
   switch (action.type) {
     case "play":
-      return state;
+      let nextPlayedNotes = [...state.playedNotes];
+      //max notes played
+      if (nextPlayedNotes.length >= TARGET_MELODY.length) return state;
+      //else add and play note
+      nextPlayedNotes.push(pianoKeys[action.note].noteName);
+      playAudioNote(action.note);
+      //successCheck if max notes
+      if (nextPlayedNotes.length >= TARGET_MELODY.length) {
+        if (winCheck(nextPlayedNotes)) {
+          console.log("win");
+        } else if (allTheRightNotes(nextPlayedNotes)) {
+          console.log("Morecombe!");
+        } else {
+          console.log("fail");
+        }
+      }
+      return { ...state, playedNotes: nextPlayedNotes };
     case "reset":
-      return state;
+      return { ...state, playedNotes: [] };
   }
 }
+
+const winCheck = (playedNotes: NoteName[]) => {
+  return TARGET_MELODY.every((note, index) => playedNotes[index] === note);
+};
+
+// Morecombe and Wise Easter Egg https://www.youtube.com/watch?v=uMPEUcVyJsc
+const allTheRightNotes = (playedNotes: NoteName[]) => {
+  const noteCount = (targetNote: NoteName) => {
+    return playedNotes.filter((note) => note === targetNote).length;
+  };
+  return (
+    noteCount("C") === 3 &&
+    noteCount("D") === 2 &&
+    noteCount("E") === 2 &&
+    noteCount("F") === 2 &&
+    noteCount("G") === 3 &&
+    noteCount("A") === 2
+  );
+};

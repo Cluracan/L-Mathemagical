@@ -47,7 +47,34 @@ Object.keys(pianoKeys).forEach((noteId) => {
   audioCache[noteId] = new Audio(`/assets/piano/${noteId}.mp3`);
 });
 
-export const pianoFeedback = {};
+export const pianoFeedback = {
+  default:
+    "You sit carefully on the piano stool and prepare to play. There is a book of music, titled '100 Nursery Rhymes for Piano' resting on the music stand.",
+  failureOptions: [
+    "You finish your piece and sit back...but nothing happens.",
+    "As you finish, ...nothing happens.",
+    "The final notes die away in the air, ...nothing happens.",
+    "The room is filled with the sound of ...silence.",
+    "You complete your song, but nothing happens.",
+    "You scratch your head, and try to think of the right tune...",
+    "You finish playing, and experience the sensation that this was not the right tune.",
+  ],
+  clueOptions: [
+    "You stare at the pages of the music book in front of you, looking for inspiration.",
+    "'100 Nursery Rhymes for beginners' stares back at you as you consider your next piece.",
+    "As you look around for inspiration, the old telescope catches your eye.",
+    "The telescope appears to be trained on something up in the night sky. You ponder its significance as you search for the right tune.",
+    "It must be getting late - you can see stars shining in the night sky.",
+    "One star in particular catches your eye - it seems to be glistening...",
+    "You feel certain that the star holds some signifcance here...",
+  ],
+  morecombeQuote:
+    "You get the strange sensation that you were playing all the right notes, but not necessarily in the right order.",
+  success: [
+    "Suddenly the room is full of mice squealing and running in all directions. Several mice are running up and down the piano keyboard while others appear to be dragging something into the room. The noise is deafening. Then they disappear as quickly as they came. All is quiet again.",
+    "As you look around, you notice a small glass bottle full of a blue liquid, and a phial containing some very pink liquid lying on the ground.",
+  ],
+};
 
 //Initial State
 export const initialPianoState: PianoState = {

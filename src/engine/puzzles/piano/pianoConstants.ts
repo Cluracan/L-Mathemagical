@@ -48,9 +48,11 @@ Object.keys(pianoKeys).forEach((noteId) => {
 });
 
 export const pianoFeedback = {
-  default:
-    "You sit carefully on the piano stool and prepare to play. There is a book of music, titled '100 Nursery Rhymes for Piano' resting on the music stand.",
-  failureOptions: [
+  default: [
+    "You sit carefully on the piano stool and prepare to play.",
+    "There is a book of music, titled '100 Nursery Rhymes for Piano' resting on the music stand.",
+  ],
+  failureMessages: [
     "You finish your piece and sit back...but nothing happens.",
     "As you finish, ...nothing happens.",
     "The final notes die away in the air, ...nothing happens.",
@@ -59,7 +61,7 @@ export const pianoFeedback = {
     "You scratch your head, and try to think of the right tune...",
     "You finish playing, and experience the sensation that this was not the right tune.",
   ],
-  clueOptions: [
+  clueMessages: [
     "You stare at the pages of the music book in front of you, looking for inspiration.",
     "'100 Nursery Rhymes for beginners' stares back at you as you consider your next piece.",
     "As you look around for inspiration, the old telescope catches your eye.",
@@ -76,9 +78,20 @@ export const pianoFeedback = {
   ],
 };
 
+export const getRandomFailureMessage = () => {
+  return pianoFeedback.failureMessages[
+    Math.floor(Math.random() * pianoFeedback.failureMessages.length)
+  ];
+};
+let clueIndex = pianoFeedback.clueMessages.length - 1;
+export const getNextClueMessage = () => {
+  clueIndex = (clueIndex + 1) % pianoFeedback.clueMessages.length;
+  return pianoFeedback.clueMessages[clueIndex];
+};
+
 //Initial State
 export const initialPianoState: PianoState = {
   playedNotes: [],
-  feedback: ["Piano feedback (initial"],
+  feedback: [...pianoFeedback.default],
   puzzleCompleted: false,
 };

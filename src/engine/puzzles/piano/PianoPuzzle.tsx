@@ -6,6 +6,9 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import {
   audioCache,
+  getNextClueMessage,
+  getRandomFailureMessage,
+  pianoFeedback,
   pianoKeys,
   TARGET_MELODY,
   type NoteId,
@@ -54,7 +57,7 @@ export const PianoPuzzle = () => {
       <PuzzleHeader title="Piano Puzzle" description="Play the right tune." />
 
       <PianoKeyboard onNotePress={handleNotePress} />
-      <PuzzleFeedback height="20vh" feedback={feedback} />
+      <PuzzleFeedback height="24vh" feedback={feedback} />
       <PuzzleActions
         handleReset={handleReset}
         handleLeave={handleLeave}
@@ -73,6 +76,7 @@ const PianoKeyboard = ({ onNotePress }: PianoKeyboardProps) => {
       <Stack
         direction={"row"}
         sx={{
+          m: 2,
           width: "60%",
           justifyContent: "center",
           backgroundColor: "gray",
@@ -127,6 +131,8 @@ function pianoReducer(state: PianoState, action: PianoAction) {
   switch (action.type) {
     case "play":
       let nextPlayedNotes = [...state.playedNotes];
+      let nextFeedback = [...state.feedback];
+      let nextPuzzleCompleted = state.puzzleCompleted;
       //max notes played
       if (nextPlayedNotes.length >= TARGET_MELODY.length) return state;
       //else add and play note
@@ -135,16 +141,27 @@ function pianoReducer(state: PianoState, action: PianoAction) {
       //successCheck if max notes
       if (nextPlayedNotes.length >= TARGET_MELODY.length) {
         if (winCheck(nextPlayedNotes)) {
-          console.log("win");
+          nextFeedback.push(...pianoFeedback.success);
+          nextPuzzleCompleted = true;
         } else if (allTheRightNotes(nextPlayedNotes)) {
-          console.log("Morecombe!");
+          nextFeedback.push(pianoFeedback.morecombeQuote);
         } else {
-          console.log("fail");
+          nextFeedback.push(getRandomFailureMessage());
+          nextFeedback.push(getNextClueMessage());
         }
       }
-      return { ...state, playedNotes: nextPlayedNotes };
+      return {
+        ...state,
+        playedNotes: nextPlayedNotes,
+        feedback: nextFeedback,
+        puzzleCompleted: nextPuzzleCompleted,
+      };
     case "reset":
-      return { ...state, playedNotes: [] };
+      return {
+        ...state,
+        playedNotes: [],
+        feedback: [...state.feedback, ...pianoFeedback.default],
+      };
   }
 }
 

@@ -162,14 +162,12 @@ export function calculatorReducer(
     }
   }
   return {
-    nextState: {
-      ...state,
-      currentInput,
-      feedback,
-      showFeedback,
-      lastInputType,
-      tokens: newTokens,
-      puzzleCompleted,
-    },
+    ...state,
+    currentInput,
+    feedback,
+    showFeedback,
+    lastInputType,
+    tokens: newTokens,
+    puzzleCompleted,
   };
 }

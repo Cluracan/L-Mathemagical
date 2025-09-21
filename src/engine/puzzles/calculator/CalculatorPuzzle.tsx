@@ -42,11 +42,13 @@ export const CalculatorPuzzle = () => {
   const handleInput: HandleInput = useCallback((button) => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        const { nextState } = calculatorReducer(draft.puzzleState.calculator, {
-          type: "input",
-          button,
-        });
-        draft.puzzleState.calculator = nextState;
+        draft.puzzleState.calculator = calculatorReducer(
+          draft.puzzleState.calculator,
+          {
+            type: "input",
+            button,
+          }
+        );
       })
     );
   }, []);

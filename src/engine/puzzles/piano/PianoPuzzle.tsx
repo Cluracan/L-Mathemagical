@@ -9,6 +9,8 @@ import {
   pianoKeys,
   TARGET_MELODY,
   type NoteId,
+  type NoteName,
+  type PianoState,
 } from "./pianoConstants";
 import { produce } from "immer";
 import { useCallback } from "react";
@@ -19,7 +21,16 @@ export const PianoPuzzle = () => {
     (state) => state.puzzleState.piano.puzzleCompleted
   );
   const handleReset = () => {
-    console.log("reset");
+    useGameStore.setState((state) =>
+      produce(
+        state,
+        (draft) =>
+          (draft.puzzleState.piano = calculatorReducer({
+            state: draft.puzzleState.piano,
+            type: "reset",
+          }))
+      )
+    );
   };
 
   const handleLeave = () => {
@@ -72,30 +83,39 @@ const PianoKeyboard = ({ onNotePress }: PianoKeyboardProps) => {
         sx={{
           width: "60%",
           justifyContent: "center",
-          gap: 1,
           backgroundColor: "gray",
         }}
       >
         {(Object.keys(pianoKeys) as NoteId[]).map((noteId) => {
           const keyColor = pianoKeys[noteId].color;
+          const keyOffset = pianoKeys[noteId].offset;
           return (
             <Button
               key={noteId}
               onClick={() => onNotePress(noteId)}
-              sx={{
-                height:
-                  keyColor === "white" ? theme.spacing(24) : theme.spacing(18),
-                width:
-                  keyColor === "white" ? theme.spacing(8) : theme.spacing(2),
-                backgroundColor: keyColor,
-                zIndex: keyColor === "white" ? 1 : 2,
-                ml:
-                  keyColor === "black" ? -4 : pianoKeys[noteId].offset ? -5 : 0,
-
-                alignItems: "end",
-              }}
+              sx={
+                keyColor === "white"
+                  ? {
+                      height: theme.spacing(24),
+                      width: theme.spacing(12),
+                      alignItems: "end",
+                      backgroundColor: "white",
+                      ml: keyOffset ? -4 : 0,
+                      border: "1px solid black",
+                      color: "darkgray",
+                    }
+                  : {
+                      height: theme.spacing(8),
+                      width: theme.spacing(6),
+                      alignItems: "end",
+                      ml: -4,
+                      backgroundColor: "black",
+                      zIndex: 10,
+                      border: "1px solid grey",
+                    }
+              }
             >
-              {pianoKeys[noteId].display}
+              {keyColor === "white" && pianoKeys[noteId].display}
             </Button>
           );
         })}
@@ -109,3 +129,15 @@ const playAudioNote = (note: NoteId) => {
   if (!audio) return;
   (audio.cloneNode(true) as HTMLAudioElement).play();
 };
+
+function pianoReducer(
+  state: PianoState,
+  action: { type: "play"; note: NoteName } | { type: "reset" }
+) {
+  switch (action.type) {
+    case "play":
+      return state;
+    case "reset":
+      return state;
+  }
+}

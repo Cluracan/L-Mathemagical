@@ -25,10 +25,9 @@ export const CookPuzzle = () => {
   const handleReset = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        const { nextState } = cookReducer(draft.puzzleState.cook, {
+        draft.puzzleState.cook = cookReducer(draft.puzzleState.cook, {
           type: "reset",
         });
-        draft.puzzleState.cook = nextState;
       })
     );
   };
@@ -36,11 +35,9 @@ export const CookPuzzle = () => {
   const handleBake = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        const { nextState } = cookReducer(draft.puzzleState.cook, {
+        draft.puzzleState.cook = cookReducer(draft.puzzleState.cook, {
           type: "bake",
         });
-        console.log(nextState);
-        draft.puzzleState.cook = nextState;
       })
     );
   };

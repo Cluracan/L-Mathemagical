@@ -6,10 +6,8 @@ import {
   type Ingredient,
 } from "./cookConstants";
 
-export function cookReducer(
-  state: CookState,
-  action: { type: "bake" } | { type: "reset" }
-) {
+type CookAction = { type: "bake" } | { type: "reset" };
+export function cookReducer(state: CookState, action: CookAction) {
   const nextFeedback = [...state.feedback];
   switch (action.type) {
     case "bake":
@@ -51,22 +49,18 @@ export function cookReducer(
       }
 
       return {
-        nextState: {
-          ...state,
-          feedback: nextFeedback,
-          cakeHeight: nextCakeHeight,
-          puzzleCompleted: nextPuzzleCompleted,
-        },
+        ...state,
+        feedback: nextFeedback,
+        cakeHeight: nextCakeHeight,
+        puzzleCompleted: nextPuzzleCompleted,
       };
 
     case "reset":
       nextFeedback.push("You quickly clean a bowl, and begin again.");
       return {
-        nextState: {
-          ...state,
-          feedback: nextFeedback,
-          ingredients: initialCookState.ingredients,
-        },
+        ...state,
+        feedback: nextFeedback,
+        ingredients: initialCookState.ingredients,
       };
   }
 }

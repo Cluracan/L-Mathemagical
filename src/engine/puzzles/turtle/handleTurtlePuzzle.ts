@@ -47,7 +47,7 @@ export const handleTurtlePuzzle: PipelineFunction = (payload) => {
         draft.gameState.storyLine.push(
           "The turtle sidles up to meet you. He gives you a small rusty key which he was concealing in his shell. Then he scurries back to the centre of the courtyard and shuts his eyes."
         );
-        draft.gameState.puzzleCompleted.turtle = true;
+        draft.gameState.puzzleState.turtle.puzzleCompleted = true;
         draft.gameState.itemLocation.rusty = "player";
       }
     });

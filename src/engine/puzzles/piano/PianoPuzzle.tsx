@@ -17,11 +17,15 @@ import {
 } from "./pianoConstants";
 import { produce } from "immer";
 import { useCallback } from "react";
+import { NotesDisplay } from "./NotesDisplay";
 
 export const PianoPuzzle = () => {
   const feedback = useGameStore((state) => state.puzzleState.piano.feedback);
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.piano.puzzleCompleted
+  );
+  const playedNotes = useGameStore(
+    (state) => state.puzzleState.piano.playedNotes
   );
   const handleReset = () => {
     useGameStore.setState((state) =>
@@ -55,7 +59,7 @@ export const PianoPuzzle = () => {
   return (
     <PuzzleContainer>
       <PuzzleHeader title="Piano Puzzle" description="Play the right tune." />
-
+      <NotesDisplay playedNotes={playedNotes} />
       <PianoKeyboard onNotePress={handleNotePress} />
       <PuzzleFeedback height="24vh" feedback={feedback} />
       <PuzzleActions
@@ -136,7 +140,7 @@ function pianoReducer(state: PianoState, action: PianoAction) {
       //max notes played
       if (nextPlayedNotes.length >= TARGET_MELODY.length) return state;
       //else add and play note
-      nextPlayedNotes.push(pianoKeys[action.note].noteName);
+      nextPlayedNotes.push(action.note);
       playAudioNote(action.note);
       //successCheck if max notes
       if (nextPlayedNotes.length >= TARGET_MELODY.length) {
@@ -165,14 +169,17 @@ function pianoReducer(state: PianoState, action: PianoAction) {
   }
 }
 
-const winCheck = (playedNotes: NoteName[]) => {
-  return TARGET_MELODY.every((note, index) => playedNotes[index] === note);
+const winCheck = (playedNotes: NoteId[]) => {
+  return TARGET_MELODY.every(
+    (note, index) => pianoKeys[playedNotes[index]].noteName === note
+  );
 };
 
 // Morecombe and Wise Easter Egg https://www.youtube.com/watch?v=uMPEUcVyJsc
-const allTheRightNotes = (playedNotes: NoteName[]) => {
+const allTheRightNotes = (playedNotes: NoteId[]) => {
   const noteCount = (targetNote: NoteName) => {
-    return playedNotes.filter((note) => note === targetNote).length;
+    return playedNotes.filter((note) => pianoKeys[note].noteName === targetNote)
+      .length;
   };
   return (
     noteCount("C") === 3 &&

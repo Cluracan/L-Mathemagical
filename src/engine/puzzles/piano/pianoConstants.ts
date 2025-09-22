@@ -1,6 +1,6 @@
 //Types
 export type PianoState = {
-  playedNotes: NoteName[];
+  playedNotes: NoteId[];
   feedback: string[];
   puzzleCompleted: boolean;
 };

@@ -38,12 +38,13 @@ export const NotesDisplay = ({ playedNotes }: NotesDisplayProps) => {
         keys: [`${noteName}/4`],
         duration: "q",
       });
-      //Apply a flat if nec (sharp not implemented yet -----------------<<)
+      //Apply flat notation
       if (noteName[1] === "b") {
         staveNote.addModifier(new Accidental("b"));
       }
       return staveNote;
     });
+    //fill remaining notes with spacers
     while (notes.length < TARGET_MELODY.length) {
       const spacer = new StaveNote({
         keys: ["b/4"],
@@ -67,11 +68,9 @@ export const NotesDisplay = ({ playedNotes }: NotesDisplayProps) => {
         style={{
           width: "60%",
           background: "linear-gradient(to bottom, #ffeaa7, #fab1a0)",
-          // or maybe: "linear-gradient(to bottom, #ffeaa7, #fab1a0)"
           borderRadius: "8px",
         }}
       ></div>
-      {/* {playedNotes.join(",")} */}
     </>
   );
 };

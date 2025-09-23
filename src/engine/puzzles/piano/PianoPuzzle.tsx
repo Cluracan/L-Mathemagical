@@ -60,22 +60,18 @@ export const PianoPuzzle = () => {
     );
   };
 
-  const handleNotePress = useCallback(
-    (note: NoteId) => {
-      console.log(playedNotes);
-      if (puzzleCompleted || playedNotes.length >= TARGET_MELODY.length) return;
-      playAudioNote(note);
-      useGameStore.setState((state) =>
-        produce(state, (draft) => {
-          draft.puzzleState.piano = pianoReducer(draft.puzzleState.piano, {
-            type: "play",
-            note,
-          });
-        })
-      );
-    },
-    [puzzleCompleted]
-  );
+  const handleNotePress = (note: NoteId) => {
+    if (puzzleCompleted || playedNotes.length >= TARGET_MELODY.length) return;
+    playAudioNote(note);
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.puzzleState.piano = pianoReducer(draft.puzzleState.piano, {
+          type: "play",
+          note,
+        });
+      })
+    );
+  };
 
   return (
     <PuzzleContainer>

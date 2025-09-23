@@ -24,7 +24,7 @@ export const pianoNPC: PuzzleNPC = {
       puzzleIncomplete:
         "This piano has obviously had a lot of use, but then that's the point of a piano.  There is a book of music, titled '100 Nursery Rhymes for Piano' resting on the music stand.",
       puzzleComplete:
-        "The mice appear to have left their mark on the piano, but you feel sure that they will be along to mend it soon.",
+        "The mice appear to have left their mark on the piano, but you feel sure that they will be along to mend it later.",
     },
     book: {
       puzzleIncomplete:

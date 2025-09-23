@@ -1,5 +1,4 @@
 import { produce } from "immer";
-import { useCallback } from "react";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
@@ -15,6 +14,7 @@ import {
 import { NotesDisplay } from "./NotesDisplay";
 import { PianoKeyboard } from "./PianoKeyboard";
 import { pianoReducer } from "./pianoReducer";
+import { Button } from "@mui/material";
 
 //Helper functions
 const playAudioNote = (note: NoteId) => {
@@ -32,7 +32,7 @@ export const PianoPuzzle = () => {
   const playedNotes = useGameStore(
     (state) => state.puzzleState.piano.playedNotes
   );
-  console.log(`Render PianoPuzzle playedNotes length ${playedNotes.length}`);
+
   const handleReset = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
@@ -73,6 +73,17 @@ export const PianoPuzzle = () => {
     );
   };
 
+  const handleCheck = () => {
+    if (playedNotes.length >= TARGET_MELODY.length) return;
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.puzzleState.piano = pianoReducer(draft.puzzleState.piano, {
+          type: "check",
+        });
+      })
+    );
+  };
+
   return (
     <PuzzleContainer>
       <PuzzleHeader title="Piano Puzzle" description="Play the right tune." />
@@ -83,7 +94,16 @@ export const PianoPuzzle = () => {
         handleReset={handleReset}
         handleLeave={handleLeave}
         puzzleCompleted={puzzleCompleted}
-      ></PuzzleActions>
+      >
+        <Button
+          disabled={puzzleCompleted}
+          variant="contained"
+          size="large"
+          onClick={handleCheck}
+        >
+          Check
+        </Button>
+      </PuzzleActions>
     </PuzzleContainer>
   );
 };

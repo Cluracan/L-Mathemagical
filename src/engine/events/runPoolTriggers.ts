@@ -31,8 +31,9 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
     case "look":
       if (target && ["hole", "grate", "grating"].includes(target)) {
         return stopWithSuccess(payload, holeAttemptFeedback.lookHole);
+      } else {
+        return payload;
       }
-      break;
 
     case "move":
       if (target === "in") {
@@ -56,8 +57,9 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
         } else {
           return failCommand(payload, holeAttemptFeedback[playerHeight]);
         }
+      } else {
+        return payload;
       }
-      break;
 
     default:
       return payload;

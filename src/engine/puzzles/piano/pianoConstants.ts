@@ -78,10 +78,13 @@ export const pianoFeedback = {
     "Suddenly the room is full of mice squealing and running in all directions. Several mice are running up and down the piano keyboard while others appear to be dragging something into the room. The noise is deafening. Then they disappear as quickly as they came. All is quiet again.",
     "As you look around, you notice a small glass bottle full of a blue liquid, and a phial containing some very pink liquid lying on the ground.",
   ],
+  partialSuccess:
+    "You feel that you are on the right track, but need to play some more...",
+  partialFailure: "You feel that this is not the right tune...",
   storyLineSuccess:
     "The mice have all disappeared, but they have left two items lying on the ground in front of you.",
   storyLineFailure:
-    "You step away from the piano, and wonder what tune to play.",
+    "You step away from the piano feeling that there is still a tune to be played on it...but what tune?",
 };
 
 export const getRandomFailureMessage = () => {

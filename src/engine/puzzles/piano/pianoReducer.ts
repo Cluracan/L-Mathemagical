@@ -10,29 +10,34 @@ import {
 } from "./pianoConstants";
 
 //Types
-type PianoAction = { type: "play"; note: NoteId } | { type: "reset" };
+type PianoAction =
+  | { type: "play"; note: NoteId }
+  | { type: "reset" }
+  | { type: "check" };
 
 //Helper Functions
 const winCheck = (playedNotes: NoteId[]) => {
-  return TARGET_MELODY.every(
-    (note, index) => pianoKeys[playedNotes[index]].noteName === note
+  return playedNotes.every(
+    (note, index) => TARGET_MELODY[index] === pianoKeys[note].noteName
   );
 };
 
 // Morecombe and Wise Easter Egg https://www.youtube.com/watch?v=uMPEUcVyJsc
 const allTheRightNotes = (playedNotes: NoteId[]) => {
-  const noteCount = (targetNote: NoteName) => {
-    return playedNotes.filter((note) => pianoKeys[note].noteName === targetNote)
-      .length;
+  const melodySlice = TARGET_MELODY.slice(0, playedNotes.length);
+  const noteCount = (targetNote: NoteName, noteArray: NoteName[]) => {
+    return noteArray.filter((note) => note === targetNote).length;
   };
-  return (
-    noteCount("C") === 3 &&
-    noteCount("D") === 2 &&
-    noteCount("E") === 2 &&
-    noteCount("F") === 2 &&
-    noteCount("G") === 3 &&
-    noteCount("A") === 2
-  );
+  //not optimised (could memoise or skip notes that have been counted)
+  return playedNotes.every((noteId) => {
+    const targetNote = pianoKeys[noteId].noteName;
+    return (
+      noteCount(
+        targetNote,
+        playedNotes.map((note) => pianoKeys[note].noteName)
+      ) === noteCount(targetNote, melodySlice)
+    );
+  });
 };
 
 //Main Function
@@ -71,5 +76,22 @@ export function pianoReducer(state: PianoState, action: PianoAction) {
         playedNotes: [],
         feedback: [...state.feedback, ...pianoFeedback.default],
       };
+    case "check":
+      if (winCheck(state.playedNotes)) {
+        return {
+          ...state,
+          feedback: [...state.feedback, pianoFeedback.partialSuccess],
+        };
+      } else if (allTheRightNotes(state.playedNotes)) {
+        return {
+          ...state,
+          feedback: [...state.feedback, pianoFeedback.morecombeQuote],
+        };
+      } else {
+        return {
+          ...state,
+          feedback: [...state.feedback, pianoFeedback.partialFailure],
+        };
+      }
   }
 }

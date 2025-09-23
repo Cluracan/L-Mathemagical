@@ -8,6 +8,7 @@ import {
   audioCache,
   getNextClueMessage,
   getRandomFailureMessage,
+  initialPianoState,
   pianoFeedback,
   pianoKeys,
   TARGET_MELODY,
@@ -38,7 +39,20 @@ export const PianoPuzzle = () => {
   };
 
   const handleLeave = () => {
-    console.log("leave");
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.showDialog = false;
+        draft.currentPuzzle = null;
+        if (draft.puzzleState.piano.puzzleCompleted) {
+          draft.itemLocation.bottle = "music";
+          draft.itemLocation.phial = "music";
+          draft.storyLine.push(pianoFeedback.storyLineSuccess);
+        } else {
+          draft.puzzleState.piano = initialPianoState;
+          draft.storyLine.push(pianoFeedback.storyLineFailure);
+        }
+      })
+    );
   };
 
   const handleNotePress = useCallback(

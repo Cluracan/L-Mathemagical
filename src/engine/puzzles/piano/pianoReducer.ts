@@ -73,13 +73,13 @@ export function pianoReducer(state: PianoState, action: PianoAction) {
           nextFeedback.push(pianoFeedback.morecombeQuote);
         } else {
           nextFeedback.push(getRandomFailureMessage());
-          console.log(nextAttempts);
-          console.log(pianoFeedback.clueMessages.length);
-          nextFeedback.push(
-            nextAttempts <= pianoFeedback.clueMessages.length
-              ? getNextClueMessage()
-              : getSequentialMatchCountMessage(sequentialMatchCount)
-          );
+          if (nextAttempts <= pianoFeedback.clueMessages.length) {
+            nextFeedback.push(getNextClueMessage());
+          } else {
+            nextFeedback.push(
+              getSequentialMatchCountMessage(sequentialMatchCount)
+            );
+          }
         }
       }
       return {

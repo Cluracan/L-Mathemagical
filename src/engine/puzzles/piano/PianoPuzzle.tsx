@@ -45,7 +45,7 @@ export const PianoPuzzle = () => {
         audio.load();
       }
     });
-  });
+  }, []);
 
   const handleReset = () => {
     useGameStore.setState((state) =>

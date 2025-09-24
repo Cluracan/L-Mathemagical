@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { pianoKeys, TARGET_MELODY, type NoteId } from "./pianoConstants";
 import { Renderer, Stave, StaveNote, Formatter, Accidental } from "vexflow";
 
@@ -9,19 +9,34 @@ const VERTICAL_PADDING = 10;
 type NotesDisplayProps = { playedNotes: NoteId[] };
 export const NotesDisplay = ({ playedNotes }: NotesDisplayProps) => {
   const vexFlowRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
 
   useEffect(() => {
     const vexFlowNode = vexFlowRef.current;
     if (!vexFlowNode) return;
-    const vexFlowNodeWidth = vexFlowNode.getBoundingClientRect().width;
+
+    const resizeObserver = new ResizeObserver(() =>
+      setContainerWidth(vexFlowNode.getBoundingClientRect().width)
+    );
+    resizeObserver.observe(vexFlowNode);
+
+    setContainerWidth(vexFlowNode.getBoundingClientRect().width);
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const vexFlowNode = vexFlowRef.current;
+    if (!vexFlowNode || containerWidth === 0) return;
+
     const renderer = new Renderer(vexFlowNode, Renderer.Backends.SVG);
-    const stave = new Stave(0, 0, vexFlowNodeWidth - 2 * HORIZONTAL_PADDING);
+    const stave = new Stave(0, 0, containerWidth - 2 * HORIZONTAL_PADDING);
     stave.addClef("treble");
 
     const staveBounds = stave.getBoundingBox();
     const totalHeight = staveBounds.getH();
 
-    renderer.resize(vexFlowNodeWidth, totalHeight);
+    renderer.resize(containerWidth, totalHeight);
     const context = renderer.getContext();
 
     context.fillStyle = "#555";
@@ -59,7 +74,7 @@ export const NotesDisplay = ({ playedNotes }: NotesDisplayProps) => {
     return () => {
       vexFlowNode.innerHTML = "";
     };
-  }, [playedNotes]);
+  }, [playedNotes, containerWidth]);
   return (
     <>
       <div

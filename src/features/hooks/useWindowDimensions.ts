@@ -14,7 +14,7 @@ export const useWindowDimensions = () => {
 
   const debounced = useDebouncedCallback((dimensions: Dimensions) => {
     setDimensions(dimensions);
-  }, 1000);
+  }, 200);
 
   useEffect(() => {
     const handleResize = () => {
@@ -23,8 +23,8 @@ export const useWindowDimensions = () => {
         height: window.innerHeight,
       });
     };
-    window.addEventListener("resize", () => handleResize());
-    return window.removeEventListener("resize", () => handleResize());
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
   return dimensions;
 };

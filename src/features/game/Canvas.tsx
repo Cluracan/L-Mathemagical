@@ -41,11 +41,7 @@ export const Canvas = ({
 
   return (
     <>
-      <canvas
-        ref={canvasRef}
-        width={`${canvasWidth}px`}
-        height={`${canvasWidth}px`}
-      />
+      <canvas ref={canvasRef} width={canvasWidth} height={canvasWidth} />
     </>
   );
 };

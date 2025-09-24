@@ -1,6 +1,7 @@
 import {
   getNextClueMessage,
   getRandomFailureMessage,
+  getSequentialMatchCountMessage,
   pianoFeedback,
   pianoKeys,
   TARGET_MELODY,
@@ -16,28 +17,35 @@ type PianoAction =
   | { type: "check" };
 
 //Helper Functions
-const winCheck = (playedNotes: NoteId[]) => {
-  return playedNotes.every(
-    (note, index) => TARGET_MELODY[index] === pianoKeys[note].noteName
-  );
+
+const countSequentialMatches = (playedNotes: NoteId[]) => {
+  for (let i = 0; i < playedNotes.length; i++) {
+    if (pianoKeys[playedNotes[i]].noteName !== TARGET_MELODY[i]) {
+      return i;
+    }
+  }
+  return playedNotes.length;
 };
 
 // Morecombe and Wise Easter Egg https://www.youtube.com/watch?v=uMPEUcVyJsc
-const allTheRightNotes = (playedNotes: NoteId[]) => {
+const containsAllRightNotes = (playedNotes: NoteId[]) => {
   const melodySlice = TARGET_MELODY.slice(0, playedNotes.length);
-  const noteCount = (targetNote: NoteName, noteArray: NoteName[]) => {
-    return noteArray.filter((note) => note === targetNote).length;
-  };
-  //not optimised (could memoise or skip notes that have been counted)
-  return playedNotes.every((noteId) => {
-    const targetNote = pianoKeys[noteId].noteName;
-    return (
-      noteCount(
-        targetNote,
-        playedNotes.map((note) => pianoKeys[note].noteName)
-      ) === noteCount(targetNote, melodySlice)
+  const getNoteCounts = (notes: NoteName[]) => {
+    return notes.reduce(
+      (counts, note) => {
+        counts[note] = (counts[note] || 0) + 1;
+        return counts;
+      },
+      {} as Record<NoteName, number>
     );
-  });
+  };
+  const targetCounts = getNoteCounts(melodySlice);
+  const playedCounts = getNoteCounts(
+    playedNotes.map((note) => pianoKeys[note].noteName)
+  );
+  return Object.entries(targetCounts).every(
+    ([note, count]) => playedCounts[note as NoteName] === count
+  );
 };
 
 //Main Function
@@ -47,6 +55,8 @@ export function pianoReducer(state: PianoState, action: PianoAction) {
       let nextPlayedNotes = [...state.playedNotes];
       let nextFeedback = [...state.feedback];
       let nextPuzzleCompleted = state.puzzleCompleted;
+      let nextAttempts = state.attempts;
+
       //max notes played
       if (nextPlayedNotes.length >= TARGET_MELODY.length) return state;
       //else add and play note
@@ -54,19 +64,28 @@ export function pianoReducer(state: PianoState, action: PianoAction) {
 
       //successCheck if max notes
       if (nextPlayedNotes.length >= TARGET_MELODY.length) {
-        if (winCheck(nextPlayedNotes)) {
+        nextAttempts++;
+        const sequentialMatchCount = countSequentialMatches(nextPlayedNotes);
+        if (sequentialMatchCount === TARGET_MELODY.length) {
           nextFeedback.push(...pianoFeedback.success);
           nextPuzzleCompleted = true;
-        } else if (allTheRightNotes(nextPlayedNotes)) {
+        } else if (containsAllRightNotes(nextPlayedNotes)) {
           nextFeedback.push(pianoFeedback.morecombeQuote);
         } else {
           nextFeedback.push(getRandomFailureMessage());
-          nextFeedback.push(getNextClueMessage());
+          console.log(nextAttempts);
+          console.log(pianoFeedback.clueMessages.length);
+          nextFeedback.push(
+            nextAttempts <= pianoFeedback.clueMessages.length
+              ? getNextClueMessage()
+              : getSequentialMatchCountMessage(sequentialMatchCount)
+          );
         }
       }
       return {
         ...state,
         playedNotes: nextPlayedNotes,
+        attempts: nextAttempts,
         feedback: nextFeedback,
         puzzleCompleted: nextPuzzleCompleted,
       };
@@ -77,12 +96,13 @@ export function pianoReducer(state: PianoState, action: PianoAction) {
         feedback: [...state.feedback, ...pianoFeedback.default],
       };
     case "check":
-      if (winCheck(state.playedNotes)) {
+      const sequentialMatchCount = countSequentialMatches(state.playedNotes);
+      if (sequentialMatchCount === state.playedNotes.length) {
         return {
           ...state,
           feedback: [...state.feedback, pianoFeedback.partialSuccess],
         };
-      } else if (allTheRightNotes(state.playedNotes)) {
+      } else if (containsAllRightNotes(state.playedNotes)) {
         return {
           ...state,
           feedback: [...state.feedback, pianoFeedback.morecombeQuote],
@@ -90,8 +110,13 @@ export function pianoReducer(state: PianoState, action: PianoAction) {
       } else {
         return {
           ...state,
-          feedback: [...state.feedback, pianoFeedback.partialFailure],
+          feedback: [
+            ...state.feedback,
+            getSequentialMatchCountMessage(sequentialMatchCount),
+          ],
         };
       }
+    default:
+      return state;
   }
 }

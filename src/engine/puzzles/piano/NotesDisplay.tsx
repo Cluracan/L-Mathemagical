@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { pianoKeys, TARGET_MELODY, type NoteId } from "./pianoConstants";
-import VexFlow from "vexflow";
+import { Renderer, Stave, StaveNote, Formatter, Accidental } from "vexflow";
 
 //Constants
 const HORIZONTAL_PADDING = 10;
@@ -9,7 +9,6 @@ const VERTICAL_PADDING = 10;
 type NotesDisplayProps = { playedNotes: NoteId[] };
 export const NotesDisplay = ({ playedNotes }: NotesDisplayProps) => {
   const vexFlowRef = useRef<HTMLDivElement>(null);
-  const { Renderer, Stave, StaveNote, Formatter, Accidental } = VexFlow;
 
   useEffect(() => {
     const vexFlowNode = vexFlowRef.current;

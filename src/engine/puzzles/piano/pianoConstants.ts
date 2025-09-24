@@ -1,6 +1,7 @@
 //Types
 export type PianoState = {
   playedNotes: NoteId[];
+  attempts: number;
   feedback: string[];
   puzzleCompleted: boolean;
 };
@@ -70,7 +71,7 @@ export const pianoFeedback = {
     "The telescope appears to be trained on something up in the night sky. You ponder its significance as you search for the right tune.",
     "It must be getting late - you can see stars shining in the night sky.",
     "One star in particular catches your eye - it seems to be glistening...",
-    "You feel certain that the star holds some signifcance here...",
+    "You feel certain that the tiny, distant star holds some significance here...",
   ],
   morecombeQuote:
     "You get the strange sensation that you were playing all the right notes, but not necessarily in the right order.",
@@ -79,12 +80,18 @@ export const pianoFeedback = {
     "As you look around, you notice a small glass bottle full of a blue liquid, and a phial containing some very pink liquid lying on the ground.",
   ],
   partialSuccess:
-    "You feel that you are on the right track, but need to play some more...",
-  partialFailure: "You feel that this is not the right tune...",
+    "You feel confident that you playing all the right notes, but need to play some more...",
+
   storyLineSuccess:
     "The mice have all disappeared, but they have left two items lying on the ground in front of you.",
   storyLineFailure:
     "You step away from the piano feeling that there is still a tune to be played on it...but what tune?",
+};
+
+export const getSequentialMatchCountMessage = (count: number) => {
+  return count === 0
+    ? "You feel that you started your piece on the wrong note..."
+    : `You feel that your first ${count} notes were correct...`;
 };
 
 export const getRandomFailureMessage = () => {
@@ -101,6 +108,7 @@ export const getNextClueMessage = () => {
 //Initial State
 export const initialPianoState: PianoState = {
   playedNotes: [],
+  attempts: 0,
   feedback: [...pianoFeedback.default],
   puzzleCompleted: false,
 };

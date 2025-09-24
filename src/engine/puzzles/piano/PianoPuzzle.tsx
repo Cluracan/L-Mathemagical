@@ -15,6 +15,7 @@ import { NotesDisplay } from "./NotesDisplay";
 import { PianoKeyboard } from "./PianoKeyboard";
 import { pianoReducer } from "./pianoReducer";
 import { Button } from "@mui/material";
+import { useEffect } from "react";
 
 //Helper functions
 const playAudioNote = (note: NoteId) => {
@@ -25,6 +26,8 @@ const playAudioNote = (note: NoteId) => {
 
 //Main Component
 export const PianoPuzzle = () => {
+  console.log("main puzzle render");
+  const attempts = useGameStore((state) => state.puzzleState.piano.attempts);
   const feedback = useGameStore((state) => state.puzzleState.piano.feedback);
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.piano.puzzleCompleted
@@ -32,6 +35,17 @@ export const PianoPuzzle = () => {
   const playedNotes = useGameStore(
     (state) => state.puzzleState.piano.playedNotes
   );
+
+  //Preload Audio
+  useEffect(() => {
+    console.log("preload");
+    Object.entries(audioCache).forEach(([_, audio]) => {
+      if (audio instanceof HTMLAudioElement) {
+        audio.preload = "auto";
+        audio.load();
+      }
+    });
+  });
 
   const handleReset = () => {
     useGameStore.setState((state) =>
@@ -95,14 +109,16 @@ export const PianoPuzzle = () => {
         handleLeave={handleLeave}
         puzzleCompleted={puzzleCompleted}
       >
-        <Button
-          disabled={puzzleCompleted}
-          variant="contained"
-          size="large"
-          onClick={handleCheck}
-        >
-          Check
-        </Button>
+        {attempts > pianoFeedback.clueMessages.length && (
+          <Button
+            disabled={puzzleCompleted}
+            variant="contained"
+            size="large"
+            onClick={handleCheck}
+          >
+            Check
+          </Button>
+        )}
       </PuzzleActions>
     </PuzzleContainer>
   );

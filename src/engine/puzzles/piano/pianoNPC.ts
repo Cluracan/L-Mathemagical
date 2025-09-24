@@ -40,9 +40,9 @@ export const pianoNPC: PuzzleNPC = {
     },
     telescope: {
       puzzleIncomplete:
-        'The telescope is very old, and the lens is cracked. You notice a small incription on the body. Peering closely, you can just make out the initials, "J.T".',
+        'The telescope is very old, and the lens is cracked. You notice a small incription on the body. Peering closely, you can just make out the initials, "J.T". It seems to be pointed at something up in the sky.',
       puzzleComplete:
-        'The telescope is very old, and the lens is cracked. You notice a small incription on the body. Peering closely, you can just make out the initials, "J.T".',
+        'The telescope is very old, and the lens is cracked. You notice a small incription on the body. Peering closely, you can just make out the initials, "J.T". It seems to be pointed at something up in the sky.',
     },
   },
 };

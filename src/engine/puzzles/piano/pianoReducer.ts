@@ -17,7 +17,6 @@ type PianoAction =
   | { type: "check" };
 
 //Helper Functions
-
 const countSequentialMatches = (playedNotes: NoteId[]) => {
   for (let i = 0; i < playedNotes.length; i++) {
     if (pianoKeys[playedNotes[i]].noteName !== TARGET_MELODY[i]) {

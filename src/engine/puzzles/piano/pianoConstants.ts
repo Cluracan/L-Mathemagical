@@ -25,7 +25,6 @@ export const TARGET_MELODY: NoteName[] = [
 ];
 
 //Static Data
-
 export const pianoKeys = {
   C4: { noteName: "C", display: "C", color: "white", offset: false },
   Db4: { noteName: "Db", display: "Db", color: "black", offset: false },

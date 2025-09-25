@@ -75,6 +75,7 @@ export const NotesDisplay = ({ playedNotes }: NotesDisplayProps) => {
       vexFlowNode.innerHTML = "";
     };
   }, [playedNotes, containerWidth]);
+
   return (
     <>
       <div

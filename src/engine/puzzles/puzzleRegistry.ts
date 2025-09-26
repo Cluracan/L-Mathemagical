@@ -19,6 +19,8 @@ import { cookNPC } from "./cook/cookNPC";
 import { CookPuzzle } from "./cook/CookPuzzle";
 import { pianoNPC } from "./piano/pianoNPC";
 import { PianoPuzzle } from "./piano/PianoPuzzle";
+import { pigNPC } from "./pig/pigNPC";
+import { PigPuzzle } from "./pig/PigPuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -46,6 +48,10 @@ export const puzzleAtLocation = {
   music: {
     puzzleId: "piano",
     puzzleNPC: pianoNPC,
+  },
+  pig: {
+    puzzleId: "pig",
+    puzzleNPC: pigNPC,
   },
   courtyard: {
     puzzleId: "turtle",
@@ -93,6 +99,10 @@ export const puzzleRegistry = {
   piano: {
     pipelineFunction: null,
     component: PianoPuzzle,
+  },
+  pig: {
+    pipelineFunction: null,
+    component: PigPuzzle,
   },
   turtle: {
     pipelineFunction: handleTurtlePuzzle,

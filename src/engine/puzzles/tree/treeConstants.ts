@@ -25,10 +25,10 @@ export const treeFeedback = {
     "The gardener sighs, and removes all trees from the orchard.",
     '"Ok, let\'s try again!"',
   ],
-  leaveWithSuccess: [
+  storyLineSuccess: [
     "The gardener thanks you for your help, and then wanders off to tend some other fruit trees.",
   ],
-  leaveWithFailure: [
+  storyLineFailure: [
     'The gardener looks around at the pile of trees - "Do come back when you are ready to try again please!"',
   ],
 };

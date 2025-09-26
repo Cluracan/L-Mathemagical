@@ -63,9 +63,9 @@ export const TreePuzzle = () => {
         draft.showDialog = false;
         draft.currentPuzzle = null;
         if (puzzleCompleted) {
-          draft.storyLine.push(...treeFeedback.leaveWithSuccess);
+          draft.storyLine.push(...treeFeedback.storyLineSuccess);
         } else {
-          draft.storyLine.push(...treeFeedback.leaveWithFailure);
+          draft.storyLine.push(...treeFeedback.storyLineFailure);
           draft.puzzleState.tree.selectedCells = initialTreeState.selectedCells;
           draft.puzzleState.tree.feedback = initialTreeState.feedback;
         }

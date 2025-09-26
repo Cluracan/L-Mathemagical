@@ -41,6 +41,10 @@ import {
   initialPianoState,
   type PianoState,
 } from "../engine/puzzles/piano/pianoConstants";
+import {
+  initialPigState,
+  type PigState,
+} from "../engine/puzzles/pig/pigConstants";
 
 export type GameStoreState = {
   playerName: string;
@@ -63,6 +67,7 @@ export type GameStoreState = {
     key: KeyState;
     lights: LightsState;
     piano: PianoState;
+    pig: PigState;
     tree: TreeState;
     turtle: TurtleState;
   };
@@ -98,6 +103,7 @@ const initialGameState: GameStoreState = {
     key: initialKeyState,
     lights: initialLightsState,
     piano: initialPianoState,
+    pig: initialPigState,
     tree: initialTreeState,
     turtle: initialTurtleState,
   },

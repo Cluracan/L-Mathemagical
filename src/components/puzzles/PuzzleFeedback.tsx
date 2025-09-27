@@ -13,7 +13,7 @@ export const PuzzleFeedback = ({ feedback, height }: PuzzleFeedbackProps) => {
     <Card
       sx={{
         width: "80%",
-        height: { height },
+        height,
         padding: 2,
         overflowY: "auto",
         whiteSpace: "pre-wrap",

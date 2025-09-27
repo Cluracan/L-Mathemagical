@@ -120,7 +120,7 @@ export const PigPuzzle = () => {
   );
 };
 
-const PuzzleGrid = memo(() => {
+const PuzzleGrid = () => {
   return (
     <>
       <Box
@@ -139,7 +139,7 @@ const PuzzleGrid = memo(() => {
       </Box>
     </>
   );
-});
+};
 
 const GridCell = memo(({ index }: { index: number }) => {
   const playerPresent = useGameStore(

@@ -1,12 +1,17 @@
+import { createKeyGuard } from "../../../utils/guards";
+
 //Types
 export type PigState = {
-  feedback: string[];
+  feedback: string;
+  showFeedback: boolean;
   showInstructions: boolean;
   playerMovesFirst: boolean;
   playerLocation: number;
   pigLocation: number;
   puzzleCompleted: boolean;
 };
+
+export type CompassDirection = "n" | "e" | "s" | "w";
 
 //Constants
 const INITIAL_PLAYER_LOCATION = 12;
@@ -18,14 +23,45 @@ export const GRID_WIDTH = 5;
 export const pigFeedback = {
   instructions: [
     `The floor of this room is divided into ${GRID_SIZE} squares.`,
-    "You can move around the room using the ARROW keys, or by using W,A,S,D on the keyboard. You can RESET (returns to this screen) or LEAVE at any time.",
-    "Would you like to move first?",
+    "You can move around the room using the ARROW keys, or by using W,A,S,D on the keyboard.",
+    "You can RESET or LEAVE at any time.",
   ],
+  default: "Catch the pig!",
+  success:
+    "You have caught hold of the pig, which squeals and wriggles. It soon breaks free, but not before you have examined the piece of paper on its collar...it has one word written on it: NEUMANN",
+  storyLineSuccess:
+    "The pig wanders to the other side of the room while you consider the word written on the paper: NEUMANN",
+  storyLineFailure:
+    "The pig avoids your efforts to get close! Perhaps you should try again?",
+};
+
+export const directionAliases: Record<string, CompassDirection> = {
+  ArrowUp: "n",
+  ArrowDown: "s",
+  ArrowLeft: "w",
+  ArrowRight: "e",
+  w: "n",
+  s: "s",
+  a: "w",
+  d: "e",
+  W: "n",
+  S: "s",
+  A: "w",
+  D: "e",
+};
+export const isDirectionAlias = createKeyGuard(directionAliases);
+
+export const directionText: Record<CompassDirection, string> = {
+  n: "north",
+  e: "east",
+  s: "south",
+  w: "west",
 };
 
 //Initial State
 export const initialPigState: PigState = {
-  feedback: [],
+  feedback: "",
+  showFeedback: false,
   showInstructions: true,
   playerMovesFirst: true,
   playerLocation: INITIAL_PLAYER_LOCATION,

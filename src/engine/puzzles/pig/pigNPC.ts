@@ -21,13 +21,13 @@ export const pigNPC: PuzzleNPC = {
     pig: {
       puzzleIncomplete:
         "The pig looks back at you, but makes no effort to move. It has a piece of paper attached to its collar...",
-      puzzleComplete: "The pig looks significantly more alert now.",
+      puzzleComplete:
+        "The pig watches you carefully. It still has a piece of paper attached to its collar.",
     },
     paper: {
       puzzleIncomplete:
         "There is definitely something written on the paper, but you can't make out what from this distance.",
-      puzzleComplete:
-        "The paper is still attached to the pig, with a single word written on it: NEUMANN",
+      puzzleComplete: "The paper has a single word written on it: NEUMANN",
     },
   },
 };

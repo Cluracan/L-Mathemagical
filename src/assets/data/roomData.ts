@@ -278,8 +278,8 @@ export const roomData = {
   snooker: {
     id: "snooker",
     descriptions: {
-      long: "You are in a room with doors to the south, west and east. An oval-shaped snooker table stands in the centre of the room. A post is fixed to the centre of the table. On one side of this post is the only pocket, and on the other side is a spot for the ball. A cue is attached to the table by a long chain.",
-      short: "You are in the room with the oval snooker table.",
+      long: "You are in a room with doors to the south, west and east.",
+      short: "You are in the snooker room.",
     },
     mapText: "Snooker",
     exits: {

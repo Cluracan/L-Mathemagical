@@ -21,6 +21,8 @@ import { pianoNPC } from "./piano/pianoNPC";
 import { PianoPuzzle } from "./piano/PianoPuzzle";
 import { pigNPC } from "./pig/pigNPC";
 import { PigPuzzle } from "./pig/PigPuzzle";
+import { SnookerPuzzle } from "./snooker/SnookerPuzzle";
+import { snookerNPC } from "./snooker/snookerNPC";
 
 export const puzzleAtLocation = {
   store: {
@@ -52,6 +54,10 @@ export const puzzleAtLocation = {
   pig: {
     puzzleId: "pig",
     puzzleNPC: pigNPC,
+  },
+  snooker: {
+    puzzleId: "snooker",
+    puzzleNPC: snookerNPC,
   },
   courtyard: {
     puzzleId: "turtle",
@@ -103,6 +109,10 @@ export const puzzleRegistry = {
   pig: {
     pipelineFunction: null,
     component: PigPuzzle,
+  },
+  snooker: {
+    pipelineFunction: null,
+    component: SnookerPuzzle,
   },
   turtle: {
     pipelineFunction: handleTurtlePuzzle,

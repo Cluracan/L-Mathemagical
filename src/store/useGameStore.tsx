@@ -45,6 +45,10 @@ import {
   initialPigState,
   type PigState,
 } from "../engine/puzzles/pig/pigConstants";
+import {
+  initialSnookerState,
+  type SnookerState,
+} from "../engine/puzzles/snooker/snookerConstants";
 
 export type GameStoreState = {
   playerName: string;
@@ -68,6 +72,7 @@ export type GameStoreState = {
     lights: LightsState;
     piano: PianoState;
     pig: PigState;
+    snooker: SnookerState;
     tree: TreeState;
     turtle: TurtleState;
   };
@@ -104,6 +109,7 @@ const initialGameState: GameStoreState = {
     lights: initialLightsState,
     piano: initialPianoState,
     pig: initialPigState,
+    snooker: initialSnookerState,
     tree: initialTreeState,
     turtle: initialTurtleState,
   },

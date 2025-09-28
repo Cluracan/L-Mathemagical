@@ -17,6 +17,7 @@ const CANVAS_RATIO = 0.4;
 //Main Component
 export const SnookerPuzzle = () => {
   const feedback = useGameStore((state) => state.puzzleState.snooker.feedback);
+  const action = useGameStore((state) => state.puzzleState.snooker.action);
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.snooker.puzzleCompleted
   );
@@ -29,9 +30,11 @@ export const SnookerPuzzle = () => {
   };
 
   const handleHit = () => {
+    if (action === "idle") return;
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         draft.puzzleState.snooker.angle = angleInput;
+        draft.puzzleState.snooker.action = "hit";
       })
     );
   };
@@ -40,14 +43,19 @@ export const SnookerPuzzle = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         draft.puzzleState.snooker.feedback = "In the hole";
+        draft.puzzleState.snooker.action = "idle";
       })
     );
   };
 
   const handleReset = () => {
+    setAngleInput(0);
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        draft.puzzleState.snooker = initialSnookerState;
+        draft.puzzleState.snooker = {
+          ...initialSnookerState,
+          action: "reset",
+        };
       })
     );
   };
@@ -94,14 +102,17 @@ const Canvas = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D>(null);
-  const engineRef = useRef<SnookerEngine>(null);
+  const engineRef = useRef<SnookerEngine | null>(null);
   const angle = useGameStore((state) => state.puzzleState.snooker.angle);
-  const { width, height } = useWindowDimensions();
+  const action = useGameStore((state) => state.puzzleState.snooker.action);
+  let { width, height } = useWindowDimensions();
+  if (width < height) width = height;
 
   useEffect(() => {
     if (!canvasRef.current) return;
-    contextRef.current = canvasRef.current.getContext("2d");
-    if (!contextRef.current) return;
+    const context = canvasRef.current.getContext("2d");
+    if (!context) return;
+    contextRef.current = context;
     engineRef.current = new SnookerEngine(
       contextRef.current,
       CANVAS_RATIO * width,
@@ -114,14 +125,22 @@ const Canvas = ({
 
   useEffect(() => {
     if (!engineRef.current) return;
-    if (!angle) {
-      engineRef.current.resetTable();
-    } else {
-      engineRef.current.hitBall(angle).then(() => {
-        onAnimationComplete();
-      });
+
+    switch (action) {
+      case "hit":
+        engineRef.current.hitBall(angle).then(() => {
+          onAnimationComplete();
+        });
+        break;
+      case "reset":
+        engineRef.current.resetTable();
+        engineRef.current.drawTable();
+        break;
     }
-  }, [angle]);
+    return () => {
+      engineRef.current?.cleanUpAnimation();
+    };
+  }, [angle, action]);
 
   return (
     <>

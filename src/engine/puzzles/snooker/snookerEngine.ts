@@ -7,7 +7,6 @@ export class SnookerEngine {
   private ctx;
   private width;
   private height;
-  private animating;
   private centerX;
   private centerY;
   private radiusX;
@@ -20,12 +19,11 @@ export class SnookerEngine {
   private spot;
   private ballX;
   private ballY;
-
+  private animationId?: number;
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number) {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
-    this.animating = false;
     this.centerX = width / 2;
     this.centerY = height / 2;
     this.radiusX = width * TABLE_RATIO;
@@ -111,26 +109,25 @@ export class SnookerEngine {
         const elapsed = timeStamp - start;
         const ballDistance = (elapsed / ANIMATION_TIME) * this.travelDistance;
 
-        [this.ballX, this.ballY] = this.plotBall(
+        [this.ballX, this.ballY] = this.getBallPosition(
           direction,
           ballDistance,
           distanceToEdge
         );
         this.clearCanvas();
         this.drawTable();
-        if (this.isInHole()) {
+        if (this.isInHole() || ballDistance >= this.travelDistance) {
+          this.animationId = undefined;
           resolve("done");
           return;
-        }
-        if (ballDistance < this.travelDistance) {
-          requestAnimationFrame(function (timeStamp) {
+        } else {
+          this.animationId = requestAnimationFrame(function (timeStamp) {
             animateBall(timeStamp, direction);
           });
-        } else {
-          resolve("done");
         }
       };
-      requestAnimationFrame(function (timeStamp) {
+
+      this.animationId = requestAnimationFrame(function (timeStamp) {
         animateBall(timeStamp, direction);
       });
     });
@@ -155,7 +152,11 @@ export class SnookerEngine {
     );
   }
 
-  plotBall(direction: number, ballDistance: number, distanceToEdge: number) {
+  getBallPosition(
+    direction: number,
+    ballDistance: number,
+    distanceToEdge: number
+  ) {
     if (ballDistance <= distanceToEdge) {
       return [
         this.centerX - this.focus + ballDistance * Math.cos(direction),
@@ -183,5 +184,12 @@ export class SnookerEngine {
     this.ballX = this.centerX - this.focus;
     this.ballY = this.centerY;
     this.drawTable();
+  }
+
+  cleanUpAnimation() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+      this.animationId = undefined;
+    }
   }
 }

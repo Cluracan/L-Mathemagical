@@ -1,8 +1,9 @@
 //Types
 export type SnookerState = {
   puzzleCompleted: boolean;
-  angle: number | null;
+  angle: number;
   feedback: string;
+  action: "reset" | "hit" | "idle";
 };
 
 //Static Data
@@ -15,6 +16,7 @@ export const snookerFeedback = {
 //Initial State
 export const initialSnookerState: SnookerState = {
   puzzleCompleted: false,
-  angle: null,
+  angle: 0,
   feedback: snookerFeedback.default,
+  action: "reset",
 };

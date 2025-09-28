@@ -131,6 +131,7 @@ const InputField = ({ ingredient }: { ingredient: Ingredient }) => {
           input: {
             endAdornment: <InputAdornment position="end">g</InputAdornment>,
           },
+          htmlInput: { style: { textAlign: "right" }, inputMode: "numeric" },
         }}
       />
     </>

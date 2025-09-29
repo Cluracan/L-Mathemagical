@@ -20,6 +20,7 @@ export class SnookerEngine {
   private ballX;
   private ballY;
   private animationId?: number;
+
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number) {
     this.ctx = ctx;
     this.width = width;
@@ -28,9 +29,9 @@ export class SnookerEngine {
     this.centerY = height / 2;
     this.radiusX = width * TABLE_RATIO;
     this.radiusY = height * TABLE_RATIO;
-    this.eccentricity = Math.sqrt(1 - this.radiusY ** 2 / this.radiusX ** 2);
     this.focus = Math.sqrt(this.radiusX ** 2 - this.radiusY ** 2);
-    this.travelDistance = 2 * Math.sqrt(this.radiusX ** 2 + this.radiusY ** 2);
+    this.eccentricity = this.focus / this.radiusX;
+    this.travelDistance = 2 * this.radiusX;
     this.table = this.createTablePath();
     this.hole = this.createHolePath();
     this.spot = this.createSpotPath();
@@ -38,7 +39,7 @@ export class SnookerEngine {
     this.ballY = this.centerY;
   }
 
-  createTablePath() {
+  private createTablePath() {
     const table = new Path2D();
     table.ellipse(
       this.centerX,
@@ -52,7 +53,7 @@ export class SnookerEngine {
     return table;
   }
 
-  createHolePath() {
+  private createHolePath() {
     const hole = new Path2D();
     hole.arc(
       this.centerX + this.focus,
@@ -64,7 +65,7 @@ export class SnookerEngine {
     return hole;
   }
 
-  createSpotPath() {
+  private createSpotPath() {
     const spot = new Path2D();
     spot.arc(
       this.centerX - this.focus,

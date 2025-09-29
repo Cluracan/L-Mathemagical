@@ -12,7 +12,7 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
 import { memo, useCallback, useMemo } from "react";
-import { calculatorReducer } from "./calculatorLogic";
+import { calculatorReducer, initialCalculatorState } from "./calculatorLogic";
 import {
   CALCULATOR_DISPLAY_LENGTH,
   WORKING_CALCULATOR_BUTTONS,
@@ -61,6 +61,7 @@ export const CalculatorPuzzle = () => {
         if (state.puzzleState.calculator.puzzleCompleted) {
           draft.storyLine.push(calculatorFeedback.storyLineSuccess);
         } else {
+          draft.puzzleState.calculator = initialCalculatorState;
           draft.storyLine.push(calculatorFeedback.storyLineFailure);
         }
       })

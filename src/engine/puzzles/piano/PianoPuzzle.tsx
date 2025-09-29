@@ -26,7 +26,6 @@ const playAudioNote = (note: NoteId) => {
 
 //Main Component
 export const PianoPuzzle = () => {
-  console.log("main puzzle render");
   const attempts = useGameStore((state) => state.puzzleState.piano.attempts);
   const feedback = useGameStore((state) => state.puzzleState.piano.feedback);
   const puzzleCompleted = useGameStore(
@@ -38,7 +37,6 @@ export const PianoPuzzle = () => {
 
   //Preload Audio
   useEffect(() => {
-    console.log("preload");
     Object.entries(audioCache).forEach(([_, audio]) => {
       if (audio instanceof HTMLAudioElement) {
         audio.preload = "auto";

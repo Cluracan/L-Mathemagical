@@ -60,7 +60,16 @@ export const SnookerPuzzle = () => {
     );
   };
 
-  const handleLeave = () => {};
+  const handleLeave = () => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.showDialog = false;
+        draft.currentPuzzle = null;
+        draft.puzzleState.snooker = initialSnookerState;
+        draft.storyLine.push(snookerFeedback.storyLine);
+      })
+    );
+  };
   return (
     <>
       <PuzzleContainer>
@@ -107,11 +116,18 @@ const Canvas = ({
   const action = useGameStore((state) => state.puzzleState.snooker.action);
   let { width, height } = useWindowDimensions();
   if (width < height) width = height;
+  const cssWidth = width * CANVAS_RATIO;
+  const cssHeight = height * CANVAS_RATIO;
 
   useEffect(() => {
     if (!canvasRef.current) return;
     const context = canvasRef.current.getContext("2d");
-    //https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
+
+    // Set display size (css pixels)   https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
+    canvasRef.current.style.width = `${cssWidth}px`;
+    canvasRef.current.style.height = `${cssHeight}px`;
+
+    // Set actual size in memory (scaled to account for extra pixel density).
     const dpr = window.devicePixelRatio || 1;
     canvasRef.current.width = width * CANVAS_RATIO * dpr;
     canvasRef.current.height = height * CANVAS_RATIO * dpr;
@@ -152,9 +168,9 @@ const Canvas = ({
     <>
       <canvas
         ref={canvasRef}
-        // width={CANVAS_RATIO * width}
-        // height={CANVAS_RATIO * height}
-        style={{ margin: "2rem" }}
+        style={{
+          margin: "2rem",
+        }}
       />
     </>
   );

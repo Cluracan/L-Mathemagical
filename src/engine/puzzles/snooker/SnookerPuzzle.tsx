@@ -8,7 +8,7 @@ import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useWindowDimensions } from "../../../features/hooks/useWindowDimensions";
 import { SnookerEngine } from "./snookerEngine";
 import { produce } from "immer";
-import { initialSnookerState } from "./snookerConstants";
+import { initialSnookerState, snookerFeedback } from "./snookerConstants";
 
 //Constants
 const MAX_ANGLE = 999;
@@ -42,7 +42,7 @@ export const SnookerPuzzle = () => {
   const onAnimationComplete = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
-        draft.puzzleState.snooker.feedback = "In the hole";
+        draft.puzzleState.snooker.feedback = snookerFeedback.success;
         draft.puzzleState.snooker.action = "idle";
       })
     );
@@ -111,6 +111,13 @@ const Canvas = ({
   useEffect(() => {
     if (!canvasRef.current) return;
     const context = canvasRef.current.getContext("2d");
+    //https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
+    const dpr = window.devicePixelRatio || 1;
+    canvasRef.current.width = width * CANVAS_RATIO * dpr;
+    canvasRef.current.height = height * CANVAS_RATIO * dpr;
+    // Normalize coordinate system to use CSS pixels.
+    context?.scale(dpr, dpr);
+
     if (!context) return;
     contextRef.current = context;
     engineRef.current = new SnookerEngine(
@@ -134,7 +141,6 @@ const Canvas = ({
         break;
       case "reset":
         engineRef.current.resetTable();
-        engineRef.current.drawTable();
         break;
     }
     return () => {
@@ -146,8 +152,8 @@ const Canvas = ({
     <>
       <canvas
         ref={canvasRef}
-        width={CANVAS_RATIO * width}
-        height={CANVAS_RATIO * height}
+        // width={CANVAS_RATIO * width}
+        // height={CANVAS_RATIO * height}
         style={{ margin: "2rem" }}
       />
     </>

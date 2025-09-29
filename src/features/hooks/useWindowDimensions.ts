@@ -7,9 +7,10 @@ type Dimensions = {
 };
 
 export const useWindowDimensions = () => {
+  const dpr = window.devicePixelRatio || 1;
   const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: window.innerWidth / dpr,
+    height: window.innerHeight / dpr,
   });
 
   const debounced = useDebouncedCallback((dimensions: Dimensions) => {
@@ -18,9 +19,10 @@ export const useWindowDimensions = () => {
 
   useEffect(() => {
     const handleResize = () => {
+      const dpr = window.devicePixelRatio || 1;
       debounced({
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: window.innerWidth / dpr,
+        height: window.innerHeight / dpr,
       });
     };
     window.addEventListener("resize", handleResize);

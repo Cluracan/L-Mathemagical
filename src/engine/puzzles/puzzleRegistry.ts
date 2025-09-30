@@ -23,6 +23,9 @@ import { pigNPC } from "./pig/pigNPC";
 import { PigPuzzle } from "./pig/PigPuzzle";
 import { SnookerPuzzle } from "./snooker/SnookerPuzzle";
 import { snookerNPC } from "./snooker/snookerNPC";
+import { apeNPC } from "./ape/apeNPC";
+import { handleApePuzzle } from "./ape/handleApePuzzle";
+import { ApePuzzle } from "./ape/ApePuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -37,6 +40,10 @@ export const puzzleAtLocation = {
   kitchen: {
     puzzleId: "abbot",
     puzzleNPC: abbotKitchenNPC,
+  },
+  riverN: {
+    puzzleId: "ape",
+    puzzleNPC: apeNPC,
   },
   largeKitchen: { puzzleId: "cook", puzzleNPC: cookNPC },
   lights: {
@@ -85,6 +92,10 @@ export const puzzleRegistry = {
   abbot: {
     pipelineFunction: handleAbbotPuzzle,
     component: null,
+  },
+  ape: {
+    pipelineFunction: handleApePuzzle,
+    component: ApePuzzle,
   },
   calculator: {
     pipelineFunction: null,

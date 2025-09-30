@@ -92,7 +92,7 @@ export const blockedExitData = {
     keyRequired: null,
   },
   cellar10: {
-    direction: ["e", "s", "w"],
+    direction: ["e", "s"],
     lockedText:
       "When you open this door you find a brick wall immediately behind it.",
     keyRequired: null,

@@ -624,9 +624,9 @@ export const roomData = {
   riverS: {
     id: "riverS",
     descriptions: {
-      long: "You are on a lawn which leads down to a wide river. A notice on the bank reads:--\n\n\t\t\tDANGER\n\t\t     Piranha Fish.\n\nThere are thorny hedges to the east and west. To the south there is a path through a gap in the wall.\n\nAn old and rusty tin bathis lying on the bank.",
+      long: "You are on a lawn which leads down to a wide river. A notice on the bank reads:--\n\n\t\t\tDANGER\n\t\t     Piranha Fish.\n\nThere are thorny hedges to the east and west. To the south there is a path through a gap in the wall.\n\nAn old and rusty tin bath is lying on the bank.",
       short:
-        "You are on the lawn beside the river.\n\nAn old and rusty tin bathis lying on the bank.",
+        "You are on the lawn beside the river.\n\nAn old and rusty tin bath is lying on the bank.",
     },
     mapText: "River S",
     exits: {
@@ -637,9 +637,9 @@ export const roomData = {
   riverN: {
     id: "riverN",
     descriptions: {
-      long: "You are on the north bank of the river which is covered in brambles. A narrow path winds to the northeast.\n\nAn old and rusty tin bathis lying on the bank.",
+      long: "You are on the north bank of the river which is covered in brambles. A narrow path winds to the northeast.\n\nAn old and rusty tin bath is lying on the bank.",
       short:
-        "You are on the north bank of the river.\n\nAn old and rusty tin bathis lying on the bank.",
+        "You are on the north bank of the river.\n\nAn old and rusty tin bath is lying on the bank.",
     },
     mapText: "River N",
     exits: {
@@ -777,11 +777,12 @@ export const roomData = {
     descriptions: {
       long: "You have passed through a large door which covers the whole of one side of a wall.\n\nYou are standing in a corridor with several other people. As the door slowly closes behind you, the corridor grows longer and longer, and more people appear. There seem to be doors to the east and west.",
       short:
-        "You have passed thourh a large door which covers the whole of one side of a wall.\n\nYou seem to be standing in a very long corridor with dozens of other people.",
+        "You have passed through a large door which covers the whole of one side of a wall.\n\nYou seem to be standing in a very long corridor with dozens of other people.",
     },
     mapText: "Corridor",
     exits: {
       e: "half",
+      w: "limbo",
     },
   },
   ladderBottom: {

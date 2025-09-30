@@ -31,11 +31,14 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
   const {
     usesDialog,
     triggerPuzzleCommand,
+    requiredItems,
     acceptPuzzleText,
     rejectPuzzleText,
     feedback,
     examinableItems,
   } = puzzleNPC;
+
+  const { itemLocation } = gameState;
 
   //puzzleHandler above (turtle) needed option of unique response to 'look' (ie null target)
   if (!target) return payload;
@@ -60,7 +63,8 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
       //start puzzle
       if (
         command === triggerPuzzleCommand &&
-        acceptPuzzleText.includes(target)
+        acceptPuzzleText.includes(target) &&
+        requiredItems.every((itemId) => itemLocation[itemId] === "player")
       ) {
         const nextGameState = produce(gameState, (draft) => {
           draft.currentPuzzle = puzzleId;

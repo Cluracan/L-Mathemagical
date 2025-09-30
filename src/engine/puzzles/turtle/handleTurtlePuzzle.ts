@@ -21,12 +21,25 @@ const turtleMovement = {
   s: { dx: 0, dy: -1, direction: "south" },
   w: { dx: -1, dy: 0, direction: "west" },
 } as const;
-const movesTurtle = createKeyGuard(turtleMovement);
+const willMoveTurtle = createKeyGuard(turtleMovement);
 
 export const handleTurtlePuzzle: PipelineFunction = (payload) => {
   const { command, target, gameState } = payload;
   const curTurtleLocation = gameState.puzzleState.turtle.displacement;
-  if (command === "move" && target && movesTurtle(target)) {
+
+  //Leave puzzle
+  if (command === "move" && target === "d") {
+    return produce(payload, (draft) => {
+      draft.gameState.currentPuzzle = null;
+      draft.gameState.storyLine.push(
+        'As you leave the courtyard, the turtle wanders back to his starting slab. "Please come back when you are ready!" he calls.'
+      );
+      draft.gameState.puzzleState.turtle = initialTurtleState;
+    });
+  }
+
+  //In Puzzle Commands
+  if (command === "move" && target && willMoveTurtle(target)) {
     const [nextX, nextY] = [
       curTurtleLocation.x + turtleMovement[target].dx,
       curTurtleLocation.y + turtleMovement[target].dy,

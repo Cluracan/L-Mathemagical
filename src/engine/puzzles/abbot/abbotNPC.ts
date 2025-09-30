@@ -8,6 +8,7 @@ export const abbotNPC: PuzzleNPC = {
     completed: null,
   },
   triggerPuzzleCommand: "say",
+  requiredItems: [],
   acceptPuzzleText: ["yes", "y"],
   rejectPuzzleText: ["no", "n"],
   feedback: {
@@ -33,6 +34,7 @@ export const abbotHallwayNPC: PuzzleNPC = {
     short: "",
   },
   triggerPuzzleCommand: "say",
+  requiredItems: [],
   acceptPuzzleText: [],
   rejectPuzzleText: [],
   feedback: {
@@ -52,6 +54,7 @@ export const abbotKitchenNPC: PuzzleNPC = {
     short: "",
   },
   triggerPuzzleCommand: "say",
+  requiredItems: [],
   acceptPuzzleText: [],
   rejectPuzzleText: [],
   feedback: {

@@ -8,6 +8,7 @@ export const cookNPC: PuzzleNPC = {
     completed: `The cook is fast asleep.`,
   },
   triggerPuzzleCommand: "say",
+  requiredItems: [],
   acceptPuzzleText: ["yes", "y"],
   rejectPuzzleText: ["no", "n"],
   feedback: {

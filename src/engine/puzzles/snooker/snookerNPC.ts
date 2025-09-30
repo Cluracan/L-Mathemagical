@@ -9,6 +9,7 @@ export const snookerNPC: PuzzleNPC = {
     completed: null,
   },
   triggerPuzzleCommand: "use",
+  requiredItems: [],
   acceptPuzzleText: ["cue"],
   rejectPuzzleText: [],
   feedback: {

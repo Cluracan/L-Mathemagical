@@ -9,6 +9,7 @@ export const treeNPC: PuzzleNPC = {
     completed: "Through the trees, you can see the gardener pruning a tree.",
   },
   triggerPuzzleCommand: "say",
+  requiredItems: [],
   acceptPuzzleText: ["yes", "y"],
   rejectPuzzleText: ["no", "n"],
   feedback: {

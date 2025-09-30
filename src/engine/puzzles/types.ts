@@ -1,3 +1,4 @@
+import type { ItemId } from "../../assets/data/itemData";
 import type { Command } from "../dispatchCommand";
 
 export type PuzzleNPC = {
@@ -8,6 +9,7 @@ export type PuzzleNPC = {
     completed: string | null;
   };
   triggerPuzzleCommand: Command;
+  requiredItems: ItemId[];
   acceptPuzzleText: string[];
   rejectPuzzleText: string[];
   feedback: {

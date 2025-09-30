@@ -9,6 +9,7 @@ export const calculatorNPC: PuzzleNPC = {
     completed: null,
   },
   triggerPuzzleCommand: "get",
+  requiredItems: [],
   acceptPuzzleText: ["calculator"],
   rejectPuzzleText: [],
   feedback: {

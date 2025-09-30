@@ -49,6 +49,10 @@ import {
   initialSnookerState,
   type SnookerState,
 } from "../engine/puzzles/snooker/snookerConstants";
+import {
+  initialApeState,
+  type ApeState,
+} from "../engine/puzzles/ape/apeConstants";
 
 export type GameStoreState = {
   playerName: string;
@@ -66,6 +70,7 @@ export type GameStoreState = {
   currentPuzzle: PuzzleId | null;
   puzzleState: {
     abbot: AbbotState;
+    ape: ApeState;
     calculator: CalculatorState;
     cook: CookState;
     key: KeyState;
@@ -103,6 +108,7 @@ const initialGameState: GameStoreState = {
   currentPuzzle: null,
   puzzleState: {
     abbot: initialAbbotState,
+    ape: initialApeState,
     calculator: initialCalculatorState,
     cook: initialCookState,
     key: initialKeyState,

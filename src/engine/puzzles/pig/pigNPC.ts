@@ -9,6 +9,7 @@ export const pigNPC: PuzzleNPC = {
     completed: "The large pig eyes you warily.",
   },
   triggerPuzzleCommand: "get",
+  requiredItems: [],
   acceptPuzzleText: ["pig", "paper"],
   rejectPuzzleText: [],
   feedback: {

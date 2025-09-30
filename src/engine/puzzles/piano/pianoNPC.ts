@@ -10,6 +10,7 @@ export const pianoNPC: PuzzleNPC = {
       "In the centre of the room is a rather battered Steinway grand piano.",
   },
   triggerPuzzleCommand: "use",
+  requiredItems: [],
   acceptPuzzleText: ["piano"],
   rejectPuzzleText: [],
   feedback: {

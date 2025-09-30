@@ -9,6 +9,7 @@ export const lightsNPC: PuzzleNPC = {
       "The electrician is busy fiddling with some wires, and doesn't seem to notice you.",
   },
   triggerPuzzleCommand: "say",
+  requiredItems: [],
   acceptPuzzleText: ["yes", "y"],
   rejectPuzzleText: ["no", "n"],
   feedback: {

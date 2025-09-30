@@ -9,6 +9,7 @@ export const turtleNPC: PuzzleNPC = {
     completed: "The turtle sleeps soundly in the middle of the courtyard.",
   },
   triggerPuzzleCommand: "say",
+  requiredItems: [],
   acceptPuzzleText: ["yes", "y"],
   rejectPuzzleText: ["no", "n"],
   feedback: {

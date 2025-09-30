@@ -29,6 +29,12 @@ export class SnookerEngine {
     this.centerY = height / 2;
     this.radiusX = width * TABLE_RATIO;
     this.radiusY = height * TABLE_RATIO;
+
+    //Guard against portrait orientation (TODO - Error boundaries)
+    if (this.radiusY > this.radiusX) {
+      throw new Error("SnookerEngine requires landscape orientation");
+    }
+
     this.focus = Math.sqrt(this.radiusX ** 2 - this.radiusY ** 2);
     this.eccentricity = this.focus / this.radiusX;
     this.travelDistance = 2 * this.radiusX;
@@ -101,7 +107,7 @@ export class SnookerEngine {
   hitBall(angle: number) {
     const direction = (angle / 360) * 2 * Math.PI;
     const distanceToEdge = this.getDistanceToEdge(direction);
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _) => {
       let start: number;
       const animateBall = (timeStamp: number, direction: number) => {
         if (start === undefined) {

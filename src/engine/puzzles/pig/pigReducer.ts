@@ -1,5 +1,4 @@
 import {
-  directionText,
   GRID_SIZE,
   GRID_WIDTH,
   initialPigState,

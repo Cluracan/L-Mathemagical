@@ -1,15 +1,10 @@
 import {
   Box,
   Button,
-  Card,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText,
   Paper,
   Snackbar,
   Stack,
   styled,
-  Switch,
   Typography,
 } from "@mui/material";
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";

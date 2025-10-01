@@ -1,4 +1,4 @@
-export const threeLetterWords: string[] = [
+export const threeLetterWords = new Set<string>([
   "aah",
   "abs",
   "ace",
@@ -574,4 +574,4 @@ export const threeLetterWords: string[] = [
   "zip",
   "zit",
   "zoo",
-];
+]);

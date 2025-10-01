@@ -30,7 +30,7 @@ export function apeReducer(state: ApeState, action: ApeAction) {
           draft.feedback.push(userInput, apeFeedback.userInput.doesNotConnect);
           draft.word = "ape";
         });
-      } else if (!threeLetterWords.includes(userInput)) {
+      } else if (!threeLetterWords.has(userInput)) {
         return produce(state, (draft) => {
           draft.feedback.push(userInput, apeFeedback.userInput.isNotWord);
         });

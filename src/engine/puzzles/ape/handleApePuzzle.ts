@@ -2,7 +2,7 @@ import { produce } from "immer";
 import type { PipelineFunction } from "../../pipeline/types";
 
 export const handleApePuzzle: PipelineFunction = (payload) => {
-  const { command, target, gameState } = payload;
+  const { command, target } = payload;
 
   switch (command) {
     case "say":

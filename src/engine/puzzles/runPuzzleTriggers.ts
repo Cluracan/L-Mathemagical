@@ -47,7 +47,8 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
     case true:
       if (
         command === triggerPuzzleCommand &&
-        acceptPuzzleText.includes(target)
+        acceptPuzzleText.includes(target) &&
+        requiredItems.every((itemId) => itemLocation[itemId] === "player")
       ) {
         return stopWithSuccess(payload, feedback.puzzleIsComplete);
       }

@@ -12,7 +12,7 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import { produce } from "immer";
 import { memo, useCallback, useMemo } from "react";
-import { calculatorReducer, initialCalculatorState } from "./calculatorLogic";
+import { calculatorReducer, initialCalculatorState } from "./calculatorReducer";
 import {
   CALCULATOR_DISPLAY_LENGTH,
   WORKING_CALCULATOR_BUTTONS,

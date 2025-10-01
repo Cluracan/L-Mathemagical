@@ -27,7 +27,7 @@ import {
   initialTreeState,
   type TreeState,
 } from "../engine/puzzles/tree/treeConstants";
-import { initialCalculatorState } from "../engine/puzzles/calculator/calculatorLogic";
+import { initialCalculatorState } from "../engine/puzzles/calculator/calculatorReducer";
 import type { CalculatorState } from "../engine/puzzles/calculator/calculatorConstants";
 import {
   initialAbbotState,

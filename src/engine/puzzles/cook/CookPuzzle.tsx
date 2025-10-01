@@ -12,7 +12,7 @@ import {
   TARGET_HEIGHT,
   type Ingredient,
 } from "./cookConstants";
-import { cookReducer } from "./cookLogic";
+import { cookReducer } from "./cookReducer";
 import type { ChangeEvent } from "react";
 
 export const CookPuzzle = () => {
@@ -104,7 +104,6 @@ export const CookPuzzle = () => {
 };
 
 const InputField = ({ ingredient }: { ingredient: Ingredient }) => {
-  console.log(`render ${ingredient}`);
   const value = useGameStore(
     (state) => state.puzzleState.cook.ingredients[ingredient]
   );

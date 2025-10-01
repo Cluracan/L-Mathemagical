@@ -8,6 +8,7 @@ export const telephoneNPC: PuzzleNPC = {
     completed: null,
   },
   triggerPuzzleCommand: "use",
+  requiredItems: [],
   acceptPuzzleText: ["telephone", "phone"],
   rejectPuzzleText: [],
   feedback: {

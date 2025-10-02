@@ -7,8 +7,8 @@ export type ApeState = {
 };
 
 //Constants
-export const APE_TARGET_WORD = "owl";
-export const APE_INIITAL_WORD = "ape";
+export const TARGET_WORD = "owl";
+export const INIITAL_WORD = "ape";
 
 //Static data
 export const apeFeedback = {
@@ -52,5 +52,5 @@ export const initialApeState: ApeState = {
   puzzleCompleted: false,
   feedback: apeFeedback.instructions,
   status: "instructions",
-  word: APE_INIITAL_WORD,
+  word: INIITAL_WORD,
 };

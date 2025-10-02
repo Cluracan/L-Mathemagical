@@ -1,8 +1,8 @@
 //Types
 import { produce } from "immer";
 import {
-  APE_INIITAL_WORD,
-  APE_TARGET_WORD,
+  INIITAL_WORD,
+  TARGET_WORD,
   apeFeedback,
   type ApeState,
 } from "./apeConstants";
@@ -30,15 +30,15 @@ export function apeReducer(state: ApeState, action: ApeAction) {
       const currentWord = state.word;
       return produce(state, (draft) => {
         draft.feedback.push(userInput);
-        if (userInput === currentWord && currentWord !== APE_INIITAL_WORD) {
+        if (userInput === currentWord && currentWord !== INIITAL_WORD) {
           draft.feedback.push(apeFeedback.userInput.hasNotChanged);
-        } else if (userInput.length !== APE_TARGET_WORD.length) {
+        } else if (userInput.length !== TARGET_WORD.length) {
           draft.feedback.push(apeFeedback.userInput.wrongLength);
         } else if (!isValidConnection(userInput, currentWord)) {
           draft.feedback.push(apeFeedback.userInput.doesNotConnect);
         } else if (!threeLetterWords.has(userInput)) {
           draft.feedback.push(apeFeedback.userInput.isNotWord);
-        } else if (userInput === APE_TARGET_WORD) {
+        } else if (userInput === TARGET_WORD) {
           draft.feedback.push(apeFeedback.userInput.success);
           draft.puzzleCompleted = true;
           draft.word = userInput;
@@ -54,7 +54,7 @@ export function apeReducer(state: ApeState, action: ApeAction) {
       });
     case "reset":
       return produce(state, (draft) => {
-        draft.word = APE_INIITAL_WORD;
+        draft.word = INIITAL_WORD;
         draft.feedback = [apeFeedback.reset, ...apeFeedback.demo];
       });
   }

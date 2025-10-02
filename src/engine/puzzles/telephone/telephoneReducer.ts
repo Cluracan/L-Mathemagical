@@ -1,5 +1,11 @@
 import { produce } from "immer";
-import type { TelephoneState } from "./telephoneConstants";
+import {
+  hasReply,
+  INITIAL_NUMBER,
+  TARGET_NUMBER,
+  telephoneFeedback,
+  type TelephoneState,
+} from "./telephoneConstants";
 
 //Types
 type TelephoneAction =
@@ -13,9 +19,33 @@ export function telephoneReducer(
 ) {
   switch (action.type) {
     case "input":
-      if (state.number > 99) return state;
+      if (state.number >= 100) return state;
       return produce(state, (draft) => {
         draft.number = (draft.number * 10 + action.value) % 1000;
+      });
+    case "reset":
+      return produce(state, (draft) => {
+        draft.number = INITIAL_NUMBER;
+      });
+    case "submit":
+      return produce(state, (draft) => {
+        draft.feedback.push(
+          `You dial ${draft.number.toString().padStart(3, "0")}`
+        );
+        if (!hasReply(state.number)) {
+          draft.feedback.push(telephoneFeedback.noReply);
+        } else if (draft.number === TARGET_NUMBER) {
+          if (draft.targetNumberIsEngaged) {
+            draft.feedback.push(telephoneFeedback.reply[draft.number]);
+            draft.targetNumberIsEngaged = false;
+          } else {
+            draft.feedback.push(telephoneFeedback.success);
+            draft.puzzleCompleted = true;
+          }
+        } else if (hasReply(draft.number)) {
+          draft.feedback.push(telephoneFeedback.reply[draft.number]);
+        }
+        draft.number = INITIAL_NUMBER;
       });
   }
   return state;

@@ -37,12 +37,14 @@ export const telephoneFeedback = {
     987: `An irate voice says "You really have gone too far this time!", and slams the phone down.`,
   },
   noReply: "The number rings but there is no reply.",
+  success:
+    "It's the abbot. He wishes you luck and tells you there is a trap door hidden under the chest. It leads down to some cellars. You will have no difficulty moving the chest if you drop everything you are carrying",
   storyLineFailure:
     "You put the phone down, but get the feeling that someone is still waiting for your call...",
   storyLineSuccess:
     'You put the phone down, and consider the Abbot\'s message - "...drop everything and move the chest..."',
 };
-export const isFibonacciNumber = createKeyGuard(telephoneFeedback.reply);
+export const hasReply = createKeyGuard(telephoneFeedback.reply);
 
 export const telephoneButtons = [
   1,

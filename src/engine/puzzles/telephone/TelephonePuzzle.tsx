@@ -30,9 +30,19 @@ export const TelephonePuzzle = () => {
   const handleReset = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
+        draft.puzzleState.telephone = telephoneReducer(
+          draft.puzzleState.telephone,
+          { type: "reset" }
+        );
+      })
+    );
+  };
+  const handleLeave = () => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
         draft.showDialog = false;
         draft.currentPuzzle = null;
-        if (draft.puzzleState.ape.puzzleCompleted) {
+        if (draft.puzzleState.telephone.puzzleCompleted) {
           draft.storyLine.push(telephoneFeedback.storyLineSuccess);
         } else {
           draft.puzzleState.telephone = initialTelephoneState;
@@ -41,14 +51,22 @@ export const TelephonePuzzle = () => {
       })
     );
   };
-  const handleLeave = () => {};
   const handleInput: InputHandler = (button) => {
-    console.log(button);
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         draft.puzzleState.telephone = telephoneReducer(
           draft.puzzleState.telephone,
           { type: "input", value: Number(button) }
+        );
+      })
+    );
+  };
+  const handleSubmit = () => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.puzzleState.telephone = telephoneReducer(
+          draft.puzzleState.telephone,
+          { type: "submit" }
         );
       })
     );
@@ -75,7 +93,11 @@ export const TelephonePuzzle = () => {
         handleReset={handleReset}
         handleLeave={handleLeave}
         puzzleCompleted={puzzleCompleted}
-      ></PuzzleActions>
+      >
+        <Button disabled={puzzleCompleted} onClick={handleSubmit}>
+          Dial
+        </Button>
+      </PuzzleActions>
     </PuzzleContainer>
   );
 };

@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
@@ -28,49 +27,59 @@ export const TelephonePuzzle = () => {
 
   // --- handlers ---
   const handleReset = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.telephone = telephoneReducer(
-          draft.puzzleState.telephone,
-          { type: "reset" }
-        );
-      })
-    );
+    const state = useGameStore.getState();
+    useGameStore.setState({
+      ...state,
+      puzzleState: {
+        ...state.puzzleState,
+        telephone: telephoneReducer(state.puzzleState.telephone, {
+          type: "reset",
+        }),
+      },
+    });
   };
+
   const handleLeave = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.showDialog = false;
-        draft.currentPuzzle = null;
-        if (draft.puzzleState.telephone.puzzleCompleted) {
-          draft.storyLine.push(telephoneFeedback.storyLineSuccess);
-        } else {
-          draft.puzzleState.telephone = initialTelephoneState;
-          draft.storyLine.push(telephoneFeedback.storyLineFailure);
-        }
-      })
-    );
+    const state = useGameStore.getState();
+    const puzzleCompleted = state.puzzleState.telephone.puzzleCompleted;
+    useGameStore.setState({
+      showDialog: false,
+      currentPuzzle: null,
+      puzzleState: { ...state.puzzleState, telephone: initialTelephoneState },
+      storyLine: [
+        ...state.storyLine,
+        puzzleCompleted
+          ? telephoneFeedback.storyLineSuccess
+          : telephoneFeedback.storyLineFailure,
+      ],
+    });
   };
+
   const handleInput: InputHandler = (button) => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.telephone = telephoneReducer(
-          draft.puzzleState.telephone,
-          { type: "input", value: Number(button) }
-        );
-      })
-    );
+    const state = useGameStore.getState();
+    useGameStore.setState({
+      puzzleState: {
+        ...state.puzzleState,
+        telephone: telephoneReducer(state.puzzleState.telephone, {
+          type: "input",
+          value: Number(button),
+        }),
+      },
+    });
   };
   const handleSubmit = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.telephone = telephoneReducer(
-          draft.puzzleState.telephone,
-          { type: "submit" }
-        );
-      })
-    );
+    const state = useGameStore.getState();
+    useGameStore.setState({
+      ...state,
+      puzzleState: {
+        ...state.puzzleState,
+        telephone: telephoneReducer(state.puzzleState.telephone, {
+          type: "submit",
+        }),
+      },
+    });
   };
+
   return (
     <PuzzleContainer>
       <PuzzleHeader

@@ -33,7 +33,15 @@ export const ApePuzzle = () => {
       })
     );
   };
-  const handleReset = () => {};
+  const handleReset = () => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.puzzleState.ape = apeReducer(draft.puzzleState.ape, {
+          type: "reset",
+        });
+      })
+    );
+  };
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === "Enter") {
@@ -70,8 +78,9 @@ export const ApePuzzle = () => {
               onClick={() =>
                 useGameStore.setState((state) =>
                   produce(state, (draft) => {
-                    draft.puzzleState.ape.feedback.push(...apeFeedback.demo);
-                    draft.puzzleState.ape.status = "play";
+                    draft.puzzleState.ape = apeReducer(draft.puzzleState.ape, {
+                      type: "showDemo",
+                    });
                   })
                 )
               }

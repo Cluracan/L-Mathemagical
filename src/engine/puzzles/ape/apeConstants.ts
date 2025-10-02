@@ -42,7 +42,7 @@ export const apeFeedback = {
     '"OK" says the ape, "let\'s try again. Remember, I turned pig into sty like this..."',
   storyLineFailure: "The ape climbs a nearby tree and sits on a branch",
   storyLineSuccess:
-    "The owl has disappeared behind the treeline with your ladder - you can only hope that she has dropped it somewhere obvious!",
+    "The owl has disappeared behind the treeline with your ladder - you can only hope that she has dropped it somewhere obvious in the palace!",
 };
 
 //Initial State

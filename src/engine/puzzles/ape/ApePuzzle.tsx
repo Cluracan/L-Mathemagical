@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
@@ -21,40 +20,45 @@ export const ApePuzzle = () => {
 
   // --- handlers ---
   const handleLeave = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.showDialog = false;
-        draft.currentPuzzle = null;
-        if (draft.puzzleState.ape.puzzleCompleted) {
-          draft.storyLine.push(apeFeedback.storyLineSuccess);
-          draft.itemLocation.ladder = "store";
-        } else {
-          draft.puzzleState.ape = initialApeState;
-          draft.storyLine.push(apeFeedback.storyLineFailure);
-        }
-      })
-    );
+    const state = useGameStore.getState();
+    const puzzleCompleted = state.puzzleState.ape.puzzleCompleted;
+    useGameStore.setState({
+      showDialog: false,
+      currentPuzzle: null,
+      puzzleState: { ...state.puzzleState, ape: initialApeState },
+      storyLine: [
+        ...state.storyLine,
+        puzzleCompleted
+          ? apeFeedback.storyLineSuccess
+          : apeFeedback.storyLineFailure,
+      ],
+      itemLocation: {
+        ...state.itemLocation,
+        ladder: puzzleCompleted ? "store" : state.itemLocation.ladder,
+      },
+    });
   };
+
   const handleReset = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.ape = apeReducer(draft.puzzleState.ape, {
-          type: "reset",
-        });
-      })
-    );
+    useGameStore.setState((state) => ({
+      puzzleState: {
+        ...state.puzzleState,
+        ape: apeReducer(state.puzzleState.ape, { type: "reset" }),
+      },
+    }));
   };
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === "Enter") {
-      useGameStore.setState((state) =>
-        produce(state, (draft) => {
-          draft.puzzleState.ape = apeReducer(draft.puzzleState.ape, {
+      useGameStore.setState((state) => ({
+        puzzleState: {
+          ...state.puzzleState,
+          ape: apeReducer(state.puzzleState.ape, {
             type: "input",
             userInput,
-          });
-        })
-      );
+          }),
+        },
+      }));
       setUserInput("");
     }
   };
@@ -63,13 +67,14 @@ export const ApePuzzle = () => {
   };
 
   const handleShowDemo = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.ape = apeReducer(draft.puzzleState.ape, {
+    useGameStore.setState((state) => ({
+      puzzleState: {
+        ...state.puzzleState,
+        ape: apeReducer(state.puzzleState.ape, {
           type: "showDemo",
-        });
-      })
-    );
+        }),
+      },
+    }));
   };
 
   return (

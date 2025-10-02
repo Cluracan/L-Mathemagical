@@ -1,7 +1,7 @@
 import type { PuzzleNPC } from "../types";
 
 export const telephoneNPC: PuzzleNPC = {
-  usesDialog: false,
+  usesDialog: true,
   description: {
     long: "There is an old fashioned telephone resting on the chest.",
     short: "A telephone rests on the oak chest.",
@@ -23,19 +23,19 @@ export const telephoneNPC: PuzzleNPC = {
       puzzleIncomplete:
         "You recognise this as the 9003R Statesman model from 1984. It is cream in colour, and appears to be in good working order.",
       puzzleComplete:
-        "This phone has been used recently, but clearly someone has been playing with the coiled cord, as it is knotted beyond repair...",
+        "This phone has been used recently, but clearly someone has been playing with the coiled cord, as it is knotted beyond belief...",
     },
     phone: {
       puzzleIncomplete:
         "You recognise this as the 9003R Statesman model from 1984. It is cream in colour, and appears to be in good working order.",
       puzzleComplete:
-        "This phone has been used recently, but clearly someone has been playing with the coiled cord, as it is knotted beyond repair...",
+        "This phone has been used recently, but clearly someone has been playing with the coiled cord, as it is knotted beyond belief...",
     },
     cord: {
       puzzleIncomplete:
         "This tightly coiled cord connects the body of the phone to the handset.",
       puzzleComplete:
-        "You must have been playing wiuth the cord whilst you were using the phone!  It is now tangled beyond repair...",
+        "You must have been playing with the cord whilst you were using the phone!  It is now tangled beyond repair...",
     },
   },
 };

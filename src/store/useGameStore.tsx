@@ -53,6 +53,10 @@ import {
   initialApeState,
   type ApeState,
 } from "../engine/puzzles/ape/apeConstants";
+import {
+  initialTelephoneState,
+  type TelephoneState,
+} from "../engine/puzzles/telephone/telephoneConstants";
 
 export type GameStoreState = {
   playerName: string;
@@ -78,6 +82,7 @@ export type GameStoreState = {
     piano: PianoState;
     pig: PigState;
     snooker: SnookerState;
+    telephone: TelephoneState;
     tree: TreeState;
     turtle: TurtleState;
   };
@@ -116,6 +121,7 @@ const initialGameState: GameStoreState = {
     piano: initialPianoState,
     pig: initialPigState,
     snooker: initialSnookerState,
+    telephone: initialTelephoneState,
     tree: initialTreeState,
     turtle: initialTurtleState,
   },

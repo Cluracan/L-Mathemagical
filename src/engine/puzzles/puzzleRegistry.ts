@@ -26,6 +26,8 @@ import { snookerNPC } from "./snooker/snookerNPC";
 import { apeNPC } from "./ape/apeNPC";
 import { handleApePuzzle } from "./ape/handleApePuzzle";
 import { ApePuzzle } from "./ape/ApePuzzle";
+import { telephoneNPC } from "./telephone/telephoneNPC";
+import { TelephonePuzzle } from "./telephone/TelephonePuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -65,6 +67,10 @@ export const puzzleAtLocation = {
   snooker: {
     puzzleId: "snooker",
     puzzleNPC: snookerNPC,
+  },
+  telephone: {
+    puzzleId: "telephone",
+    puzzleNPC: telephoneNPC,
   },
   courtyard: {
     puzzleId: "turtle",
@@ -124,6 +130,10 @@ export const puzzleRegistry = {
   snooker: {
     pipelineFunction: null,
     component: SnookerPuzzle,
+  },
+  telephone: {
+    pipelineFunction: null,
+    component: TelephonePuzzle,
   },
   turtle: {
     pipelineFunction: handleTurtlePuzzle,

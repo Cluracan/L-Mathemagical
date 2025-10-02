@@ -11,11 +11,13 @@ import {
   type TelephoneButton,
 } from "./telephoneConstants";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { telephoneReducer } from "./telephoneReducer";
 
 //Types
 type InputHandler = (button: TelephoneButton) => void;
 
 export const TelephonePuzzle = () => {
+  // --- state / selectors ---
   const feedback = useGameStore(
     (state) => state.puzzleState.telephone.feedback
   );
@@ -23,6 +25,8 @@ export const TelephonePuzzle = () => {
     (state) => state.puzzleState.telephone.puzzleCompleted
   );
   const number = useGameStore((state) => state.puzzleState.telephone.number);
+
+  // --- handlers ---
   const handleReset = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
@@ -40,6 +44,14 @@ export const TelephonePuzzle = () => {
   const handleLeave = () => {};
   const handleInput: InputHandler = (button) => {
     console.log(button);
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.puzzleState.telephone = telephoneReducer(
+          draft.puzzleState.telephone,
+          { type: "input", value: Number(button) }
+        );
+      })
+    );
   };
   return (
     <PuzzleContainer>

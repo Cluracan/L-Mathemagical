@@ -47,7 +47,7 @@ export const GameContent = memo(() => {
             whiteSpace: "pre-wrap",
           }}
         >
-          {storyLine.map((entry, index) => {
+          {storyLine.slice(-30).map((entry, index) => {
             return (
               <Box key={index} sx={{ marginBottom: "1.5rem" }}>
                 {entry}

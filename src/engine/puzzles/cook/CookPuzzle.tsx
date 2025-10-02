@@ -83,7 +83,7 @@ export const CookPuzzle = () => {
           ))}
           <CakeDisplay />
         </Stack>
-        <PuzzleFeedback feedback={feedback} height="21vh" />
+        <PuzzleFeedback feedback={feedback.slice(-20)} height="21vh" />
         <PuzzleActions
           puzzleCompleted={puzzleCompleted}
           handleLeave={handleLeave}

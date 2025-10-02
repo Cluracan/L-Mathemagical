@@ -101,7 +101,7 @@ export const PianoPuzzle = () => {
       <PuzzleHeader title="Piano Puzzle" description="Play the right tune." />
       <NotesDisplay playedNotes={playedNotes} />
       <PianoKeyboard onNotePress={handleNotePress} />
-      <PuzzleFeedback height="24vh" feedback={feedback} />
+      <PuzzleFeedback height="24vh" feedback={feedback.slice(-20)} />
       <PuzzleActions
         handleReset={handleReset}
         handleLeave={handleLeave}

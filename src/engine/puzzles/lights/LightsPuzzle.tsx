@@ -198,7 +198,7 @@ export const LightsPuzzle = () => {
             </div>
           ))}
         </Stack>
-        <PuzzleFeedback feedback={feedback} height="30vh" />
+        <PuzzleFeedback feedback={feedback.slice(-20)} height="30vh" />
 
         <PuzzleActions
           puzzleCompleted={puzzleCompleted}

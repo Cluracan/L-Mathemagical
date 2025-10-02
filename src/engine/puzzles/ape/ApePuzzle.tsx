@@ -66,7 +66,7 @@ export const ApePuzzle = () => {
         title="Ape Puzzle"
         description="Turn the ape into an owl."
       />
-      <PuzzleFeedback feedback={feedback} height="50vh" />
+      <PuzzleFeedback feedback={feedback.slice(-20)} height="50vh" />
       {status === "instructions" && (
         <>
           <Stack

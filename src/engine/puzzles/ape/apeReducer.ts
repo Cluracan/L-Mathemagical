@@ -60,7 +60,7 @@ export function apeReducer(state: ApeState, action: ApeAction) {
       return {
         ...state,
         word: APE_INIITAL_WORD,
-        feedback: [...state.feedback, apeFeedback.reset],
+        feedback: [...state.feedback, apeFeedback.reset, ...apeFeedback.demo],
       };
   }
   return state;

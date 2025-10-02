@@ -1,5 +1,5 @@
 //Types
-import { current, produce } from "immer";
+import { produce } from "immer";
 import {
   APE_INIITAL_WORD,
   APE_TARGET_WORD,

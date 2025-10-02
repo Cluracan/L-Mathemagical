@@ -27,16 +27,14 @@ export const TelephonePuzzle = () => {
 
   // --- handlers ---
   const handleReset = () => {
-    const state = useGameStore.getState();
-    useGameStore.setState({
-      ...state,
+    useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
         telephone: telephoneReducer(state.puzzleState.telephone, {
           type: "reset",
         }),
       },
-    });
+    }));
   };
 
   const handleLeave = () => {
@@ -56,8 +54,7 @@ export const TelephonePuzzle = () => {
   };
 
   const handleInput: InputHandler = (button) => {
-    const state = useGameStore.getState();
-    useGameStore.setState({
+    useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
         telephone: telephoneReducer(state.puzzleState.telephone, {
@@ -65,19 +62,18 @@ export const TelephonePuzzle = () => {
           value: Number(button),
         }),
       },
-    });
+    }));
   };
+
   const handleSubmit = () => {
-    const state = useGameStore.getState();
-    useGameStore.setState({
-      ...state,
+    useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
         telephone: telephoneReducer(state.puzzleState.telephone, {
           type: "submit",
         }),
       },
-    });
+    }));
   };
 
   return (

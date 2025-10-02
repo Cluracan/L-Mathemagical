@@ -6,6 +6,10 @@ export type ApeState = {
   word: string;
 };
 
+//Constants
+export const APE_TARGET_WORD = "owl";
+export const APE_INIITAL_WORD = "ape";
+
 //Static data
 export const apeFeedback = {
   instructions: [
@@ -28,12 +32,13 @@ export const apeFeedback = {
   ],
   userInput: {
     wrongLength: '"Hmm?" says the ape.',
-    doesNotConnect: '"You can\'t do that!" cries the ape. "Start again!"',
+    doesNotConnect: '"You can\'t do that!" cries the ape.',
     isNotWord: 'The ape looks confused. "That\'s not a word!"',
     success:
       "The ape immediately starts to shrink and sprout feathers. In less than a minute she has turned into a magnificent barn owl. She flaps her wings, a little uncertainly at first, and then swoops down. With her talons she snatches the rope ladder, flies off with it towards the palace, and soon disappears out of sight behind some trees.",
     validWord: '"OK," says the ape.',
   },
+  reset: '"OK" says the ape, "let\'s try again!"\n\n',
   storyLineFailure: "The ape climbs a nearby tree and sits on a branch",
   storyLineSuccess:
     "The owl has disappeared behind the treeline with your ladder - you can only hope that she has dropped it somewhere obvious!",
@@ -44,5 +49,5 @@ export const initialApeState: ApeState = {
   puzzleCompleted: false,
   feedback: apeFeedback.instructions,
   status: "instructions",
-  word: "ape",
+  word: APE_INIITAL_WORD,
 };

@@ -32,7 +32,7 @@ export function telephoneReducer(
         draft.feedback.push(
           `You dial ${draft.number.toString().padStart(3, "0")}`
         );
-        if (!hasReply(state.number)) {
+        if (!hasReply(draft.number)) {
           draft.feedback.push(telephoneFeedback.noReply);
         } else if (draft.number === TARGET_NUMBER) {
           if (draft.targetNumberIsEngaged) {

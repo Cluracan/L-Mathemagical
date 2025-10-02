@@ -1,5 +1,5 @@
 //Types
-import { produce } from "immer";
+import { current, produce } from "immer";
 import {
   APE_INIITAL_WORD,
   APE_TARGET_WORD,
@@ -30,7 +30,7 @@ export function apeReducer(state: ApeState, action: ApeAction) {
       const currentWord = state.word;
       return produce(state, (draft) => {
         draft.feedback.push(userInput);
-        if (userInput === currentWord) {
+        if (userInput === currentWord && currentWord !== APE_INIITAL_WORD) {
           draft.feedback.push(apeFeedback.userInput.hasNotChanged);
         } else if (userInput.length !== APE_TARGET_WORD.length) {
           draft.feedback.push(apeFeedback.userInput.wrongLength);

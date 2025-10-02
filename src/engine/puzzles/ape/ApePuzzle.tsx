@@ -10,6 +10,7 @@ import { useState, type ChangeEvent, type KeyboardEventHandler } from "react";
 import { apeReducer } from "./apeReducer";
 
 export const ApePuzzle = () => {
+  // --- state / selectors ---
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.ape.puzzleCompleted
   );
@@ -18,6 +19,7 @@ export const ApePuzzle = () => {
   const word = useGameStore((state) => state.puzzleState.ape.word);
   const [userInput, setUserInput] = useState("");
 
+  // --- handlers ---
   const handleLeave = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
@@ -60,6 +62,16 @@ export const ApePuzzle = () => {
     setUserInput(e.target.value);
   };
 
+  const handleShowDemo = () => {
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.puzzleState.ape = apeReducer(draft.puzzleState.ape, {
+          type: "showDemo",
+        });
+      })
+    );
+  };
+
   return (
     <PuzzleContainer>
       <PuzzleHeader
@@ -68,30 +80,7 @@ export const ApePuzzle = () => {
       />
       <PuzzleFeedback feedback={feedback.slice(-20)} height="50vh" />
       {status === "instructions" && (
-        <>
-          <Stack
-            direction={"row"}
-            sx={{ m: 2, width: "60%", justifyContent: "space-around" }}
-          >
-            <Button
-              size="large"
-              onClick={() =>
-                useGameStore.setState((state) =>
-                  produce(state, (draft) => {
-                    draft.puzzleState.ape = apeReducer(draft.puzzleState.ape, {
-                      type: "showDemo",
-                    });
-                  })
-                )
-              }
-            >
-              Yes please!
-            </Button>
-            <Button size="large" onClick={handleLeave}>
-              No thanks!
-            </Button>
-          </Stack>
-        </>
+        <InstructionChoices onConfirm={handleShowDemo} onCancel={handleLeave} />
       )}
       {status === "play" && (
         <PuzzleActions
@@ -105,9 +94,32 @@ export const ApePuzzle = () => {
             onKeyDown={handleKeyDown}
             onChange={handleChange}
             value={userInput}
-          ></TextField>
+          />
         </PuzzleActions>
       )}
     </PuzzleContainer>
+  );
+};
+
+type InstructionChoicesProps = {
+  onConfirm: () => void;
+  onCancel: () => void;
+};
+const InstructionChoices = ({
+  onConfirm,
+  onCancel,
+}: InstructionChoicesProps) => {
+  return (
+    <Stack
+      direction={"row"}
+      sx={{ m: 2, width: "60%", justifyContent: "space-around" }}
+    >
+      <Button size="large" onClick={onConfirm}>
+        Yes please!
+      </Button>
+      <Button size="large" onClick={onCancel}>
+        No thanks!
+      </Button>
+    </Stack>
   );
 };

@@ -30,7 +30,9 @@ export function apeReducer(state: ApeState, action: ApeAction) {
       const currentWord = state.word;
       return produce(state, (draft) => {
         draft.feedback.push(userInput);
-        if (userInput.length !== APE_TARGET_WORD.length) {
+        if (userInput === currentWord) {
+          draft.feedback.push(apeFeedback.userInput.hasNotChanged);
+        } else if (userInput.length !== APE_TARGET_WORD.length) {
           draft.feedback.push(apeFeedback.userInput.wrongLength);
         } else if (!isValidConnection(userInput, currentWord)) {
           draft.feedback.push(apeFeedback.userInput.doesNotConnect);

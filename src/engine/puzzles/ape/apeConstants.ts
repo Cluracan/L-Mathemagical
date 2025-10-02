@@ -31,6 +31,8 @@ export const apeFeedback = {
     " ",
   ],
   userInput: {
+    hasNotChanged:
+      '"That\'s the same word!" says the ape, "...but carry on..."',
     wrongLength: '"Hmm?" says the ape.',
     doesNotConnect: '"You can\'t do that!" cries the ape.',
     isNotWord: 'The ape looks confused. "That\'s not a word!"',

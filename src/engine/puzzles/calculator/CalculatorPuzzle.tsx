@@ -24,7 +24,7 @@ import {
 } from "./calculatorConstants";
 
 //Types
-type HandleInput = (button: InputButton) => void;
+type InputHandler = (button: InputButton) => void;
 
 //Main Component
 export const CalculatorPuzzle = () => {
@@ -39,7 +39,7 @@ export const CalculatorPuzzle = () => {
     (state) => state.puzzleState.calculator.puzzleCompleted
   );
 
-  const handleInput: HandleInput = useCallback((button) => {
+  const handleInput: InputHandler = useCallback((button) => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         draft.puzzleState.calculator = calculatorReducer(
@@ -112,7 +112,7 @@ export const CalculatorPuzzle = () => {
   );
 };
 
-type CalculatorProps = { handleInput: HandleInput };
+type CalculatorProps = { handleInput: InputHandler };
 const Calculator = ({ handleInput }: CalculatorProps) => {
   const { tokens, currentInput } = useGameStore(
     (state) => state.puzzleState.calculator
@@ -194,7 +194,7 @@ const Calculator = ({ handleInput }: CalculatorProps) => {
 type CalculatorButtonProps = {
   value: keyof typeof calculatorButtons;
   displayValue: string;
-  handleInput: HandleInput;
+  handleInput: InputHandler;
 };
 const CalculatorButton = memo(
   ({ value, displayValue, handleInput }: CalculatorButtonProps) => {

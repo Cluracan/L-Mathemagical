@@ -37,7 +37,7 @@ export const parseInput: ParseInput = (userInput) => {
     return { command: "say", target: commandWord };
   }
 
-  let target = args[args.length - 1] || null;
+  const target = args[args.length - 1] || null;
 
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {
     if (triggerWords.includes(commandWord)) {

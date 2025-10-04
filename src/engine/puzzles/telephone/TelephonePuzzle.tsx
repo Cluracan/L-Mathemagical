@@ -11,6 +11,7 @@ import {
 } from "./telephoneConstants";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { telephoneReducer } from "./telephoneReducer";
+import { useEffect } from "react";
 
 //Types
 type InputHandler = (button: TelephoneButton) => void;
@@ -24,6 +25,22 @@ export const TelephonePuzzle = () => {
     (state) => state.puzzleState.telephone.puzzleCompleted
   );
   const number = useGameStore((state) => state.puzzleState.telephone.number);
+
+  // --- effects ---
+  useEffect(() => {
+    function keyDownHandler(e: globalThis.KeyboardEvent) {
+      console.log(e.key);
+      if (!isNaN(Number(e.key))) {
+        handleInput(Number(e.key));
+      } else if (e.key === "Enter") {
+        handleSubmit();
+      }
+    }
+    document.addEventListener("keydown", keyDownHandler);
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+  }, []);
 
   // --- handlers ---
   const handleReset = () => {
@@ -66,6 +83,7 @@ export const TelephonePuzzle = () => {
   };
 
   const handleSubmit = () => {
+    console.log(useGameStore.getState().puzzleState.telephone);
     useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,

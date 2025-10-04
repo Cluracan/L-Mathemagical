@@ -37,5 +37,11 @@ export const telephoneNPC: PuzzleNPC = {
       puzzleComplete:
         "You must have been playing with the cord whilst you were using the phone!  It is now tangled beyond repair...",
     },
+    chest: {
+      puzzleIncomplete:
+        "You can make out some old paintings of flowers around the sides of this box, but they have faded over time. It looks incredibly old, and solidly built.",
+      puzzleComplete:
+        "You can make out some old paintings of flowers around the sides of this box, but they have faded over time. It looks incredibly old, and solidly built",
+    },
   },
 };

@@ -22,7 +22,7 @@ const applySwitch: Record<
 
 const isSwitchIndex = createKeyGuard(applySwitch);
 
-const isCorrectOrder = (curOrder: string[]) =>
+const isCorrectOrder = (curOrder: LightsColor[]) =>
   TARGET_ORDER.every((color, index) => curOrder[index] === color);
 
 export function lightsReducer(
@@ -60,5 +60,7 @@ export function lightsReducer(
         draft.turns = 0;
       });
     }
+    default:
+      return state;
   }
 }

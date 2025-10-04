@@ -21,8 +21,9 @@ const keyFeedback = {
 } as const;
 
 const useFeedback = {
-  noTarget: "Use what?",
-  noUse: "You can't use that here...",
+  noTarget: "What would you like to use?",
+  notAnItem: "Use what?",
+  cannotUseHere: "You can't use that here...",
   notOnPlayer: "You don't have that!",
 } as const;
 
@@ -66,18 +67,19 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
   if (target === null) {
     return failCommand(payload, useFeedback.noTarget);
   }
-
-  if (isItemId(target) && itemLocation[target] === "player") {
-    return failCommand(payload, useFeedback.noUse);
-  } else {
+  if (!isItemId(target)) {
+    return failCommand(payload, useFeedback.notAnItem);
+  }
+  if (itemLocation[target] !== "player") {
     return failCommand(payload, useFeedback.notOnPlayer);
   }
+  return failCommand(payload, useFeedback.cannotUseHere);
 };
 
 const UsePipeline = [
+  runKeyConversion,
   runPuzzleTriggers,
   runBathTriggers,
-  runKeyConversion,
   runUseKeyCheck,
   runUseFailureMessage,
 ];

@@ -176,9 +176,8 @@ const isBathCommand = createKeyGuard(bathCommandHandlers);
 //Main function
 export const runBathTriggers: PipelineFunction = (payload) => {
   const { command } = payload;
-  if (isBathCommand(command)) {
-    return bathCommandHandlers[command](payload);
-  } else {
+  if (!isBathCommand(command)) {
     return payload;
   }
+  return bathCommandHandlers[command](payload);
 };

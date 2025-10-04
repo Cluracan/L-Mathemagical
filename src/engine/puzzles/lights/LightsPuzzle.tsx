@@ -58,7 +58,7 @@ export const LightsPuzzle = () => {
       ],
       itemLocation: {
         ...state.itemLocation,
-        oar: puzzleCompleted ? "lights" : state.itemLocation.oar,
+        ...(puzzleCompleted && { oar: "lights" }),
       },
     });
   };

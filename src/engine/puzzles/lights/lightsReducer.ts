@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { createKeyGuard } from "../../../utils/guards";
 import {
-  initialLightsState,
+  INITAL_ORDER,
   lightsFeedback,
   TARGET_ORDER,
   TARGET_TURNS,
@@ -53,10 +53,12 @@ export function lightsReducer(
     }
 
     case "reset": {
-      return {
-        ...initialLightsState,
-        feedback: [...state.feedback, ...lightsFeedback.reset],
-      };
+      return produce(state, (draft) => {
+        draft.curOrder = [...INITAL_ORDER];
+        draft.feedback.push(...lightsFeedback.reset);
+        draft.switchesActive = true;
+        draft.turns = 0;
+      });
     }
   }
 }

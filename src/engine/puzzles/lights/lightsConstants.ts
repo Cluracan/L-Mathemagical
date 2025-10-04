@@ -10,7 +10,7 @@ export type LightsState = {
 };
 
 //Constants
-const INITAL_ORDER: LightsColor[] = ["Yellow", "Red", "Green", "Blue"];
+export const INITAL_ORDER = ["Yellow", "Red", "Green", "Blue"] as const;
 export const TARGET_ORDER = ["Blue", "Green", "Red", "Yellow"] as const;
 export const TARGET_TURNS = 4;
 
@@ -42,7 +42,7 @@ export const lightsFeedback = {
 
 //Initial State
 export const initialLightsState: LightsState = {
-  curOrder: INITAL_ORDER,
+  curOrder: [...INITAL_ORDER],
   feedback: lightsFeedback.initial,
   turns: 0,
   switchesActive: true,

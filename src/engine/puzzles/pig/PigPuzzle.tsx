@@ -39,7 +39,7 @@ export const PigPuzzle = () => {
   );
 
   useEffect(() => {
-    function keyDownHandler(e: globalThis.KeyboardEvent) {
+    function keyDownHandler(e: KeyboardEvent) {
       if (!isDirectionAlias(e.key)) return;
       console.log(directionAliases[e.key]);
       useGameStore.setState((state) =>

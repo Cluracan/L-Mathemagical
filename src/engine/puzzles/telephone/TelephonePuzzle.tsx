@@ -28,7 +28,7 @@ export const TelephonePuzzle = () => {
 
   // --- effects ---
   useEffect(() => {
-    function keyDownHandler(e: globalThis.KeyboardEvent) {
+    function keyDownHandler(e: KeyboardEvent) {
       console.log(e.key);
       if (!isNaN(Number(e.key))) {
         handleInput(Number(e.key));

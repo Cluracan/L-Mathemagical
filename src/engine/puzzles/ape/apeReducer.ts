@@ -25,7 +25,7 @@ type ApeAction =
   | { type: "reset" };
 export function apeReducer(state: ApeState, action: ApeAction) {
   switch (action.type) {
-    case "input":
+    case "input": {
       const userInput = action.userInput.toLowerCase();
       const currentWord = state.word;
       return produce(state, (draft) => {
@@ -47,16 +47,19 @@ export function apeReducer(state: ApeState, action: ApeAction) {
           draft.word = userInput;
         }
       });
-    case "showDemo":
+    }
+    case "showDemo": {
       return produce(state, (draft) => {
         draft.feedback.push(...apeFeedback.demo);
         draft.status = "play";
       });
-    case "reset":
+    }
+    case "reset": {
       return produce(state, (draft) => {
         draft.word = INIITAL_WORD;
         draft.feedback = [apeFeedback.reset, ...apeFeedback.demo];
       });
+    }
   }
   return state;
 }

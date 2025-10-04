@@ -18,7 +18,7 @@ function assertIsOperatorToken(
   }
 }
 
-function assertIsOperator(value: any): asserts value is Operator {
+function assertIsOperator(value: InputButton): asserts value is Operator {
   if (!(value in operatorPrecedence)) {
     throw new Error(`Expected an operator but got ${value}`);
   }
@@ -126,7 +126,7 @@ export function calculatorReducer(
 
   if (isValidInputType(action.button, lastInputType)) {
     switch (calculatorButtons[action.button].type) {
-      case "number":
+      case "number": {
         if (lastInputType === "evaluate") {
           currentInput = button;
         } else {
@@ -134,14 +134,16 @@ export function calculatorReducer(
         }
         lastInputType = "number";
         break;
-      case "operator":
+      }
+      case "operator": {
         assertIsOperator(button);
         newTokens.push({ type: "number", value: parseFloat(currentInput) });
         newTokens.push({ type: "operator", value: button });
         lastInputType = "operator";
         currentInput = "";
         break;
-      case "evaluate":
+      }
+      case "evaluate": {
         newTokens.push({ type: "number", value: parseInt(currentInput) });
         const tokensRPN = applyShuntingYard(newTokens);
         currentInput = evaluateRPN(tokensRPN).toString();
@@ -155,10 +157,12 @@ export function calculatorReducer(
         }
         showFeedback = true;
         break;
-      case "reset":
+      }
+      case "reset": {
         currentInput = "0";
         lastInputType = "evaluate";
         newTokens = [];
+      }
     }
   }
   return {

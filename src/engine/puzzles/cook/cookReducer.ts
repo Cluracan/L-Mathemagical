@@ -10,7 +10,7 @@ type CookAction = { type: "bake" } | { type: "reset" };
 export function cookReducer(state: CookState, action: CookAction) {
   const nextFeedback = [...state.feedback];
   switch (action.type) {
-    case "bake":
+    case "bake": {
       const { TOLT, FIMA, MUOT } = state.ingredients;
       let nextPuzzleCompleted = state.puzzleCompleted;
       let nextCakeHeight = calculateCakeHeight({ TOLT, FIMA, MUOT });
@@ -54,14 +54,16 @@ export function cookReducer(state: CookState, action: CookAction) {
         cakeHeight: nextCakeHeight,
         puzzleCompleted: nextPuzzleCompleted,
       };
+    }
 
-    case "reset":
+    case "reset": {
       nextFeedback.push("You quickly clean a bowl, and begin again.");
       return {
         ...state,
         feedback: nextFeedback,
         ingredients: initialCookState.ingredients,
       };
+    }
   }
 }
 

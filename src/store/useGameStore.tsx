@@ -11,10 +11,6 @@ import {
 import { type PuzzleId } from "../engine/puzzles/puzzleRegistry";
 
 import {
-  initialLightsState,
-  type LightsState,
-} from "../engine/puzzles/lights/LightsPuzzle";
-import {
   initialKeyState,
   type KeyState,
 } from "../engine/puzzles/key/keyConstants";
@@ -56,6 +52,10 @@ import {
   initialTelephoneState,
   type TelephoneState,
 } from "../engine/puzzles/telephone/telephoneConstants";
+import {
+  initialLightsState,
+  type LightsState,
+} from "../engine/puzzles/lights/lightsConstants";
 
 export type GameStoreState = {
   playerName: string;

@@ -1,18 +1,18 @@
+import { produce } from "immer";
+import { isItemId } from "../../assets/data/itemData";
 import { roomRegistry } from "../world/roomRegistry";
 import { itemRegistry } from "../world/itemRegistry";
-import { isItemId } from "../../assets/data/itemData";
 import { runKeyConversion } from "../events/runKeyConversion";
 import { runPoolTriggers } from "../events/runPoolTriggers";
 import { runBathTriggers } from "../events/runBathTriggers";
-import type { GameState } from "../gameEngine";
-import type { Command, HandleCommand } from "../dispatchCommand";
-import { produce } from "immer";
 import { stopWithSuccess } from "../pipeline/stopWithSuccess";
 import { failCommand } from "../pipeline/failCommand";
-import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
 import { addPuzzleNPC } from "../puzzles/addPuzzleNPC";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
+import type { GameState } from "../gameEngine";
+import type { Command, HandleCommand } from "../dispatchCommand";
+import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 
 //Helper functions
 export const buildRoomDescription = (
@@ -75,9 +75,9 @@ const lookItem: PipelineFunction = (payload) => {
 };
 
 const lookPipeline = [
+  runKeyConversion,
   runPuzzleTriggers,
   runBathTriggers,
-  runKeyConversion,
   runPoolTriggers,
   lookRoom,
   lookItem,

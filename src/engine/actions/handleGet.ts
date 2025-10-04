@@ -21,15 +21,11 @@ const getItem: PipelineFunction = (payload) => {
     return failCommand(payload, "You don't see that here!");
   }
 
-  if (isItemId(target) && itemLocation[target] === currentRoom) {
-    const nextGameState = produce(gameState, (draft) => {
-      draft.itemLocation[target] = "player";
-      draft.storyLine.push(itemRegistry.getPickUpDescription(target));
-    });
-    return { ...payload, gameState: nextGameState, done: true };
-  }
-
-  throw new Error("Unexpected code path in getItem");
+  const nextGameState = produce(gameState, (draft) => {
+    draft.itemLocation[target] = "player";
+    draft.storyLine.push(itemRegistry.getPickUpDescription(target));
+  });
+  return { ...payload, gameState: nextGameState, done: true };
 };
 
 const getPipeline = [

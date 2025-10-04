@@ -18,19 +18,16 @@ const dropItem: PipelineFunction = (payload) => {
   if (!isItemId(target) || itemLocation[target] !== "player") {
     return failCommand(payload, "You don't have that!");
   }
-  if (target && isItemId(target) && itemLocation[target] === "player") {
-    const nextGameState = produce(gameState, (draft) => {
-      draft.itemLocation[target] = currentRoom;
-      draft.storyLine.push(itemRegistry.getDropDescription(target));
-    });
-    return {
-      ...payload,
-      gameState: nextGameState,
-      done: true,
-    };
-  }
 
-  throw new Error("Unexpected code path in dropItem");
+  const nextGameState = produce(gameState, (draft) => {
+    draft.itemLocation[target] = currentRoom;
+    draft.storyLine.push(itemRegistry.getDropDescription(target));
+  });
+  return {
+    ...payload,
+    gameState: nextGameState,
+    done: true,
+  };
 };
 
 const dropPipeline = [runKeyConversion, runRingTriggers, dropItem];

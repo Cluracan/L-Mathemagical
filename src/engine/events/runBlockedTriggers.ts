@@ -8,7 +8,8 @@ import { failCommand } from "../pipeline/failCommand";
 
 export const runBlockedTriggers: PipelineFunction = (payload) => {
   const { currentRoom, keyLocked } = payload.gameState;
-  const target = payload.target;
+  const target = payload.direction;
+
   //blocked room check
   if (isBlockedRoom(currentRoom) && target) {
     const blockedDirections: string[] = blockedExitData[currentRoom].direction;

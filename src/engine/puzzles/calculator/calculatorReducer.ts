@@ -40,16 +40,6 @@ const calculate: Record<Operator, (a: number, b: number) => number> = {
   "/": (a: number, b: number) => a / b,
 };
 
-//Initial State
-export const initialCalculatorState: CalculatorState = {
-  currentInput: "0",
-  feedback: calculatorFeedback.default,
-  showFeedback: true,
-  lastInputType: "evaluate",
-  tokens: [],
-  puzzleCompleted: false,
-};
-
 //Helper Functions
 const isValidInputType = (button: InputButton, lastInputType: InputType) => {
   switch (calculatorButtons[button].type) {
@@ -116,7 +106,7 @@ function evaluateRPN(tokensRPN: Token[]) {
 
 export function calculatorReducer(
   state: CalculatorState,
-  action: { type: "input"; button: keyof typeof calculatorButtons }
+  action: { type: "input"; button: InputButton }
 ) {
   //currently only 'input' type available, so no switch wrapper on type
   let { currentInput, feedback, lastInputType, showFeedback, puzzleCompleted } =

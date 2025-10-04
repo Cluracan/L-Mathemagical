@@ -79,3 +79,13 @@ export const buttonOrder: (keyof typeof calculatorButtons)[] = [
   "=",
   "+",
 ];
+
+//Initial State
+export const initialCalculatorState: CalculatorState = {
+  currentInput: "0",
+  feedback: calculatorFeedback.default,
+  showFeedback: true,
+  lastInputType: "evaluate",
+  tokens: [],
+  puzzleCompleted: false,
+};

@@ -10,15 +10,15 @@ import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
-import { produce } from "immer";
 import { memo, useCallback, useMemo } from "react";
-import { calculatorReducer, initialCalculatorState } from "./calculatorReducer";
+import { calculatorReducer } from "./calculatorReducer";
 import {
   CALCULATOR_DISPLAY_LENGTH,
   WORKING_CALCULATOR_BUTTONS,
   buttonOrder,
   calculatorButtons,
   calculatorFeedback,
+  initialCalculatorState,
   type InputButton,
   type Token,
 } from "./calculatorConstants";
@@ -40,40 +40,42 @@ export const CalculatorPuzzle = () => {
   );
 
   const handleInput: InputHandler = useCallback((button) => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.calculator = calculatorReducer(
-          draft.puzzleState.calculator,
-          {
-            type: "input",
-            button,
-          }
-        );
-      })
-    );
+    useGameStore.setState((state) => ({
+      ...state,
+      puzzleState: {
+        ...state.puzzleState,
+        calculator: calculatorReducer(state.puzzleState.calculator, {
+          type: "input",
+          button,
+        }),
+      },
+    }));
   }, []);
 
   const handleLeave = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.showDialog = false;
-        draft.currentPuzzle = null;
-        if (state.puzzleState.calculator.puzzleCompleted) {
-          draft.storyLine.push(calculatorFeedback.storyLineSuccess);
-        } else {
-          draft.puzzleState.calculator = initialCalculatorState;
-          draft.storyLine.push(calculatorFeedback.storyLineFailure);
-        }
-      })
-    );
+    const state = useGameStore.getState();
+    const puzzleCompleted = state.puzzleState.calculator.puzzleCompleted;
+    useGameStore.setState({
+      ...state,
+      showDialog: false,
+      currentPuzzle: null,
+      puzzleState: { ...state.puzzleState, calculator: initialCalculatorState },
+      storyLine: [
+        ...state.storyLine,
+        puzzleCompleted
+          ? calculatorFeedback.storyLineSuccess
+          : calculatorFeedback.storyLineFailure,
+      ],
+    });
   };
 
   const closeFeedback = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.calculator.showFeedback = false;
-      })
-    );
+    useGameStore.setState((state) => ({
+      puzzleState: {
+        ...state.puzzleState,
+        calculator: { ...state.puzzleState.calculator, showFeedback: false },
+      },
+    }));
   };
 
   return (

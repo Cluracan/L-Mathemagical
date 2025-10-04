@@ -40,19 +40,23 @@ export const CookPuzzle = () => {
   };
 
   const handleLeave = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.showDialog = false;
-        draft.currentPuzzle = null;
-        if (draft.puzzleState.cook.puzzleCompleted) {
-          draft.itemLocation.icosahedron = "player";
-          draft.storyLine.push(cookFeedback.storyLineSuccess);
-        } else {
-          draft.puzzleState.cook = initialCookState;
-          draft.storyLine.push(cookFeedback.storyLineFailure);
-        }
-      })
-    );
+    const state = useGameStore.getState();
+    const puzzleCompleted = state.puzzleState.cook.puzzleCompleted;
+    useGameStore.setState({
+      showDialog: false,
+      currentPuzzle: null,
+      puzzleState: { ...state.puzzleState, cook: initialCookState },
+      storyLine: [
+        ...state.storyLine,
+        puzzleCompleted
+          ? cookFeedback.storyLineSuccess
+          : cookFeedback.storyLineFailure,
+      ],
+      itemLocation: {
+        ...state.itemLocation,
+        ...(puzzleCompleted && { icosahedron: "player" }),
+      },
+    });
   };
 
   return (

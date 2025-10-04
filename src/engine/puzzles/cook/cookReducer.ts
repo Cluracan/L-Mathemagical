@@ -1,5 +1,8 @@
 import { produce } from "immer";
 import {
+  cookFeedback,
+  getCakeHeightFeedback,
+  getFailureFeedback,
   initialCookState,
   MIN_HEIGHT,
   TARGET_HEIGHT,
@@ -12,38 +15,14 @@ export function cookReducer(state: CookState, action: CookAction) {
   switch (action.type) {
     case "bake": {
       return produce(state, (draft) => {
-        const { TOLT, FIMA, MUOT } = draft.ingredients;
-        const nextCakeHeight = calculateCakeHeight(draft.ingredients);
+        draft.cakeHeight = calculateCakeHeight(draft.ingredients);
         draft.feedback.push(
-          " ",
-          `The cook adds ${TOLT}g of TOLT, ${FIMA}g of FIMA, and ${MUOT}g of MUOT to the mixture, places it into the oven and after a few minutes takes out the cake.`
+          ...getCakeHeightFeedback(draft.ingredients, draft.cakeHeight)
         );
-        if (nextCakeHeight === MIN_HEIGHT) {
-          draft.feedback.push(
-            `The cake is only ${MIN_HEIGHT}cm high and doesn't seem to have risen at all.`,
-            '"Oh no!", cries the cook. "Will you try again?'
-          );
-        } else if (nextCakeHeight < 0.7 * MIN_HEIGHT + 0.3 * TARGET_HEIGHT) {
-          draft.feedback.push(
-            `The cake has risen to ${nextCakeHeight}cm...`,
-            '"Well it\'s a start" beams the cook. "Please keep going!'
-          );
-        } else if (nextCakeHeight < 0.3 * MIN_HEIGHT + 0.7 * TARGET_HEIGHT) {
-          draft.feedback.push(
-            `The cake is ${nextCakeHeight}cm high.`,
-            '"That\'s getting better", says the cook. "Will you try again?"'
-          );
-        } else if (nextCakeHeight < TARGET_HEIGHT) {
-          draft.feedback.push(
-            `The cake has risen to the height of  ${nextCakeHeight}cm.`,
-            '"So close!", cries the cook. "Please keep trying!"'
-          );
+        if (draft.cakeHeight < TARGET_HEIGHT) {
+          draft.feedback.push(getFailureFeedback(draft.cakeHeight));
         } else {
-          draft.feedback.push(
-            `It has risen to a height of ${nextCakeHeight}cm.`,
-            '"Thenk goodness!" beams the cook, tasting the cake. "It\'s rather salty, but it\'s just the right size."',
-            'The cook fumbles in a drawer and hands something to you. "I found this yesterday. It\'s of not use to me." You are holding an icosahedron made of highly polished jade'
-          );
+          draft.feedback.push(...cookFeedback.success);
           draft.puzzleCompleted = true;
         }
       });

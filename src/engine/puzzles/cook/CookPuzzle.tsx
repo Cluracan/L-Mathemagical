@@ -16,30 +16,27 @@ import { cookReducer } from "./cookReducer";
 import type { ChangeEvent } from "react";
 
 export const CookPuzzle = () => {
-  console.log("render");
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.cook.puzzleCompleted
   );
   const feedback = useGameStore((state) => state.puzzleState.cook.feedback);
 
   const handleReset = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.cook = cookReducer(draft.puzzleState.cook, {
-          type: "reset",
-        });
-      })
-    );
+    useGameStore.setState((state) => ({
+      puzzleState: {
+        ...state.puzzleState,
+        cook: cookReducer(state.puzzleState.cook, { type: "reset" }),
+      },
+    }));
   };
 
   const handleBake = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.cook = cookReducer(draft.puzzleState.cook, {
-          type: "bake",
-        });
-      })
-    );
+    useGameStore.setState((state) => ({
+      puzzleState: {
+        ...state.puzzleState,
+        cook: cookReducer(state.puzzleState.cook, { type: "bake" }),
+      },
+    }));
   };
 
   const handleLeave = () => {

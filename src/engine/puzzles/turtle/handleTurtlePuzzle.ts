@@ -25,7 +25,7 @@ const willMoveTurtle = createKeyGuard(turtleMovement);
 
 export const handleTurtlePuzzle: PipelineFunction = (payload) => {
   const { command, target, gameState } = payload;
-  const curTurtleLocation = gameState.puzzleState.turtle.displacement;
+  const displacementFromPlayer = gameState.puzzleState.turtle.displacement;
 
   //Leave puzzle
   if (command === "move" && target === "d") {
@@ -41,8 +41,8 @@ export const handleTurtlePuzzle: PipelineFunction = (payload) => {
   //In Puzzle Commands
   if (command === "move" && target && willMoveTurtle(target)) {
     const [nextX, nextY] = [
-      curTurtleLocation.x + turtleMovement[target].dx,
-      curTurtleLocation.y + turtleMovement[target].dy,
+      displacementFromPlayer.x + turtleMovement[target].dx,
+      displacementFromPlayer.y + turtleMovement[target].dy,
     ];
     const moveDirection = turtleMovement[target].direction;
 

@@ -73,6 +73,7 @@ function applyShuntingYard(tokens: Token[]): Token[] {
       }
       operatorStack.push(curToken);
     }
+    index++;
   }
   while (operatorStack.length > 0) {
     outputQueue.push(operatorStack.pop()!);

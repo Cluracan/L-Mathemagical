@@ -17,6 +17,8 @@ export type GameState = Omit<
  *  - adds transient fields: success + feedback
  *  - excludes UI-only fields (playerName, modernMode) */
 const toEngineState = (state: GameStoreState, userInput: string): GameState => {
+  // assign playerName & modernMode to define 'rest'
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { playerName, modernMode, ...rest } = state;
   return {
     ...rest,
@@ -30,6 +32,8 @@ const toEngineState = (state: GameStoreState, userInput: string): GameState => {
 /** Convert engine state back to a form the React store can handle.
  * Strips transient engine fields and converts Sets back to arrays. */
 const toStoreState = (state: GameState): Partial<GameStoreState> => {
+  // assign success,feedback to define 'rest'
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { success, feedback, ...rest } = state;
   return {
     ...rest,

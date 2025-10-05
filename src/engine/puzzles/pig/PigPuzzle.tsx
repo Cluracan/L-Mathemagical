@@ -16,6 +16,8 @@ import { memo, useEffect } from "react";
 import {
   directionAliases,
   GRID_SIZE,
+  INITIAL_PIG_LOCATION,
+  INITIAL_PLAYER_LOCATION,
   initialPigState,
   isDirectionAlias,
   pigFeedback,
@@ -80,7 +82,15 @@ export const PigPuzzle = () => {
     useGameStore.setState((state) => ({
       showDialog: false,
       currentPuzzle: null,
-      puzzleState: { ...state.puzzleState, pig: initialPigState },
+      puzzleState: {
+        ...state.puzzleState,
+        pig: {
+          ...state.puzzleState.pig,
+          showInstructions: true,
+          playerLocation: INITIAL_PLAYER_LOCATION,
+          pigLocation: INITIAL_PIG_LOCATION,
+        },
+      },
       storyLine: [
         ...state.storyLine,
         state.puzzleState.pig.puzzleCompleted

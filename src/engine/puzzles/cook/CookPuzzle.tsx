@@ -45,7 +45,15 @@ export const CookPuzzle = () => {
     useGameStore.setState({
       showDialog: false,
       currentPuzzle: null,
-      puzzleState: { ...state.puzzleState, cook: initialCookState },
+      puzzleState: {
+        ...state.puzzleState,
+        cook: {
+          ...state.puzzleState.cook,
+          feedback: cookFeedback.initial,
+          ingredients: { TOLT: 0, FIMA: 0, MUOT: 0 },
+          cakeHeight: 9,
+        },
+      },
       storyLine: [
         ...state.storyLine,
         puzzleCompleted

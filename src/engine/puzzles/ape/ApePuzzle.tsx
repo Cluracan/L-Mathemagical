@@ -4,7 +4,7 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { Button, Stack, TextField } from "@mui/material";
-import { apeFeedback, initialApeState } from "./apeConstants";
+import { apeFeedback, INIITAL_WORD, initialApeState } from "./apeConstants";
 import { useState, type ChangeEvent, type KeyboardEventHandler } from "react";
 import { apeReducer } from "./apeReducer";
 
@@ -25,7 +25,15 @@ export const ApePuzzle = () => {
     useGameStore.setState({
       showDialog: false,
       currentPuzzle: null,
-      puzzleState: { ...state.puzzleState, ape: initialApeState },
+      puzzleState: {
+        ...state.puzzleState,
+        ape: {
+          ...state.puzzleState.ape,
+          status: "instructions",
+          word: INIITAL_WORD,
+          feedback: apeFeedback.instructions,
+        },
+      },
       storyLine: [
         ...state.storyLine,
         puzzleCompleted

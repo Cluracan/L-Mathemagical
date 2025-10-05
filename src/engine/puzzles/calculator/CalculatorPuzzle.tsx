@@ -57,7 +57,17 @@ export const CalculatorPuzzle = () => {
       ...state,
       showDialog: false,
       currentPuzzle: null,
-      puzzleState: { ...state.puzzleState, calculator: initialCalculatorState },
+      puzzleState: {
+        ...state.puzzleState,
+        calculator: {
+          ...state.puzzleState.calculator,
+          currentInput: "0",
+          feedback: calculatorFeedback.default,
+          showFeedback: true,
+          lastInputType: "evaluate",
+          tokens: [],
+        },
+      },
       storyLine: [
         ...state.storyLine,
         state.puzzleState.calculator.puzzleCompleted

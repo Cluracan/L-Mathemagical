@@ -27,16 +27,20 @@ export const Canvas = ({
       canvasWidth,
       currentRoom
     );
-    if (!mapperRef.current) return;
     mapperRef.current.buildDrawableRooms(currentRoom, visitedRooms);
     mapperRef.current.renderMap(mapperRef.current.drawableRooms);
   }, [width]);
 
   useEffect(() => {
     if (!mapperRef.current) return;
-    mapperRef.current.moveToRoom(currentRoom, visitedRooms).then(() => {
-      reportAnimationComplete();
-    });
+    mapperRef.current
+      .moveToRoom(currentRoom, visitedRooms)
+      .then(() => {
+        reportAnimationComplete();
+      })
+      .catch((error: unknown) => {
+        console.error("Map animation failed:", error);
+      });
   }, [currentRoom]);
 
   return (

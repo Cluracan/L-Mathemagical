@@ -156,7 +156,7 @@ const Canvas = ({
           .then(() => {
             onAnimationComplete();
           })
-          .catch((error) => {
+          .catch((error: unknown) => {
             console.error("Animation failed:", error);
             onAnimationComplete();
           });

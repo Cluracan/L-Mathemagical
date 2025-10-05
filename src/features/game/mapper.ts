@@ -154,7 +154,10 @@ export class Mapper {
       y: this.centerRoomY,
     });
     while (stack.length > 0) {
-      const curRoom: DrawableRoom = stack.pop()!;
+      const curRoom = stack.pop();
+      if (!curRoom) {
+        throw new Error("Unexpected empty stack in Drawable Rooms");
+      }
       const curRoomId = curRoom.roomId;
       const curRoomX = curRoom.x;
       const curRoomY = curRoom.y;
@@ -297,28 +300,24 @@ export class Mapper {
     this.ctx.fill();
   }
 
-  moveToRoom(targetRoomId: RoomId, visitedRooms: RoomId[]) {
-    return new Promise(async (resolve) => {
-      if (targetRoomId === this.currentRoomId) return;
-      const exitDirection = this.getCompassConnection(
-        targetRoomId,
-        this.currentRoomId
-      );
-      if (exitDirection) {
-        this.buildDrawableRooms(this.currentRoomId, visitedRooms);
-        await this.translateTo(targetRoomId, exitDirection);
-        this.currentRoomId = targetRoomId;
-        resolve("done");
-      } else {
-        this.currentRoomId = targetRoomId;
-        this.buildDrawableRooms(this.currentRoomId, [
-          ...visitedRooms,
-          this.currentRoomId,
-        ]);
-        this.renderMap(this.drawableRooms);
-        resolve("done");
-      }
-    });
+  async moveToRoom(targetRoomId: RoomId, visitedRooms: RoomId[]) {
+    if (targetRoomId === this.currentRoomId) return;
+    const exitDirection = this.getCompassConnection(
+      targetRoomId,
+      this.currentRoomId
+    );
+    if (exitDirection) {
+      this.buildDrawableRooms(this.currentRoomId, visitedRooms);
+      await this.translateTo(targetRoomId, exitDirection);
+      this.currentRoomId = targetRoomId;
+    } else {
+      this.currentRoomId = targetRoomId;
+      this.buildDrawableRooms(this.currentRoomId, [
+        ...visitedRooms,
+        this.currentRoomId,
+      ]);
+      this.renderMap(this.drawableRooms);
+    }
   }
 
   getCompassConnection(targetRoomId: RoomId, currentRoomId: RoomId) {

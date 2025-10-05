@@ -12,8 +12,7 @@ interface PuzzleDialogProps {
 
 export const PuzzleDialog = memo((props: PuzzleDialogProps) => {
   const { puzzleId, showDialog } = props;
-  if (!showDialog || !puzzleId || puzzleRegistry[puzzleId].component === null)
-    return null;
+  if (!showDialog || puzzleRegistry[puzzleId].component === null) return null;
 
   const PuzzleComponent = puzzleRegistry[puzzleId].component;
 

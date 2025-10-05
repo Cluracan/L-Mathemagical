@@ -53,20 +53,18 @@ export const CalculatorPuzzle = () => {
   }, []);
 
   const handleLeave = () => {
-    const state = useGameStore.getState();
-    const puzzleCompleted = state.puzzleState.calculator.puzzleCompleted;
-    useGameStore.setState({
+    useGameStore.setState((state) => ({
       ...state,
       showDialog: false,
       currentPuzzle: null,
       puzzleState: { ...state.puzzleState, calculator: initialCalculatorState },
       storyLine: [
         ...state.storyLine,
-        puzzleCompleted
+        state.puzzleState.calculator.puzzleCompleted
           ? calculatorFeedback.storyLineSuccess
           : calculatorFeedback.storyLineFailure,
       ],
-    });
+    }));
   };
 
   const closeFeedback = () => {

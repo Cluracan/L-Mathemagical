@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import {
   INPUT_TARGET,
   calculatorButtons,
@@ -57,8 +58,9 @@ const isValidInputType = (button: InputButton, lastInputType: InputType) => {
 function applyShuntingYard(tokens: Token[]): Token[] {
   const outputQueue = [];
   const operatorStack: Token[] = [];
-  while (tokens.length > 0) {
-    const curToken = tokens.shift();
+  let index = 0;
+  while (index < tokens.length) {
+    const curToken = { ...tokens[index] };
     if (curToken?.type === "number") {
       outputQueue.push(curToken);
     } else if (curToken?.type === "operator") {
@@ -108,60 +110,60 @@ export function calculatorReducer(
   state: CalculatorState,
   action: { type: "input"; button: InputButton }
 ) {
+  if (!isValidInputType(action.button, state.lastInputType)) return state;
+
   //currently only 'input' type available, so no switch wrapper on type
-  let { currentInput, feedback, lastInputType, showFeedback, puzzleCompleted } =
-    state;
-  let newTokens = [...state.tokens];
   const button = action.button;
 
-  if (isValidInputType(action.button, lastInputType)) {
-    switch (calculatorButtons[action.button].type) {
-      case "number": {
-        if (lastInputType === "evaluate") {
-          currentInput = button;
+  switch (calculatorButtons[action.button].type) {
+    case "number": {
+      return produce(state, (draft) => {
+        if (draft.lastInputType === "evaluate") {
+          draft.currentInput = button;
         } else {
-          currentInput += button;
+          draft.currentInput += button;
         }
-        lastInputType = "number";
-        break;
-      }
-      case "operator": {
+        draft.lastInputType = "number";
+      });
+    }
+    case "operator": {
+      return produce(state, (draft) => {
         assertIsOperator(button);
-        newTokens.push({ type: "number", value: parseFloat(currentInput) });
-        newTokens.push({ type: "operator", value: button });
-        lastInputType = "operator";
-        currentInput = "";
-        break;
-      }
-      case "evaluate": {
-        newTokens.push({ type: "number", value: parseInt(currentInput) });
-        const tokensRPN = applyShuntingYard(newTokens);
-        currentInput = evaluateRPN(tokensRPN).toString();
-        lastInputType = "evaluate";
-        newTokens = [];
-        if (currentInput === INPUT_TARGET) {
-          puzzleCompleted = true;
-          feedback = calculatorFeedback.success;
+        draft.tokens.push({
+          type: "number",
+          value: parseFloat(draft.currentInput),
+        });
+        draft.tokens.push({ type: "operator", value: button });
+        draft.lastInputType = "operator";
+        draft.currentInput = "";
+      });
+    }
+    case "evaluate": {
+      return produce(state, (draft) => {
+        draft.tokens.push({
+          type: "number",
+          value: parseFloat(draft.currentInput),
+        });
+        const tokensRPN = applyShuntingYard(draft.tokens);
+        const result = evaluateRPN(tokensRPN);
+        draft.currentInput = result.toString();
+        draft.lastInputType = "evaluate";
+        draft.tokens = [];
+        if (draft.currentInput === INPUT_TARGET) {
+          draft.puzzleCompleted = true;
+          draft.feedback = calculatorFeedback.success;
         } else {
-          feedback = calculatorFeedback.failure;
+          draft.feedback = calculatorFeedback.failure;
         }
-        showFeedback = true;
-        break;
-      }
-      case "reset": {
-        currentInput = "0";
-        lastInputType = "evaluate";
-        newTokens = [];
-      }
+        draft.showFeedback = true;
+      });
+    }
+    case "reset": {
+      return produce(state, (draft) => {
+        draft.currentInput = "0";
+        draft.lastInputType = "evaluate";
+        draft.tokens = [];
+      });
     }
   }
-  return {
-    ...state,
-    currentInput,
-    feedback,
-    showFeedback,
-    lastInputType,
-    tokens: newTokens,
-    puzzleCompleted,
-  };
 }

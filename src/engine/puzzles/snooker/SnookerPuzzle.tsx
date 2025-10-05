@@ -114,7 +114,8 @@ const Canvas = ({
   const engineRef = useRef<SnookerEngine | null>(null);
   const angle = useGameStore((state) => state.puzzleState.snooker.angle);
   const action = useGameStore((state) => state.puzzleState.snooker.action);
-  let { width, height } = useWindowDimensions();
+  let { width } = useWindowDimensions();
+  const { height } = useWindowDimensions();
   if (width < height) width = height;
   const cssWidth = width * CANVAS_RATIO;
   const cssHeight = height * CANVAS_RATIO;
@@ -124,8 +125,8 @@ const Canvas = ({
     const context = canvasRef.current.getContext("2d");
 
     // Set display size (css pixels)   https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
-    canvasRef.current.style.width = `${cssWidth}px`;
-    canvasRef.current.style.height = `${cssHeight}px`;
+    canvasRef.current.style.width = `${String(cssWidth)}px`;
+    canvasRef.current.style.height = `${String(cssHeight)}px`;
 
     // Set actual size in memory (scaled to account for extra pixel density).
     const dpr = window.devicePixelRatio || 1;

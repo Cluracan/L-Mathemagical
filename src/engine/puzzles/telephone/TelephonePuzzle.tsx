@@ -125,9 +125,9 @@ export const TelephonePuzzle = () => {
   );
 };
 
-type TelephoneProps = {
+interface TelephoneProps {
   onClick: InputHandler;
-};
+}
 const Telephone = ({ onClick }: TelephoneProps) => {
   return (
     <>
@@ -150,15 +150,17 @@ const Telephone = ({ onClick }: TelephoneProps) => {
   );
 };
 
-type TelephoneButtonProps = {
+interface TelephoneButtonProps {
   keyValue: number | null;
   onClick: InputHandler;
-};
+}
 const TelephoneButton = ({ onClick, keyValue }: TelephoneButtonProps) => {
   const isButton = keyValue !== null;
   return isButton ? (
     <Button
-      onClick={() => onClick(keyValue)}
+      onClick={() => {
+        onClick(keyValue);
+      }}
       sx={{
         border: "1px solid rgb(47, 47, 47)",
         borderRadius: "5px",
@@ -184,9 +186,9 @@ const TelephoneButton = ({ onClick, keyValue }: TelephoneButtonProps) => {
   );
 };
 
-type NumberDisplayProps = {
+interface NumberDisplayProps {
   number: number;
-};
+}
 const NumberDisplay = ({ number }: NumberDisplayProps) => {
   return (
     <>

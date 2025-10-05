@@ -59,7 +59,7 @@ import {
   type LightsState,
 } from "../engine/puzzles/lights/lightsConstants";
 
-export type GameStoreState = {
+export interface GameStoreState {
   playerName: string;
   modernMode: boolean;
   currentRoom: RoomId;
@@ -88,13 +88,13 @@ export type GameStoreState = {
     turtle: TurtleState;
   };
   showDialog: boolean;
-};
+}
 
-type GameStoreActions = {
+interface GameStoreActions {
   setPlayerName: (playerName: string) => void;
   toggleGameMode: () => void;
   resetGameStore: () => void;
-};
+}
 
 export type GameStore = GameStoreState & GameStoreActions;
 
@@ -133,8 +133,12 @@ export const useGameStore = create<GameStore>()(
   persist(
     (set) => ({
       ...initialGameState,
-      toggleGameMode: () => set((state) => ({ modernMode: !state.modernMode })),
-      setPlayerName: (playerName: string) => set({ playerName }),
+      toggleGameMode: () => {
+        set((state) => ({ modernMode: !state.modernMode }));
+      },
+      setPlayerName: (playerName: string) => {
+        set({ playerName });
+      },
       resetGameStore: () => set(() => initialGameState),
     }),
     {

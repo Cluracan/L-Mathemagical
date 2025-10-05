@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-type Dimensions = {
+interface Dimensions {
   width: number;
   height: number;
-};
+}
 
 export const useWindowDimensions = () => {
   const [dimensions, setDimensions] = useState({
@@ -24,7 +24,9 @@ export const useWindowDimensions = () => {
       });
     };
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
   return dimensions;
 };

@@ -19,7 +19,11 @@ const animationTime = 800;
 const roomShift = roomConnectorLength / 2 + roomSize;
 
 //types
-type DrawableRoom = { roomId: RoomId; x: number; y: number };
+interface DrawableRoom {
+  roomId: RoomId;
+  x: number;
+  y: number;
+}
 type ExitInfo = { direction: string; blocked: boolean }[];
 //helper functions
 
@@ -318,7 +322,7 @@ export class Mapper {
   }
 
   getCompassConnection(targetRoomId: RoomId, currentRoomId: RoomId) {
-    let possibleExits = roomData[currentRoomId].exits;
+    const possibleExits = roomData[currentRoomId].exits;
     for (const [exitDirection, destininationRoomId] of Object.entries(
       possibleExits
     )) {
@@ -326,7 +330,7 @@ export class Mapper {
         isCompassDirection(exitDirection) &&
         destininationRoomId === targetRoomId
       ) {
-        return exitDirection as CompassDirection;
+        return exitDirection;
       }
     }
     return null;
@@ -335,7 +339,6 @@ export class Mapper {
   translateTo(targetRoomId: RoomId, exitDirection: CompassDirection) {
     return new Promise<void>((resolve) => {
       let startTime: number;
-      let animationFrameId: number;
       const animateMap = (
         timeStamp: number,
         exitDirection: CompassDirection
@@ -375,7 +378,7 @@ export class Mapper {
         }
       };
 
-      animationFrameId = requestAnimationFrame(function (timeStamp) {
+      const animationFrameId = requestAnimationFrame(function (timeStamp) {
         animateMap(timeStamp, exitDirection);
       });
     });

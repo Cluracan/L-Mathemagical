@@ -1,7 +1,7 @@
 import type { ItemId } from "../../assets/data/itemData";
 import type { Command } from "../dispatchCommand";
 
-export type PuzzleNPC = {
+export interface PuzzleNPC {
   usesDialog: boolean;
   description: {
     long: string;
@@ -22,4 +22,4 @@ export type PuzzleNPC = {
     string,
     { puzzleIncomplete: string; puzzleComplete: string | null }
   >;
-};
+}

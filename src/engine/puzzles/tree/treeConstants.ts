@@ -1,9 +1,9 @@
 //Types
-export type TreeState = {
+export interface TreeState {
   selectedCells: boolean[];
   feedback: string[];
   puzzleCompleted: boolean;
-};
+}
 
 //Constants
 export const ORCHARD_SIZE = 25;

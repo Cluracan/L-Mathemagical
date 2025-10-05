@@ -110,7 +110,7 @@ export const NewGameContent = () => {
           <FormHelperText sx={{ height: "4rem" }}>
             {modernMode
               ? "This version includes an inventory log and a map - don't leave home without it!"
-              : "The full 1984 experience. No map? No problem! You've got a pencil and paper, right\?"}
+              : "The full 1984 experience. No map? No problem! You've got a pencil and paper, right?"}
           </FormHelperText>
         </FormGroup>
         <Container sx={{ display: "flex", justifyContent: "space-between" }}>

@@ -5,10 +5,10 @@ import {
 } from "../../engine/puzzles/puzzleRegistry";
 import { memo } from "react";
 
-type PuzzleDialogProps = {
+interface PuzzleDialogProps {
   puzzleId: PuzzleId;
   showDialog: boolean;
-};
+}
 
 export const PuzzleDialog = memo((props: PuzzleDialogProps) => {
   const { puzzleId, showDialog } = props;

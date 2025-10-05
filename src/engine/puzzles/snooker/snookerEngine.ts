@@ -107,10 +107,10 @@ export class SnookerEngine {
   hitBall(angle: number) {
     const direction = (angle / 360) * 2 * Math.PI;
     const distanceToEdge = this.getDistanceToEdge(direction);
-    return new Promise((resolve, _) => {
+    return new Promise((resolve) => {
       let start: number;
       const animateBall = (timeStamp: number, direction: number) => {
-        if (start === undefined) {
+        if (!start) {
           start = timeStamp;
         }
         const elapsed = timeStamp - start;

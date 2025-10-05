@@ -3,10 +3,10 @@ import { createKeyGuard } from "../../../utils/guards";
 import type { PipelineFunction } from "../../pipeline/types";
 
 //Types
-export type TurtleState = {
+export interface TurtleState {
   displacement: { x: number; y: number };
   puzzleCompleted: boolean;
-};
+}
 
 //Initial State
 export const initialTurtleState: TurtleState = {
@@ -75,7 +75,7 @@ export const handleTurtlePuzzle: PipelineFunction = (payload) => {
 
     return produce(payload, (draft) => {
       draft.gameState.storyLine.push(
-        `The turtle is ${yDistance} squares to the ${yDirection} of you, and ${xDistance} squares to the ${xDirection} of you.`
+        `The turtle is ${String(yDistance)} squares to the ${yDirection} of you, and ${String(xDistance)} squares to the ${xDirection} of you.`
       );
       draft.done = true;
     });

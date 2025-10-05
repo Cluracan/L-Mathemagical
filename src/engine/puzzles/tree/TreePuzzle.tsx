@@ -95,15 +95,15 @@ export const TreePuzzle = () => {
         );
       } else if (treeCount < 9) {
         nextFeedback.push(
-          `The gardener looks at you. "I can only see ${lineCount} ${
+          `The gardener looks at you. "I can only see ${String(lineCount)} ${
             lineCount === 1 ? "line" : "lines"
-          } of trees, but then you've only used ${treeCount} ${
+          } of trees, but then you've only used ${String(treeCount)} ${
             treeCount === 1 ? "tree" : "trees"
           } so far...`
         );
       } else {
         nextFeedback.push(
-          `"Hmm." says the gardener. "You've used all the trees, but I can only see ${lineCount} ${
+          `"Hmm." says the gardener. "You've used all the trees, but I can only see ${String(lineCount)} ${
             lineCount === 1 ? "line" : "lines"
           } so far...maybe you could rearrange them?"`
         );
@@ -127,7 +127,7 @@ export const TreePuzzle = () => {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: `repeat(${ORCHARD_WIDTH},1fr)`,
+            gridTemplateColumns: `repeat(${String(ORCHARD_WIDTH)},1fr)`,
             gap: "1px",
             width: "50vh",
             margin: 1,

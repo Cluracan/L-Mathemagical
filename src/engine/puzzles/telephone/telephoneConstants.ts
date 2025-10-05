@@ -1,12 +1,12 @@
 import { createKeyGuard } from "../../../utils/guards";
 
 //types
-export type TelephoneState = {
+export interface TelephoneState {
   puzzleCompleted: boolean;
   number: number;
   feedback: string[];
   targetNumberIsEngaged: boolean;
-};
+}
 export type TelephoneButton = keyof typeof telephoneButtons;
 
 //Connstants

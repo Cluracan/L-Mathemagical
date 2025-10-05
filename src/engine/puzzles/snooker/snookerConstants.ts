@@ -1,10 +1,10 @@
 //Types
-export type SnookerState = {
+export interface SnookerState {
   puzzleCompleted: boolean;
   angle: number;
   feedback: string;
   action: "reset" | "hit" | "idle";
-};
+}
 
 //Static Data
 export const snookerFeedback = {

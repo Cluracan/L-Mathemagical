@@ -42,9 +42,10 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
 
   //puzzleHandler above (turtle) needed option of unique response to 'look' (ie null target)
   if (!target) return payload;
-
+  console.log(puzzleId);
+  console.log(puzzleState[puzzleId].puzzleCompleted);
   switch (puzzleState[puzzleId].puzzleCompleted) {
-    case true:
+    case true: {
       if (
         command === triggerPuzzleCommand &&
         acceptPuzzleText.includes(target) &&
@@ -52,28 +53,26 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
       ) {
         return stopWithSuccess(payload, feedback.puzzleIsComplete);
       }
-      if (
-        command === "look" &&
-        examinableItems[target] &&
-        examinableItems[target].puzzleComplete
-      ) {
+      if (command === "look" && examinableItems[target]?.puzzleComplete) {
         return stopWithSuccess(payload, examinableItems[target].puzzleComplete);
       }
       break;
+    }
     case false:
-      //start puzzle
-      if (
-        command === triggerPuzzleCommand &&
-        acceptPuzzleText.includes(target) &&
-        requiredItems.every((itemId) => itemLocation[itemId] === "player")
-      ) {
-        const nextGameState = produce(gameState, (draft) => {
-          draft.currentPuzzle = puzzleId;
-          draft.showDialog = usesDialog;
-          draft.storyLine.push(feedback.puzzleAccept);
-        });
+      {
+        if (
+          command === triggerPuzzleCommand &&
+          acceptPuzzleText.includes(target) &&
+          requiredItems.every((itemId) => itemLocation[itemId] === "player")
+        ) {
+          const nextGameState = produce(gameState, (draft) => {
+            draft.currentPuzzle = puzzleId;
+            draft.showDialog = usesDialog;
+            draft.storyLine.push(feedback.puzzleAccept);
+          });
 
-        return { ...payload, gameState: nextGameState, done: true };
+          return { ...payload, gameState: nextGameState, done: true };
+        }
       }
 
       //reject puzzle
@@ -85,11 +84,7 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
       }
 
       //examine clues
-      if (
-        command === "look" &&
-        examinableItems[target] &&
-        examinableItems[target].puzzleIncomplete !== null
-      ) {
+      if (command === "look" && examinableItems[target]?.puzzleIncomplete) {
         return stopWithSuccess(
           payload,
           examinableItems[target].puzzleIncomplete

@@ -19,8 +19,8 @@ import {
 //Helper Functions
 const countTrees = (selectedCells: boolean[]) => {
   let count = 0;
-  for (let i = 0; i < selectedCells.length; i++) {
-    if (selectedCells[i]) count++;
+  for (const cell of selectedCells) {
+    if (cell) count++;
   }
   return count;
 };

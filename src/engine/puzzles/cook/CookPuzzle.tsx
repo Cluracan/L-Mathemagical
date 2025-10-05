@@ -140,7 +140,7 @@ const InputField = ({ ingredient }: { ingredient: Ingredient }) => {
 
 const CakeDisplay = () => {
   const cakeHeight = useGameStore((state) => state.puzzleState.cook.cakeHeight);
-
+  const cakeDisplayHeight = (cakeHeight / TARGET_HEIGHT) * 100;
   return (
     <Box
       sx={{
@@ -160,7 +160,7 @@ const CakeDisplay = () => {
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
-          height: `${(cakeHeight / TARGET_HEIGHT) * 100}%`,
+          height: `${cakeDisplayHeight.toFixed(0)}%`,
           borderTopLeftRadius: "30%",
           borderTopRightRadius: "30%",
           borderBottom: "4px solid black",
@@ -168,7 +168,7 @@ const CakeDisplay = () => {
           color: "black",
         }}
       >
-        {`${cakeHeight} cm`}
+        {`${cakeHeight.toFixed(1)} cm`}
       </Box>
     </Box>
   );

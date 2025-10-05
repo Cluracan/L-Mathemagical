@@ -40,7 +40,5 @@ export function cookReducer(state: CookState, action: CookAction) {
 function calculateCakeHeight({ TOLT, FIMA, MUOT }: Record<Ingredient, number>) {
   const cakeHeight =
     26 - 0.5 * (TOLT - 6) ** 2 - 0.45 * (FIMA - 14) ** 2 - 0 * (MUOT - 0) ** 2;
-  return cakeHeight > MIN_HEIGHT
-    ? Math.round(cakeHeight * 10) / 10
-    : MIN_HEIGHT;
+  return cakeHeight > MIN_HEIGHT ? cakeHeight : MIN_HEIGHT;
 }

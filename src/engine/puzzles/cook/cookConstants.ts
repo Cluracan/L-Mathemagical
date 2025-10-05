@@ -1,10 +1,10 @@
 //Types
-export type CookState = {
+export interface CookState {
   feedback: string[];
   ingredients: Record<Ingredient, number>;
   cakeHeight: number;
   puzzleCompleted: boolean;
-};
+}
 
 export type Ingredient = "TOLT" | "FIMA" | "MUOT";
 
@@ -48,12 +48,13 @@ export const getCakeHeightFeedback = (
   cakeHeight: number
 ) => {
   const { TOLT, FIMA, MUOT } = ingredients;
+
   return [
     " ",
-    `The cook adds ${TOLT}g of TOLT, ${FIMA}g of FIMA, and ${MUOT}g of MUOT to the mixture, places it into the oven and after a few minutes takes out the cake.`,
+    `The cook adds ${TOLT.toFixed(0)}g of TOLT, ${FIMA.toFixed(0)}g of FIMA, and ${MUOT.toFixed(0)}g of MUOT to the mixture, places it into the oven and after a few minutes takes out the cake.`,
     cakeHeight === MIN_HEIGHT
-      ? `The cake is only ${MIN_HEIGHT}cm high and doesn't seem to have risen at all.`
-      : `The cake has risen to ${cakeHeight}cm...`,
+      ? `The cake is only ${MIN_HEIGHT.toFixed(0)}cm high and doesn't seem to have risen at all.`
+      : `The cake has risen to ${cakeHeight.toFixed(1)}cm...`,
   ];
 };
 

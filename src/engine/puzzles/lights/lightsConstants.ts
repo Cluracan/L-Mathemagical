@@ -1,13 +1,13 @@
 //Types
 export type LightsColor = (typeof TARGET_ORDER)[number];
 
-export type LightsState = {
+export interface LightsState {
   curOrder: LightsColor[];
   feedback: string[];
   turns: number;
   switchesActive: boolean;
   puzzleCompleted: boolean;
-};
+}
 
 //Constants
 export const INITAL_ORDER = ["Yellow", "Red", "Green", "Blue"] as const;

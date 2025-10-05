@@ -142,7 +142,6 @@ const Canvas = ({
       CANVAS_RATIO * width,
       CANVAS_RATIO * height
     );
-    if (!engineRef.current) return;
 
     engineRef.current.drawTable();
   }, [width]);
@@ -152,9 +151,15 @@ const Canvas = ({
 
     switch (action) {
       case "hit":
-        engineRef.current.hitBall(angle).then(() => {
-          onAnimationComplete();
-        });
+        engineRef.current
+          .hitBall(angle)
+          .then(() => {
+            onAnimationComplete();
+          })
+          .catch((error) => {
+            console.error("Animation failed:", error);
+            onAnimationComplete();
+          });
         break;
       case "reset":
         engineRef.current.resetTable();

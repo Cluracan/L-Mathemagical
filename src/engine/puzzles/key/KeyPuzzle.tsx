@@ -74,7 +74,7 @@ export const KeyPuzzle = () => {
         const selectedCells = draft.puzzleState.key.selectedCells;
         if (KEYBLANK_SOLUTION.every((cellIndex) => selectedCells[cellIndex])) {
           const selectedCellsCount = selectedCells.filter(
-            (cell) => cell === true
+            (cell) => cell
           ).length;
           if (selectedCellsCount === KEYBLANK_SOLUTION.length) {
             draft.puzzleState.key.puzzleCompleted = true;
@@ -109,7 +109,7 @@ export const KeyPuzzle = () => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: `repeat(${KEYBLANK_COLS},1fr)`,
+          gridTemplateColumns: `repeat(${String(KEYBLANK_COLS)},1fr)`,
         }}
       >
         {Array.from({ length: KEYBLANK_COLS * KEYBLANK_ROWS }, (_, i) => (
@@ -154,7 +154,7 @@ const LockDisplay = memo(() => {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: `repeat(${lockDisplayCols},1fr)`,
+            gridTemplateColumns: `repeat(${String(lockDisplayCols)},1fr)`,
             padding: 2,
             mr: 8,
             backgroundColor: "white",
@@ -176,10 +176,10 @@ const LockDisplay = memo(() => {
   );
 });
 
-type KeyCellProps = {
+interface KeyCellProps {
   index: number;
   onCellClick: (index: number) => void;
-};
+}
 
 const KeyCell = memo(({ index, onCellClick }: KeyCellProps) => {
   const cellSelected = useGameStore(

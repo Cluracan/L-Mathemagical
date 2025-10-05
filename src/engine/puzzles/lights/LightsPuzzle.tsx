@@ -111,7 +111,9 @@ export const LightsPuzzle = () => {
                 size="large"
                 key={value}
                 sx={{ m: 2 }}
-                onClick={() => handleClick(value)}
+                onClick={() => {
+                  handleClick(value);
+                }}
                 disabled={!switchesActive}
               >
                 {value}

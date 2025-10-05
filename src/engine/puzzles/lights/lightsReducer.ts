@@ -35,11 +35,11 @@ export function lightsReducer(
         if (isSwitchIndex(action.button)) {
           draft.turns++;
           draft.feedback.push(
-            `You press switch ${action.button}`,
-            `"That's ${draft.turns} ${draft.turns > 1 ? 'turns"' : 'turn"'}`
+            `You press switch ${String(action.button)}`,
+            `"That's ${String(draft.turns)} ${draft.turns > 1 ? 'turns"' : 'turn"'}`
           );
-          const nextOrder = applySwitch[action.button](draft.curOrder);
-          if (isCorrectOrder(nextOrder)) {
+          draft.curOrder = applySwitch[action.button](draft.curOrder);
+          if (isCorrectOrder(draft.curOrder)) {
             draft.switchesActive = false;
             if (draft.turns === TARGET_TURNS) {
               draft.puzzleCompleted = true;

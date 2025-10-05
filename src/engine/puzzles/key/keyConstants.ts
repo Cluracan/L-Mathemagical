@@ -1,10 +1,10 @@
 //types
-export type KeyState = {
+export interface KeyState {
   selectedCells: boolean[];
   puzzleCompleted: boolean;
   feedback: string;
   showFeedback: boolean;
-};
+}
 
 //Constants
 const INITIAL_SELECTED_CELLS = [9, 29];
@@ -130,6 +130,8 @@ const lockDisplayCells = new Set([
 export const lockDisplayData: string[] = [];
 for (let i = 0; i < lockDisplayRows; i++) {
   for (let j = 0; j < lockDisplayCols; j++) {
-    lockDisplayData.push(lockDisplayCells.has(`${i}x${j}`) ? "black" : "white");
+    lockDisplayData.push(
+      lockDisplayCells.has(`${String(i)}x${String(j)}`) ? "black" : "white"
+    );
   }
 }

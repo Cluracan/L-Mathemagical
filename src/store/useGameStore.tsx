@@ -139,7 +139,7 @@ export const useGameStore = create<GameStore>()(
       setPlayerName: (playerName: string) => {
         set({ playerName });
       },
-      resetGameStore: () => set(() => initialGameState),
+      resetGameStore: () => set(() => ({ ...initialGameState })),
     }),
     {
       name: "l-game-storage",

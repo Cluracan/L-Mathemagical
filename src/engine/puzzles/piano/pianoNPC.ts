@@ -17,7 +17,7 @@ export const pianoNPC: PuzzleNPC = {
     puzzleAccept: "You sit carefully on the piano stool and prepare to play.",
     puzzleReject: null,
     puzzleIsComplete:
-      "I'm afraid the mouse have gnawed through all the piano strings",
+      "I'm afraid the mice have gnawed through all the piano strings",
     exitsBlocked: null,
   },
   examinableItems: {

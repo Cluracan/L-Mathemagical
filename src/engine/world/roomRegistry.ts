@@ -27,7 +27,7 @@ class RoomRegistry {
   getExitDestination(id: RoomId, direction: ExitDirection): RoomId | null {
     const exitMap = this.roomData[id].exits;
     const nextRoom = exitMap[direction];
-    return nextRoom || null;
+    return nextRoom ?? null;
   }
 }
 

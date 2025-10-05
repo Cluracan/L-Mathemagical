@@ -42,8 +42,7 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
 
   //puzzleHandler above (turtle) needed option of unique response to 'look' (ie null target)
   if (!target) return payload;
-  console.log(puzzleId);
-  console.log(puzzleState[puzzleId].puzzleCompleted);
+
   switch (puzzleState[puzzleId].puzzleCompleted) {
     case true: {
       if (
@@ -53,7 +52,11 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
       ) {
         return stopWithSuccess(payload, feedback.puzzleIsComplete);
       }
-      if (command === "look" && examinableItems[target]?.puzzleComplete) {
+      if (
+        command === "look" &&
+        Object.keys(examinableItems).includes(target) &&
+        examinableItems[target].puzzleComplete
+      ) {
         return stopWithSuccess(payload, examinableItems[target].puzzleComplete);
       }
       break;
@@ -84,7 +87,11 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
       }
 
       //examine clues
-      if (command === "look" && examinableItems[target]?.puzzleIncomplete) {
+      if (
+        command === "look" &&
+        Object.keys(examinableItems).includes(target) &&
+        examinableItems[target].puzzleIncomplete
+      ) {
         return stopWithSuccess(
           payload,
           examinableItems[target].puzzleIncomplete

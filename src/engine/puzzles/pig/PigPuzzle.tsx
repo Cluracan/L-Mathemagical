@@ -19,6 +19,7 @@ import {
   initialPigState,
   isDirectionAlias,
   pigFeedback,
+  type CompassDirection,
 } from "./pigConstants";
 import pig from "../../../assets/images/pig.svg";
 import player from "../../../assets/images/person.svg";
@@ -40,54 +41,62 @@ export const PigPuzzle = () => {
 
   useEffect(() => {
     function keyDownHandler(e: KeyboardEvent) {
-      if (!isDirectionAlias(e.key)) return;
-      console.log(directionAliases[e.key]);
-      useGameStore.setState((state) =>
-        produce(state, (draft) => {
-          draft.puzzleState.pig = pigReducer(draft.puzzleState.pig, {
-            type: "movement",
-            direction: directionAliases[e.key],
-          });
-        })
-      );
+      if (isDirectionAlias(e.key)) {
+        handleInput(directionAliases[e.key]);
+      }
     }
+
     document.addEventListener("keydown", keyDownHandler);
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
     };
   }, []);
 
+  const handleInput = (direction: CompassDirection) => {
+    useGameStore.setState((state) => ({
+      ...state,
+      puzzleState: {
+        ...state.puzzleState,
+        pig: pigReducer(state.puzzleState.pig, {
+          type: "movement",
+          direction,
+        }),
+      },
+    }));
+  };
+
   const handleReset = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.pig = pigReducer(draft.puzzleState.pig, {
+    useGameStore.setState((state) => ({
+      puzzleState: {
+        ...state.puzzleState,
+        pig: pigReducer(state.puzzleState.pig, {
           type: "reset",
-        });
-      })
-    );
+        }),
+      },
+    }));
   };
 
   const handleLeave = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.showDialog = false;
-        draft.currentPuzzle = null;
-        if (draft.puzzleState.pig.puzzleCompleted) {
-          draft.storyLine.push(pigFeedback.storyLineSuccess);
-        } else {
-          draft.puzzleState.pig = initialPigState;
-          draft.storyLine.push(pigFeedback.storyLineFailure);
-        }
-      })
-    );
+    useGameStore.setState((state) => ({
+      showDialog: false,
+      currentPuzzle: null,
+      puzzleState: { ...state.puzzleState, pig: initialPigState },
+      storyLine: [
+        ...state.storyLine,
+        state.puzzleState.pig.puzzleCompleted
+          ? pigFeedback.storyLineSuccess
+          : pigFeedback.storyLineFailure,
+      ],
+    }));
   };
 
   const closeFeedback = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.pig.showFeedback = false;
-      })
-    );
+    useGameStore.setState((state) => ({
+      puzzleState: {
+        ...state.puzzleState,
+        pig: { ...state.puzzleState.pig, showFeedback: false },
+      },
+    }));
   };
 
   return (
@@ -121,7 +130,7 @@ const PuzzleGrid = () => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: `repeat(${ORCHARD_WIDTH}, 1fr)`,
+          gridTemplateColumns: `repeat(${String(ORCHARD_WIDTH)}, 1fr)`,
           gap: "1px",
           width: "50vh",
           margin: 1,
@@ -222,10 +231,20 @@ const Instructions = () => {
             direction={"row"}
             sx={{ width: "80%", justifyContent: "space-around" }}
           >
-            <Button variant="contained" onClick={() => handleClick(true)}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                handleClick(true);
+              }}
+            >
               Yes please!
             </Button>
-            <Button variant="contained" onClick={() => handleClick(false)}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                handleClick(false);
+              }}
+            >
               No thanks!
             </Button>
           </Stack>

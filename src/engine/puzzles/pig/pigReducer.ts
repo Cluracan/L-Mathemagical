@@ -1,7 +1,9 @@
+import { produce } from "immer";
 import {
   GRID_SIZE,
   GRID_WIDTH,
-  initialPigState,
+  INITIAL_PIG_LOCATION,
+  INITIAL_PLAYER_LOCATION,
   pigFeedback,
   type CompassDirection,
   type PigState,
@@ -41,10 +43,10 @@ const moveCharacter: Record<CompassDirection, (location: number) => number> = {
 };
 
 const getManhattan = (pigLocation: number, playerLocation: number) => {
-  let horizontalDistance = Math.abs(
+  const horizontalDistance = Math.abs(
     (pigLocation % GRID_WIDTH) - (playerLocation % GRID_WIDTH)
   );
-  let verticalDistance = Math.abs(
+  const verticalDistance = Math.abs(
     Math.floor(pigLocation / GRID_WIDTH) -
       Math.floor(playerLocation / GRID_WIDTH)
   );
@@ -66,41 +68,43 @@ const movePig = (curPigLocation: number, playerLocation: number) => {
     }
   }
 
-  let RNGIndex = Math.floor(Math.random() * moveOptions.length);
+  const RNGIndex = Math.floor(Math.random() * moveOptions.length);
   return moveOptions[RNGIndex];
 };
 
 export function pigReducer(state: PigState, action: PigAction) {
   switch (action.type) {
-    case "movement":
+    case "movement": {
       if (
         state.puzzleCompleted ||
         !characterCanMove(state.playerLocation, action.direction)
-      )
+      ) {
         return state;
-      const nextPlayerLocation = moveCharacter[action.direction](
-        state.playerLocation
-      );
-      //need to winCheck HERE
-      if (nextPlayerLocation === state.pigLocation) {
-        return {
-          ...state,
-          playerLocation: nextPlayerLocation,
-          feedback: pigFeedback.success,
-          showFeedback: true,
-          puzzleCompleted: true,
-        };
       }
-      const nextPigLocation = movePig(state.pigLocation, nextPlayerLocation);
+      return produce(state, (draft) => {
+        //move player
+        draft.playerLocation = moveCharacter[action.direction](
+          draft.playerLocation
+        );
+        //winCheck
+        if (draft.playerLocation === draft.pigLocation) {
+          draft.feedback = pigFeedback.success;
+          draft.showFeedback = true;
+          draft.puzzleCompleted = true;
+        } else {
+          draft.pigLocation = movePig(draft.pigLocation, draft.playerLocation);
+        }
+      });
+    }
 
-      return {
-        ...state,
-        playerLocation: nextPlayerLocation,
-        pigLocation: nextPigLocation,
-      };
+    case "reset": {
+      return produce(state, (draft) => {
+        draft.playerLocation = INITIAL_PLAYER_LOCATION;
+        draft.pigLocation = INITIAL_PIG_LOCATION;
+        draft.showInstructions = true;
+      });
+    }
 
-    case "reset":
-      return initialPigState;
     default:
       return state;
   }

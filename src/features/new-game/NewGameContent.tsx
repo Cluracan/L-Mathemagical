@@ -33,7 +33,7 @@ export const NewGameContent = () => {
     resetGameStore();
   }, []);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     if (!name.trim()) {
       setError(true);
@@ -50,7 +50,7 @@ export const NewGameContent = () => {
       setHelperText(" ");
       // resetGameStore();
       setPlayerName(name);
-      navigate({
+      await navigate({
         to: "/game",
       });
     }

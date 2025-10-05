@@ -37,9 +37,8 @@ const toStoreState = (state: GameState): Partial<GameStoreState> => {
   };
 };
 
-class GameEngine {
-  constructor() {}
-  handleInput(userInput: string) {
+const gameEngine = {
+  handleInput: (userInput: string) => {
     //Take a snapshot of state
     const snapshot = toEngineState(useGameStore.getState(), userInput);
 
@@ -57,8 +56,7 @@ class GameEngine {
       command,
       target,
     };
-  }
-}
+  },
+};
 
-const gameEngine = new GameEngine();
-export const handleInput = gameEngine.handleInput.bind(gameEngine);
+export const handleInput = gameEngine.handleInput;

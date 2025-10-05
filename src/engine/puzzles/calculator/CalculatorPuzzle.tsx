@@ -112,7 +112,9 @@ export const CalculatorPuzzle = () => {
   );
 };
 
-type CalculatorProps = { handleInput: InputHandler };
+interface CalculatorProps {
+  handleInput: InputHandler;
+}
 const Calculator = ({ handleInput }: CalculatorProps) => {
   const { tokens, currentInput } = useGameStore(
     (state) => state.puzzleState.calculator
@@ -191,20 +193,22 @@ const Calculator = ({ handleInput }: CalculatorProps) => {
   );
 };
 
-type CalculatorButtonProps = {
+interface CalculatorButtonProps {
   value: keyof typeof calculatorButtons;
   displayValue: string;
   handleInput: InputHandler;
-};
+}
 const CalculatorButton = memo(
   ({ value, displayValue, handleInput }: CalculatorButtonProps) => {
     return (
       <Button
         variant="contained"
         disableRipple={!WORKING_CALCULATOR_BUTTONS.has(value)}
-        onClick={() =>
-          WORKING_CALCULATOR_BUTTONS.has(value) && handleInput(value)
-        }
+        onClick={() => {
+          if (WORKING_CALCULATOR_BUTTONS.has(value)) {
+            handleInput(value);
+          }
+        }}
         sx={{
           height: "3rem",
           paddingBottom: "4px",

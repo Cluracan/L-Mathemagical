@@ -61,22 +61,30 @@ function applyShuntingYard(tokens: Token[]): Token[] {
   let index = 0;
   while (index < tokens.length) {
     const curToken = tokens[index];
-    if (curToken?.type === "number") {
-      outputQueue.push(curToken);
-    } else if (curToken?.type === "operator") {
-      while (
-        operatorStack.length > 0 &&
-        precedence(operatorStack[operatorStack.length - 1]) >=
-          precedence(curToken)
-      ) {
-        outputQueue.push(operatorStack.pop()!);
+    switch (curToken.type) {
+      case "number": {
+        outputQueue.push(curToken);
+        break;
       }
-      operatorStack.push(curToken);
+      case "operator": {
+        while (
+          operatorStack.length > 0 &&
+          precedence(operatorStack[operatorStack.length - 1]) >=
+            precedence(curToken)
+        ) {
+          const operator = operatorStack.pop();
+          if (!operator) throw new Error("Unexpected empty operator stack");
+          outputQueue.push(operator);
+        }
+        operatorStack.push(curToken);
+      }
     }
     index++;
   }
   while (operatorStack.length > 0) {
-    outputQueue.push(operatorStack.pop()!);
+    const operator = operatorStack.pop();
+    if (!operator) throw new Error("Unexpected empty operator stack");
+    outputQueue.push(operator);
   }
   return outputQueue;
 }
@@ -94,10 +102,10 @@ function evaluateRPN(tokensRPN: Token[]) {
     if (token.type === "number") {
       stack.push(token.value);
     } else {
-      if (stack.length < 2)
-        throw new Error("Not enough values in stack for operation");
-      const rightOperand = stack.pop()!;
-      const leftOperand = stack.pop()!;
+      const rightOperand = stack.pop();
+      const leftOperand = stack.pop();
+      if (!rightOperand || !leftOperand)
+        throw new Error("Unexpected empty token stack");
       const result = calculate[token.value](leftOperand, rightOperand);
       stack.push(result);
     }

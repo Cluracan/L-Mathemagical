@@ -1,11 +1,11 @@
 import { produce } from "immer";
 import type { GameState } from "../gameEngine";
 
-type NullCommandArgs = {
+interface NullCommandArgs {
   command: null;
   target: string | null;
   gameState: GameState;
-};
+}
 
 type HandleNullCommand = (args: NullCommandArgs) => GameState;
 

@@ -140,6 +140,7 @@ const InputField = ({ ingredient }: { ingredient: Ingredient }) => {
 
 const CakeDisplay = () => {
   const cakeHeight = useGameStore((state) => state.puzzleState.cook.cakeHeight);
+
   return (
     <Box
       sx={{

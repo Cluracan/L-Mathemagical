@@ -106,10 +106,10 @@ export const ApePuzzle = () => {
   );
 };
 
-type InstructionChoicesProps = {
+interface InstructionChoicesProps {
   onConfirm: () => void;
   onCancel: () => void;
-};
+}
 const InstructionChoices = ({
   onConfirm,
   onCancel,

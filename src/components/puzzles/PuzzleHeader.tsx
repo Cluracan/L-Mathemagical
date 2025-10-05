@@ -1,9 +1,9 @@
 import { DialogContentText, DialogTitle } from "@mui/material";
 
-type PuzzleHeaderProps = {
+interface PuzzleHeaderProps {
   title: string;
   description: string;
-};
+}
 
 export const PuzzleHeader = ({ title, description }: PuzzleHeaderProps) => {
   return (

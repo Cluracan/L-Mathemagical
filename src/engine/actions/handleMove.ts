@@ -47,25 +47,18 @@ const validateExit: PipelineFunction = (payload) => {
 };
 
 const movePlayer: PipelineFunction = (payload) => {
-  const gameState = payload.gameState;
-  if (!!payload.nextRoom && payload.direction) {
-    const nextGameState = produce(gameState, (draft) => {
-      draft.visitedRooms.add(gameState.currentRoom);
-      draft.currentRoom = payload.nextRoom!;
-      draft.stepCount = gameState.stepCount + 1;
-      draft.storyLine.push(
-        `You travel ${directionNarratives[payload.direction!]}`
+  return produce(payload, (draft) => {
+    if (draft.nextRoom && draft.direction) {
+      draft.gameState.visitedRooms.add(draft.gameState.currentRoom);
+      draft.gameState.currentRoom = draft.nextRoom;
+      draft.gameState.stepCount++;
+      draft.gameState.storyLine.push(
+        `You travel ${directionNarratives[draft.direction]}`
       );
-    });
-    return {
-      ...payload,
-      gameState: nextGameState,
-      nextRoom: null,
-      direction: null,
-      done: false,
-    };
-  }
-  throw new Error("Unexpected code path in movePlayer");
+      draft.nextRoom = null;
+      draft.direction = null;
+    }
+  });
 };
 
 const applyRoomDescription: PipelineFunction = (payload) => {

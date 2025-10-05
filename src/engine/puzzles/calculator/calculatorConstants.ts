@@ -6,14 +6,14 @@ export type Token =
 export type Operator = "+" | "-" | "*" | "/";
 export type InputButton = keyof typeof calculatorButtons;
 
-export type CalculatorState = {
+export interface CalculatorState {
   currentInput: string;
   feedback: string;
   showFeedback: boolean;
   lastInputType: InputType;
   tokens: Token[];
   puzzleCompleted: boolean;
-};
+}
 
 //Constants
 export const INPUT_TARGET = "11";

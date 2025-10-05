@@ -227,12 +227,12 @@ export const itemData = {
 
 export type ItemId = keyof typeof itemData;
 
-export type Item = {
+export interface Item {
   id: ItemId;
   initialLocation: RoomId;
   descriptions: Record<"floor" | "inventory" | "pickUp" | "examine", string>;
   isDrinkable: boolean;
-};
+}
 
 export const isItemId = createKeyGuard(itemData);
 

@@ -12,11 +12,11 @@ import { handleDrink } from "./actions/handleDrink";
 import { handleSay } from "./actions/handleSay";
 import { handleSwim } from "./actions/handleSwim";
 
-export type CommandArgs = {
+export interface CommandArgs {
   command: Command;
   target: string | null;
   gameState: GameState;
-};
+}
 export type HandleCommand = (args: CommandArgs) => GameState;
 
 const commandHandlers = {
@@ -34,11 +34,11 @@ const commandHandlers = {
 } as const satisfies Record<string, HandleCommand>;
 export type Command = keyof typeof commandHandlers;
 
-type DispatchArgs = {
+interface DispatchArgs {
   command: Command | null;
   target: string | null;
   gameState: GameState;
-};
+}
 type DispatchCommand = (args: DispatchArgs) => GameState;
 
 export const dispatchCommand: DispatchCommand = (args) => {

@@ -1,7 +1,10 @@
 import { produce } from "immer";
 import type { PipelineFunction } from "../../pipeline/types";
 
-export type AbbotState = { dialogIndex: number; puzzleCompleted: boolean };
+export interface AbbotState {
+  dialogIndex: number;
+  puzzleCompleted: boolean;
+}
 export const initialAbbotState: AbbotState = {
   dialogIndex: 0,
   puzzleCompleted: false,

@@ -32,8 +32,8 @@ export const handleDrink: HandleCommand = (args) => {
   switch (target) {
     case "bottle":
       if (playerHeight === "threeFifths" || playerHeight === "one") {
-        const drinkFeedback = itemData["bottle"].drinkMessage[playerHeight];
-        const newHeight = itemData["bottle"].heightChange[playerHeight];
+        const drinkFeedback = itemData.bottle.drinkMessage[playerHeight];
+        const newHeight = itemData.bottle.heightChange[playerHeight];
         const nextGameState = produce(gameState, (draft) => {
           draft.storyLine.push(drinkFeedback);
           draft.playerHeight = newHeight;
@@ -44,8 +44,8 @@ export const handleDrink: HandleCommand = (args) => {
       break;
     case "phial":
       if (playerHeight === "one" || playerHeight === "fiveFourths") {
-        const drinkFeedback = itemData["phial"].drinkMessage[playerHeight];
-        const newHeight = itemData["phial"].heightChange[playerHeight];
+        const drinkFeedback = itemData.phial.drinkMessage[playerHeight];
+        const newHeight = itemData.phial.heightChange[playerHeight];
         const nextGameState = produce(gameState, (draft) => {
           draft.storyLine.push(drinkFeedback);
           draft.playerHeight = newHeight;

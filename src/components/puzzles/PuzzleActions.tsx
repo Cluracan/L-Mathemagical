@@ -1,11 +1,11 @@
 import { Button, Stack } from "@mui/material";
 import type { PropsWithChildren } from "react";
 
-type PuzzleActionProps = {
+interface PuzzleActionProps {
   puzzleCompleted: boolean;
   handleReset: () => void;
   handleLeave: () => void;
-};
+}
 
 export const PuzzleActions = ({
   puzzleCompleted,

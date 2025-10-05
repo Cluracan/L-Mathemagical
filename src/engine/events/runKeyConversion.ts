@@ -9,7 +9,6 @@ target='key' --> target = 'rusty' | 'iron'
 export const runKeyConversion: PipelineFunction = (payload) => {
   const { command, target, gameState } = payload;
   const { itemLocation, currentRoom } = gameState;
-  //This is just for when a user types 'key' instead of 'iron'
 
   if (target !== "key") return payload;
 
@@ -32,6 +31,8 @@ export const runKeyConversion: PipelineFunction = (payload) => {
       convertedTarget = keyOnPlayer;
       break;
     case "look":
+      // OR is correct here: prefer a key on player, but fall back to a key in room (or none).
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       convertedTarget = keyOnPlayer || keyInRoom;
       break;
     //other commands are unaffected

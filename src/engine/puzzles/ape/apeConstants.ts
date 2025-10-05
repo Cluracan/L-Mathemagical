@@ -1,10 +1,10 @@
 //Types
-export type ApeState = {
+export interface ApeState {
   puzzleCompleted: boolean;
   feedback: string[];
   status: "instructions" | "play";
   word: string;
-};
+}
 
 //Constants
 export const TARGET_WORD = "owl";

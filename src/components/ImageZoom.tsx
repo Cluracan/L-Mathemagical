@@ -22,9 +22,16 @@ export const ImageZoom = ({
         src={src}
         alt={alt}
         style={{ height: smallSize, cursor: "pointer" }}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+        }}
       />
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Dialog
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+      >
         <img src={src} alt={alt} style={{ height: largeSize }} />
       </Dialog>
     </>

@@ -132,7 +132,7 @@ const bathCommandHandlers = {
         action: () => failCommand(payload, buildBathDescription(bathState)),
       },
       {
-        check: () => gameState.itemLocation["oar"] !== "player",
+        check: () => gameState.itemLocation.oar !== "player",
         action: () => failCommand(payload, bathFeedback.noOar),
       },
       {

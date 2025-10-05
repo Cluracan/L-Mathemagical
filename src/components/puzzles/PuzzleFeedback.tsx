@@ -1,7 +1,10 @@
 import { Card, Typography } from "@mui/material";
 import { useEffect, useRef } from "react";
 
-type PuzzleFeedbackProps = { feedback: string[]; height: string };
+interface PuzzleFeedbackProps {
+  feedback: string[];
+  height: string;
+}
 
 export const PuzzleFeedback = ({ feedback, height }: PuzzleFeedbackProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);

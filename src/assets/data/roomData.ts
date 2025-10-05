@@ -1015,12 +1015,12 @@ export const roomData = {
 
 export type RoomId = keyof typeof roomData;
 
-export type Room = {
+export interface Room {
   id: RoomId;
   descriptions: Record<"long" | "short", string>;
   mapText: string;
   exits: Partial<Record<ExitDirection, RoomId>>;
-};
+}
 
 export type ExitDirection =
   | "n"

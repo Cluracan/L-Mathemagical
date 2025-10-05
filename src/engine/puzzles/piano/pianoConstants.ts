@@ -1,10 +1,10 @@
 //Types
-export type PianoState = {
+export interface PianoState {
   playedNotes: NoteId[];
   attempts: number;
   feedback: string[];
   puzzleCompleted: boolean;
-};
+}
 
 //Constants
 export const TARGET_MELODY: NoteName[] = [
@@ -90,7 +90,7 @@ export const pianoFeedback = {
 export const getSequentialMatchCountMessage = (count: number) => {
   return count === 0
     ? "You feel that you started your piece on the wrong note..."
-    : `You feel that your first ${count} notes were correct...`;
+    : `You feel that your first ${String(count)} notes were correct...`;
 };
 
 export const getRandomFailureMessage = () => {

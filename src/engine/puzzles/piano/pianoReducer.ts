@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import {
   getNextClueMessage,
   getRandomFailureMessage,
@@ -50,71 +51,58 @@ const containsAllRightNotes = (playedNotes: NoteId[]) => {
 //Main Function
 export function pianoReducer(state: PianoState, action: PianoAction) {
   switch (action.type) {
-    case "play":
-      let nextPlayedNotes = [...state.playedNotes];
-      let nextFeedback = [...state.feedback];
-      let nextPuzzleCompleted = state.puzzleCompleted;
-      let nextAttempts = state.attempts;
-
+    case "play": {
       //max notes played
-      if (nextPlayedNotes.length >= TARGET_MELODY.length) return state;
+      if (state.playedNotes.length >= TARGET_MELODY.length) {
+        return state;
+      }
       //else add and play note
-      nextPlayedNotes.push(action.note);
-
-      //successCheck if max notes
-      if (nextPlayedNotes.length >= TARGET_MELODY.length) {
-        nextAttempts++;
-        const sequentialMatchCount = countSequentialMatches(nextPlayedNotes);
-        if (sequentialMatchCount === TARGET_MELODY.length) {
-          nextFeedback.push(...pianoFeedback.success);
-          nextPuzzleCompleted = true;
-        } else if (containsAllRightNotes(nextPlayedNotes)) {
-          nextFeedback.push(pianoFeedback.morecombeQuote);
-        } else {
-          nextFeedback.push(getRandomFailureMessage());
-          if (nextAttempts <= pianoFeedback.clueMessages.length) {
-            nextFeedback.push(getNextClueMessage());
+      return produce(state, (draft) => {
+        draft.playedNotes.push(action.note);
+        //successCheck if max notes
+        if (draft.playedNotes.length >= TARGET_MELODY.length) {
+          draft.attempts++;
+          const sequentialMatchCount = countSequentialMatches(
+            draft.playedNotes
+          );
+          if (sequentialMatchCount === TARGET_MELODY.length) {
+            draft.feedback.push(...pianoFeedback.success);
+            draft.puzzleCompleted = true;
+          } else if (containsAllRightNotes(draft.playedNotes)) {
+            draft.feedback.push(pianoFeedback.morecombeQuote);
           } else {
-            nextFeedback.push(
-              getSequentialMatchCountMessage(sequentialMatchCount)
-            );
+            draft.feedback.push(getRandomFailureMessage());
+            if (draft.attempts <= pianoFeedback.clueMessages.length) {
+              draft.feedback.push(getNextClueMessage());
+            } else {
+              draft.feedback.push(
+                getSequentialMatchCountMessage(sequentialMatchCount)
+              );
+            }
           }
         }
-      }
-      return {
-        ...state,
-        playedNotes: nextPlayedNotes,
-        attempts: nextAttempts,
-        feedback: nextFeedback,
-        puzzleCompleted: nextPuzzleCompleted,
-      };
-    case "reset":
-      return {
-        ...state,
-        playedNotes: [],
-        feedback: [...state.feedback, ...pianoFeedback.default],
-      };
-    case "check":
-      const sequentialMatchCount = countSequentialMatches(state.playedNotes);
-      if (sequentialMatchCount === state.playedNotes.length) {
-        return {
-          ...state,
-          feedback: [...state.feedback, pianoFeedback.partialSuccess],
-        };
-      } else if (containsAllRightNotes(state.playedNotes)) {
-        return {
-          ...state,
-          feedback: [...state.feedback, pianoFeedback.morecombeQuote],
-        };
-      } else {
-        return {
-          ...state,
-          feedback: [
-            ...state.feedback,
-            getSequentialMatchCountMessage(sequentialMatchCount),
-          ],
-        };
-      }
+      });
+    }
+    case "reset": {
+      return produce(state, (draft) => {
+        draft.playedNotes = [];
+        draft.feedback.push(...pianoFeedback.default);
+      });
+    }
+    case "check": {
+      return produce(state, (draft) => {
+        const sequentialMatchCount = countSequentialMatches(draft.playedNotes);
+        if (sequentialMatchCount === draft.playedNotes.length) {
+          draft.feedback.push(pianoFeedback.partialSuccess);
+        } else if (containsAllRightNotes(draft.playedNotes)) {
+          draft.feedback.push(pianoFeedback.morecombeQuote);
+        } else {
+          draft.feedback.push(
+            getSequentialMatchCountMessage(sequentialMatchCount)
+          );
+        }
+      });
+    }
     default:
       return state;
   }

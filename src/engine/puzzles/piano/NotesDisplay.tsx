@@ -6,7 +6,9 @@ import { Renderer, Stave, StaveNote, Formatter, Accidental } from "vexflow";
 const HORIZONTAL_PADDING = 10;
 const VERTICAL_PADDING = 10;
 
-type NotesDisplayProps = { playedNotes: NoteId[] };
+interface NotesDisplayProps {
+  playedNotes: NoteId[];
+}
 export const NotesDisplay = ({ playedNotes }: NotesDisplayProps) => {
   const vexFlowRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -15,14 +17,16 @@ export const NotesDisplay = ({ playedNotes }: NotesDisplayProps) => {
     const vexFlowNode = vexFlowRef.current;
     if (!vexFlowNode) return;
 
-    const resizeObserver = new ResizeObserver(() =>
-      setContainerWidth(vexFlowNode.getBoundingClientRect().width)
-    );
+    const resizeObserver = new ResizeObserver(() => {
+      setContainerWidth(vexFlowNode.getBoundingClientRect().width);
+    });
     resizeObserver.observe(vexFlowNode);
 
     setContainerWidth(vexFlowNode.getBoundingClientRect().width);
 
-    return () => resizeObserver.disconnect();
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, []);
 
   useEffect(() => {

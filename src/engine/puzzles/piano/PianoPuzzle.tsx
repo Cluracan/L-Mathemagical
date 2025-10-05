@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
@@ -20,8 +19,7 @@ import { useEffect } from "react";
 //Helper functions
 const playAudioNote = (note: NoteId) => {
   const audio = audioCache[note];
-  if (!audio) return;
-  (audio.cloneNode(true) as HTMLAudioElement).play();
+  void (audio.cloneNode(true) as HTMLAudioElement).play();
 };
 
 //Main Component
@@ -37,7 +35,7 @@ export const PianoPuzzle = () => {
 
   //Preload Audio
   useEffect(() => {
-    Object.entries(audioCache).forEach(([_, audio]) => {
+    Object.values(audioCache).forEach((audio) => {
       if (audio instanceof HTMLAudioElement) {
         audio.preload = "auto";
         audio.load();
@@ -46,54 +44,65 @@ export const PianoPuzzle = () => {
   }, []);
 
   const handleReset = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.piano = pianoReducer(draft.puzzleState.piano, {
+    useGameStore.setState((state) => ({
+      ...state,
+      puzzleState: {
+        ...state.puzzleState,
+        piano: pianoReducer(state.puzzleState.piano, {
           type: "reset",
-        });
-      })
-    );
+        }),
+      },
+    }));
   };
 
   const handleLeave = () => {
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.showDialog = false;
-        draft.currentPuzzle = null;
-        if (draft.puzzleState.piano.puzzleCompleted) {
-          draft.itemLocation.bottle = "music";
-          draft.itemLocation.phial = "music";
-          draft.storyLine.push(pianoFeedback.storyLineSuccess);
-        } else {
-          draft.puzzleState.piano = initialPianoState;
-          draft.storyLine.push(pianoFeedback.storyLineFailure);
-        }
-      })
-    );
+    useGameStore.setState((state) => ({
+      ...state,
+      showDialog: false,
+      currentPuzzle: null,
+      puzzleState: { ...state.puzzleState, piano: initialPianoState },
+      storyLine: [
+        ...state.storyLine,
+        state.puzzleState.piano.puzzleCompleted
+          ? pianoFeedback.storyLineSuccess
+          : pianoFeedback.storyLineFailure,
+      ],
+      itemLocation: {
+        ...state.itemLocation,
+        ...(state.puzzleState.piano.puzzleCompleted && {
+          bottle: "music",
+          phial: "music",
+        }),
+      },
+    }));
   };
 
   const handleNotePress = (note: NoteId) => {
     if (puzzleCompleted || playedNotes.length >= TARGET_MELODY.length) return;
     playAudioNote(note);
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.piano = pianoReducer(draft.puzzleState.piano, {
+    useGameStore.setState((state) => ({
+      ...state,
+      puzzleState: {
+        ...state.puzzleState,
+        piano: pianoReducer(state.puzzleState.piano, {
           type: "play",
           note,
-        });
-      })
-    );
+        }),
+      },
+    }));
   };
 
   const handleCheck = () => {
     if (playedNotes.length >= TARGET_MELODY.length) return;
-    useGameStore.setState((state) =>
-      produce(state, (draft) => {
-        draft.puzzleState.piano = pianoReducer(draft.puzzleState.piano, {
+    useGameStore.setState((state) => ({
+      ...state,
+      puzzleState: {
+        ...state.puzzleState,
+        piano: pianoReducer(state.puzzleState.piano, {
           type: "check",
-        });
-      })
-    );
+        }),
+      },
+    }));
   };
 
   return (

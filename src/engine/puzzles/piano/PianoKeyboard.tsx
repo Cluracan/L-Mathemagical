@@ -1,7 +1,9 @@
 import { Button, Stack, useTheme } from "@mui/material";
 import { pianoKeys, type NoteId } from "./pianoConstants";
 
-type PianoKeyboardProps = { onNotePress: (note: NoteId) => void };
+interface PianoKeyboardProps {
+  onNotePress: (note: NoteId) => void;
+}
 
 export const PianoKeyboard = ({ onNotePress }: PianoKeyboardProps) => {
   const theme = useTheme();
@@ -22,7 +24,9 @@ export const PianoKeyboard = ({ onNotePress }: PianoKeyboardProps) => {
           return (
             <Button
               key={noteId}
-              onClick={() => onNotePress(noteId)}
+              onClick={() => {
+                onNotePress(noteId);
+              }}
               sx={
                 keyColor === "white"
                   ? {

@@ -18,7 +18,6 @@ import {
   buttonOrder,
   calculatorButtons,
   calculatorFeedback,
-  initialCalculatorState,
   type InputButton,
   type Token,
 } from "./calculatorConstants";

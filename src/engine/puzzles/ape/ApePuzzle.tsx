@@ -4,7 +4,7 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { Button, Stack, TextField } from "@mui/material";
-import { apeFeedback, INIITAL_WORD, initialApeState } from "./apeConstants";
+import { apeFeedback, INIITAL_WORD } from "./apeConstants";
 import { useState, type ChangeEvent, type KeyboardEventHandler } from "react";
 import { apeReducer } from "./apeReducer";
 

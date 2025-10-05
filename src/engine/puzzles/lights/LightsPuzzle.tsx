@@ -5,11 +5,7 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { lightsReducer } from "./lightsReducer";
-import {
-  INITAL_ORDER,
-  initialLightsState,
-  lightsFeedback,
-} from "./lightsConstants";
+import { INITAL_ORDER, lightsFeedback } from "./lightsConstants";
 
 //Main Component
 export const LightsPuzzle = () => {

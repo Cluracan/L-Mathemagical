@@ -5,7 +5,6 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import {
   audioCache,
-  initialPianoState,
   pianoFeedback,
   TARGET_MELODY,
   type NoteId,

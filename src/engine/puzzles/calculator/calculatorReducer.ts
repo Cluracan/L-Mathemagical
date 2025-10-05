@@ -60,7 +60,7 @@ function applyShuntingYard(tokens: Token[]): Token[] {
   const operatorStack: Token[] = [];
   let index = 0;
   while (index < tokens.length) {
-    const curToken = { ...tokens[index] };
+    const curToken = tokens[index];
     if (curToken?.type === "number") {
       outputQueue.push(curToken);
     } else if (curToken?.type === "operator") {

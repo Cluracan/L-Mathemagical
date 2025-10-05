@@ -60,7 +60,14 @@ export const PianoPuzzle = () => {
       ...state,
       showDialog: false,
       currentPuzzle: null,
-      puzzleState: { ...state.puzzleState, piano: initialPianoState },
+      puzzleState: {
+        ...state.puzzleState,
+        piano: {
+          ...state.puzzleState.piano,
+          playedNotes: [],
+          feedback: [...pianoFeedback.default],
+        },
+      },
       storyLine: [
         ...state.storyLine,
         state.puzzleState.piano.puzzleCompleted

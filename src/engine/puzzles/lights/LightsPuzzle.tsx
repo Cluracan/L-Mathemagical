@@ -5,7 +5,11 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { lightsReducer } from "./lightsReducer";
-import { initialLightsState, lightsFeedback } from "./lightsConstants";
+import {
+  INITAL_ORDER,
+  initialLightsState,
+  lightsFeedback,
+} from "./lightsConstants";
 
 //Main Component
 export const LightsPuzzle = () => {
@@ -44,23 +48,30 @@ export const LightsPuzzle = () => {
   };
 
   const handleLeave = () => {
-    const state = useGameStore.getState();
-    const puzzleCompleted = state.puzzleState.lights.puzzleCompleted;
-    useGameStore.setState({
+    useGameStore.setState((state) => ({
       showDialog: false,
       currentPuzzle: null,
-      puzzleState: { ...state.puzzleState, lights: initialLightsState },
+      puzzleState: {
+        ...state.puzzleState,
+        lights: {
+          ...state.puzzleState.lights,
+          curOrder: [...INITAL_ORDER],
+          feedback: lightsFeedback.initial,
+          turns: 0,
+          switchesActive: true,
+        },
+      },
       storyLine: [
         ...state.storyLine,
-        puzzleCompleted
+        state.puzzleState.lights.puzzleCompleted
           ? lightsFeedback.storyLineSuccess
           : lightsFeedback.storyLineFailure,
       ],
       itemLocation: {
         ...state.itemLocation,
-        ...(puzzleCompleted && { oar: "lights" }),
+        ...(state.puzzleState.lights.puzzleCompleted && { oar: "lights" }),
       },
-    });
+    }));
   };
 
   return (

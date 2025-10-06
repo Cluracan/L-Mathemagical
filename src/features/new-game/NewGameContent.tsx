@@ -33,7 +33,7 @@ export const NewGameContent = () => {
     resetGameStore();
   }, []);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (!name.trim()) {
       setError(true);
@@ -50,8 +50,10 @@ export const NewGameContent = () => {
       setHelperText(" ");
       // resetGameStore();
       setPlayerName(name);
-      await navigate({
+      navigate({
         to: "/game",
+      }).catch((error: unknown) => {
+        console.error("Failed to start game:", error);
       });
     }
   };

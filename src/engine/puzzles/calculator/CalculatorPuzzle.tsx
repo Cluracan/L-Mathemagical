@@ -220,13 +220,13 @@ const CalculatorButton = memo(
         }}
         sx={{
           height: "3rem",
-          paddingBottom: "4px",
           border: "3px solid rgb(47, 47, 47)",
           borderRadius: "5px",
           color: "ivory",
           backgroundColor: "rgb(60, 60, 60)",
           boxShadow: " inset 0px 0px 3px 0px #bdbdba",
           fontFamily: "Orbitron",
+          lineHeight: "3rem",
           "&:hover": {
             boxShadow: "inset 0px 0px 6px 0px #bdbdba",
           },

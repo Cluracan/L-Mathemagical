@@ -117,7 +117,12 @@ export const TelephonePuzzle = () => {
         handleLeave={handleLeave}
         puzzleCompleted={puzzleCompleted}
       >
-        <Button disabled={puzzleCompleted} onClick={handleSubmit}>
+        <Button
+          disabled={puzzleCompleted}
+          variant="contained"
+          size="large"
+          onClick={handleSubmit}
+        >
           Dial
         </Button>
       </PuzzleActions>
@@ -142,8 +147,8 @@ const Telephone = ({ onClick }: TelephoneProps) => {
           backgroundColor: "#d7bc83",
         }}
       >
-        {telephoneButtons.map((keyValue, index) => (
-          <TelephoneButton onClick={onClick} keyValue={keyValue} key={index} />
+        {telephoneButtons.map((value, index) => (
+          <TelephoneButton onClick={onClick} value={value} key={index} />
         ))}
       </Box>
     </>
@@ -151,15 +156,15 @@ const Telephone = ({ onClick }: TelephoneProps) => {
 };
 
 interface TelephoneButtonProps {
-  keyValue: number | null;
+  value: number | null;
   onClick: InputHandler;
 }
-const TelephoneButton = ({ onClick, keyValue }: TelephoneButtonProps) => {
-  const isButton = keyValue !== null;
+const TelephoneButton = ({ onClick, value }: TelephoneButtonProps) => {
+  const isButton = value !== null;
   return isButton ? (
     <Button
       onClick={() => {
-        onClick(keyValue);
+        onClick(value);
       }}
       sx={{
         border: "1px solid rgb(47, 47, 47)",
@@ -173,7 +178,7 @@ const TelephoneButton = ({ onClick, keyValue }: TelephoneButtonProps) => {
         },
       }}
     >
-      {keyValue}
+      {value}
     </Button>
   ) : (
     <Box
@@ -195,7 +200,6 @@ const NumberDisplay = ({ number }: NumberDisplayProps) => {
       <Typography
         sx={{
           px: 1,
-          py: 1,
           border: "3px solid rgba(71, 71, 71, 1)",
           borderRadius: 1,
           color: "rgb(60, 60, 60)",
@@ -203,7 +207,6 @@ const NumberDisplay = ({ number }: NumberDisplayProps) => {
           boxShadow: "inset -10px -5px 64px -32px #2b382e",
           fontFamily: "DSEG7",
           fontSize: "2rem",
-          lineHeight: 2,
         }}
       >
         {number.toString().padStart(3, "0")}

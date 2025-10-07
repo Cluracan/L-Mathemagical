@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { DIGIT_COUNT, type SafeState } from "./safeConstants";
+import { DIGIT_COUNT, initialSafeState, type SafeState } from "./safeConstants";
 
 //Types
 type SafeAction =
@@ -9,7 +9,7 @@ type SafeAction =
 
 //Helper Functions
 const getDigitCount = (value: number) => {
-  return Math.max(Math.floor(Math.log10(value)), 0) + 1; // Works for all x>=0
+  return value === 0 ? 1 : Math.floor(Math.log10(value)) + 1; // Works for value>=0
 };
 
 export const safeReducer = (state: SafeState, action: SafeAction) => {
@@ -38,12 +38,10 @@ export const safeReducer = (state: SafeState, action: SafeAction) => {
       });
     }
     case "reset": {
-      return produce(state, (draft) => {
-        draft.value = 0;
-        draft.feedback.isSquare = false;
-        draft.feedback.isCube = false;
-        draft.feedback.isCorrectDigitCount = false;
-      });
+      return initialSafeState;
+    }
+    default: {
+      return state;
     }
   }
 };

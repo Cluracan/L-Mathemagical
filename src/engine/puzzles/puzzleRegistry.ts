@@ -28,6 +28,8 @@ import { handleApePuzzle } from "./ape/handleApePuzzle";
 import { ApePuzzle } from "./ape/ApePuzzle";
 import { telephoneNPC } from "./telephone/telephoneNPC";
 import { TelephonePuzzle } from "./telephone/TelephonePuzzle";
+import { safeNPC } from "./safe/safeNPC";
+import { SafePuzzle } from "./safe/SafePuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -63,6 +65,10 @@ export const puzzleAtLocation = {
   pig: {
     puzzleId: "pig",
     puzzleNPC: pigNPC,
+  },
+  safe: {
+    puzzleId: "safe",
+    puzzleNPC: safeNPC,
   },
   snooker: {
     puzzleId: "snooker",
@@ -126,6 +132,10 @@ export const puzzleRegistry = {
   pig: {
     pipelineFunction: null,
     component: PigPuzzle,
+  },
+  safe: {
+    pipelineFunction: null,
+    component: SafePuzzle,
   },
   snooker: {
     pipelineFunction: null,

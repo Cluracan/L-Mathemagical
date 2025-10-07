@@ -1,0 +1,49 @@
+import { produce } from "immer";
+import { DIGIT_COUNT, type SafeState } from "./safeConstants";
+
+//Types
+type SafeAction =
+  | { type: "input"; value: number }
+  | { type: "reset" }
+  | { type: "test" };
+
+//Helper Functions
+const getDigitCount = (value: number) => {
+  return Math.max(Math.floor(Math.log10(value)), 0) + 1; // Works for all x>=0
+};
+
+export const safeReducer = (state: SafeState, action: SafeAction) => {
+  switch (action.type) {
+    case "input": {
+      return produce(state, (draft) => {
+        if (draft.resetValueOnNextInput) {
+          draft.value = action.value;
+          draft.resetValueOnNextInput = false;
+        } else if (getDigitCount(draft.value) < DIGIT_COUNT) {
+          draft.value = draft.value * 10 + action.value;
+        }
+      });
+    }
+    case "test": {
+      return produce(state, (draft) => {
+        draft.feedback.isSquare = Number.isInteger(Math.sqrt(draft.value));
+        draft.feedback.isCube = Number.isInteger(Math.cbrt(draft.value));
+        draft.feedback.isCorrectDigitCount =
+          getDigitCount(draft.value) === DIGIT_COUNT;
+        draft.puzzleCompleted =
+          draft.feedback.isSquare &&
+          draft.feedback.isCube &&
+          draft.feedback.isCorrectDigitCount;
+        draft.resetValueOnNextInput = true;
+      });
+    }
+    case "reset": {
+      return produce(state, (draft) => {
+        draft.value = 0;
+        draft.feedback.isSquare = false;
+        draft.feedback.isCube = false;
+        draft.feedback.isCorrectDigitCount = false;
+      });
+    }
+  }
+};

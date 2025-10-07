@@ -58,6 +58,10 @@ import {
   initialLightsState,
   type LightsState,
 } from "../engine/puzzles/lights/lightsConstants";
+import {
+  initialSafeState,
+  type SafeState,
+} from "../engine/puzzles/safe/safeConstants";
 
 export interface GameStoreState {
   playerName: string;
@@ -82,6 +86,7 @@ export interface GameStoreState {
     lights: LightsState;
     piano: PianoState;
     pig: PigState;
+    safe: SafeState;
     snooker: SnookerState;
     telephone: TelephoneState;
     tree: TreeState;
@@ -121,6 +126,7 @@ const initialGameState: GameStoreState = {
     lights: initialLightsState,
     piano: initialPianoState,
     pig: initialPigState,
+    safe: initialSafeState,
     snooker: initialSnookerState,
     telephone: initialTelephoneState,
     tree: initialTreeState,

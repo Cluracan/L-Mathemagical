@@ -848,7 +848,7 @@ export const roomData = {
   safe: {
     id: "safe",
     descriptions: {
-      long: "You have entered a room with a stone floor. In the north wall is the large door of a safe, with a numerical keypad fixed to it. There is a door to the southwest.",
+      long: "You have entered a room with a stone floor. In the north wall is the large door of a safe. There is a door to the southwest.",
       short: "You are in the room with the safe",
     },
     mapText: "Safe",

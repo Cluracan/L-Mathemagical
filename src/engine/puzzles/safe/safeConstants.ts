@@ -13,7 +13,7 @@ export interface SafeState {
 export type KeypadButton = (typeof keypadButtons)[number];
 
 //Type Guard
-export const isKeyPadButton = (digit: number): digit is KeypadButton => {
+export const isKeypadButton = (digit: number): digit is KeypadButton => {
   return keypadButtons.includes(digit as KeypadButton);
 };
 

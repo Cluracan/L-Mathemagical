@@ -24,3 +24,4 @@ export const PuzzleDialog = memo((props: PuzzleDialogProps) => {
     </>
   );
 });
+PuzzleDialog.displayName = "PuzzleDialog";

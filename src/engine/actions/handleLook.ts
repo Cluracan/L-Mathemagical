@@ -65,7 +65,7 @@ const lookItem: PipelineFunction = (payload) => {
     if (itemLocation[target] === "player") {
       return stopWithSuccess(
         payload,
-        itemRegistry.getInventoryDescription(target)
+        itemRegistry.getExamineDescription(target)
       );
     } else if (itemLocation[target] === currentRoom) {
       return stopWithSuccess(payload, itemRegistry.getFloorDescription(target));

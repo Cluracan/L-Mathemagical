@@ -198,6 +198,7 @@ const TreeCell = memo(({ index }: { index: number }) => {
     </StyledCell>
   );
 });
+TreeCell.displayName = "TreeCell";
 
 const StyledCell = styled("div")({
   display: "flex",

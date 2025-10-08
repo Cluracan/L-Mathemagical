@@ -5,5 +5,5 @@ export const Route = createFileRoute("/load")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/load-game"!</div>;
+  return <div>Hello from Load Game!</div>;
 }

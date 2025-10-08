@@ -237,3 +237,4 @@ const CalculatorButton = memo(
     );
   }
 );
+CalculatorButton.displayName = "CalculatorButton";

@@ -186,6 +186,7 @@ const GridCell = memo(({ index }: { index: number }) => {
     </StyledCell>
   );
 });
+GridCell.displayName = "GridCell";
 
 const StyledCell = styled("div")({
   display: "flex",
@@ -222,8 +223,10 @@ const Instructions = () => {
           margin: "auto",
         }}
       >
-        {pigFeedback.instructions.map((entry) => (
-          <Typography lineHeight={3}>{entry}</Typography>
+        {pigFeedback.instructions.map((entry, index) => (
+          <Typography key={index} lineHeight={3}>
+            {entry}
+          </Typography>
         ))}
         <Paper
           sx={{

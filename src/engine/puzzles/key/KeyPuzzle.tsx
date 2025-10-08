@@ -175,6 +175,7 @@ const LockDisplay = memo(() => {
     </>
   );
 });
+LockDisplay.displayName = "LockDisplay";
 
 interface KeyCellProps {
   index: number;
@@ -198,6 +199,7 @@ const KeyCell = memo(({ index, onCellClick }: KeyCellProps) => {
     />
   );
 });
+KeyCell.displayName = "KeyCell";
 
 // https://mui.com/system/styled/
 const StyledCell = styled("div")(({ theme }) => ({

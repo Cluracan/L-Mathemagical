@@ -11,6 +11,10 @@ import {
   type KeypadButton,
 } from "./safeConstants";
 import { safeReducer } from "./safeReducer";
+import { useCallback, useEffect } from "react";
+
+// --- types ---
+type InputHandler = (button: KeypadButton) => void;
 
 export const SafePuzzle = () => {
   const puzzleCompleted = useGameStore(
@@ -27,6 +31,7 @@ export const SafePuzzle = () => {
       },
     }));
   };
+
   const handleLeave = () => {
     useGameStore.setState((state) => ({
       showDialog: false,
@@ -44,20 +49,23 @@ export const SafePuzzle = () => {
           ? safeFeedback.storyLineSuccess
           : safeFeedback.storyLineFailure,
       ],
+      keyLocked: { ...state.keyLocked, safe: false },
     }));
   };
-  const handleInput = (button: KeypadButton) => {
+
+  const handleInput: InputHandler = useCallback((button) => {
     useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
         safe: safeReducer(state.puzzleState.safe, {
           type: "input",
-          value: button,
+          value: Number(button),
         }),
       },
     }));
-  };
-  const handleTest = () => {
+  }, []);
+
+  const handleTest = useCallback(() => {
     useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
@@ -66,11 +74,29 @@ export const SafePuzzle = () => {
         }),
       },
     }));
-  };
+  }, []);
+
+  // --- effects ---
+  useEffect(() => {
+    function keyDownHandler(e: KeyboardEvent) {
+      if (!isNaN(Number(e.key))) {
+        e.preventDefault();
+        handleInput(Number(e.key));
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        handleTest();
+      }
+    }
+    document.addEventListener("keydown", keyDownHandler);
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+  }, [handleTest, handleInput]);
+
   return (
     <PuzzleContainer>
       <PuzzleHeader title="Safe Puzzle" description="Crack the code." />
-      <Keypad onClick={handleInput} />
+      <SafeDisplay onClick={handleInput} />
       <PuzzleActions
         handleReset={handleReset}
         handleLeave={handleLeave}
@@ -82,10 +108,34 @@ export const SafePuzzle = () => {
           size="large"
           onClick={handleTest}
         >
-          Test
+          Enter
         </Button>
       </PuzzleActions>
     </PuzzleContainer>
+  );
+};
+
+interface SafeDisplayProps {
+  onClick: (button: KeypadButton) => void;
+}
+const SafeDisplay = ({ onClick }: SafeDisplayProps) => {
+  return (
+    <Stack
+      direction={"row"}
+      sx={{
+        p: 2,
+        gap: 2,
+        m: "auto",
+        borderRadius: 2,
+        backgroundColor: "#6c6c6dff",
+      }}
+    >
+      <Keypad onClick={onClick} />
+      <Stack sx={{ mt: 2, alignItems: "center", gap: 2 }}>
+        <KeypadDisplay />
+        <KeypadFeedback />
+      </Stack>
+    </Stack>
   );
 };
 
@@ -101,7 +151,7 @@ const Keypad = ({ onClick }: KeypadProps) => {
           gridTemplateColumns: "repeat(2, 1fr)",
           gap: 1,
           borderRadius: "5px",
-          m: 2,
+
           padding: 2,
           backgroundColor: "#a2a1a7",
         }}
@@ -110,8 +160,6 @@ const Keypad = ({ onClick }: KeypadProps) => {
           <KeypadButton onClick={onClick} value={value} key={index} />
         ))}
       </Box>
-      <KeypadDisplay />
-      <KeypadFeedback />
     </>
   );
 };
@@ -138,7 +186,7 @@ const KeypadButton = ({ onClick, value }: KeypadButtonProps) => {
         },
       }}
     >
-      {value}
+      {String(value)}
     </Button>
   );
 };
@@ -178,9 +226,10 @@ const KeypadFeedback = () => {
     { color: "rgba(0, 255, 17, 1)", isActive: puzzleCompleted },
   ];
   return (
-    <Stack direction={"row"} sx={{ gap: 2 }}>
-      {feedbackLights.map((light) => (
+    <Stack direction={"row"} sx={{ gap: 1 }}>
+      {feedbackLights.map((light, index) => (
         <Box
+          key={index}
           sx={{
             width: "1rem",
             height: "1rem",

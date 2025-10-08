@@ -1,3 +1,5 @@
+import { createKeyGuard } from "../../../utils/guards";
+
 //Types
 export interface SafeState {
   puzzleCompleted: boolean;
@@ -10,15 +12,18 @@ export interface SafeState {
   };
 }
 
-export type KeypadButton = (typeof keypadValues)[number];
+// export type KeypadButton = (typeof keypadValues)[number];
+export type KeypadButton = keyof typeof keypadValues;
 
 //Constants
 export const DIGIT_COUNT = 4;
 
 //Static Data
 export const safeFeedback = {
-  storyLineSuccess: "You watch as the safe door swings open...",
-  storyLineFailure: "You step back from the keypad.",
+  storyLineSuccess:
+    "You watch apprehensively as the huge safe door swings open...",
+  storyLineFailure:
+    "You step back from the keypad, still wondering what the code is...",
 };
 
 export const keypadValues = [1, 6, 2, 7, 3, 8, 4, 9, 5, 0] as const;

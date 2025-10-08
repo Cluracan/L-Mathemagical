@@ -1,5 +1,3 @@
-import { createKeyGuard } from "../../../utils/guards";
-
 //Types
 export interface SafeState {
   puzzleCompleted: boolean;

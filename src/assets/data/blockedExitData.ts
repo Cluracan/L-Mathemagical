@@ -17,13 +17,23 @@ export const blockedExitData = {
   },
   granite: {
     direction: ["s"],
-    lockedText: "The door is securely locked",
+    lockedText: "The door is securely locked.",
     keyRequired: "rusty",
   },
   woodenStairs: {
     direction: ["n"],
-    lockedText: "The door is securely locked",
+    lockedText: "The door is securely locked.",
     keyRequired: "rusty",
+  },
+  safe: {
+    direction: ["n"],
+    lockedText: "The safe door is securely locked.",
+    keyRequired: "safe",
+  },
+  carpetPassageS: {
+    direction: ["s"],
+    lockedText: "The safe door is securely locked.",
+    keyRequired: "safe",
   },
 
   //Permanently locked

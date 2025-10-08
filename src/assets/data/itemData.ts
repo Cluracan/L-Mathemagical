@@ -146,6 +146,18 @@ export const itemData = {
     },
     isDrinkable: false,
   },
+  safe: {
+    id: "safe",
+    initialLocation: "pit",
+    descriptions: {
+      floor: "There is the key to a safe lying here.",
+      inventory: "A safe key",
+      pickUp: "safe key",
+      examine:
+        "The key will bypass the safe keypad...which means you shouldn't be using it!",
+    },
+    isDrinkable: false,
+  },
   spectacles: {
     id: "spectacles",
     initialLocation: "code",
@@ -244,6 +256,7 @@ export const initialItemLocation = Object.values(itemData).reduce(
 export const initialKeyLocked = {
   iron: true,
   rusty: true,
+  safe: true,
 } as const;
 
 export type KeyId = keyof typeof initialKeyLocked;

@@ -6,7 +6,8 @@ import { useGameStore } from "../../../store/useGameStore";
 import {
   DIGIT_COUNT,
   initialSafeState,
-  keypadValues,
+  isKeyPadButton,
+  keypadButtons,
   safeFeedback,
   type KeypadButton,
 } from "./safeConstants";
@@ -77,8 +78,11 @@ export const SafePuzzle = () => {
   useEffect(() => {
     function keyDownHandler(e: KeyboardEvent) {
       if (!isNaN(Number(e.key))) {
-        e.preventDefault();
-        handleInput(Number(e.key));
+        const digit = Number(e.key);
+        if (isKeyPadButton(digit)) {
+          e.preventDefault();
+          handleInput(digit);
+        }
       } else if (e.key === "Enter") {
         e.preventDefault();
         handleTest();
@@ -153,8 +157,8 @@ const Keypad = ({ onClick }: KeypadProps) => {
           backgroundColor: "#a2a1a7",
         }}
       >
-        {keypadValues.map((value, index) => (
-          <KeypadButton onClick={onClick} value={value} key={index} />
+        {keypadButtons.map((button, index) => (
+          <KeypadButton onClick={onClick} button={button} key={index} />
         ))}
       </Box>
     </>
@@ -163,13 +167,13 @@ const Keypad = ({ onClick }: KeypadProps) => {
 
 interface KeypadButtonProps {
   onClick: (button: KeypadButton) => void;
-  value: KeypadButton;
+  button: KeypadButton;
 }
-const KeypadButton = ({ onClick, value }: KeypadButtonProps) => {
+const KeypadButton = ({ onClick, button }: KeypadButtonProps) => {
   return (
     <Button
       onClick={() => {
-        onClick(value);
+        onClick(button);
       }}
       sx={{
         border: "1px solid rgb(47, 47, 47)",
@@ -183,7 +187,7 @@ const KeypadButton = ({ onClick, value }: KeypadButtonProps) => {
         },
       }}
     >
-      {String(value)}
+      {String(button)}
     </Button>
   );
 };

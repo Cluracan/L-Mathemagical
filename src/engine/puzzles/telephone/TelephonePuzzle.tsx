@@ -11,9 +11,9 @@ import {
 } from "./telephoneConstants";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { telephoneReducer } from "./telephoneReducer";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
-//Types
+// --- types ---
 type InputHandler = (button: TelephoneButton) => void;
 
 export const TelephonePuzzle = () => {
@@ -24,23 +24,6 @@ export const TelephonePuzzle = () => {
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.telephone.puzzleCompleted
   );
-  const number = useGameStore((state) => state.puzzleState.telephone.number);
-
-  // --- effects ---
-  useEffect(() => {
-    function keyDownHandler(e: KeyboardEvent) {
-      console.log(e.key);
-      if (!isNaN(Number(e.key))) {
-        handleInput(Number(e.key));
-      } else if (e.key === "Enter") {
-        handleSubmit();
-      }
-    }
-    document.addEventListener("keydown", keyDownHandler);
-    return () => {
-      document.removeEventListener("keydown", keyDownHandler);
-    };
-  }, []);
 
   // --- handlers ---
   const handleReset = () => {
@@ -70,7 +53,7 @@ export const TelephonePuzzle = () => {
     });
   };
 
-  const handleInput: InputHandler = (button) => {
+  const handleInput: InputHandler = useCallback((button) => {
     useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
@@ -80,10 +63,9 @@ export const TelephonePuzzle = () => {
         }),
       },
     }));
-  };
+  }, []);
 
-  const handleSubmit = () => {
-    console.log(useGameStore.getState().puzzleState.telephone);
+  const handleSubmit = useCallback(() => {
     useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
@@ -92,7 +74,24 @@ export const TelephonePuzzle = () => {
         }),
       },
     }));
-  };
+  }, []);
+
+  // --- effects ---
+  useEffect(() => {
+    function keyDownHandler(e: KeyboardEvent) {
+      if (!isNaN(Number(e.key))) {
+        e.preventDefault();
+        handleInput(Number(e.key));
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        handleSubmit();
+      }
+    }
+    document.addEventListener("keydown", keyDownHandler);
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
+  }, [handleSubmit, handleInput]);
 
   return (
     <PuzzleContainer>
@@ -109,7 +108,7 @@ export const TelephonePuzzle = () => {
         }}
       >
         <Telephone onClick={handleInput} />
-        <NumberDisplay number={number} />
+        <NumberDisplay />
       </Stack>
       <PuzzleFeedback feedback={feedback} height="30vh" />
       <PuzzleActions
@@ -191,10 +190,8 @@ const TelephoneButton = ({ onClick, value }: TelephoneButtonProps) => {
   );
 };
 
-interface NumberDisplayProps {
-  number: number;
-}
-const NumberDisplay = ({ number }: NumberDisplayProps) => {
+const NumberDisplay = () => {
+  const number = useGameStore((state) => state.puzzleState.telephone.number);
   return (
     <>
       <Typography

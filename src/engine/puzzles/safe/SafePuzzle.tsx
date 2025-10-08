@@ -6,7 +6,7 @@ import { useGameStore } from "../../../store/useGameStore";
 import {
   DIGIT_COUNT,
   initialSafeState,
-  isKeyPadButton,
+  isKeypadButton,
   keypadButtons,
   safeFeedback,
   type KeypadButton,
@@ -79,7 +79,7 @@ export const SafePuzzle = () => {
     function keyDownHandler(e: KeyboardEvent) {
       if (!isNaN(Number(e.key))) {
         const digit = Number(e.key);
-        if (isKeyPadButton(digit)) {
+        if (isKeypadButton(digit)) {
           e.preventDefault();
           handleInput(digit);
         }

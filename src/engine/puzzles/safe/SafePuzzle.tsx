@@ -57,7 +57,7 @@ export const SafePuzzle = () => {
         ...state.puzzleState,
         safe: safeReducer(state.puzzleState.safe, {
           type: "input",
-          value: button,
+          digit: button,
         }),
       },
     }));

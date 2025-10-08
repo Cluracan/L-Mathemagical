@@ -3,7 +3,7 @@ import { DIGIT_COUNT, initialSafeState, type SafeState } from "./safeConstants";
 
 //Types
 type SafeAction =
-  | { type: "input"; value: number }
+  | { type: "input"; digit: number }
   | { type: "reset" }
   | { type: "test" };
 
@@ -17,10 +17,10 @@ export const safeReducer = (state: SafeState, action: SafeAction) => {
     case "input": {
       return produce(state, (draft) => {
         if (draft.resetValueOnNextInput) {
-          draft.value = action.value;
+          draft.value = action.digit;
           draft.resetValueOnNextInput = false;
         } else if (getDigitCount(draft.value) < DIGIT_COUNT) {
-          draft.value = draft.value * 10 + action.value;
+          draft.value = draft.value * 10 + action.digit;
         }
       });
     }

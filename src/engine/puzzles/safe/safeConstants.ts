@@ -12,8 +12,12 @@ export interface SafeState {
   };
 }
 
-export type KeypadButton = (typeof keypadValues)[number];
-// export type KeypadButton = keyof typeof keypadValues;
+export type KeypadButton = (typeof keypadButtons)[number];
+
+//Type Guard
+export const isKeyPadButton = (digit: number): digit is KeypadButton => {
+  return keypadButtons.includes(digit as KeypadButton);
+};
 
 //Constants
 export const DIGIT_COUNT = 4;
@@ -26,7 +30,7 @@ export const safeFeedback = {
     "You step back from the keypad, still wondering what the code is...",
 };
 
-export const keypadValues = [1, 6, 2, 7, 3, 8, 4, 9, 5, 0] as const;
+export const keypadButtons = [1, 6, 2, 7, 3, 8, 4, 9, 5, 0] as const;
 
 //Initial State
 export const initialSafeState: SafeState = {

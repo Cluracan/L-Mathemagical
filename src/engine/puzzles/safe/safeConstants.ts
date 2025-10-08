@@ -12,8 +12,8 @@ export interface SafeState {
   };
 }
 
-// export type KeypadButton = (typeof keypadValues)[number];
-export type KeypadButton = keyof typeof keypadValues;
+export type KeypadButton = (typeof keypadValues)[number];
+// export type KeypadButton = keyof typeof keypadValues;
 
 //Constants
 export const DIGIT_COUNT = 4;

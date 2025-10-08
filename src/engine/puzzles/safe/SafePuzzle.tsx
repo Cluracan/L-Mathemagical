@@ -13,9 +13,6 @@ import {
 import { safeReducer } from "./safeReducer";
 import { useCallback, useEffect } from "react";
 
-// --- types ---
-type InputHandler = (button: KeypadButton) => void;
-
 export const SafePuzzle = () => {
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.safe.puzzleCompleted
@@ -53,13 +50,13 @@ export const SafePuzzle = () => {
     }));
   };
 
-  const handleInput: InputHandler = useCallback((button) => {
+  const handleInput = useCallback((button: KeypadButton) => {
     useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
         safe: safeReducer(state.puzzleState.safe, {
           type: "input",
-          value: Number(button),
+          value: button,
         }),
       },
     }));

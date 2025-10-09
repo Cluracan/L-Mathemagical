@@ -812,14 +812,14 @@ export const roomData = {
   triangle: {
     id: "triangle",
     descriptions: {
-      long: "You have entered a grim room with a triangular floor and three slanting triangular walls which meet at a point ghigh above you. Doors in each wall lead off to the south, northeast, and northwest. Hundreds of bats are hanging from the slanting walls.",
+      long: "You have entered a grim room with a triangular floor and three slanting triangular walls which meet at a point high above you. Doors in each wall lead off to the south, northeast, and northwest. Hundreds of bats are hanging from the slanting walls.",
       short: "You are in the triangular room.",
     },
     mapText: "Triangle",
     exits: {
       nw: "circular",
       s: "blue",
-      n: "hexagon",
+      ne: "hexagon",
     },
   },
   blue: {
@@ -836,13 +836,13 @@ export const roomData = {
   hexagon: {
     id: "hexagon",
     descriptions: {
-      long: "You are in a room with six walls. Doors lead to the west and south. On the east wall is a brass plaque engraved with:-\n\n\t\t\t?@3+>*=@\n\t\t\t+33./",
+      long: "You are in a room with six walls. Doors lead to the southwest and south. On the east wall is a brass plaque engraved with:-\n\n\t\t\t?@3+>*=@\n\t\t\t+33./",
       short: "You are in the room with six walls.",
     },
     mapText: "Hexagon",
     exits: {
       w: "circular",
-      s: "triangle",
+      sw: "triangle",
     },
   },
   safe: {

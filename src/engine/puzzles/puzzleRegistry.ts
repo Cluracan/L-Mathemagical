@@ -30,6 +30,8 @@ import { telephoneNPC } from "./telephone/telephoneNPC";
 import { TelephonePuzzle } from "./telephone/TelephonePuzzle";
 import { safeNPC } from "./safe/safeNPC";
 import { SafePuzzle } from "./safe/SafePuzzle";
+import { batNPC } from "./bat/batNPC";
+import { handleBatPuzzle } from "./bat/handleBatPuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -48,6 +50,10 @@ export const puzzleAtLocation = {
   riverN: {
     puzzleId: "ape",
     puzzleNPC: apeNPC,
+  },
+  triangle: {
+    puzzleId: "bat",
+    puzzleNPC: batNPC,
   },
   largeKitchen: { puzzleId: "cook", puzzleNPC: cookNPC },
   lights: {
@@ -108,6 +114,10 @@ export const puzzleRegistry = {
   ape: {
     pipelineFunction: handleApePuzzle,
     component: ApePuzzle,
+  },
+  bat: {
+    pipelineFunction: handleBatPuzzle,
+    component: null,
   },
   calculator: {
     pipelineFunction: null,

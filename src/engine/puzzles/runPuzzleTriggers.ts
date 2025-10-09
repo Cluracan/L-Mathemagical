@@ -11,7 +11,7 @@ import {
 export const runPuzzleTriggers: PipelineFunction = (payload) => {
   const { gameState, command, target } = payload;
   const { currentRoom, currentPuzzle, puzzleState } = gameState;
-  console.log({ gameState, command, target });
+
   //not in a puzzle room
   if (!isPuzzleLocation(currentRoom)) return payload;
 

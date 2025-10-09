@@ -51,8 +51,6 @@ export const handleTurtlePuzzle: PipelineFunction = (payload) => {
         `As you move one square to the ${moveDirection}, the turtle moves two squares to the ${moveDirection}.`
       );
       draft.gameState.puzzleState.turtle.displacement = { x: nextX, y: nextY };
-      draft.gameState.success = false;
-      draft.gameState.feedback = "move";
       draft.done = true;
 
       //win check
@@ -62,6 +60,7 @@ export const handleTurtlePuzzle: PipelineFunction = (payload) => {
         );
         draft.gameState.puzzleState.turtle.puzzleCompleted = true;
         draft.gameState.itemLocation.rusty = "player";
+        draft.gameState.currentPuzzle = null;
       }
     });
   }

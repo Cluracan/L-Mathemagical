@@ -15,10 +15,12 @@ import { safeReducer } from "./safeReducer";
 import { useCallback, useEffect } from "react";
 
 export const SafePuzzle = () => {
+  // --- state / selectors ---
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.safe.puzzleCompleted
   );
 
+  // --- handlers ---
   const handleReset = () => {
     useGameStore.setState((state) => ({
       puzzleState: {

@@ -85,7 +85,7 @@ export const TreePuzzle = () => {
         produce(state, (draft) => {
           draft.puzzleState.tree.feedback.push(...nextFeedback);
           draft.puzzleState.tree.puzzleCompleted = true;
-          draft.itemLocation.oar = "player";
+          draft.itemLocation.ladder = "player";
         })
       );
     } else {

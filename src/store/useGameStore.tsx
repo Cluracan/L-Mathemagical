@@ -62,6 +62,10 @@ import {
   initialSafeState,
   type SafeState,
 } from "../engine/puzzles/safe/safeConstants";
+import {
+  initialBatState,
+  type BatState,
+} from "../engine/puzzles/bat/handleBatPuzzle";
 
 export interface GameStoreState {
   playerName: string;
@@ -80,6 +84,7 @@ export interface GameStoreState {
   puzzleState: {
     abbot: AbbotState;
     ape: ApeState;
+    bat: BatState;
     calculator: CalculatorState;
     cook: CookState;
     key: KeyState;
@@ -120,6 +125,7 @@ const initialGameState: GameStoreState = {
   puzzleState: {
     abbot: initialAbbotState,
     ape: initialApeState,
+    bat: initialBatState,
     calculator: initialCalculatorState,
     cook: initialCookState,
     key: initialKeyState,

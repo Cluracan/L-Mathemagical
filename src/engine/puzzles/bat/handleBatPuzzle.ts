@@ -13,8 +13,11 @@ export interface BatState {
 }
 
 // --- Constants ---
-const triangularNumbers = [1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
+const MIN_VALUE = 30;
+const MAX_VALUE = 90;
+const TRIANGULAR_NUMBERS = [1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
+// --- Static Data ---
 const batFeedback = {
   nonInteger:
     '"Don\'t try and be clever!" screeches the bat. "I only like integers!"',
@@ -38,20 +41,24 @@ const batFeedback = {
 
 // --- Helper Functions ---
 const generateTriangleText = (userInput: number) => {
-  let textHolder = ["The large bat flies over to a wall and writes:-"];
+  const textHolder = ["The large bat flies over to a wall and writes:-"];
   let currentText = "";
   for (let i = 1; i <= userInput; i++) {
-    currentText += `${i}  `;
+    currentText += `${String(i)}  `;
     if (i < 10) {
       currentText += " ";
     }
-    if (triangularNumbers.includes(i)) {
+    if (TRIANGULAR_NUMBERS.includes(i)) {
       textHolder.push(currentText);
       currentText = "";
     }
   }
   textHolder.push(currentText);
   return textHolder;
+};
+
+const isInValidRange = (value: number) => {
+  return value >= MIN_VALUE && value <= MAX_VALUE;
 };
 
 // --- Initial State ---
@@ -69,16 +76,15 @@ export const handleBatPuzzle: PipelineFunction = (payload) => {
       const value = Number(target);
       if (!isNaN(value)) {
         return produce(payload, (draft) => {
-          draft.gameState.puzzleState.bat.attempts++;
           if (!Number.isInteger(value)) {
             draft.gameState.storyLine.push(batFeedback.nonInteger);
-          } else if (value > 90) {
-            draft.gameState.storyLine.push(batFeedback.tooBig);
-          } else if (value < 30) {
-            draft.gameState.storyLine.push(batFeedback.tooSmall);
+          } else if (!isInValidRange(value)) {
+            draft.gameState.storyLine.push(
+              value > MAX_VALUE ? batFeedback.tooBig : batFeedback.tooSmall
+            );
           } else {
             draft.gameState.puzzleState.bat.attempts++;
-            if (triangularNumbers.includes(value)) {
+            if (TRIANGULAR_NUMBERS.includes(value)) {
               draft.gameState.puzzleState.bat.puzzleCompleted = true;
               draft.gameState.storyLine.push(
                 ...generateTriangleText(value),

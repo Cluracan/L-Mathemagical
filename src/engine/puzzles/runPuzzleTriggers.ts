@@ -11,7 +11,7 @@ import {
 export const runPuzzleTriggers: PipelineFunction = (payload) => {
   const { gameState, command, target } = payload;
   const { currentRoom, currentPuzzle, puzzleState } = gameState;
-
+  console.log({ gameState, command, target });
   //not in a puzzle room
   if (!isPuzzleLocation(currentRoom)) return payload;
 
@@ -48,7 +48,8 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
       if (
         command === triggerPuzzleCommand &&
         acceptPuzzleText.includes(target) &&
-        requiredItems.every((itemId) => itemLocation[itemId] === "player")
+        requiredItems.every((itemId) => itemLocation[itemId] === "player") &&
+        feedback.puzzleIsComplete
       ) {
         return stopWithSuccess(payload, feedback.puzzleIsComplete);
       }

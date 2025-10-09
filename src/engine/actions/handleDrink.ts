@@ -8,7 +8,6 @@ export const handleDrink: HandleCommand = (args) => {
   if (!target) {
     const nextGameState = produce(gameState, (draft) => {
       draft.storyLine.push("Drink what?");
-      draft.success = false;
     });
     return nextGameState;
   }
@@ -16,7 +15,6 @@ export const handleDrink: HandleCommand = (args) => {
   if (!isItemId(target) || itemLocation[target] !== "player") {
     const nextGameState = produce(gameState, (draft) => {
       draft.storyLine.push("You don't have that...");
-      draft.success = false;
     });
     return nextGameState;
   }
@@ -24,7 +22,6 @@ export const handleDrink: HandleCommand = (args) => {
   if (!itemData[target].isDrinkable) {
     const nextGameState = produce(gameState, (draft) => {
       draft.storyLine.push("You can't drink that!");
-      draft.success = false;
     });
     return nextGameState;
   }

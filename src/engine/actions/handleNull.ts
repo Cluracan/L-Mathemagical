@@ -23,7 +23,6 @@ export const handleNull: HandleNullCommand = (args) => {
   const rngIndex = Math.floor(Math.random() * nullFeedback.length);
   const nextGameState = produce(gameState, (draft) => {
     draft.storyLine.push(nullFeedback[rngIndex]);
-    draft.success = false;
   });
 
   return nextGameState;

@@ -9,7 +9,7 @@ export const handleTeleport: HandleCommand = (args) => {
     return handleLook({
       gameState: {
         ...gameState,
-        feedback: "move",
+
         visitedRooms: gameState.visitedRooms.add(gameState.currentRoom),
         currentRoom: target,
       },
@@ -20,6 +20,5 @@ export const handleTeleport: HandleCommand = (args) => {
 
   return {
     ...args.gameState,
-    success: false,
   };
 };

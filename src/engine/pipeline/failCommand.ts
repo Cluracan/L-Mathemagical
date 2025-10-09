@@ -8,7 +8,6 @@ export const failCommand = (
   const { gameState } = payload;
   const nextGameState = produce(gameState, (draft) => {
     draft.storyLine.push(storyLineMessage);
-    draft.success = false;
   });
   return {
     ...payload,

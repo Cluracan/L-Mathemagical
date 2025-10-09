@@ -16,14 +16,14 @@ export const useGameController = () => {
   const processInputQueue = () => {
     while (readyForInputRef.current && inputQueueRef.current.length > 0) {
       const userInput = inputQueueRef.current.shift();
+
       if (userInput) {
         readyForInputRef.current = false;
         const result = handleInput(userInput);
 
         //Only map animation is async
         if (
-          (result.command !== "move" && result.feedback !== "move") || //non-move
-          !result.success || //failed-move
+          !result.locationChanged ||
           !modernMode //no map
         ) {
           readyForInputRef.current = true;

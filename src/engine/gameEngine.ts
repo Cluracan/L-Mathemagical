@@ -8,14 +8,8 @@ export type GameState = Omit<
   "playerName" | "modernMode" | "visitedRooms"
 > & {
   visitedRooms: Set<RoomId>;
-  success: boolean;
-  feedback: "move" | null;
 };
 
-/** Engine-facing state, derived from GameStoreState.
- *  - visitedRooms stored as a Set for fast membership checks
- *  - adds transient fields: success + feedback
- *  - excludes UI-only fields (playerName, modernMode) */
 const toEngineState = (state: GameStoreState, userInput: string): GameState => {
   // assign playerName & modernMode to define 'rest'
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -24,19 +18,12 @@ const toEngineState = (state: GameStoreState, userInput: string): GameState => {
     ...rest,
     storyLine: [...state.storyLine, userInput],
     visitedRooms: new Set(state.visitedRooms),
-    success: true,
-    feedback: null,
   };
 };
 
-/** Convert engine state back to a form the React store can handle.
- * Strips transient engine fields and converts Sets back to arrays. */
 const toStoreState = (state: GameState): Partial<GameStoreState> => {
-  // assign success,feedback to define 'rest'
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { success, feedback, ...rest } = state;
   return {
-    ...rest,
+    ...state,
     visitedRooms: Array.from(state.visitedRooms),
   };
 };
@@ -52,13 +39,13 @@ const gameEngine = {
     //send to dispatch
     const newState = dispatchCommand({ command, target, gameState: snapshot });
 
+    //Location check (for UI map animation)
+    const locationChanged = snapshot.currentRoom !== newState.currentRoom;
+
     //update state
     useGameStore.setState(toStoreState(newState));
     return {
-      success: newState.success,
-      feedback: newState.feedback,
-      command,
-      target,
+      locationChanged,
     };
   },
 };

@@ -4,7 +4,7 @@ import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 
 const sayTarget: PipelineFunction = (payload) => {
-  console.log(`saying ${payload.target}`);
+  console.log(`saying ${payload.target ?? "nowt"}`);
   return payload;
 };
 

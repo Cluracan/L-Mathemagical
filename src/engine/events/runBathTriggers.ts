@@ -149,7 +149,6 @@ const bathCommandHandlers = {
     const nextGameState = produce(gameState, (draft) => {
       draft.currentRoom = currentRoom === "riverN" ? "riverS" : "riverN";
       draft.storyLine.push(bathFeedback.success);
-      draft.feedback = "move";
     });
     return {
       ...payload,

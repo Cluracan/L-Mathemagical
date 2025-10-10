@@ -127,7 +127,9 @@ const InputButtons = memo(({ onClick }: InputButtonsProps) => {
           key={direction}
           variant="contained"
           size="large"
-          onClick={() => onClick(direction as Direction)}
+          onClick={() => {
+            onClick(direction as Direction);
+          }}
           disabled={status === "failedAttempt"}
         >
           {text}
@@ -136,3 +138,4 @@ const InputButtons = memo(({ onClick }: InputButtonsProps) => {
     </>
   );
 });
+InputButtons.displayName = "InputButtons";

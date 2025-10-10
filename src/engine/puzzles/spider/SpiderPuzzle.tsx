@@ -56,7 +56,7 @@ export const SpiderPuzzle = () => {
     }));
   };
 
-  const handleInput = useCallback((direction: Direction) => {
+  const handleInput = (direction: Direction) => {
     useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
@@ -66,7 +66,7 @@ export const SpiderPuzzle = () => {
         }),
       },
     }));
-  }, []);
+  };
 
   return (
     <PuzzleContainer>
@@ -117,7 +117,7 @@ const InstructionChoices = ({
 interface InputButtonsProps {
   onClick: (direction: Direction) => void;
 }
-const InputButtons = memo(({ onClick }: InputButtonsProps) => {
+const InputButtons = ({ onClick }: InputButtonsProps) => {
   const status = useGameStore((state) => state.puzzleState.spider.status);
   console.log("render");
   return (
@@ -137,5 +137,4 @@ const InputButtons = memo(({ onClick }: InputButtonsProps) => {
       ))}
     </>
   );
-});
-InputButtons.displayName = "InputButtons";
+};

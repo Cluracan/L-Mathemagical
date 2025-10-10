@@ -23,7 +23,7 @@ export const DIGIT_COUNT = 4;
 //Static Data
 export const safeFeedback = {
   storyLineSuccess:
-    "You watch apprehensively as the huge safe door swings open...",
+    "The safe door has swung open to reveal a passageway going north.",
   storyLineFailure:
     "You step back from the keypad, still wondering what the code is...",
 };

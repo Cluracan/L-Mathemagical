@@ -32,6 +32,8 @@ import { safeNPC } from "./safe/safeNPC";
 import { SafePuzzle } from "./safe/SafePuzzle";
 import { batNPC } from "./bat/batNPC";
 import { handleBatPuzzle } from "./bat/handleBatPuzzle";
+import { spiderNPC } from "./spider/spiderNPC";
+import { SpiderPuzzle } from "./spider/SpiderPuzzle";
 
 export const puzzleAtLocation = {
   store: {
@@ -79,6 +81,10 @@ export const puzzleAtLocation = {
   snooker: {
     puzzleId: "snooker",
     puzzleNPC: snookerNPC,
+  },
+  spider: {
+    puzzleId: "spider",
+    puzzleNPC: spiderNPC,
   },
   telephone: {
     puzzleId: "telephone",
@@ -150,6 +156,10 @@ export const puzzleRegistry = {
   snooker: {
     pipelineFunction: null,
     component: SnookerPuzzle,
+  },
+  spider: {
+    pipelineFunction: null,
+    component: SpiderPuzzle,
   },
   telephone: {
     pipelineFunction: null,

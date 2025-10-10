@@ -66,6 +66,10 @@ import {
   initialBatState,
   type BatState,
 } from "../engine/puzzles/bat/handleBatPuzzle";
+import {
+  initialSpiderState,
+  type SpiderState,
+} from "../engine/puzzles/spider/spiderConstants";
 
 export interface GameStoreState {
   playerName: string;
@@ -93,6 +97,7 @@ export interface GameStoreState {
     pig: PigState;
     safe: SafeState;
     snooker: SnookerState;
+    spider: SpiderState;
     telephone: TelephoneState;
     tree: TreeState;
     turtle: TurtleState;
@@ -134,6 +139,7 @@ const initialGameState: GameStoreState = {
     pig: initialPigState,
     safe: initialSafeState,
     snooker: initialSnookerState,
+    spider: initialSpiderState,
     telephone: initialTelephoneState,
     tree: initialTreeState,
     turtle: initialTurtleState,

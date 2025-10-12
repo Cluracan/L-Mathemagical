@@ -148,7 +148,7 @@ export const CalculatorPuzzle = () => {
   );
 };
 
-const Calculator = ({ handleInput }: CalculatorProps) => {
+const Calculator = memo(({ handleInput }: CalculatorProps) => {
   return (
     <>
       <Stack
@@ -189,7 +189,8 @@ const Calculator = ({ handleInput }: CalculatorProps) => {
       </Stack>
     </>
   );
-};
+});
+Calculator.displayName = "Calculator";
 
 const CalculatorDisplay = memo(() => {
   const tokens = useGameStore((state) => state.puzzleState.calculator.tokens);

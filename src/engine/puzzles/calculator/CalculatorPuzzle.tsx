@@ -10,7 +10,7 @@ import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import { calculatorReducer } from "./calculatorReducer";
 import {
   CALCULATOR_DISPLAY_LENGTH,
@@ -22,11 +22,36 @@ import {
   type Token,
 } from "./calculatorConstants";
 
-//Types
+// Types
 type InputHandler = (button: InputButton) => void;
 
-//Main Component
+interface CalculatorProps {
+  handleInput: InputHandler;
+}
+
+interface CalculatorButtonProps {
+  value: keyof typeof calculatorButtons;
+  displayValue: string;
+  handleInput: InputHandler;
+}
+
+// Helpers
+const generateDisplay = (tokens: Token[], currentInput: string) => {
+  return tokens.length > 0
+    ? (
+        tokens
+          .map((entry: Token) =>
+            entry.type === "operator"
+              ? calculatorButtons[entry.value].display
+              : Math.round(entry.value * 1000) / 1000
+          )
+          .join("") + currentInput
+      ).slice(-1 * CALCULATOR_DISPLAY_LENGTH)
+    : currentInput.slice(0, CALCULATOR_DISPLAY_LENGTH);
+};
+
 export const CalculatorPuzzle = () => {
+  // State
   const theme = useTheme();
   const feedback = useGameStore(
     (state) => state.puzzleState.calculator.feedback
@@ -38,6 +63,7 @@ export const CalculatorPuzzle = () => {
     (state) => state.puzzleState.calculator.puzzleCompleted
   );
 
+  // Handlers
   const handleInput: InputHandler = useCallback((button) => {
     useGameStore.setState((state) => ({
       ...state,
@@ -85,6 +111,7 @@ export const CalculatorPuzzle = () => {
     }));
   };
 
+  // Render
   return (
     <>
       <PuzzleContainer>
@@ -121,28 +148,7 @@ export const CalculatorPuzzle = () => {
   );
 };
 
-interface CalculatorProps {
-  handleInput: InputHandler;
-}
 const Calculator = ({ handleInput }: CalculatorProps) => {
-  const { tokens, currentInput } = useGameStore(
-    (state) => state.puzzleState.calculator
-  );
-
-  const calculatorDisplay = useMemo(() => {
-    return tokens.length > 0
-      ? (
-          tokens
-            .map((entry: Token) =>
-              entry.type === "operator"
-                ? calculatorButtons[entry.value].display
-                : Math.round(entry.value * 1000) / 1000
-            )
-            .join("") + currentInput
-        ).slice(-1 * CALCULATOR_DISPLAY_LENGTH)
-      : currentInput.slice(0, CALCULATOR_DISPLAY_LENGTH);
-  }, [tokens, currentInput]);
-
   return (
     <>
       <Stack
@@ -154,24 +160,7 @@ const Calculator = ({ handleInput }: CalculatorProps) => {
           boxShadow: "inset 1px -1px 4px 2px rgba(107, 102, 31, 0.82)",
         }}
       >
-        <Typography
-          sx={{
-            px: 1,
-            py: 1,
-            my: 2,
-            border: "3px solid rgba(71, 71, 71, 1)",
-            borderRadius: 1,
-            color: "rgb(60, 60, 60)",
-            backgroundColor: "rgb(189, 212, 189)",
-            boxShadow: "inset -10px -5px 64px -32px #2b382e",
-            fontFamily: "DSEG7",
-            fontSize: "2rem",
-            lineHeight: 2,
-            textAlign: "right",
-          }}
-        >
-          {calculatorDisplay}
-        </Typography>
+        <CalculatorDisplay />
         <Typography
           sx={{
             fontFamily: "Impact,Arial,Tahoma",
@@ -202,11 +191,35 @@ const Calculator = ({ handleInput }: CalculatorProps) => {
   );
 };
 
-interface CalculatorButtonProps {
-  value: keyof typeof calculatorButtons;
-  displayValue: string;
-  handleInput: InputHandler;
-}
+const CalculatorDisplay = memo(() => {
+  const tokens = useGameStore((state) => state.puzzleState.calculator.tokens);
+  const currentInput = useGameStore(
+    (state) => state.puzzleState.calculator.currentInput
+  );
+  const calculatorDisplay = generateDisplay(tokens, currentInput);
+  return (
+    <Typography
+      sx={{
+        px: 1,
+        py: 1,
+        my: 2,
+        border: "3px solid rgba(71, 71, 71, 1)",
+        borderRadius: 1,
+        color: "rgb(60, 60, 60)",
+        backgroundColor: "rgb(189, 212, 189)",
+        boxShadow: "inset -10px -5px 64px -32px #2b382e",
+        fontFamily: "DSEG7",
+        fontSize: "2rem",
+        lineHeight: 2,
+        textAlign: "right",
+      }}
+    >
+      {calculatorDisplay}
+    </Typography>
+  );
+});
+CalculatorDisplay.displayName = "CalculatorDisplay";
+
 const CalculatorButton = memo(
   ({ value, displayValue, handleInput }: CalculatorButtonProps) => {
     return (

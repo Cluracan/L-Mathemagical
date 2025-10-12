@@ -3,9 +3,9 @@ import type { PuzzleNPC } from "../types";
 export const calculatorNPC: PuzzleNPC = {
   usesDialog: true,
   description: {
-    long: "Also in the cupboard is a Drogo Robot Guard with the number 121 emblazoned on his chest. He stands in front of the door, blocking your exit.\n\nThere is a calulator lying on the ground here.",
+    long: "Also in the cupboard is a Drogo Robot Guard with the number 121 emblazoned on his chest. He stands in front of the door, blocking your exit.\n\nThere is a calculator lying on the ground here.",
     short:
-      "Also in the cupboard is a Drogo Robot Guard with the number 121 emblazoned on his chest. He stands in front of the door, blocking your exit.\n\nThere is a calulator lying on the ground here.",
+      "Also in the cupboard is a Drogo Robot Guard with the number 121 emblazoned on his chest. He stands in front of the door, blocking your exit.\n\nThere is a calculator lying on the ground here.",
     completed: null,
   },
   triggerPuzzleCommand: "get",

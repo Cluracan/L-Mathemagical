@@ -1,5 +1,6 @@
 import { produce } from "immer";
 import {
+  CALCULATOR_DISPLAY_LENGTH,
   INPUT_TARGET,
   calculatorButtons,
   calculatorFeedback,
@@ -129,7 +130,7 @@ export function calculatorReducer(
       return produce(state, (draft) => {
         if (draft.lastInputType === "evaluate") {
           draft.currentInput = button;
-        } else {
+        } else if (draft.currentInput.length < CALCULATOR_DISPLAY_LENGTH) {
           draft.currentInput += button;
         }
         draft.lastInputType = "number";

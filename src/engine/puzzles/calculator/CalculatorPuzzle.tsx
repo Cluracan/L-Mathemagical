@@ -36,18 +36,28 @@ interface CalculatorButtonProps {
 }
 
 // Helpers
+const formatNumber = (value: number) => {
+  const valueString = String(value);
+  if (valueString.length <= CALCULATOR_DISPLAY_LENGTH) {
+    return valueString;
+  }
+  const sigFigs = CALCULATOR_DISPLAY_LENGTH - 6;
+  return value.toExponential(sigFigs);
+};
+
+const formatToken = (token: Token) => {
+  return token.type === "operator"
+    ? calculatorButtons[token.value].display
+    : formatNumber(token.value);
+};
+
 const generateDisplay = (tokens: Token[], currentInput: string) => {
-  return tokens.length > 0
-    ? (
-        tokens
-          .map((entry: Token) =>
-            entry.type === "operator"
-              ? calculatorButtons[entry.value].display
-              : Math.round(entry.value * 1000) / 1000
-          )
-          .join("") + currentInput
-      ).slice(-1 * CALCULATOR_DISPLAY_LENGTH)
-    : currentInput.slice(0, CALCULATOR_DISPLAY_LENGTH);
+  if (tokens.length === 0) {
+    return currentInput.slice(0, CALCULATOR_DISPLAY_LENGTH);
+  }
+
+  const fullExpression = tokens.map(formatToken).join("") + currentInput;
+  return fullExpression.slice(-1 * CALCULATOR_DISPLAY_LENGTH);
 };
 
 export const CalculatorPuzzle = () => {

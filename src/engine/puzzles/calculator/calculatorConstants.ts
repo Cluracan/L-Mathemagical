@@ -24,14 +24,6 @@ export const WORKING_CALCULATOR_BUTTONS = new Set([
   "-",
   "AC",
   "=",
-  "1",
-  "2",
-  "/",
-  "+",
-  "3",
-  "5",
-  "8",
-  "9",
 ]);
 export const CALCULATOR_DISPLAY_LENGTH = 11;
 

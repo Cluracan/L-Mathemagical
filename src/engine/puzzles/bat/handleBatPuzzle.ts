@@ -6,18 +6,18 @@ Triangular numbers are intentionally only tested up to 90:
 100+ would require reformatting, but this would also make it too easy to find '91'
 */
 
-// --- Types ---
+// Types
 export interface BatState {
   puzzleCompleted: boolean;
   attempts: number;
 }
 
-// --- Constants ---
+// Config
 const MIN_VALUE = 30;
 const MAX_VALUE = 90;
 const TRIANGULAR_NUMBERS = [1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78];
 
-// --- Static Data ---
+// Narrative Content
 const batFeedback = {
   nonInteger:
     '"Don\'t try and be clever!" screeches the bat. "I only like integers!"',
@@ -39,7 +39,7 @@ const batFeedback = {
   description: "The bat looks back at you impatiently.",
 };
 
-// --- Helper Functions ---
+// Helpers
 const generateTriangleText = (userInput: number) => {
   const textHolder = ["The large bat flies over to a wall and writes:-"];
   let currentText = "";
@@ -61,13 +61,12 @@ const isInValidRange = (value: number) => {
   return value >= MIN_VALUE && value <= MAX_VALUE;
 };
 
-// --- Initial State ---
+// Initial State
 export const initialBatState: BatState = {
   puzzleCompleted: false,
   attempts: 0,
 };
 
-// --- Main Function ---
 export const handleBatPuzzle: PipelineFunction = (payload) => {
   const { command, target } = payload;
 
@@ -76,29 +75,31 @@ export const handleBatPuzzle: PipelineFunction = (payload) => {
       const value = Number(target);
       if (!isNaN(value)) {
         return produce(payload, (draft) => {
+          const { storyLine } = draft.gameState;
+          const { bat } = draft.gameState.puzzleState;
           if (!Number.isInteger(value)) {
-            draft.gameState.storyLine.push(batFeedback.nonInteger);
+            storyLine.push(batFeedback.nonInteger);
           } else if (!isInValidRange(value)) {
-            draft.gameState.storyLine.push(
+            storyLine.push(
               value > MAX_VALUE ? batFeedback.tooBig : batFeedback.tooSmall
             );
           } else {
-            draft.gameState.puzzleState.bat.attempts++;
+            bat.attempts++;
             if (TRIANGULAR_NUMBERS.includes(value)) {
-              draft.gameState.puzzleState.bat.puzzleCompleted = true;
-              draft.gameState.storyLine.push(
+              bat.puzzleCompleted = true;
+              storyLine.push(
                 ...generateTriangleText(value),
                 batFeedback.success
               );
               draft.gameState.currentPuzzle = null;
             } else {
-              if (draft.gameState.puzzleState.bat.attempts % 3 === 0) {
-                draft.gameState.storyLine.push(
+              if (bat.attempts % 3 === 0) {
+                storyLine.push(
                   ...generateTriangleText(value),
                   batFeedback.hint
                 );
               } else {
-                draft.gameState.storyLine.push(...batFeedback.failure);
+                storyLine.push(...batFeedback.failure);
               }
             }
           }

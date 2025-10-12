@@ -1,4 +1,4 @@
-//Types
+// Types
 export type InputType = "number" | "operator" | "evaluate" | "reset";
 export type Token =
   | { type: "number"; value: number }
@@ -15,7 +15,7 @@ export interface CalculatorState {
   puzzleCompleted: boolean;
 }
 
-//Constants
+// Config
 export const INPUT_TARGET = "11";
 export const WORKING_CALCULATOR_BUTTONS = new Set([
   "4",
@@ -24,10 +24,18 @@ export const WORKING_CALCULATOR_BUTTONS = new Set([
   "-",
   "AC",
   "=",
+  "1",
+  "2",
+  "/",
+  "+",
+  "3",
+  "5",
+  "8",
+  "9",
 ]);
 export const CALCULATOR_DISPLAY_LENGTH = 11;
 
-//Static Data
+// Narration Content
 export const calculatorFeedback = {
   instructions:
     "The calculator is very old and many of its keys are broken. The only ones which seem to work are 4, 7, -, *, AC, and =",
@@ -42,6 +50,7 @@ export const calculatorFeedback = {
   storyLineFailure: "You put the calculator down, and ponder what to do next. ",
 };
 
+// Constants
 export const calculatorButtons = {
   "7": { type: "number", display: "7" },
   "8": { type: "number", display: "8" },

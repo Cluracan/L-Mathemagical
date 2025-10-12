@@ -4,12 +4,12 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { Button, Stack, TextField } from "@mui/material";
-import { apeFeedback, INIITAL_WORD } from "./apeConstants";
+import { apeFeedback, INITIAL_WORD } from "./apeConstants";
 import { useState, type ChangeEvent, type KeyboardEventHandler } from "react";
 import { apeReducer } from "./apeReducer";
 
 export const ApePuzzle = () => {
-  // --- state / selectors ---
+  // State
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.ape.puzzleCompleted
   );
@@ -18,7 +18,7 @@ export const ApePuzzle = () => {
   const word = useGameStore((state) => state.puzzleState.ape.word);
   const [userInput, setUserInput] = useState("");
 
-  // --- handlers ---
+  // Handlers
   const handleLeave = () => {
     const state = useGameStore.getState();
     const puzzleCompleted = state.puzzleState.ape.puzzleCompleted;
@@ -30,7 +30,7 @@ export const ApePuzzle = () => {
         ape: {
           ...state.puzzleState.ape,
           status: "instructions",
-          word: INIITAL_WORD,
+          word: INITIAL_WORD,
           feedback: apeFeedback.instructions,
         },
       },
@@ -85,6 +85,7 @@ export const ApePuzzle = () => {
     }));
   };
 
+  // Render
   return (
     <PuzzleContainer>
       <PuzzleHeader
@@ -102,6 +103,7 @@ export const ApePuzzle = () => {
           handleLeave={handleLeave}
         >
           <TextField
+            disabled={puzzleCompleted}
             autoFocus
             label={word}
             onKeyDown={handleKeyDown}

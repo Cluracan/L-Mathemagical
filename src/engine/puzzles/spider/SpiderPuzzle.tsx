@@ -11,7 +11,6 @@ import {
   type Direction,
 } from "./spiderConstants";
 import { spiderReducer } from "./spiderReducer";
-import { memo, useCallback } from "react";
 
 export const SpiderPuzzle = () => {
   // --- state / selectors ---
@@ -32,6 +31,7 @@ export const SpiderPuzzle = () => {
       },
     }));
   };
+
   const handleLeave = () => {
     useGameStore.setState((state) => ({
       showDialog: false,

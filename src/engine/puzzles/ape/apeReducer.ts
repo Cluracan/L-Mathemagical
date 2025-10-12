@@ -1,14 +1,19 @@
-//Types
 import { produce } from "immer";
+import { threeLetterWords } from "./threeLetterWords";
 import {
-  INIITAL_WORD,
+  INITIAL_WORD,
   TARGET_WORD,
   apeFeedback,
   type ApeState,
 } from "./apeConstants";
-import { threeLetterWords } from "./threeLetterWords";
 
-//Helper Functions
+// Types
+type ApeAction =
+  | { type: "input"; userInput: string }
+  | { type: "showDemo" }
+  | { type: "reset" };
+
+// Helpers
 const isValidConnection = (userInput: string, currentWord: string) => {
   let changedLetterCount = 0;
   for (let i = 0; i < userInput.length; i++) {
@@ -19,10 +24,7 @@ const isValidConnection = (userInput: string, currentWord: string) => {
   return changedLetterCount === 1;
 };
 
-type ApeAction =
-  | { type: "input"; userInput: string }
-  | { type: "showDemo" }
-  | { type: "reset" };
+// Reducer
 export function apeReducer(state: ApeState, action: ApeAction) {
   switch (action.type) {
     case "input": {
@@ -30,7 +32,7 @@ export function apeReducer(state: ApeState, action: ApeAction) {
       const currentWord = state.word;
       return produce(state, (draft) => {
         draft.feedback.push(userInput);
-        if (userInput === currentWord && currentWord !== INIITAL_WORD) {
+        if (userInput === currentWord && currentWord !== INITIAL_WORD) {
           draft.feedback.push(apeFeedback.userInput.hasNotChanged);
         } else if (userInput.length !== TARGET_WORD.length) {
           draft.feedback.push(apeFeedback.userInput.wrongLength);
@@ -56,10 +58,9 @@ export function apeReducer(state: ApeState, action: ApeAction) {
     }
     case "reset": {
       return produce(state, (draft) => {
-        draft.word = INIITAL_WORD;
+        draft.word = INITIAL_WORD;
         draft.feedback = [apeFeedback.reset, ...apeFeedback.demo];
       });
     }
   }
-  return state;
 }

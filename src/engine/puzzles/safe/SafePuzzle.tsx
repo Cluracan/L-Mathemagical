@@ -154,7 +154,6 @@ const Keypad = ({ onClick }: KeypadProps) => {
           gridTemplateColumns: "repeat(2, 1fr)",
           gap: 1,
           borderRadius: "5px",
-
           padding: 2,
           backgroundColor: "#a2a1a7",
         }}

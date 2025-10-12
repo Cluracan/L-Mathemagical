@@ -1,4 +1,4 @@
-//Types
+// Types
 export interface ApeState {
   puzzleCompleted: boolean;
   feedback: string[];
@@ -6,11 +6,11 @@ export interface ApeState {
   word: string;
 }
 
-//Constants
+// Config
 export const TARGET_WORD = "owl";
-export const INIITAL_WORD = "ape";
+export const INITIAL_WORD = "ape";
 
-//Static data
+// Narrative Content
 export const apeFeedback = {
   instructions: [
     '"I would like to help you, but I am a rather stupid ape....',
@@ -47,10 +47,10 @@ export const apeFeedback = {
     "The owl has disappeared behind the treeline with your ladder - you can only hope that she has stored it somewhere obvious in the palace!",
 };
 
-//Initial State
+// Initial State
 export const initialApeState: ApeState = {
   puzzleCompleted: false,
   feedback: apeFeedback.instructions,
   status: "instructions",
-  word: INIITAL_WORD,
+  word: INITIAL_WORD,
 };

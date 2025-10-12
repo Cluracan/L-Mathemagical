@@ -7,6 +7,7 @@ import { failCommand } from "../pipeline/failCommand";
 import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
+import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 
 const dropItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
@@ -30,7 +31,12 @@ const dropItem: PipelineFunction = (payload) => {
   };
 };
 
-const dropPipeline = [runKeyConversion, runRingTriggers, dropItem];
+const dropPipeline = [
+  runKeyConversion,
+  runPuzzleTriggers,
+  runRingTriggers,
+  dropItem,
+];
 
 export const handleDrop: HandleCommand = (args) => {
   const { command, target, gameState } = args;

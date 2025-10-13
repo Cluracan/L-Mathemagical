@@ -10,7 +10,18 @@ import {
   type Ingredient,
 } from "./cookConstants";
 
+// Types
 type CookAction = { type: "bake" } | { type: "reset" };
+
+// Helpers
+function calculateCakeHeight({ TOLT, FIMA, MUOT }: Record<Ingredient, number>) {
+  const cakeHeight =
+    26 - 0.5 * (TOLT - 6) ** 2 - 0.45 * (FIMA - 14) ** 2 - 0 * (MUOT - 0) ** 2;
+  //MUOT deliberately unused in original recipe
+  return cakeHeight > MIN_HEIGHT ? cakeHeight : MIN_HEIGHT;
+}
+
+// Reducer
 export function cookReducer(state: CookState, action: CookAction) {
   switch (action.type) {
     case "bake": {
@@ -34,11 +45,4 @@ export function cookReducer(state: CookState, action: CookAction) {
       });
     }
   }
-}
-
-//MUOT deliberately unused in original recipe
-function calculateCakeHeight({ TOLT, FIMA, MUOT }: Record<Ingredient, number>) {
-  const cakeHeight =
-    26 - 0.5 * (TOLT - 6) ** 2 - 0.45 * (FIMA - 14) ** 2 - 0 * (MUOT - 0) ** 2;
-  return cakeHeight > MIN_HEIGHT ? cakeHeight : MIN_HEIGHT;
 }

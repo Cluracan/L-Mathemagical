@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import {
   Box,
   Button,
@@ -26,10 +27,10 @@ import {
 import pig from "../../../assets/images/pig.svg";
 import player from "../../../assets/images/person.svg";
 import pigCaptured from "../../../assets/images/pigCaptured.svg";
-import { produce } from "immer";
 import { pigReducer } from "./pigReducer";
 
 export const PigPuzzle = () => {
+  // State
   const feedback = useGameStore((state) => state.puzzleState.pig.feedback);
   const showFeedback = useGameStore(
     (state) => state.puzzleState.pig.showFeedback
@@ -41,6 +42,7 @@ export const PigPuzzle = () => {
     (state) => state.puzzleState.pig.showInstructions
   );
 
+  // Effects
   useEffect(() => {
     function keyDownHandler(e: KeyboardEvent) {
       if (isDirectionAlias(e.key)) {
@@ -54,6 +56,7 @@ export const PigPuzzle = () => {
     };
   }, []);
 
+  // Handlers
   const handleInput = (direction: CompassDirection) => {
     useGameStore.setState((state) => ({
       ...state,
@@ -109,6 +112,7 @@ export const PigPuzzle = () => {
     }));
   };
 
+  // Render
   return (
     <PuzzleContainer>
       <PuzzleHeader title="Pig Puzzle" description="Catch the pig!" />
@@ -134,7 +138,7 @@ export const PigPuzzle = () => {
   );
 };
 
-const PuzzleGrid = () => {
+const PuzzleGrid = memo(() => {
   return (
     <>
       <Box
@@ -153,7 +157,8 @@ const PuzzleGrid = () => {
       </Box>
     </>
   );
-};
+});
+PuzzleGrid.displayName = "PuzzleGrid";
 
 const GridCell = memo(({ index }: { index: number }) => {
   const playerPresent = useGameStore(

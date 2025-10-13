@@ -14,13 +14,27 @@ import {
 import { safeReducer } from "./safeReducer";
 import { useCallback, useEffect } from "react";
 
+// Types
+interface SafeDisplayProps {
+  onClick: (button: KeypadButton) => void;
+}
+
+interface KeypadProps {
+  onClick: (button: KeypadButton) => void;
+}
+
+interface KeypadButtonProps {
+  onClick: (button: KeypadButton) => void;
+  button: KeypadButton;
+}
+
 export const SafePuzzle = () => {
-  // --- state / selectors ---
+  // State
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.safe.puzzleCompleted
   );
 
-  // --- handlers ---
+  // Handlers
   const handleReset = () => {
     useGameStore.setState((state) => ({
       puzzleState: {
@@ -76,7 +90,7 @@ export const SafePuzzle = () => {
     }));
   }, []);
 
-  // --- effects ---
+  // Effects
   useEffect(() => {
     function keyDownHandler(e: KeyboardEvent) {
       if (!isNaN(Number(e.key))) {
@@ -96,6 +110,7 @@ export const SafePuzzle = () => {
     };
   }, [handleTest, handleInput]);
 
+  // Render
   return (
     <PuzzleContainer>
       <PuzzleHeader title="Safe Puzzle" description="Crack the code." />
@@ -118,9 +133,6 @@ export const SafePuzzle = () => {
   );
 };
 
-interface SafeDisplayProps {
-  onClick: (button: KeypadButton) => void;
-}
 const SafeDisplay = ({ onClick }: SafeDisplayProps) => {
   return (
     <Stack
@@ -142,9 +154,6 @@ const SafeDisplay = ({ onClick }: SafeDisplayProps) => {
   );
 };
 
-interface KeypadProps {
-  onClick: (button: KeypadButton) => void;
-}
 const Keypad = ({ onClick }: KeypadProps) => {
   return (
     <>
@@ -166,10 +175,6 @@ const Keypad = ({ onClick }: KeypadProps) => {
   );
 };
 
-interface KeypadButtonProps {
-  onClick: (button: KeypadButton) => void;
-  button: KeypadButton;
-}
 const KeypadButton = ({ onClick, button }: KeypadButtonProps) => {
   return (
     <Button

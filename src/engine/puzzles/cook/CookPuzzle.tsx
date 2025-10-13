@@ -1,4 +1,5 @@
 import { Box, Button, InputAdornment, Stack, TextField } from "@mui/material";
+import type { ChangeEvent } from "react";
 import { produce } from "immer";
 import { useGameStore } from "../../../store/useGameStore";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
@@ -13,14 +14,15 @@ import {
   type Ingredient,
 } from "./cookConstants";
 import { cookReducer } from "./cookReducer";
-import type { ChangeEvent } from "react";
 
 export const CookPuzzle = () => {
+  // State
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.cook.puzzleCompleted
   );
   const feedback = useGameStore((state) => state.puzzleState.cook.feedback);
 
+  // Handlers
   const handleReset = () => {
     useGameStore.setState((state) => ({
       puzzleState: {
@@ -67,6 +69,7 @@ export const CookPuzzle = () => {
     });
   };
 
+  // Render
   return (
     <>
       <PuzzleContainer>
@@ -113,10 +116,12 @@ export const CookPuzzle = () => {
 };
 
 const InputField = ({ ingredient }: { ingredient: Ingredient }) => {
+  // State
   const value = useGameStore(
     (state) => state.puzzleState.cook.ingredients[ingredient]
   );
 
+  // Handlers
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (isNaN(Number(e.target.value)) || Number(e.target.value) > MAX_QUANTITY)
       return;
@@ -127,6 +132,7 @@ const InputField = ({ ingredient }: { ingredient: Ingredient }) => {
     );
   };
 
+  // Render
   return (
     <>
       <TextField
@@ -147,8 +153,11 @@ const InputField = ({ ingredient }: { ingredient: Ingredient }) => {
 };
 
 const CakeDisplay = () => {
+  // State
   const cakeHeight = useGameStore((state) => state.puzzleState.cook.cakeHeight);
   const cakeDisplayHeight = (cakeHeight / TARGET_HEIGHT) * 100;
+
+  // Render
   return (
     <Box
       sx={{

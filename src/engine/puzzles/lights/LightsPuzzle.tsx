@@ -7,9 +7,8 @@ import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { lightsReducer } from "./lightsReducer";
 import { INITAL_ORDER, lightsFeedback } from "./lightsConstants";
 
-//Main Component
 export const LightsPuzzle = () => {
-  const curOrder = useGameStore((state) => state.puzzleState.lights.curOrder);
+  // State
   const feedback = useGameStore((state) => state.puzzleState.lights.feedback);
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.lights.puzzleCompleted
@@ -18,8 +17,7 @@ export const LightsPuzzle = () => {
     (state) => state.puzzleState.lights.switchesActive
   );
 
-  const theme = useTheme();
-
+  // Handlers
   const handleClick = (switchIndex: number) => {
     useGameStore.setState((state) => ({
       puzzleState: {
@@ -70,6 +68,7 @@ export const LightsPuzzle = () => {
     }));
   };
 
+  // Render
   return (
     <>
       <PuzzleContainer>
@@ -77,33 +76,7 @@ export const LightsPuzzle = () => {
           title="Lights Puzzle"
           description="Put the lights into alphabetical order"
         />
-        <Stack
-          direction={"row"}
-          width={"80%"}
-          p={4}
-          m={2}
-          sx={{
-            justifyContent: "space-around",
-          }}
-        >
-          {curOrder.map((color) => (
-            <div
-              key={color}
-              style={{
-                color: "black",
-                backgroundColor: color,
-                borderRadius: "100%",
-                height: theme.spacing(12),
-                width: theme.spacing(12),
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {color}
-            </div>
-          ))}
-        </Stack>
+        <LightsDisplay />
         <PuzzleFeedback feedback={feedback.slice(-20)} height="30vh" />
 
         <PuzzleActions
@@ -130,5 +103,39 @@ export const LightsPuzzle = () => {
         </PuzzleActions>
       </PuzzleContainer>
     </>
+  );
+};
+
+const LightsDisplay = () => {
+  const theme = useTheme();
+  const curOrder = useGameStore((state) => state.puzzleState.lights.curOrder);
+  return (
+    <Stack
+      direction={"row"}
+      width={"80%"}
+      p={4}
+      m={2}
+      sx={{
+        justifyContent: "space-around",
+      }}
+    >
+      {curOrder.map((color) => (
+        <div
+          key={color}
+          style={{
+            color: "black",
+            backgroundColor: color,
+            borderRadius: "100%",
+            height: theme.spacing(12),
+            width: theme.spacing(12),
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {color}
+        </div>
+      ))}
+    </Stack>
   );
 };

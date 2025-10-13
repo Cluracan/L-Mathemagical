@@ -1,4 +1,4 @@
-//Types
+// Types
 export interface SnookerState {
   puzzleCompleted: boolean;
   angle: number;
@@ -6,7 +6,7 @@ export interface SnookerState {
   action: "reset" | "hit" | "idle";
 }
 
-//Static Data
+// Narration Content
 export const snookerFeedback = {
   default:
     "Give the angle (in degrees) between the path of the ball and the direction of the pocket.",
@@ -14,7 +14,7 @@ export const snookerFeedback = {
   storyLine: "You step away from the snooker table",
 };
 
-//Initial State
+// Initial State
 export const initialSnookerState: SnookerState = {
   puzzleCompleted: false,
   angle: 0,

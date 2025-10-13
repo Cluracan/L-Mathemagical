@@ -11,12 +11,18 @@ import {
   KEYBLANK_ROWS,
   KEYBLANK_SOLUTION,
   keyFeedback,
-  lockDisplayCols,
+  LOCK_DISPLAY_COLS,
   lockDisplayData,
 } from "./keyConstants";
 
-//Main Component
+// Types
+interface KeyCellProps {
+  index: number;
+  onCellClick: (index: number) => void;
+}
+
 export const KeyPuzzle = () => {
+  // State
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.key.puzzleCompleted
   );
@@ -25,21 +31,15 @@ export const KeyPuzzle = () => {
     (state) => state.puzzleState.key.showFeedback
   );
 
+  // Handlers
   const handleCellClick = useCallback(
     (index: number) => {
       if (puzzleCompleted) return;
-      useGameStore.setState((state) => {
-        if (state.puzzleState.key.selectedCells[index]) return state;
-        const newSelectedCells = [...state.puzzleState.key.selectedCells];
-        newSelectedCells[index] = true;
-        return {
-          ...state,
-          puzzleState: {
-            ...state.puzzleState,
-            key: { ...state.puzzleState.key, selectedCells: newSelectedCells },
-          },
-        };
-      });
+      useGameStore.setState((state) =>
+        produce(state, (draft) => {
+          draft.puzzleState.key.selectedCells[index] = true;
+        })
+      );
     },
     [puzzleCompleted]
   );
@@ -68,7 +68,7 @@ export const KeyPuzzle = () => {
     );
   };
 
-  const handleTestKey = () => {
+  const handleTest = () => {
     useGameStore.setState((state) =>
       produce(state, (draft) => {
         const selectedCells = draft.puzzleState.key.selectedCells;
@@ -98,6 +98,7 @@ export const KeyPuzzle = () => {
     );
   };
 
+  // Render
   return (
     <PuzzleContainer>
       <PuzzleHeader
@@ -129,7 +130,7 @@ export const KeyPuzzle = () => {
         handleLeave={handleLeave}
         puzzleCompleted={puzzleCompleted}
       >
-        <Button variant="contained" size="large" onClick={handleTestKey}>
+        <Button variant="contained" size="large" onClick={handleTest}>
           Test key
         </Button>
       </PuzzleActions>
@@ -138,7 +139,8 @@ export const KeyPuzzle = () => {
 };
 
 const LockDisplay = memo(() => {
-  const theme = useTheme(); //I'm using div so don't have access to sx={{}}, style requires this workaround (though see styledCell below for alt)
+  const theme = useTheme();
+  //I'm using div so don't have access to sx={{}}, style requires this workaround (though see styledCell below for alt)
   return (
     <>
       <Stack direction="row" sx={{ alignItems: "center", padding: 2 }}>
@@ -154,7 +156,7 @@ const LockDisplay = memo(() => {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: `repeat(${String(lockDisplayCols)},1fr)`,
+            gridTemplateColumns: `repeat(${String(LOCK_DISPLAY_COLS)},1fr)`,
             padding: 2,
             mr: 8,
             backgroundColor: "white",
@@ -176,11 +178,6 @@ const LockDisplay = memo(() => {
   );
 });
 LockDisplay.displayName = "LockDisplay";
-
-interface KeyCellProps {
-  index: number;
-  onCellClick: (index: number) => void;
-}
 
 const KeyCell = memo(({ index, onCellClick }: KeyCellProps) => {
   const cellSelected = useGameStore(

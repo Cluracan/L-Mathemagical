@@ -1,4 +1,4 @@
-//types
+// Types
 export interface KeyState {
   selectedCells: boolean[];
   puzzleCompleted: boolean;
@@ -6,39 +6,14 @@ export interface KeyState {
   showFeedback: boolean;
 }
 
-//Constants
+// Config
 const INITIAL_SELECTED_CELLS = [9, 29];
 export const KEYBLANK_COLS = 10;
 export const KEYBLANK_ROWS = 3;
 export const KEYBLANK_SOLUTION = [
   0, 1, 2, 3, 4, 5, 6, 8, 9, 14, 21, 22, 26, 27, 28, 29,
 ];
-
-//Static Data
-export const keyFeedback = {
-  default:
-    "Click on a cell to use the file. You can test, reset, or leave at any time.",
-  doesNotFit: "The key will not fit into all the locks.",
-  willNotTurn:
-    "The key fits into all the keyholes but will not turn all the locks.",
-  success: "You've done it! The key can now be used to open the oak door!",
-  storyLineSuccess: "You look proudly at the key you have made.",
-  storyLineFailure:
-    "You stare at the file and key blanks, wondering if you should try again.",
-};
-
-export const initialKeyState: KeyState = {
-  selectedCells: Array.from({ length: KEYBLANK_COLS * KEYBLANK_ROWS }, (_, i) =>
-    INITIAL_SELECTED_CELLS.includes(i)
-  ),
-  puzzleCompleted: false,
-  feedback: keyFeedback.default,
-  showFeedback: true,
-};
-
-export const lockDisplayCols = 21;
-const lockDisplayRows = 10;
-const lockDisplayCells = new Set([
+const LOCK_DISPLAY_CELLS = new Set([
   "0x0",
   "0x1",
   "0x6",
@@ -127,11 +102,38 @@ const lockDisplayCells = new Set([
   "9x13",
   "9x19",
 ]);
+export const LOCK_DISPLAY_COLS = 21;
+const LOCK_DISPLAY_ROWS = 10;
+
+// Narrative Content
+export const keyFeedback = {
+  default:
+    "Click on a cell to use the file. You can test, reset, or leave at any time.",
+  doesNotFit: "The key will not fit into all the locks.",
+  willNotTurn:
+    "The key fits into all the keyholes but will not turn all the locks.",
+  success: "You've done it! The key can now be used to open the oak door!",
+  storyLineSuccess: "You look proudly at the key you have made.",
+  storyLineFailure:
+    "You stare at the file and key blanks, wondering if you should try again.",
+};
+
+// Constants
 export const lockDisplayData: string[] = [];
-for (let i = 0; i < lockDisplayRows; i++) {
-  for (let j = 0; j < lockDisplayCols; j++) {
+for (let i = 0; i < LOCK_DISPLAY_ROWS; i++) {
+  for (let j = 0; j < LOCK_DISPLAY_COLS; j++) {
     lockDisplayData.push(
-      lockDisplayCells.has(`${String(i)}x${String(j)}`) ? "black" : "white"
+      LOCK_DISPLAY_CELLS.has(`${String(i)}x${String(j)}`) ? "black" : "white"
     );
   }
 }
+
+// Initial State
+export const initialKeyState: KeyState = {
+  selectedCells: Array.from({ length: KEYBLANK_COLS * KEYBLANK_ROWS }, (_, i) =>
+    INITIAL_SELECTED_CELLS.includes(i)
+  ),
+  puzzleCompleted: false,
+  feedback: keyFeedback.default,
+  showFeedback: true,
+};

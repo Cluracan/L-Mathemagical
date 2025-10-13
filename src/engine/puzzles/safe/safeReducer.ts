@@ -1,17 +1,18 @@
 import { produce } from "immer";
 import { DIGIT_COUNT, initialSafeState, type SafeState } from "./safeConstants";
 
-//Types
+// Types
 type SafeAction =
   | { type: "input"; digit: number }
   | { type: "reset" }
   | { type: "test" };
 
-//Helper Functions
+// Helpers
 const getDigitCount = (value: number) => {
   return value === 0 ? 1 : Math.floor(Math.log10(value)) + 1; // Works for value>=0
 };
 
+// Reducer
 export const safeReducer = (state: SafeState, action: SafeAction) => {
   switch (action.type) {
     case "input": {

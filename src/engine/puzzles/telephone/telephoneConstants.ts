@@ -1,6 +1,6 @@
 import { createKeyGuard } from "../../../utils/guards";
 
-//types
+// Types
 export interface TelephoneState {
   puzzleCompleted: boolean;
   number: number;
@@ -9,11 +9,11 @@ export interface TelephoneState {
 }
 export type TelephoneButton = keyof typeof telephoneButtons;
 
-//Connstants
+// Config
 export const TARGET_NUMBER = 610;
 export const INITIAL_NUMBER = 0;
 
-//Static Data
+// Narrative Content
 export const telephoneFeedback = {
   instructions: [
     "This telephone only accepts three digit numbers (000-999)",
@@ -46,6 +46,7 @@ export const telephoneFeedback = {
 };
 export const hasReply = createKeyGuard(telephoneFeedback.reply);
 
+// Constants
 export const telephoneButtons = [
   1,
   2,
@@ -60,7 +61,8 @@ export const telephoneButtons = [
   0,
   null,
 ] as const;
-//Initial State
+
+// Initial State
 export const initialTelephoneState: TelephoneState = {
   puzzleCompleted: false,
   feedback: telephoneFeedback.instructions,

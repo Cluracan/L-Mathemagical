@@ -1,4 +1,4 @@
-//Types
+// Types
 export type LightsColor = (typeof TARGET_ORDER)[number];
 
 export interface LightsState {
@@ -9,12 +9,12 @@ export interface LightsState {
   puzzleCompleted: boolean;
 }
 
-//Constants
+// Config
 export const INITAL_ORDER = ["Yellow", "Red", "Green", "Blue"] as const;
 export const TARGET_ORDER = ["Blue", "Green", "Red", "Yellow"] as const;
 export const TARGET_TURNS = 4;
 
-//Static Data
+// Narrative Content
 export const lightsFeedback = {
   initial: [
     "Right. You see the lights as they are but they should be like this:",
@@ -40,7 +40,7 @@ export const lightsFeedback = {
     'The electrician looks hopefully at you - "Will you have another go?"',
 };
 
-//Initial State
+// Initial State
 export const initialLightsState: LightsState = {
   curOrder: [...INITAL_ORDER],
   feedback: lightsFeedback.initial,

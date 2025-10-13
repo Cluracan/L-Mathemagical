@@ -2,19 +2,19 @@ import { produce } from "immer";
 import { createKeyGuard } from "../../../utils/guards";
 import type { PipelineFunction } from "../../pipeline/types";
 
-//Types
+// Types
 export interface TurtleState {
   displacement: { x: number; y: number };
   puzzleCompleted: boolean;
 }
 
-//Initial State
+// Initial State
 export const initialTurtleState: TurtleState = {
   displacement: { x: 6, y: 4 },
   puzzleCompleted: false,
 };
 
-//Constants
+// Constants
 const turtleMovement = {
   n: { dx: 0, dy: 1, direction: "north" },
   e: { dx: 1, dy: 0, direction: "east" },
@@ -27,7 +27,7 @@ export const handleTurtlePuzzle: PipelineFunction = (payload) => {
   const { command, target, gameState } = payload;
   const displacementFromPlayer = gameState.puzzleState.turtle.displacement;
 
-  //Leave puzzle
+  //leave puzzle
   if (command === "move" && target === "d") {
     return produce(payload, (draft) => {
       draft.gameState.currentPuzzle = null;
@@ -38,7 +38,7 @@ export const handleTurtlePuzzle: PipelineFunction = (payload) => {
     });
   }
 
-  //In Puzzle Commands
+  //in puzzle
   if (command === "move" && target && willMoveTurtle(target)) {
     const [nextX, nextY] = [
       displacementFromPlayer.x + turtleMovement[target].dx,

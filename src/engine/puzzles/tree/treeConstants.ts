@@ -1,20 +1,22 @@
-//Types
+// Types
 export interface TreeState {
   selectedCells: boolean[];
   feedback: string[];
   puzzleCompleted: boolean;
 }
 
-//Constants
+// Config
 export const ORCHARD_SIZE = 25;
 export const ORCHARD_WIDTH = 5;
 export const TREE_COUNT = 9;
+export const LINE_COUNT_TARGET = 10;
 
-//Static Data
+// Narrative Content
 export const treeFeedback = {
   default: [
     '"Right," says the gardener.  Click on a square and I\'ll either plant or remove a tree there. Click CHECK if you think you are finished, RESET if you want me to start from scratch, or LEAVE if you want a break.',
   ],
+  checkTrees: [" ", "You ask the gardener to check the trees..."],
   success: [
     " ",
     '"Thank goodness," sighs the gardener, "I was beginning to think it was impossible. Now I have something to give you."',
@@ -33,12 +35,30 @@ export const treeFeedback = {
   ],
 };
 
+export const getFailureFeedback = (treeCount: number, lineCount: number) => {
+  if (lineCount === 0) {
+    return 'The gardener looks puzzled. "I can\'t see any lines of trees yet!"';
+  }
+  if (treeCount < TREE_COUNT) {
+    return `The gardener looks at you. "I can only see ${String(lineCount)} ${
+      lineCount === 1 ? "line" : "lines"
+    } of trees, but then you've only used ${String(treeCount)} ${
+      treeCount === 1 ? "tree" : "trees"
+    } so far...`;
+  } else {
+    return `"Hmm." says the gardener. "You've used all the trees, but I can only see ${String(lineCount)} ${
+      lineCount === 1 ? "line" : "lines"
+    } so far...maybe you could rearrange them?"`;
+  }
+};
+
+// Constants
 export const checkRows = [
   [2, 6, 10],
   [3, 7, 11, 15],
   [4, 8, 12, 16, 20],
   [9, 13, 17, 21],
-  [14, 16, 22],
+  [14, 18, 22],
   [2, 8, 14],
   [1, 7, 13, 19],
   [0, 6, 12, 18, 24],
@@ -68,7 +88,7 @@ export const checkRows = [
   [4, 9, 14, 19, 24],
 ];
 
-//Initial State
+// Initial State
 export const initialTreeState: TreeState = {
   selectedCells: Array.from({ length: ORCHARD_SIZE }, () => false),
   feedback: treeFeedback.default,

@@ -9,7 +9,7 @@ import {
   type LightsState,
 } from "./lightsConstants";
 
-//Helper Functions
+// Helpers
 const applySwitch: Record<
   1 | 2 | 3 | 4,
   (colors: LightsColor[]) => LightsColor[]
@@ -25,6 +25,7 @@ const isSwitchIndex = createKeyGuard(applySwitch);
 const isCorrectOrder = (curOrder: LightsColor[]) =>
   TARGET_ORDER.every((color, index) => curOrder[index] === color);
 
+// Reducer
 export function lightsReducer(
   state: LightsState,
   action: { type: "input"; button: number } | { type: "reset" }
@@ -51,7 +52,6 @@ export function lightsReducer(
         }
       });
     }
-
     case "reset": {
       return produce(state, (draft) => {
         draft.curOrder = [...INITAL_ORDER];

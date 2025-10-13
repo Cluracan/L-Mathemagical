@@ -203,11 +203,14 @@ const Calculator = memo(({ handleInput }: CalculatorProps) => {
 Calculator.displayName = "Calculator";
 
 const CalculatorDisplay = memo(() => {
+  // State
   const tokens = useGameStore((state) => state.puzzleState.calculator.tokens);
   const currentInput = useGameStore(
     (state) => state.puzzleState.calculator.currentInput
   );
+
   const calculatorDisplay = generateDisplay(tokens, currentInput);
+  // Render
   return (
     <Typography
       sx={{

@@ -1,12 +1,14 @@
-//Types
+// Types
 export interface PianoState {
   playedNotes: NoteId[];
   attempts: number;
   feedback: string[];
   puzzleCompleted: boolean;
 }
+export type NoteId = keyof typeof pianoKeys;
+export type NoteName = (typeof pianoKeys)[NoteId]["noteName"];
 
-//Constants
+// Config
 export const TARGET_MELODY: NoteName[] = [
   "C",
   "C",
@@ -24,7 +26,7 @@ export const TARGET_MELODY: NoteName[] = [
   "C",
 ];
 
-//Static Data
+// Constants
 export const pianoKeys = {
   C4: { noteName: "C", display: "C", color: "white", offset: false },
   Db4: { noteName: "Db", display: "Db", color: "black", offset: false },
@@ -39,14 +41,13 @@ export const pianoKeys = {
   Bb4: { noteName: "Bb", display: "Bb", color: "black", offset: false },
   B4: { noteName: "B", display: "B", color: "white", offset: true },
 } as const;
-export type NoteId = keyof typeof pianoKeys;
-export type NoteName = (typeof pianoKeys)[NoteId]["noteName"];
 
 export const audioCache: Record<string, HTMLAudioElement> = {};
 Object.keys(pianoKeys).forEach((noteId) => {
   audioCache[noteId] = new Audio(`/assets/piano/${noteId}.mp3`);
 });
 
+// Narration Content
 export const pianoFeedback = {
   default: [
     " ",

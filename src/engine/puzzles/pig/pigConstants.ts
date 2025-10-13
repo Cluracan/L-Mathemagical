@@ -1,6 +1,6 @@
 import { createKeyGuard } from "../../../utils/guards";
 
-//Types
+// Types
 export interface PigState {
   feedback: string;
   showFeedback: boolean;
@@ -13,13 +13,13 @@ export interface PigState {
 
 export type CompassDirection = "n" | "e" | "s" | "w";
 
-//Constants
+// Config
 export const INITIAL_PLAYER_LOCATION = 12;
 export const INITIAL_PIG_LOCATION = 2;
 export const GRID_SIZE = 25;
 export const GRID_WIDTH = 5;
 
-//Static Data
+// Narration Content
 export const pigFeedback = {
   instructions: [
     `The floor of this room is divided into ${String(GRID_SIZE)} squares.`,
@@ -35,6 +35,14 @@ export const pigFeedback = {
     "The pig avoids your efforts to get close! Perhaps you should try again?",
 };
 
+export const directionText: Record<CompassDirection, string> = {
+  n: "north",
+  e: "east",
+  s: "south",
+  w: "west",
+};
+
+// Constants
 export const directionAliases: Record<string, CompassDirection> = {
   ArrowUp: "n",
   ArrowDown: "s",
@@ -51,14 +59,7 @@ export const directionAliases: Record<string, CompassDirection> = {
 };
 export const isDirectionAlias = createKeyGuard(directionAliases);
 
-export const directionText: Record<CompassDirection, string> = {
-  n: "north",
-  e: "east",
-  s: "south",
-  w: "west",
-};
-
-//Initial State
+// Initial State
 export const initialPigState: PigState = {
   feedback: "",
   showFeedback: false,

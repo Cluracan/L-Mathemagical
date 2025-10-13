@@ -9,7 +9,9 @@ import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import {
   checkRows,
+  getFailureFeedback,
   initialTreeState,
+  LINE_COUNT_TARGET,
   ORCHARD_SIZE,
   ORCHARD_WIDTH,
   TREE_COUNT,
@@ -64,6 +66,7 @@ export const TreePuzzle = () => {
         draft.currentPuzzle = null;
         if (puzzleCompleted) {
           draft.storyLine.push(...treeFeedback.storyLineSuccess);
+          draft.itemLocation.ladder = "player";
         } else {
           draft.storyLine.push(...treeFeedback.storyLineFailure);
           draft.puzzleState.tree.selectedCells = initialTreeState.selectedCells;
@@ -74,46 +77,21 @@ export const TreePuzzle = () => {
   };
 
   const handleTreeCheck = () => {
-    const selectedCells =
-      useGameStore.getState().puzzleState.tree.selectedCells;
-    const treeCount = countTrees(selectedCells);
-    const lineCount = countLines(selectedCells);
-    const nextFeedback = [" ", "You ask the gardener to check the trees..."];
-    if (lineCount === 10) {
-      nextFeedback.push(...treeFeedback.success);
-      useGameStore.setState((state) =>
-        produce(state, (draft) => {
-          draft.puzzleState.tree.feedback.push(...nextFeedback);
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        const feedback = draft.puzzleState.tree.feedback;
+        const selectedCells = draft.puzzleState.tree.selectedCells;
+        const treeCount = countTrees(selectedCells);
+        const lineCount = countLines(selectedCells);
+        feedback.push(...treeFeedback.checkTrees);
+        if (lineCount === LINE_COUNT_TARGET) {
+          feedback.push(...treeFeedback.success);
           draft.puzzleState.tree.puzzleCompleted = true;
-          draft.itemLocation.ladder = "player";
-        })
-      );
-    } else {
-      if (lineCount === 0) {
-        nextFeedback.push(
-          'The gardener looks puzzled. "I can\'t see any lines of trees yet!"'
-        );
-      } else if (treeCount < 9) {
-        nextFeedback.push(
-          `The gardener looks at you. "I can only see ${String(lineCount)} ${
-            lineCount === 1 ? "line" : "lines"
-          } of trees, but then you've only used ${String(treeCount)} ${
-            treeCount === 1 ? "tree" : "trees"
-          } so far...`
-        );
-      } else {
-        nextFeedback.push(
-          `"Hmm." says the gardener. "You've used all the trees, but I can only see ${String(lineCount)} ${
-            lineCount === 1 ? "line" : "lines"
-          } so far...maybe you could rearrange them?"`
-        );
-      }
-      useGameStore.setState((state) =>
-        produce(state, (draft) => {
-          draft.puzzleState.tree.feedback.push(...nextFeedback);
-        })
-      );
-    }
+        } else {
+          feedback.push(getFailureFeedback(treeCount, lineCount));
+        }
+      })
+    );
   };
 
   return (
@@ -123,21 +101,8 @@ export const TreePuzzle = () => {
           title="Tree Puzzle"
           description="Place the trees in ten lines of three"
         />
+        <TreeGrid />
 
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: `repeat(${String(ORCHARD_WIDTH)},1fr)`,
-            gap: "1px",
-            width: "50vh",
-            margin: 1,
-            backgroundColor: "rgb(87, 125, 61)",
-          }}
-        >
-          {Array.from({ length: ORCHARD_SIZE }, (_, i) => i).map((i) => (
-            <TreeCell key={i} index={i} />
-          ))}
-        </Box>
         <PuzzleFeedback feedback={feedback.slice(-20)} height="15vh" />
 
         <PuzzleActions
@@ -153,6 +118,26 @@ export const TreePuzzle = () => {
     </>
   );
 };
+
+const TreeGrid = memo(() => {
+  return (
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${String(ORCHARD_WIDTH)},1fr)`,
+        gap: "1px",
+        width: "50vh",
+        margin: 1,
+        backgroundColor: "rgb(87, 125, 61)",
+      }}
+    >
+      {Array.from({ length: ORCHARD_SIZE }, (_, i) => i).map((i) => (
+        <TreeCell key={i} index={i} />
+      ))}
+    </Box>
+  );
+});
+TreeGrid.displayName = "TreeGrid";
 
 const TreeCell = memo(({ index }: { index: number }) => {
   const cellSelected = useGameStore(

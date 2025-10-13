@@ -11,13 +11,13 @@ import {
   type PianoState,
 } from "./pianoConstants";
 
-//Types
+// Types
 type PianoAction =
   | { type: "play"; note: NoteId }
   | { type: "reset" }
   | { type: "check" };
 
-//Helper Functions
+// Helpers
 const countSequentialMatches = (playedNotes: NoteId[]) => {
   for (let i = 0; i < playedNotes.length; i++) {
     if (pianoKeys[playedNotes[i]].noteName !== TARGET_MELODY[i]) {
@@ -48,7 +48,7 @@ const containsAllRightNotes = (playedNotes: NoteId[]) => {
   );
 };
 
-//Main Function
+// Reducer
 export function pianoReducer(state: PianoState, action: PianoAction) {
   switch (action.type) {
     case "play": {

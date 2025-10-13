@@ -48,5 +48,4 @@ export function telephoneReducer(
         draft.number = INITIAL_NUMBER;
       });
   }
-  return state;
 }

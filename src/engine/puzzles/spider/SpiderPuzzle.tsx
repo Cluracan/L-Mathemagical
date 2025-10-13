@@ -12,15 +12,25 @@ import {
 } from "./spiderConstants";
 import { spiderReducer } from "./spiderReducer";
 
+// Types
+interface InstructionChoicesProps {
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+interface InputButtonsProps {
+  onClick: (direction: Direction) => void;
+}
+
 export const SpiderPuzzle = () => {
-  // --- state / selectors ---
+  // State
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.spider.puzzleCompleted
   );
   const feedback = useGameStore((state) => state.puzzleState.spider.feedback);
   const status = useGameStore((state) => state.puzzleState.spider.status);
 
-  // --- handlers ---
+  // Handlers
   const handleReset = () => {
     useGameStore.setState((state) => ({
       puzzleState: {
@@ -68,6 +78,7 @@ export const SpiderPuzzle = () => {
     }));
   };
 
+  // Render
   return (
     <PuzzleContainer>
       <PuzzleHeader
@@ -91,10 +102,6 @@ export const SpiderPuzzle = () => {
   );
 };
 
-interface InstructionChoicesProps {
-  onConfirm: () => void;
-  onCancel: () => void;
-}
 const InstructionChoices = ({
   onConfirm,
   onCancel,
@@ -114,9 +121,6 @@ const InstructionChoices = ({
   );
 };
 
-interface InputButtonsProps {
-  onClick: (direction: Direction) => void;
-}
 const InputButtons = ({ onClick }: InputButtonsProps) => {
   const status = useGameStore((state) => state.puzzleState.spider.status);
   console.log("render");

@@ -1,4 +1,4 @@
-//Types
+// Types
 export interface CookState {
   feedback: string[];
   ingredients: Record<Ingredient, number>;
@@ -8,12 +8,12 @@ export interface CookState {
 
 export type Ingredient = "TOLT" | "FIMA" | "MUOT";
 
-//Constants
+// Config
 export const MAX_QUANTITY = 99;
 export const TARGET_HEIGHT = 25;
 export const MIN_HEIGHT = 9;
 
-//Static Data
+// Narrative Content
 export const cookFeedback = {
   initial: [
     "The cook cheers up a bit.",
@@ -58,7 +58,7 @@ export const getCakeHeightFeedback = (
   ];
 };
 
-//Initial State
+// Initial State
 export const initialCookState: CookState = {
   feedback: cookFeedback.initial,
   ingredients: { TOLT: 0, FIMA: 0, MUOT: 0 },

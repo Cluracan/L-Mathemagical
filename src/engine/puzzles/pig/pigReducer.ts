@@ -10,7 +10,6 @@ import {
 } from "./pigConstants";
 
 //Types
-
 type PigAction =
   | {
       type: "movement";
@@ -21,7 +20,7 @@ type PigAction =
 //Constants
 const compassDirections: CompassDirection[] = ["n", "e", "s", "w"];
 
-//Helper functions
+//Helpers
 const characterCanMove = (curLocation: number, direction: CompassDirection) => {
   switch (direction) {
     case "n":
@@ -72,6 +71,7 @@ const movePig = (curPigLocation: number, playerLocation: number) => {
   return moveOptions[RNGIndex];
 };
 
+// Reducer
 export function pigReducer(state: PigState, action: PigAction) {
   switch (action.type) {
     case "movement": {

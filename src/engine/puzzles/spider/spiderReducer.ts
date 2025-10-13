@@ -8,10 +8,10 @@ import {
   type SpiderState,
 } from "./spiderConstants";
 
-// --- Types ---
+// Types
 type SpiderAction = { type: "input"; direction: Direction } | { type: "reset" };
 
-// --- Helper Functions ---
+// Helpers
 const hasEdge = (edgesBitset: number, edgeIndex: Edge) => {
   return (edgesBitset & (1 << edgeIndex)) !== 0;
 };
@@ -24,6 +24,7 @@ const countEdges = (edgesBitset: number) => {
   return edgesBitset.toString(2).split("1").length - 1;
 };
 
+// Reducer
 export function spiderReducer(state: SpiderState, action: SpiderAction) {
   switch (action.type) {
     case "input": {

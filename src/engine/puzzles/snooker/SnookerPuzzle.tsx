@@ -4,18 +4,17 @@ import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
-import { useWindowDimensions } from "../../../features/hooks/useWindowDimensions";
-import { SnookerEngine } from "./snookerEngine";
+import { useState, type ChangeEvent } from "react";
+
 import { produce } from "immer";
 import { initialSnookerState, snookerFeedback } from "./snookerConstants";
+import { SnookerCanvas } from "./SnookerCanvas";
 
-//Constants
+// Constants
 const MAX_ANGLE = 999;
-const CANVAS_RATIO = 0.4;
 
-//Main Component
 export const SnookerPuzzle = () => {
+  // State
   const feedback = useGameStore((state) => state.puzzleState.snooker.feedback);
   const action = useGameStore((state) => state.puzzleState.snooker.action);
   const puzzleCompleted = useGameStore(
@@ -23,6 +22,7 @@ export const SnookerPuzzle = () => {
   );
   const [angleInput, setAngleInput] = useState(0);
 
+  // Handlers
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (isNaN(Number(e.target.value)) || Number(e.target.value) > MAX_ANGLE)
       return;
@@ -70,11 +70,13 @@ export const SnookerPuzzle = () => {
       })
     );
   };
+
+  // Render
   return (
     <>
       <PuzzleContainer>
         <PuzzleHeader title="Snooker Puzzle" description="Hit the ball!" />
-        <Canvas onAnimationComplete={onAnimationComplete} />
+        <SnookerCanvas onAnimationComplete={onAnimationComplete} />
         <PuzzleFeedback feedback={[feedback]} height="8vh" />
         <PuzzleActions
           handleLeave={handleLeave}
@@ -97,87 +99,11 @@ export const SnookerPuzzle = () => {
               },
             }}
           />
-          <Button onClick={handleHit}>Hit</Button>
+          <Button disabled={action !== "reset"} onClick={handleHit}>
+            Hit
+          </Button>
         </PuzzleActions>
       </PuzzleContainer>
-    </>
-  );
-};
-
-const Canvas = ({
-  onAnimationComplete,
-}: {
-  onAnimationComplete: () => void;
-}) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const contextRef = useRef<CanvasRenderingContext2D>(null);
-  const engineRef = useRef<SnookerEngine | null>(null);
-  const angle = useGameStore((state) => state.puzzleState.snooker.angle);
-  const action = useGameStore((state) => state.puzzleState.snooker.action);
-  let { width } = useWindowDimensions();
-  const { height } = useWindowDimensions();
-  if (width < height) width = height;
-  const cssWidth = width * CANVAS_RATIO;
-  const cssHeight = height * CANVAS_RATIO;
-
-  useEffect(() => {
-    if (!canvasRef.current) return;
-    const context = canvasRef.current.getContext("2d");
-
-    // Set display size (css pixels)   https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
-    canvasRef.current.style.width = `${String(cssWidth)}px`;
-    canvasRef.current.style.height = `${String(cssHeight)}px`;
-
-    // Set actual size in memory (scaled to account for extra pixel density).
-    const dpr = window.devicePixelRatio || 1;
-    canvasRef.current.width = width * CANVAS_RATIO * dpr;
-    canvasRef.current.height = height * CANVAS_RATIO * dpr;
-    // Normalize coordinate system to use CSS pixels.
-    context?.scale(dpr, dpr);
-
-    if (!context) return;
-    contextRef.current = context;
-    engineRef.current = new SnookerEngine(
-      contextRef.current,
-      CANVAS_RATIO * width,
-      CANVAS_RATIO * height
-    );
-
-    engineRef.current.drawTable();
-  }, [width]);
-
-  useEffect(() => {
-    if (!engineRef.current) return;
-
-    switch (action) {
-      case "hit":
-        engineRef.current
-          .hitBall(angle)
-          .then(() => {
-            onAnimationComplete();
-          })
-          .catch((error: unknown) => {
-            console.error("Animation failed:", error);
-            onAnimationComplete();
-          });
-        break;
-      case "reset":
-        engineRef.current.resetTable();
-        break;
-    }
-    return () => {
-      engineRef.current?.cleanUpAnimation();
-    };
-  }, [angle, action]);
-
-  return (
-    <>
-      <canvas
-        ref={canvasRef}
-        style={{
-          margin: "2rem",
-        }}
-      />
     </>
   );
 };

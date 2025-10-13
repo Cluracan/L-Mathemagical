@@ -21,7 +21,6 @@ const playAudioNote = (note: NoteId) => {
   void (audio.cloneNode(true) as HTMLAudioElement).play();
 };
 
-//Main Component
 export const PianoPuzzle = () => {
   const attempts = useGameStore((state) => state.puzzleState.piano.attempts);
   const feedback = useGameStore((state) => state.puzzleState.piano.feedback);
@@ -54,6 +53,7 @@ export const PianoPuzzle = () => {
     }));
   };
 
+  // Helpers
   const handleLeave = () => {
     useGameStore.setState((state) => ({
       ...state,
@@ -111,6 +111,7 @@ export const PianoPuzzle = () => {
     }));
   };
 
+  // Render
   return (
     <PuzzleContainer>
       <PuzzleHeader title="Piano Puzzle" description="Play the right tune." />

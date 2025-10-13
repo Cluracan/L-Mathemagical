@@ -1,4 +1,4 @@
-// --- Types ---
+// Types
 export interface SpiderState {
   puzzleCompleted: boolean;
   currentEdge: Edge;
@@ -7,7 +7,10 @@ export interface SpiderState {
   status: "instructions" | "inProgress" | "failedAttempt";
 }
 
-// --- Static Data ---
+export type Direction = keyof typeof directionText;
+export type Edge = keyof typeof edgeMap;
+
+// Narrative Content
 export const spiderFeedback = {
   instructions: [
     '"Right," says the spider. "If I spin a special web that encloses the room, the Drogos\' magic will be defeated."\n\n',
@@ -36,9 +39,8 @@ export const getEdgeCountMessage = (edgeCount: number) => {
 };
 
 export const directionText = { L: "Left", R: "Right" } as const;
-export type Direction = keyof typeof directionText;
 
-// --- Static Data ---
+// Constants
 export const edgeMap = {
   0: { L: 18, R: 2 },
   1: { L: 7, R: 16 },
@@ -65,9 +67,8 @@ export const edgeMap = {
   22: { L: 13, R: 14 },
   23: { L: 6, R: 5 },
 } as const;
-export type Edge = keyof typeof edgeMap;
 
-// --- Initial State ---
+// Initial State
 export const initialSpiderState: SpiderState = {
   puzzleCompleted: false,
   currentEdge: 0,

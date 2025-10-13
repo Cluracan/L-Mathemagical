@@ -1,3 +1,5 @@
+import { useCallback, useEffect } from "react";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
@@ -9,15 +11,22 @@ import {
   telephoneButtons,
   type TelephoneButton,
 } from "./telephoneConstants";
-import { Box, Button, Stack, Typography } from "@mui/material";
 import { telephoneReducer } from "./telephoneReducer";
-import { useCallback, useEffect } from "react";
 
-// --- types ---
+// Types
 type InputHandler = (button: TelephoneButton) => void;
 
+interface TelephoneProps {
+  onClick: InputHandler;
+}
+
+interface TelephoneButtonProps {
+  value: number | null;
+  onClick: InputHandler;
+}
+
 export const TelephonePuzzle = () => {
-  // --- state / selectors ---
+  // State
   const feedback = useGameStore(
     (state) => state.puzzleState.telephone.feedback
   );
@@ -25,7 +34,7 @@ export const TelephonePuzzle = () => {
     (state) => state.puzzleState.telephone.puzzleCompleted
   );
 
-  // --- handlers ---
+  // Handlers
   const handleReset = () => {
     useGameStore.setState((state) => ({
       puzzleState: {
@@ -76,7 +85,7 @@ export const TelephonePuzzle = () => {
     }));
   }, []);
 
-  // --- effects ---
+  // Effects
   useEffect(() => {
     function keyDownHandler(e: KeyboardEvent) {
       if (!isNaN(Number(e.key))) {
@@ -93,23 +102,16 @@ export const TelephonePuzzle = () => {
     };
   }, [handleSubmit, handleInput]);
 
+  // Render
   return (
     <PuzzleContainer>
       <PuzzleHeader
         title="Telephone Puzzle"
         description="Dial the correct number"
       />
-      <Stack
-        direction={"row"}
-        sx={{
-          justifyContent: "space-around",
-          alignItems: "center",
-          width: "60%",
-        }}
-      >
-        <Telephone onClick={handleInput} />
-        <NumberDisplay />
-      </Stack>
+
+      <Telephone onClick={handleInput} />
+
       <PuzzleFeedback feedback={feedback} height="30vh" />
       <PuzzleActions
         handleReset={handleReset}
@@ -129,10 +131,23 @@ export const TelephonePuzzle = () => {
   );
 };
 
-interface TelephoneProps {
-  onClick: InputHandler;
-}
 const Telephone = ({ onClick }: TelephoneProps) => {
+  return (
+    <Stack
+      direction={"row"}
+      sx={{
+        justifyContent: "space-around",
+        alignItems: "center",
+        width: "60%",
+      }}
+    >
+      <TelephoneKeypad onClick={onClick} />
+      <NumberDisplay />
+    </Stack>
+  );
+};
+
+const TelephoneKeypad = ({ onClick }: TelephoneProps) => {
   return (
     <>
       <Box
@@ -154,10 +169,6 @@ const Telephone = ({ onClick }: TelephoneProps) => {
   );
 };
 
-interface TelephoneButtonProps {
-  value: number | null;
-  onClick: InputHandler;
-}
 const TelephoneButton = ({ onClick, value }: TelephoneButtonProps) => {
   const isButton = value !== null;
   return isButton ? (

@@ -1,58 +1,65 @@
 import { produce } from "immer";
-import { isItemId, itemData } from "../../assets/data/itemData";
+import { isItemId } from "../../assets/data/itemData";
+import { itemRegistry } from "../world/itemRegistry";
+import { withPipeline } from "../pipeline/withPipeline";
+import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import type { HandleCommand } from "../dispatchCommand";
+import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
+
+// Narrative Content
+const failureFeedback = {
+  noTarget: "Drink what?",
+  notOnPlayer: "You don't have that...",
+  notDrinkable: "You can't drink that!",
+};
+
+const runHeightPotionCheck: PipelineFunction = (payload) => {
+  if (payload.target !== "bottle" && payload.target !== "phial") {
+    return payload;
+  }
+  const potion = payload.target;
+  return produce(payload, (draft) => {
+    const playerHeight = draft.gameState.playerHeight;
+    draft.gameState.storyLine.push(
+      itemRegistry.getDrinkMessage(potion, playerHeight)
+    );
+    draft.gameState.playerHeight = itemRegistry.getNewHeight(
+      potion,
+      playerHeight
+    );
+    draft.gameState.itemLocation[potion] = "pit";
+    draft.done = true;
+  });
+};
+
+const runFailureMessage: PipelineFunction = (payload) => {
+  return produce(payload, (draft) => {
+    const storyLine = draft.gameState.storyLine;
+    const target = draft.target;
+    if (!target || !isItemId(target)) {
+      storyLine.push(failureFeedback.noTarget);
+    } else if (draft.gameState.itemLocation[target] !== "player") {
+      storyLine.push(failureFeedback.notOnPlayer);
+    } else {
+      storyLine.push(failureFeedback.notDrinkable);
+    }
+  });
+};
+
+const drinkPipeline = [
+  runPuzzleTriggers,
+  runHeightPotionCheck,
+  runFailureMessage,
+];
 
 export const handleDrink: HandleCommand = (args) => {
-  const { gameState, target } = args;
-  const { itemLocation, playerHeight } = gameState;
-  if (!target) {
-    const nextGameState = produce(gameState, (draft) => {
-      draft.storyLine.push("Drink what?");
-    });
-    return nextGameState;
-  }
+  const { command, target, gameState } = args;
+  const payload: PipelinePayload = {
+    command,
+    target,
+    gameState,
+    done: false,
+  };
 
-  if (!isItemId(target) || itemLocation[target] !== "player") {
-    const nextGameState = produce(gameState, (draft) => {
-      draft.storyLine.push("You don't have that...");
-    });
-    return nextGameState;
-  }
-
-  if (!itemData[target].isDrinkable) {
-    const nextGameState = produce(gameState, (draft) => {
-      draft.storyLine.push("You can't drink that!");
-    });
-    return nextGameState;
-  }
-
-  switch (target) {
-    case "bottle":
-      if (playerHeight === "threeFifths" || playerHeight === "one") {
-        const drinkFeedback = itemData.bottle.drinkMessage[playerHeight];
-        const newHeight = itemData.bottle.heightChange[playerHeight];
-        const nextGameState = produce(gameState, (draft) => {
-          draft.storyLine.push(drinkFeedback);
-          draft.playerHeight = newHeight;
-          draft.itemLocation.bottle = "pit";
-        });
-        return nextGameState;
-      }
-      break;
-    case "phial":
-      if (playerHeight === "one" || playerHeight === "fiveFourths") {
-        const drinkFeedback = itemData.phial.drinkMessage[playerHeight];
-        const newHeight = itemData.phial.heightChange[playerHeight];
-        const nextGameState = produce(gameState, (draft) => {
-          draft.storyLine.push(drinkFeedback);
-          draft.playerHeight = newHeight;
-          draft.itemLocation.bottle = "pit";
-        });
-        return nextGameState;
-      }
-      break;
-    default:
-      throw new Error("default reached in handleDrink");
-  }
-  throw new Error("Unexpected code path in handleDrink");
+  return withPipeline(payload, drinkPipeline);
 };

@@ -6,6 +6,7 @@ import type { PipelineFunction } from "../pipeline/types";
 import type { GameState } from "../gameEngine";
 import type { ItemId } from "../../assets/data/itemData";
 
+// Initial State
 export const initialBathState = {
   cube: false,
   tetrahedron: false,
@@ -14,7 +15,7 @@ export const initialBathState = {
   dodecahedron: false,
 } as const satisfies Partial<Record<ItemId, boolean>>;
 
-//Static data
+// Narrative Content
 export const bathFeedback = {
   willFloat: "The bath looks watertight and ready to float...",
   willSink: "The bath won't float as it is not quite watertight...",
@@ -56,8 +57,9 @@ const bathItems = Object.keys(
 //Types
 export type BathState = Record<keyof typeof initialBathState, boolean>;
 
-//Helper functions
+//Helpers
 const isBathItem = createKeyGuard(initialBathState);
+
 const willFloat = (bath: BathState) =>
   Object.values(bath).every((holeFilled) => holeFilled);
 
@@ -92,91 +94,75 @@ const canFillBathHole = (
   );
 };
 
-//command handlers
-const bathCommandHandlers = {
-  look: (payload) => {
-    const { gameState, target } = payload;
-    if (
-      target !== "bath" ||
-      (gameState.currentRoom !== "riverS" && gameState.currentRoom !== "riverN")
-    ) {
-      return payload;
-    }
-    return stopWithSuccess(payload, buildBathDescription(gameState.bathState));
-  },
-
-  use: (payload) => {
-    const { gameState, target } = payload;
-    const { currentRoom, bathState } = gameState;
-    //Using item to fill hole
-    if (target && canFillBathHole(target, gameState)) {
-      const nextGameState = produce(gameState, (draft) => {
-        draft.itemLocation[target] = "pit";
-        draft.bathState[target] = true;
-        draft.storyLine.push(bathFeedback.items[target].filled);
-      });
-      return {
-        ...payload,
-        gameState: nextGameState,
-        done: true,
-      };
-    }
-
-    if (target !== "bath") {
-      return payload;
-    }
-    //Using bath to cross river
-    const crossRiverChecks = [
-      {
-        check: () => !willFloat(bathState),
-        action: () => failCommand(payload, buildBathDescription(bathState)),
-      },
-      {
-        check: () => gameState.itemLocation.oar !== "player",
-        action: () => failCommand(payload, bathFeedback.noOar),
-      },
-      {
-        check: () => playerIsOverLoaded(gameState),
-        action: () => failCommand(payload, bathFeedback.overLoaded),
-      },
-    ];
-
-    for (const { check, action } of crossRiverChecks) {
-      if (check()) return action();
-    }
-
-    // move across river
-    const nextGameState = produce(gameState, (draft) => {
-      draft.currentRoom = currentRoom === "riverN" ? "riverS" : "riverN";
-      draft.storyLine.push(bathFeedback.success);
-    });
-    return {
-      ...payload,
-      gameState: nextGameState,
-      done: true,
-    };
-  },
-
-  move: (payload) => {
-    const { gameState, target } = payload;
-    const { currentRoom } = gameState;
-    if (
-      (currentRoom === "riverS" && target === "n") ||
-      (currentRoom === "riverN" && target === "s")
-    ) {
-      return failCommand(payload, bathFeedback.failure);
-    } else {
-      return payload;
-    }
-  },
-} as const satisfies Record<string, PipelineFunction>;
-const isBathCommand = createKeyGuard(bathCommandHandlers);
-
-//Main function
+//Main Function
 export const runBathTriggers: PipelineFunction = (payload) => {
-  const { command } = payload;
-  if (!isBathCommand(command)) {
-    return payload;
+  const { command, target, gameState } = payload;
+  switch (command) {
+    case "look": {
+      if (
+        target !== "bath" ||
+        (gameState.currentRoom !== "riverS" &&
+          gameState.currentRoom !== "riverN")
+      ) {
+        return payload;
+      }
+      return stopWithSuccess(
+        payload,
+        buildBathDescription(gameState.bathState)
+      );
+    }
+    case "use": {
+      const { currentRoom, bathState } = gameState;
+      //Use item to fill hole
+      if (target && canFillBathHole(target, gameState)) {
+        return produce(payload, (draft) => {
+          draft.gameState.itemLocation[target] = "pit";
+          draft.gameState.bathState[target] = true;
+          draft.gameState.storyLine.push(bathFeedback.items[target].filled);
+          draft.done = true;
+        });
+      }
+
+      if (target !== "bath") {
+        return payload;
+      }
+      //Use bath to cross river
+      const crossRiverChecks = [
+        {
+          check: () => !willFloat(bathState),
+          action: () => failCommand(payload, buildBathDescription(bathState)),
+        },
+        {
+          check: () => gameState.itemLocation.oar !== "player",
+          action: () => failCommand(payload, bathFeedback.noOar),
+        },
+        {
+          check: () => playerIsOverLoaded(gameState),
+          action: () => failCommand(payload, bathFeedback.overLoaded),
+        },
+      ];
+      for (const { check, action } of crossRiverChecks) {
+        if (check()) return action();
+      }
+      // Else move across river
+      return produce(payload, (draft) => {
+        draft.gameState.currentRoom =
+          currentRoom === "riverN" ? "riverS" : "riverN";
+        draft.gameState.storyLine.push(bathFeedback.success);
+        draft.done = true;
+      });
+    }
+    case "move": {
+      if (
+        (gameState.currentRoom === "riverS" && target === "n") ||
+        (gameState.currentRoom === "riverN" && target === "s")
+      ) {
+        return failCommand(payload, bathFeedback.failure);
+      } else {
+        return payload;
+      }
+    }
+    default:
+      return payload;
   }
-  return bathCommandHandlers[command](payload);
 };

@@ -1,14 +1,10 @@
 import { produce } from "immer";
-
 import { buildRoomDescription } from "../actions/handleLook";
 import { failCommand } from "../pipeline/failCommand";
 import { stopWithSuccess } from "../pipeline/stopWithSuccess";
 import type { PipelineFunction } from "../pipeline/types";
 
-const holeAttemptFeedback: Record<
-  "threeFifths" | "threeFourths" | "one" | "fiveFourths" | "lookHole",
-  string
-> = {
+const holeAttemptFeedback = {
   one: "You can't fit through a hole that small!",
   fiveFourths: "You are far too big to fit through a hole that small!",
   threeFifths:
@@ -42,18 +38,14 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
             { ...gameState, currentRoom: "tunnelTop" },
             command
           );
-          const nextGameState = produce(gameState, (draft) => {
-            draft.currentRoom = "tunnelTop";
-            draft.storyLine.push(
+          return produce(payload, (draft) => {
+            draft.gameState.currentRoom = "tunnelTop";
+            draft.gameState.storyLine.push(
               holeAttemptFeedback[playerHeight],
               ...nextRoomDescription
             );
+            draft.done = true;
           });
-          return {
-            ...payload,
-            gameState: nextGameState,
-            done: true,
-          };
         } else {
           return failCommand(payload, holeAttemptFeedback[playerHeight]);
         }
@@ -64,6 +56,4 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
     default:
       return payload;
   }
-
-  throw new Error("Unexpected code path in runPoolTriggers");
 };

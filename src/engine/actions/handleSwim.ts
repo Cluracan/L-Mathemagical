@@ -1,5 +1,11 @@
+import { produce } from "immer";
 import type { HandleCommand } from "../dispatchCommand";
+import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
+import { withPipeline } from "../pipeline/withPipeline";
+import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
+import { createKeyGuard } from "../../utils/guards";
 
+// Narrative Content
 const swimFeedback = {
   pool: "Diving into an empty swimming pool would be a bad idea.  You could always go down the steps, perhaps?",
   poolFloor:
@@ -9,38 +15,29 @@ const swimFeedback = {
   riverN:
     "As you enter the water, a pirhana fish gives you a nasty nip on your little toe. You hastily retreat to the bank.",
   default: "This doesn't appear to be a good place to swim...",
+} as const;
+const hasSwimFeedback = createKeyGuard(swimFeedback);
+
+export const runSwimTriggers: PipelineFunction = (payload) => {
+  return produce(payload, (draft) => {
+    if (hasSwimFeedback(draft.gameState.currentRoom)) {
+      draft.gameState.storyLine.push(swimFeedback[draft.gameState.currentRoom]);
+    } else {
+      draft.gameState.storyLine.push(swimFeedback.default);
+    }
+  });
 };
 
+const swimPipeline: PipelineFunction[] = [runPuzzleTriggers, runSwimTriggers];
+
 export const handleSwim: HandleCommand = (args) => {
-  const { gameState } = args;
-  const { currentRoom, storyLine } = gameState;
+  const { command, target, gameState } = args;
+  const payload: PipelinePayload = {
+    command,
+    gameState,
+    target,
+    done: false,
+  };
 
-  switch (currentRoom) {
-    case "pool":
-      return {
-        ...gameState,
-        storyLine: [...storyLine, swimFeedback.pool],
-      };
-    case "poolFloor":
-      return {
-        ...gameState,
-        storyLine: [...storyLine, swimFeedback.poolFloor],
-      };
-    case "riverS":
-      return {
-        ...gameState,
-        storyLine: [...storyLine, swimFeedback.riverS],
-      };
-
-    case "riverN":
-      return {
-        ...gameState,
-        storyLine: [...storyLine, swimFeedback.riverN],
-      };
-    default:
-      return {
-        ...gameState,
-        storyLine: [...storyLine, swimFeedback.default],
-      };
-  }
+  return withPipeline(payload, swimPipeline);
 };

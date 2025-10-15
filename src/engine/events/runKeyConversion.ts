@@ -39,10 +39,10 @@ export const runKeyConversion: PipelineFunction = (payload) => {
     default:
       return payload;
   }
-  //Key was found
+  // Key was found
   if (convertedTarget && isItemId(convertedTarget)) {
     return { ...payload, target: convertedTarget };
   }
-  //Else
+  // Else
   return payload;
 };

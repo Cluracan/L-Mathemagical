@@ -13,26 +13,22 @@ export const runRingTriggers: PipelineFunction = (payload) => {
     switch (command) {
       case "drop":
         if (itemLocation[target] === "player") {
-          const nextGameState = produce(gameState, (draft) => {
-            draft.isInvisible = false;
-            draft.storyLine.push(ringFeedback.drop);
-            draft.itemLocation[target] = currentRoom;
+          return produce(payload, (draft) => {
+            draft.gameState.isInvisible = false;
+            draft.gameState.storyLine.push(ringFeedback.drop);
+            draft.gameState.itemLocation[target] = currentRoom;
+            draft.done = true;
           });
-          return { ...payload, gameState: nextGameState, done: true };
         }
         break;
       case "get":
         if (itemLocation[target] === currentRoom) {
-          const nextGameState = produce(gameState, (draft) => {
-            draft.isInvisible = true;
-            draft.storyLine.push(ringFeedback.get);
-            draft.itemLocation[target] = "player";
+          return produce(payload, (draft) => {
+            draft.gameState.isInvisible = true;
+            draft.gameState.storyLine.push(ringFeedback.get);
+            draft.gameState.itemLocation[target] = "player";
+            draft.done = true;
           });
-          return {
-            ...payload,
-            gameState: nextGameState,
-            done: true,
-          };
         }
         break;
       default:

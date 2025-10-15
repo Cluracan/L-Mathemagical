@@ -14,7 +14,7 @@ import type { GameState } from "../gameEngine";
 import type { Command, HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 
-//Helper functions
+//Helpers
 export const buildRoomDescription = (
   gameState: GameState,
   command: Command
@@ -32,7 +32,6 @@ export const buildRoomDescription = (
       itemsPresent.push(itemRegistry.getFloorDescription(item));
     }
   }
-
   //Add drogoGuard
 
   //add puzzleNPC
@@ -43,15 +42,11 @@ export const buildRoomDescription = (
 
 const lookRoom: PipelineFunction = (payload) => {
   if (payload.target === null) {
-    const roomDescription = buildRoomDescription(payload.gameState, "look");
-    const nextGameState = produce(payload.gameState, (draft) => {
-      draft.storyLine.push(...roomDescription);
+    return produce(payload, (draft) => {
+      const roomDescription = buildRoomDescription(draft.gameState, "look");
+      draft.gameState.storyLine.push(...roomDescription);
+      draft.done = true;
     });
-    return {
-      ...payload,
-      gameState: nextGameState,
-      done: true,
-    };
   }
   return payload;
 };

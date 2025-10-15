@@ -3,16 +3,16 @@ import {
   blockedExitData,
   isBlockedRoom,
 } from "../../assets/data/blockedExitData";
-import { isItemId, isKeyType } from "../../assets/data/itemData";
 import { runBathTriggers } from "../events/runBathTriggers";
 import { runKeyConversion } from "../events/runKeyConversion";
 import { failCommand } from "../pipeline/failCommand";
-
-import type { HandleCommand } from "../dispatchCommand";
-import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
+import { isItemId, isKeyType } from "../../assets/data/itemData";
+import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
+import type { HandleCommand } from "../dispatchCommand";
 
+// Narrative Content
 const keyFeedback = {
   noKey: "You don't have the right key!",
   wrongKey: "That's the wrong key!",
@@ -41,20 +41,16 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
   }
 
   if (target === requiredKey) {
-    const nextGameState = produce(gameState, (draft) => {
-      draft.keyLocked[requiredKey] = !draft.keyLocked[requiredKey];
-      draft.storyLine.push(
-        draft.keyLocked[requiredKey]
+    return produce(payload, (draft) => {
+      draft.gameState.keyLocked[requiredKey] =
+        !draft.gameState.keyLocked[requiredKey];
+      draft.gameState.storyLine.push(
+        draft.gameState.keyLocked[requiredKey]
           ? keyFeedback.lockDoor
           : keyFeedback.unlockDoor
       );
+      draft.done = true;
     });
-
-    return {
-      ...payload,
-      gameState: nextGameState,
-      done: true,
-    };
   } else {
     return failCommand(payload, keyFeedback.wrongKey);
   }

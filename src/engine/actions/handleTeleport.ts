@@ -4,16 +4,15 @@ import { handleLook } from "./handleLook";
 
 export const handleTeleport: HandleCommand = (args) => {
   //TODO: Implement wizMode check or remove this entirely!  Neumann needs to go in special roomCheck for SAY I think.
-  const { command, target, gameState } = args;
+  const { target, gameState } = args;
   if (target && isRoomId(target)) {
     return handleLook({
       gameState: {
         ...gameState,
-
         visitedRooms: gameState.visitedRooms.add(gameState.currentRoom),
         currentRoom: target,
       },
-      command,
+      command: "look",
       target: null,
     });
   }

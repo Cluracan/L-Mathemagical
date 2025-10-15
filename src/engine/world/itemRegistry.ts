@@ -1,5 +1,5 @@
 import { itemData } from "../../assets/data/itemData";
-import type { Item, ItemId } from "../../assets/data/itemData";
+import type { Item, ItemId, PlayerHeight } from "../../assets/data/itemData";
 
 class ItemRegistry {
   private itemData: Record<ItemId, Item> = itemData;
@@ -24,6 +24,18 @@ class ItemRegistry {
   }
   isDrinkable(id: ItemId) {
     return this.itemData[id].isDrinkable;
+  }
+  getDrinkMessage(id: ItemId, height: PlayerHeight) {
+    if (!this.itemData[id].isDrinkable) {
+      throw new Error(`Item ${id} is not drinkable`);
+    }
+    return this.itemData[id].drinkMessage[height];
+  }
+  getNewHeight(id: ItemId, height: PlayerHeight) {
+    if (!this.itemData[id].isDrinkable) {
+      throw new Error(`Item ${id} is not drinkable`);
+    }
+    return this.itemData[id].heightChange[height];
   }
 }
 

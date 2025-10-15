@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import { initialItemLocation, initialKeyLocked } from "../assets/data/itemData";
 import { roomRegistry } from "../engine/world/roomRegistry";
 import type { RoomId } from "../assets/data/roomData";
-import type { ItemId, KeyId } from "../assets/data/itemData";
+import type { ItemId, KeyId, PlayerHeight } from "../assets/data/itemData";
 import {
   initialBathState,
   type BathState,
@@ -80,7 +80,7 @@ export interface GameStoreState {
   stepCount: number;
   itemLocation: Record<ItemId, RoomId | "player">;
   keyLocked: Record<KeyId, boolean>;
-  playerHeight: "threeFifths" | "threeFourths" | "one" | "fiveFourths";
+  playerHeight: PlayerHeight;
   isInvisible: boolean;
   bathState: BathState;
   drogoGuard: null | { target: number; turnsUntilCaught: number };

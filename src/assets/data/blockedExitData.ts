@@ -35,6 +35,11 @@ export const blockedExitData = {
     lockedText: "The safe door is securely locked.",
     keyRequired: "safe",
   },
+  telephone: {
+    direction: ["d"],
+    lockedText: "You can't travel that way!",
+    keyRequired: "chest",
+  },
 
   //Permanently locked
   hallway: {

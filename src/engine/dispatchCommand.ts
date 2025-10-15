@@ -45,5 +45,5 @@ export const dispatchCommand: DispatchCommand = (args) => {
   const { command, target, gameState } = args;
   return command
     ? commandHandlers[command]({ command, target, gameState })
-    : handleNull({ target, gameState, command });
+    : handleNull({ command, target, gameState });
 };

@@ -1,34 +1,36 @@
 import { produce } from "immer";
-import { isItemId } from "../../assets/data/itemData";
-import { runKeyConversion } from "../events/runKeyConversion";
-import { runRingTriggers } from "../events/runRingTriggers";
 import { itemRegistry } from "../world/itemRegistry";
 import { failCommand } from "../pipeline/failCommand";
-import type { HandleCommand } from "../dispatchCommand";
-import type { PipelineFunction } from "../pipeline/types";
+import { isItemId } from "../../assets/data/itemData";
 import { withPipeline } from "../pipeline/withPipeline";
+import { runRingTriggers } from "../events/runRingTriggers";
+import { runKeyConversion } from "../events/runKeyConversion";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
+import type { PipelineFunction } from "../pipeline/types";
+import type { HandleCommand } from "../dispatchCommand";
+
+// Narrative Content
+const dropFeedback = {
+  noTarget: "Drop what?",
+  notOnPlayer: "You don't have that!",
+};
 
 const dropItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { itemLocation, currentRoom } = gameState;
 
-  if (!target) {
-    return failCommand(payload, "Drop what?");
+  if (!target || !isItemId(target)) {
+    return failCommand(payload, dropFeedback.noTarget);
   }
-  if (!isItemId(target) || itemLocation[target] !== "player") {
-    return failCommand(payload, "You don't have that!");
+  if (itemLocation[target] !== "player") {
+    return failCommand(payload, dropFeedback.notOnPlayer);
   }
 
-  const nextGameState = produce(gameState, (draft) => {
-    draft.itemLocation[target] = currentRoom;
-    draft.storyLine.push(itemRegistry.getDropDescription(target));
+  return produce(payload, (draft) => {
+    draft.gameState.itemLocation[target] = currentRoom;
+    draft.gameState.storyLine.push(itemRegistry.getDropDescription(target));
+    draft.done = true;
   });
-  return {
-    ...payload,
-    gameState: nextGameState,
-    done: true,
-  };
 };
 
 const dropPipeline = [

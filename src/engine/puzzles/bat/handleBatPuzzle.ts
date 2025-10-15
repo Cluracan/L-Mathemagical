@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import type { PipelineFunction } from "../../pipeline/types";
 
-/* --- Notes ---
+/* Note: 
 Triangular numbers are intentionally only tested up to 90:
 100+ would require reformatting, but this would also make it too easy to find '91'
 */

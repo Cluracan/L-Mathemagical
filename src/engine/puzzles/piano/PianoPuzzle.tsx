@@ -15,7 +15,7 @@ import { pianoReducer } from "./pianoReducer";
 import { Button } from "@mui/material";
 import { useEffect } from "react";
 
-//Helper functions
+//Helpers
 const playAudioNote = (note: NoteId) => {
   const audio = audioCache[note];
   void (audio.cloneNode(true) as HTMLAudioElement).play();

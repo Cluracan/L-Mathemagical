@@ -4,28 +4,33 @@ import { runKeyConversion } from "../events/runKeyConversion";
 import { runRingTriggers } from "../events/runRingTriggers";
 import { itemRegistry } from "../world/itemRegistry";
 import { failCommand } from "../pipeline/failCommand";
-import type { HandleCommand } from "../dispatchCommand";
-import type { PipelineFunction } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
+import type { HandleCommand } from "../dispatchCommand";
+import type { PipelineFunction } from "../pipeline/types";
+
+// Narrative Content
+const getFeedback = {
+  noTarget: "Get what?",
+  notInRoom: "You don't see that here!",
+};
 
 const getItem: PipelineFunction = (payload) => {
   const { target, gameState } = payload;
   const { itemLocation, currentRoom } = gameState;
 
-  if (!target) {
-    return failCommand(payload, "Get what?");
+  if (!target || !isItemId(target)) {
+    return failCommand(payload, getFeedback.noTarget);
   }
 
-  if (!isItemId(target) || itemLocation[target] !== currentRoom) {
-    return failCommand(payload, "You don't see that here!");
+  if (itemLocation[target] !== currentRoom) {
+    return failCommand(payload, getFeedback.notInRoom);
   }
 
-  const nextGameState = produce(gameState, (draft) => {
-    draft.itemLocation[target] = "player";
-    draft.storyLine.push(itemRegistry.getPickUpDescription(target));
+  return produce(payload, (draft) => {
+    draft.gameState.itemLocation[target] = "player";
+    draft.gameState.storyLine.push(itemRegistry.getPickUpDescription(target));
   });
-  return { ...payload, gameState: nextGameState, done: true };
 };
 
 const getPipeline = [

@@ -9,7 +9,9 @@ export type DrogoGuard = null | { id: number; turnsUntilCaught: number };
 // Type Assertions
 function assertIsDefined<T>(val: T): asserts val is NonNullable<T> {
   if (val === undefined || val === null) {
-    throw new Error(`Expected 'val' to be defined, but received ${val}`);
+    throw new Error(
+      `Expected 'val' to be defined, but received ${String(val)}`
+    );
   }
 }
 
@@ -58,12 +60,12 @@ const drogoFeedback = {
 
 export const getDrogoDescription = (drogoGuard: DrogoGuard) => {
   return drogoGuard
-    ? `There is a Drogo Robot Guard opposite you, carrying a huge butterfly net. Emblazoned across its front is the number ${drogoGuard.id ** 2}`
+    ? `There is a Drogo Robot Guard opposite you, carrying a huge butterfly net. Emblazoned across its front is the number ${String(drogoGuard.id ** 2)}`
     : null;
 };
 
 const getDrogoIdReminder = (id: number) => {
-  return `Your eyes are drawn to the number '${id ** 2}', which is emblazoned across the front of the robot.`;
+  return `Your eyes are drawn to the number '${String(id ** 2)}', which is emblazoned across the front of the robot.`;
 };
 
 // Helpers
@@ -71,7 +73,7 @@ const getDrogoChance = (room: RoomId) => {
   if (SAFE_ROOMS.has(room)) {
     return 0;
   }
-  return room.slice(0, 6) === "cellar"
+  return room.startsWith("cellar")
     ? DROGO_SPAWN_CHANCE_HIGH
     : DROGO_SPAWN_CHANCE_LOW;
 };
@@ -117,7 +119,7 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
     case "move": {
       return produce(payload, (draft) => {
         const playerIsInvisible = draft.gameState.isInvisible;
-        let drogoGuard = draft.gameState.drogoGuard;
+        const drogoGuard = draft.gameState.drogoGuard;
         assertIsDefined(drogoGuard);
         if (playerIsInvisible) {
           draft.gameState.storyLine.push(drogoFeedback.moveAttempt.isInvisible);

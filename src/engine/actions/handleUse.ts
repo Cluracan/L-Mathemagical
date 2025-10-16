@@ -72,7 +72,7 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
   return failCommand(payload, useFeedback.cannotUseHere);
 };
 
-const UsePipeline = [
+const usePipeline = [
   runKeyConversion,
   runPuzzleTriggers,
   runBathTriggers,
@@ -89,5 +89,5 @@ export const handleUse: HandleCommand = (args) => {
     done: false,
   };
 
-  return withPipeline(payload, UsePipeline);
+  return withPipeline(payload, usePipeline);
 };

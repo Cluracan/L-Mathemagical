@@ -70,6 +70,7 @@ const getDrogoIdReminder = (id: number) => {
 
 // Helpers
 const getDrogoChance = (room: RoomId) => {
+  console.log(room);
   if (SAFE_ROOMS.has(room)) {
     return 0;
   }
@@ -103,7 +104,8 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
   if (!drogoGuardPresent) {
     if (command === "move") {
       return produce(payload, (draft) => {
-        const drogoChance = getDrogoChance(draft.gameState.currentRoom);
+        assertIsDefined(draft.nextRoom);
+        const drogoChance = getDrogoChance(draft.nextRoom);
         const rng = Math.random();
         if (rng < drogoChance) {
           draft.gameState.drogoGuard = spawnDrogoGuard();

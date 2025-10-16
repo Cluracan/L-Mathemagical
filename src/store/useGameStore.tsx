@@ -70,6 +70,7 @@ import {
   initialSpiderState,
   type SpiderState,
 } from "../engine/puzzles/spider/spiderConstants";
+import type { DrogoGuard } from "../engine/events/runDrogoTriggers";
 
 export interface GameStoreState {
   playerName: string;
@@ -83,7 +84,7 @@ export interface GameStoreState {
   playerHeight: PlayerHeight;
   isInvisible: boolean;
   bathState: BathState;
-  drogoGuard: null | { target: number; turnsUntilCaught: number };
+  drogoGuard: DrogoGuard;
   currentPuzzle: PuzzleId | null;
   puzzleState: {
     abbot: AbbotState;

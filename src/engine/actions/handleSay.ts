@@ -3,6 +3,7 @@ import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
+import { runDrogoTriggers } from "../events/runDrogoTriggers";
 
 // Narrative Content
 const sayMessages = [
@@ -18,7 +19,11 @@ const sayTarget: PipelineFunction = (payload) => {
   });
 };
 
-const sayPipeline: PipelineFunction[] = [runPuzzleTriggers, sayTarget];
+const sayPipeline: PipelineFunction[] = [
+  runPuzzleTriggers,
+  runDrogoTriggers,
+  sayTarget,
+];
 
 export const handleSay: HandleCommand = (args) => {
   const { command, target, gameState } = args;

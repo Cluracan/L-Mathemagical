@@ -8,18 +8,23 @@ import { runBathTriggers } from "../events/runBathTriggers";
 import { stopWithSuccess } from "../pipeline/stopWithSuccess";
 import { failCommand } from "../pipeline/failCommand";
 import { withPipeline } from "../pipeline/withPipeline";
-import { addPuzzleNPC } from "../puzzles/addPuzzleNPC";
+import { getPuzzleNPCDescription } from "../puzzles/addPuzzleNPC";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import type { GameState } from "../gameEngine";
 import type { Command, HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
+import {
+  getDrogoDescription,
+  runDrogoTriggers,
+} from "../events/runDrogoTriggers";
 
 //Helpers
+
 export const buildRoomDescription = (
   gameState: GameState,
   command: Command
 ) => {
-  const { visitedRooms, currentRoom, itemLocation } = gameState;
+  const { visitedRooms, currentRoom, itemLocation, drogoGuard } = gameState;
   //Add room description
   const roomText =
     visitedRooms.has(currentRoom) && command !== "look"
@@ -33,11 +38,17 @@ export const buildRoomDescription = (
     }
   }
   //Add drogoGuard
+  const drogoText = getDrogoDescription(drogoGuard);
 
   //add puzzleNPC
-  const puzzleNPCText = addPuzzleNPC(gameState);
+  const puzzleNPCText = getPuzzleNPCDescription(gameState);
 
-  return [roomText, ...itemsPresent, ...(puzzleNPCText ? [puzzleNPCText] : [])];
+  return [
+    roomText,
+    ...itemsPresent,
+    ...(drogoText ? [drogoText] : []),
+    ...(puzzleNPCText ? [puzzleNPCText] : []),
+  ];
 };
 
 const lookRoom: PipelineFunction = (payload) => {
@@ -74,6 +85,7 @@ const lookPipeline = [
   runPuzzleTriggers,
   runBathTriggers,
   runPoolTriggers,
+  runDrogoTriggers,
   lookRoom,
   lookItem,
 ];

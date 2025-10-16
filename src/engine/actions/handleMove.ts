@@ -15,6 +15,7 @@ import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
+import { runDrogoTriggers } from "../events/runDrogoTriggers";
 
 enableMapSet();
 
@@ -78,6 +79,7 @@ const movePipeline = [
   runBathTriggers,
   runPoolTriggers,
   runBlockedTriggers,
+  runDrogoTriggers,
   movePlayer,
   applyRoomDescription,
 ];

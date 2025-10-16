@@ -34,8 +34,8 @@ for (const puzzleRoom of Object.keys(puzzleAtLocation)) {
 }
 const JAIL_ROOM: RoomId = "attic";
 const DROGO_ALIASES = new Set(["drogo", "robot", "guard"]);
-const DROGO_SPAWN_CHANCE_LOW = 0.6;
-const DROGO_SPAWN_CHANCE_HIGH = 1;
+const DROGO_SPAWN_CHANCE_LOW = 0.05;
+const DROGO_SPAWN_CHANCE_HIGH = 0.1;
 const DROGO_ID_MIN = 4;
 const DROGO_ID_MAX = 14;
 

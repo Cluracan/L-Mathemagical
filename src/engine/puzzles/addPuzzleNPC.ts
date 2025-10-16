@@ -1,7 +1,9 @@
 import type { GameState } from "../gameEngine";
 import { isPuzzleLocation, puzzleAtLocation } from "./puzzleRegistry";
 
-export const addPuzzleNPC = (gameState: GameState): string | null => {
+export const getPuzzleNPCDescription = (
+  gameState: GameState
+): string | null => {
   const { visitedRooms, currentRoom, puzzleState } = gameState;
   if (!isPuzzleLocation(currentRoom)) return null;
 

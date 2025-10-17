@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import type { PipelineFunction } from "../pipeline/types";
 
-const ringFeedback = {
+export const ringFeedback = {
   drop: "As you drop the ring, you sense a great magical power blast through you. You see yourself fade back into view.",
   get: "As you pick up the ring, you sense a great magical power blast through you.  The ring has made you, and everything you are carrying invisible.",
 } as const;

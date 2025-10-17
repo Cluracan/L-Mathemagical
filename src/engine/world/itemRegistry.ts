@@ -37,6 +37,9 @@ class ItemRegistry {
     }
     return this.itemData[id].heightChange[height];
   }
+  getItemList() {
+    return Object.keys(itemData) as ItemId[];
+  }
 }
 
 export const itemRegistry = new ItemRegistry();

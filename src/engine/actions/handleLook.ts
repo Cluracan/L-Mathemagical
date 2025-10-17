@@ -18,39 +18,9 @@ import {
   runDrogoTriggers,
 } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
+import { buildRoomDescription } from "../utils/buildRoomDescription";
 
 //Helpers
-
-export const buildRoomDescription = (
-  gameState: GameState,
-  command: Command
-) => {
-  const { visitedRooms, currentRoom, itemLocation, drogoGuard } = gameState;
-  //Add room description
-  const roomText =
-    visitedRooms.has(currentRoom) && command !== "look"
-      ? roomRegistry.getShortDescription(currentRoom)
-      : roomRegistry.getLongDescription(currentRoom);
-  //Add items
-  const itemsPresent: string[] = [];
-  for (const [item, location] of Object.entries(itemLocation)) {
-    if (location === currentRoom && isItemId(item)) {
-      itemsPresent.push(itemRegistry.getFloorDescription(item));
-    }
-  }
-  //Add drogoGuard
-  const drogoText = getDrogoDescription(drogoGuard);
-
-  //add puzzleNPC
-  const puzzleNPCText = getPuzzleNPCDescription(gameState);
-
-  return [
-    roomText,
-    ...itemsPresent,
-    ...(drogoText ? [drogoText] : []),
-    ...(puzzleNPCText ? [puzzleNPCText] : []),
-  ];
-};
 
 const lookRoom: PipelineFunction = (payload) => {
   if (payload.target === null) {

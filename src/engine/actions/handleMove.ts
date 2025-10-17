@@ -4,7 +4,7 @@ import {
   directionNarratives,
   isDirectionAlias,
 } from "../constants/directions";
-import { buildRoomDescription } from "./handleLook";
+
 import { failCommand } from "../pipeline/failCommand";
 import { roomRegistry } from "../world/roomRegistry";
 import { runBlockedTriggers } from "../events/runBlockedTriggers";
@@ -17,6 +17,7 @@ import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { runDrogoTriggers } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
+import { buildRoomDescription } from "../utils/buildRoomDescription";
 
 enableMapSet();
 

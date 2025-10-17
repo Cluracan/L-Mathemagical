@@ -3,7 +3,7 @@ import { isRoomId, type RoomId } from "../../assets/data/roomData";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { puzzleAtLocation } from "../puzzles/puzzleRegistry";
 import { itemRegistry } from "../world/itemRegistry";
-import { buildRoomDescription } from "../actions/handleLook";
+import { buildRoomDescription } from "../utils/buildRoomDescription";
 
 // Types
 export type DrogoGuard = null | { id: number; turnsUntilCaught: number };
@@ -72,7 +72,6 @@ const getDrogoIdReminder = (id: number) => {
 
 // Helpers
 const getDrogoChance = (room: RoomId) => {
-  console.log(room);
   if (SAFE_ROOMS.has(room)) {
     return 0;
   }

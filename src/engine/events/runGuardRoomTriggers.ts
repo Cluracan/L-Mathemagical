@@ -1,7 +1,8 @@
 import { produce } from "immer";
 import type { PipelineFunction } from "../pipeline/types";
-import { buildRoomDescription } from "../actions/handleLook";
+
 import { confiscateItems, sendToJail } from "./runDrogoTriggers";
+import { buildRoomDescription } from "../utils/buildRoomDescription";
 
 // Narrative Content
 const guardFeedback = {

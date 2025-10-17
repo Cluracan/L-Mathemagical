@@ -1,8 +1,8 @@
 import { produce } from "immer";
-import { buildRoomDescription } from "../actions/handleLook";
 import { failCommand } from "../pipeline/failCommand";
 import { stopWithSuccess } from "../pipeline/stopWithSuccess";
 import type { PipelineFunction } from "../pipeline/types";
+import { buildRoomDescription } from "../utils/buildRoomDescription";
 
 const holeAttemptFeedback = {
   one: "You can't fit through a hole that small!",

@@ -71,6 +71,10 @@ import {
   type SpiderState,
 } from "../engine/puzzles/spider/spiderConstants";
 import type { DrogoGuard } from "../engine/events/runDrogoTriggers";
+import {
+  initialJailGuard,
+  type JailGuard,
+} from "../engine/events/runAtticTriggers";
 
 export interface GameStoreState {
   playerName: string;
@@ -85,6 +89,7 @@ export interface GameStoreState {
   isInvisible: boolean;
   bathState: BathState;
   drogoGuard: DrogoGuard;
+  jailGuard: JailGuard;
   currentPuzzle: PuzzleId | null;
   puzzleState: {
     abbot: AbbotState;
@@ -127,6 +132,7 @@ const initialGameState: GameStoreState = {
   isInvisible: false,
   bathState: initialBathState,
   drogoGuard: null,
+  jailGuard: initialJailGuard,
   currentPuzzle: null,
   puzzleState: {
     abbot: initialAbbotState,

@@ -17,6 +17,7 @@ import {
   getDrogoDescription,
   runDrogoTriggers,
 } from "../events/runDrogoTriggers";
+import { runAtticTriggers } from "../events/runAtticTriggers";
 
 //Helpers
 
@@ -85,6 +86,7 @@ const lookPipeline = [
   runPuzzleTriggers,
   runBathTriggers,
   runPoolTriggers,
+  runAtticTriggers,
   runDrogoTriggers,
   lookRoom,
   lookItem,

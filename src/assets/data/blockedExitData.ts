@@ -40,6 +40,16 @@ export const blockedExitData = {
     lockedText: "You can't travel that way!",
     keyRequired: "chest",
   },
+  attic: {
+    direction: ["e"],
+    lockedText: "The attic door is securely locked.",
+    keyRequired: "jail",
+  },
+  atticPassage: {
+    direction: ["w"],
+    lockedText: "The attic door is securely locked.",
+    keyRequired: "jail",
+  },
 
   //Permanently locked
   hallway: {

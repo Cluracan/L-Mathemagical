@@ -16,6 +16,7 @@ import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { runDrogoTriggers } from "../events/runDrogoTriggers";
+import { runAtticTriggers } from "../events/runAtticTriggers";
 
 enableMapSet();
 
@@ -78,6 +79,7 @@ const movePipeline = [
   validateExit,
   runBathTriggers,
   runPoolTriggers,
+  runAtticTriggers,
   runBlockedTriggers,
   runDrogoTriggers,
   movePlayer,

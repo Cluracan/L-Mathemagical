@@ -184,6 +184,18 @@ export const itemData = {
     },
     isDrinkable: false,
   },
+  jail: {
+    id: "jail",
+    initialLocation: "pit",
+    descriptions: {
+      floor: "There is the key to the attic room lying here.",
+      inventory: "A jail key",
+      pickUp: "jail key",
+      examine:
+        "The key will unlock the attic room...which means you shouldn't be using it!",
+    },
+    isDrinkable: false,
+  },
   spectacles: {
     id: "spectacles",
     initialLocation: "code",
@@ -300,6 +312,7 @@ export const initialKeyLocked = {
   rusty: true,
   safe: true,
   chest: true,
+  jail: true,
 } as const;
 
 export type KeyId = keyof typeof initialKeyLocked;

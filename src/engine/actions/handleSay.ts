@@ -4,6 +4,7 @@ import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { runDrogoTriggers } from "../events/runDrogoTriggers";
+import { runAtticTriggers } from "../events/runAtticTriggers";
 
 // Narrative Content
 const sayMessages = [
@@ -21,6 +22,7 @@ const sayTarget: PipelineFunction = (payload) => {
 
 const sayPipeline: PipelineFunction[] = [
   runPuzzleTriggers,
+  runAtticTriggers,
   runDrogoTriggers,
   sayTarget,
 ];

@@ -8,14 +8,10 @@ import { itemRegistry } from "../world/itemRegistry";
 export type DrogoGuard = null | { id: number; turnsUntilCaught: number };
 
 // Type Assertions
-function assertIsDefined<T>(
-  val: T,
-  msg?: string
-): asserts val is NonNullable<T> {
+function assertIsDefined<T>(val: T): asserts val is NonNullable<T> {
   if (val === undefined || val === null) {
     throw new Error(
-      msg ||
-        `Assertion error: expected 'val' to be defined, but received ${String(val)}`
+      `Assertion error: expected ${val} to be defined, but received ${String(val)}`
     );
   }
 }
@@ -118,7 +114,7 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
   if (!drogoGuardPresent) {
     if (command === "move") {
       return produce(payload, (draft) => {
-        assertIsDefined(draft.nextRoom, "Expected nextRoom to be defined");
+        assertIsDefined(draft.nextRoom);
         const drogoChance = getDrogoChance(draft.nextRoom);
         const rng = Math.random();
         if (rng < drogoChance) {
@@ -136,7 +132,7 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
       return produce(payload, (draft) => {
         const playerIsInvisible = draft.gameState.isInvisible;
         const drogoGuard = draft.gameState.drogoGuard;
-        assertIsDefined(drogoGuard, "Expected drogoGuard to be defined");
+        assertIsDefined(drogoGuard);
         if (playerIsInvisible) {
           draft.gameState.storyLine.push(drogoFeedback.moveAttempt.isInvisible);
           draft.gameState.drogoGuard = null;
@@ -159,7 +155,7 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
       if (target && DROGO_ALIASES.has(target)) {
         return produce(payload, (draft) => {
           const drogoGuard = draft.gameState.drogoGuard;
-          assertIsDefined(drogoGuard, "Expected drogoGuard to be defined");
+          assertIsDefined(drogoGuard);
           draft.gameState.storyLine.push(getDrogoIdReminder(drogoGuard.id));
           draft.done = true;
         });
@@ -169,7 +165,7 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
     case "say": {
       return produce(payload, (draft) => {
         const drogoGuard = draft.gameState.drogoGuard;
-        assertIsDefined(drogoGuard, "Expected drogoGuard to be defined");
+        assertIsDefined(drogoGuard);
         if (target && willScareGuard(target, drogoGuard)) {
           draft.gameState.storyLine.push(drogoFeedback.scared);
           draft.gameState.drogoGuard = null;

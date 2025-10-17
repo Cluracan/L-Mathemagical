@@ -18,6 +18,7 @@ import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { runDrogoTriggers } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
 import { buildRoomDescription } from "../utils/buildRoomDescription";
+import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
 
 enableMapSet();
 
@@ -81,6 +82,7 @@ const movePipeline = [
   runBathTriggers,
   runPoolTriggers,
   runAtticTriggers,
+  runGuardRoomTriggers,
   runBlockedTriggers,
   runDrogoTriggers,
   movePlayer,

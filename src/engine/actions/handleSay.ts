@@ -5,18 +5,26 @@ import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { runDrogoTriggers } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
+import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
 
 // Narrative Content
-const sayMessages = [
-  "Your words have no effect.",
-  "You cast your thoughts out into the room...",
-  "You speak out loud, but noone appears to notice.",
-];
+const sayFeedback = {
+  saySomething: [
+    "Your words have no effect.",
+    "You cast your thoughts out into the room...",
+    "You speak out loud, but noone appears to notice.",
+  ],
+  sayNothing: "Say what?",
+};
 
 const sayTarget: PipelineFunction = (payload) => {
-  const rngIndex = Math.floor(Math.random() * sayMessages.length);
+  const rngIndex = Math.floor(Math.random() * sayFeedback.saySomething.length);
   return produce(payload, (draft) => {
-    draft.gameState.storyLine.push(sayMessages[rngIndex]);
+    draft.gameState.storyLine.push(
+      payload.target
+        ? sayFeedback.saySomething[rngIndex]
+        : sayFeedback.sayNothing
+    );
   });
 };
 
@@ -24,6 +32,7 @@ const sayPipeline: PipelineFunction[] = [
   runPuzzleTriggers,
   runAtticTriggers,
   runDrogoTriggers,
+  runGuardRoomTriggers,
   sayTarget,
 ];
 

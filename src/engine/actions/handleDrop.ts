@@ -8,6 +8,7 @@ import { runKeyConversion } from "../events/runKeyConversion";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import type { PipelineFunction } from "../pipeline/types";
 import type { HandleCommand } from "../dispatchCommand";
+import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
 
 // Narrative Content
 const dropFeedback = {
@@ -36,6 +37,7 @@ const dropItem: PipelineFunction = (payload) => {
 const dropPipeline = [
   runKeyConversion,
   runPuzzleTriggers,
+  runGuardRoomTriggers,
   runRingTriggers,
   dropItem,
 ];

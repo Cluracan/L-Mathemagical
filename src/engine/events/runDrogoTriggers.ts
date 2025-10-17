@@ -2,15 +2,20 @@ import { produce, type Draft } from "immer";
 import { isRoomId, type RoomId } from "../../assets/data/roomData";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { puzzleAtLocation } from "../puzzles/puzzleRegistry";
+import { itemRegistry } from "../world/itemRegistry";
 
 // Types
 export type DrogoGuard = null | { id: number; turnsUntilCaught: number };
 
 // Type Assertions
-function assertIsDefined<T>(val: T): asserts val is NonNullable<T> {
+function assertIsDefined<T>(
+  val: T,
+  msg?: string
+): asserts val is NonNullable<T> {
   if (val === undefined || val === null) {
     throw new Error(
-      `Expected 'val' to be defined, but received ${String(val)}`
+      msg ||
+        `Assertion error: expected 'val' to be defined, but received ${String(val)}`
     );
   }
 }
@@ -34,10 +39,10 @@ for (const puzzleRoom of Object.keys(puzzleAtLocation)) {
 }
 const JAIL_ROOM: RoomId = "attic";
 const DROGO_ALIASES = new Set(["drogo", "robot", "guard"]);
-const DROGO_SPAWN_CHANCE_LOW = 0.05;
-const DROGO_SPAWN_CHANCE_HIGH = 0.1;
-const DROGO_ID_MIN = 4;
-const DROGO_ID_MAX = 14;
+const DROGO_SPAWN_CHANCE_LOW = 1;
+const DROGO_SPAWN_CHANCE_HIGH = 1;
+export const DROGO_ID_MIN = 4;
+export const DROGO_ID_MAX = 14;
 
 // Narrative Content
 const drogoFeedback = {
@@ -97,6 +102,15 @@ const sendToJail = (draft: Draft<PipelinePayload>) => {
   draft.gameState.drogoGuard = null;
 };
 
+const confiscateItems = (draft: Draft<PipelinePayload>) => {
+  const itemLocation = draft.gameState.itemLocation;
+  for (const itemId of itemRegistry.getItemList()) {
+    if (itemLocation[itemId] === "player") {
+      itemLocation[itemId] = "cupboard";
+    }
+  }
+};
+
 export const runDrogoTriggers: PipelineFunction = (payload) => {
   const { command, target } = payload;
   const drogoGuardPresent = payload.gameState.drogoGuard !== null;
@@ -104,7 +118,7 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
   if (!drogoGuardPresent) {
     if (command === "move") {
       return produce(payload, (draft) => {
-        assertIsDefined(draft.nextRoom);
+        assertIsDefined(draft.nextRoom, "Expected nextRoom to be defined");
         const drogoChance = getDrogoChance(draft.nextRoom);
         const rng = Math.random();
         if (rng < drogoChance) {
@@ -122,13 +136,14 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
       return produce(payload, (draft) => {
         const playerIsInvisible = draft.gameState.isInvisible;
         const drogoGuard = draft.gameState.drogoGuard;
-        assertIsDefined(drogoGuard);
+        assertIsDefined(drogoGuard, "Expected drogoGuard to be defined");
         if (playerIsInvisible) {
           draft.gameState.storyLine.push(drogoFeedback.moveAttempt.isInvisible);
           draft.gameState.drogoGuard = null;
         } else {
           drogoGuard.turnsUntilCaught--;
           if (drogoGuard.turnsUntilCaught === 0) {
+            confiscateItems(draft);
             sendToJail(draft);
           } else {
             draft.gameState.storyLine.push(
@@ -144,7 +159,7 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
       if (target && DROGO_ALIASES.has(target)) {
         return produce(payload, (draft) => {
           const drogoGuard = draft.gameState.drogoGuard;
-          assertIsDefined(drogoGuard);
+          assertIsDefined(drogoGuard, "Expected drogoGuard to be defined");
           draft.gameState.storyLine.push(getDrogoIdReminder(drogoGuard.id));
           draft.done = true;
         });
@@ -154,13 +169,14 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
     case "say": {
       return produce(payload, (draft) => {
         const drogoGuard = draft.gameState.drogoGuard;
-        assertIsDefined(drogoGuard);
+        assertIsDefined(drogoGuard, "Expected drogoGuard to be defined");
         if (target && willScareGuard(target, drogoGuard)) {
           draft.gameState.storyLine.push(drogoFeedback.scared);
           draft.gameState.drogoGuard = null;
         } else {
           drogoGuard.turnsUntilCaught--;
           if (drogoGuard.turnsUntilCaught === 0) {
+            confiscateItems(draft);
             sendToJail(draft);
           } else {
             draft.gameState.storyLine.push(

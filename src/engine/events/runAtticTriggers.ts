@@ -3,11 +3,11 @@ import type { PipelineFunction } from "../pipeline/types";
 import { DROGO_ID_MAX, DROGO_ID_MIN } from "./runDrogoTriggers";
 
 // Types
-export type JailGuard = {
+export interface JailGuard {
   id: number;
   state: "inactive" | "alert" | "present";
   completed: boolean;
-};
+}
 
 // Narrative Content
 const jailGuardFeedback = {

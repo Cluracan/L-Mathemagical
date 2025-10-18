@@ -1,23 +1,24 @@
-import { produce, enableMapSet } from "immer";
+import type { HandleCommand } from "../dispatchCommand";
+import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import {
   directionAliases,
   directionNarratives,
   isDirectionAlias,
 } from "../constants/directions";
-
+import {
+  buildRoomDescription,
+  toRoomDescriptionArgs,
+} from "../utils/buildRoomDescription";
+import { produce, enableMapSet } from "immer";
 import { failCommand } from "../pipeline/failCommand";
 import { roomRegistry } from "../world/roomRegistry";
 import { runBlockedTriggers } from "../events/runBlockedTriggers";
 import { runPoolTriggers } from "../events/runPoolTriggers";
 import { runBathTriggers } from "../events/runBathTriggers";
-
-import type { HandleCommand } from "../dispatchCommand";
-import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { runDrogoTriggers } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
-import { buildRoomDescription } from "../utils/buildRoomDescription";
 import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
 
 enableMapSet();
@@ -66,13 +67,12 @@ const movePlayer: PipelineFunction = (payload) => {
 };
 
 const applyRoomDescription: PipelineFunction = (payload) => {
-  const { gameState, command } = payload;
-  const roomDescription = buildRoomDescription(gameState, command);
-  const nextGameState = produce(gameState, (draft) => {
-    draft.storyLine.push(...roomDescription);
+  return produce(payload, (draft) => {
+    const args = toRoomDescriptionArgs(draft.gameState);
+    const roomDescription = buildRoomDescription(args, "move");
+    draft.gameState.storyLine.push(...roomDescription);
+    draft.done = true;
   });
-
-  return { ...payload, gameState: nextGameState, done: true };
 };
 
 const movePipeline = [

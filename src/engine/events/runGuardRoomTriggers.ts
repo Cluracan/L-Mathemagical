@@ -1,8 +1,10 @@
-import { produce } from "immer";
 import type { PipelineFunction } from "../pipeline/types";
-
+import {
+  buildRoomDescription,
+  toRoomDescriptionArgs,
+} from "../utils/buildRoomDescription";
+import { produce } from "immer";
 import { confiscateItems, sendToJail } from "./runDrogoTriggers";
-import { buildRoomDescription } from "../utils/buildRoomDescription";
 import { ringFeedback } from "./runRingTriggers";
 
 // Narrative Content
@@ -28,9 +30,9 @@ export const runGuardRoomTriggers: PipelineFunction = (payload) => {
   if (nextRoom === "guards" && !gameState.isInvisible) {
     return produce(payload, (draft) => {
       draft.gameState.currentRoom = nextRoom;
-      draft.gameState.storyLine.push(
-        ...buildRoomDescription(draft.gameState, "move")
-      );
+      const args = toRoomDescriptionArgs(draft.gameState);
+      const roomDescription = buildRoomDescription(args, "move");
+      draft.gameState.storyLine.push(...roomDescription);
       draft.gameState.storyLine.push(guardFeedback.capture.onEntry);
       confiscateItems(draft);
       sendToJail(draft);

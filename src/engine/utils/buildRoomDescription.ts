@@ -1,12 +1,31 @@
+import type { Command } from "../dispatchCommand";
+import type { GameState } from "../gameEngine";
 import { getDrogoDescription } from "../events/runDrogoTriggers";
 import { getPuzzleNPCDescription } from "../puzzles/addPuzzleNPC";
 import { isItemId } from "../../assets/data/itemData";
 import { itemRegistry } from "../world/itemRegistry";
 import { roomRegistry } from "../world/roomRegistry";
-import type { Command } from "../dispatchCommand";
-import type { GameState } from "../gameEngine";
+
+// Types
+interface RoomDescriptionArgs {
+  visitedRooms: GameState["visitedRooms"];
+  currentRoom: GameState["currentRoom"];
+  itemLocation: GameState["itemLocation"];
+  drogoGuard: GameState["drogoGuard"];
+  puzzleState: GameState["puzzleState"];
+}
 
 // Helpers
+export const toRoomDescriptionArgs = (state: GameState) => {
+  return {
+    visitedRooms: state.visitedRooms,
+    currentRoom: state.currentRoom,
+    itemLocation: state.itemLocation,
+    drogoGuard: state.drogoGuard,
+    puzzleState: state.puzzleState,
+  };
+};
+
 const buildFloorItemDescription = (
   itemLocation: GameState["itemLocation"],
   currentRoom: GameState["currentRoom"]
@@ -21,11 +40,11 @@ const buildFloorItemDescription = (
 };
 
 export const buildRoomDescription = (
-  gameState: GameState,
+  args: RoomDescriptionArgs,
   command: Command
 ) => {
   const { visitedRooms, currentRoom, itemLocation, drogoGuard, puzzleState } =
-    gameState;
+    args;
 
   const roomText =
     visitedRooms.has(currentRoom) && command !== "look"

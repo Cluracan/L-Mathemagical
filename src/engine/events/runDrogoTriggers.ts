@@ -1,9 +1,12 @@
+import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
+import {
+  buildRoomDescription,
+  toRoomDescriptionArgs,
+} from "../utils/buildRoomDescription";
 import { produce, type Draft } from "immer";
 import { isRoomId, type RoomId } from "../../assets/data/roomData";
-import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { puzzleAtLocation } from "../puzzles/puzzleRegistry";
 import { itemRegistry } from "../world/itemRegistry";
-import { buildRoomDescription } from "../utils/buildRoomDescription";
 
 // Types
 export type DrogoGuard = null | { id: number; turnsUntilCaught: number };
@@ -95,9 +98,9 @@ const willScareGuard = (target: string, drogoGuard: DrogoGuard) => {
 export const sendToJail = (draft: Draft<PipelinePayload>) => {
   draft.gameState.currentRoom = JAIL_ROOM;
   draft.gameState.drogoGuard = null;
-  draft.gameState.storyLine.push(
-    ...buildRoomDescription(draft.gameState, "move")
-  );
+  const args = toRoomDescriptionArgs(draft.gameState);
+  const roomDescription = buildRoomDescription(args, "move");
+  draft.gameState.storyLine.push(...roomDescription);
 };
 
 export const confiscateItems = (draft: Draft<PipelinePayload>) => {

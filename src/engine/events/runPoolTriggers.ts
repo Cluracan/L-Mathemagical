@@ -1,8 +1,11 @@
+import type { PipelineFunction } from "../pipeline/types";
+import {
+  buildRoomDescription,
+  toRoomDescriptionArgs,
+} from "../utils/buildRoomDescription";
 import { produce } from "immer";
 import { failCommand } from "../pipeline/failCommand";
 import { stopWithSuccess } from "../pipeline/stopWithSuccess";
-import type { PipelineFunction } from "../pipeline/types";
-import { buildRoomDescription } from "../utils/buildRoomDescription";
 
 const holeAttemptFeedback = {
   one: "You can't fit through a hole that small!",
@@ -24,36 +27,34 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
   }
 
   switch (command) {
-    case "look":
+    case "look": {
       if (target && ["hole", "grate", "grating"].includes(target)) {
         return stopWithSuccess(payload, holeAttemptFeedback.lookHole);
-      } else {
-        return payload;
       }
+      break;
+    }
 
-    case "move":
+    case "move": {
       if (target === "in") {
-        if (playerHeight === "threeFourths") {
-          const nextRoomDescription = buildRoomDescription(
-            { ...gameState, currentRoom: "tunnelTop" },
-            command
-          );
-          return produce(payload, (draft) => {
-            draft.gameState.currentRoom = "tunnelTop";
-            draft.gameState.storyLine.push(
-              holeAttemptFeedback[playerHeight],
-              ...nextRoomDescription
-            );
-            draft.done = true;
-          });
-        } else {
+        if (playerHeight !== "threeFourths") {
           return failCommand(payload, holeAttemptFeedback[playerHeight]);
         }
-      } else {
-        return payload;
+        return produce(payload, (draft) => {
+          draft.gameState.currentRoom = "tunnelTop";
+          const args = toRoomDescriptionArgs(draft.gameState);
+          const nextRoomDescription = buildRoomDescription(args, command);
+          draft.gameState.storyLine.push(
+            holeAttemptFeedback[playerHeight],
+            ...nextRoomDescription
+          );
+          draft.done = true;
+        });
       }
+      break;
+    }
 
     default:
       return payload;
   }
+  return payload;
 };

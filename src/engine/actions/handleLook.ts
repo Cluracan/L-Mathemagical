@@ -1,31 +1,29 @@
+import type { HandleCommand } from "../dispatchCommand";
+import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
+import {
+  buildRoomDescription,
+  toRoomDescriptionArgs,
+} from "../utils/buildRoomDescription";
 import { produce } from "immer";
 import { isItemId } from "../../assets/data/itemData";
-import { roomRegistry } from "../world/roomRegistry";
 import { itemRegistry } from "../world/itemRegistry";
-import { runKeyConversion } from "../events/runKeyConversion";
-import { runPoolTriggers } from "../events/runPoolTriggers";
-import { runBathTriggers } from "../events/runBathTriggers";
 import { stopWithSuccess } from "../pipeline/stopWithSuccess";
 import { failCommand } from "../pipeline/failCommand";
 import { withPipeline } from "../pipeline/withPipeline";
-import { getPuzzleNPCDescription } from "../puzzles/addPuzzleNPC";
+import { runKeyConversion } from "../events/runKeyConversion";
+import { runPoolTriggers } from "../events/runPoolTriggers";
+import { runBathTriggers } from "../events/runBathTriggers";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
-import type { GameState } from "../gameEngine";
-import type { Command, HandleCommand } from "../dispatchCommand";
-import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
-import {
-  getDrogoDescription,
-  runDrogoTriggers,
-} from "../events/runDrogoTriggers";
+import { runDrogoTriggers } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
-import { buildRoomDescription } from "../utils/buildRoomDescription";
 
 //Helpers
 
 const lookRoom: PipelineFunction = (payload) => {
   if (payload.target === null) {
     return produce(payload, (draft) => {
-      const roomDescription = buildRoomDescription(draft.gameState, "look");
+      const args = toRoomDescriptionArgs(draft.gameState);
+      const roomDescription = buildRoomDescription(args, "look");
       draft.gameState.storyLine.push(...roomDescription);
       draft.done = true;
     });

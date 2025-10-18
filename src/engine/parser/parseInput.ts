@@ -13,10 +13,11 @@ const commandDictionary: Record<Command, string[]> = {
   swim: ["swim", "dive"],
   teleport: ["teleport"],
   use: ["use", "insert", "apply"],
+  unknown: [],
 };
 
 type ParseInput = (args: string) => {
-  command: Command | null;
+  command: Command;
   target: string | null;
 };
 
@@ -44,5 +45,6 @@ export const parseInput: ParseInput = (userInput) => {
       return { command: command as Command, target };
     }
   }
-  return { command: null, target };
+  // Command not recognised
+  return { command: "unknown", target };
 };

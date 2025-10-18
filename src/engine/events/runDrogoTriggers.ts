@@ -7,18 +7,10 @@ import { produce, type Draft } from "immer";
 import { isRoomId, type RoomId } from "../../assets/data/roomData";
 import { puzzleAtLocation } from "../puzzles/puzzleRegistry";
 import { itemRegistry } from "../world/itemRegistry";
+import { assertIsDefined } from "../utils/assertIsDefined";
 
 // Types
 export type DrogoGuard = null | { id: number; turnsUntilCaught: number };
-
-// Type Assertions
-function assertIsDefined<T>(val: T): asserts val is NonNullable<T> {
-  if (val === undefined || val === null) {
-    throw new Error(
-      `Assertion error: expected ${String(val)} to be defined, but received ${String(val)}`
-    );
-  }
-}
 
 // Config
 const SAFE_ROOMS = new Set<RoomId>([
@@ -39,8 +31,8 @@ for (const puzzleRoom of Object.keys(puzzleAtLocation)) {
 }
 const JAIL_ROOM: RoomId = "attic";
 const DROGO_ALIASES = new Set(["drogo", "robot", "guard"]);
-const DROGO_SPAWN_CHANCE_LOW = 1;
-const DROGO_SPAWN_CHANCE_HIGH = 1;
+const DROGO_SPAWN_CHANCE_LOW = 0.05;
+const DROGO_SPAWN_CHANCE_HIGH = 0.1;
 export const DROGO_ID_MIN = 4;
 export const DROGO_ID_MAX = 14;
 

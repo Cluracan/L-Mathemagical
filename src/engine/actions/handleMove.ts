@@ -20,49 +20,50 @@ import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { runDrogoTriggers } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
 import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
+import { assertIsDefined } from "../utils/assertIsDefined";
 
 enableMapSet();
 
-//Helper functions
 const isValidDirection = (target: string | null) => {
   return !!target && isDirectionAlias(target);
 };
 
-//Pipeline functions
 const validateDirection: PipelineFunction = (payload) => {
-  return isValidDirection(payload.target)
-    ? { ...payload, direction: directionAliases[payload.target] }
-    : failCommand(payload, "That's not a direction!");
+  if (!isValidDirection(payload.target)) {
+    return failCommand(payload, "That's not a direction!");
+  }
+
+  const direction = directionAliases[payload.target];
+  return { ...payload, direction };
 };
 
 const validateExit: PipelineFunction = (payload) => {
-  if (!payload.direction) {
-    throw new Error("validateExit called without direction");
-  }
+  assertIsDefined(payload.direction);
   const nextRoom = roomRegistry.getExitDestination(
     payload.gameState.currentRoom,
     payload.direction
   );
-  return nextRoom
-    ? {
-        ...payload,
-        nextRoom,
-      }
-    : failCommand(payload, "You can't travel that way!");
+  if (!nextRoom) {
+    return failCommand(payload, "You can't travel that way!");
+  }
+  return {
+    ...payload,
+    nextRoom,
+  };
 };
 
 const movePlayer: PipelineFunction = (payload) => {
   return produce(payload, (draft) => {
-    if (draft.nextRoom && draft.direction) {
-      draft.gameState.visitedRooms.add(draft.gameState.currentRoom);
-      draft.gameState.currentRoom = draft.nextRoom;
-      draft.gameState.stepCount++;
-      draft.gameState.storyLine.push(
-        `You travel ${directionNarratives[draft.direction]}`
-      );
-      draft.nextRoom = null;
-      draft.direction = null;
-    }
+    assertIsDefined(draft.nextRoom);
+    assertIsDefined(draft.direction);
+    draft.gameState.visitedRooms.add(draft.gameState.currentRoom);
+    draft.gameState.currentRoom = draft.nextRoom;
+    draft.gameState.stepCount++;
+    draft.gameState.storyLine.push(
+      `You travel ${directionNarratives[draft.direction]}`
+    );
+    draft.nextRoom = null;
+    draft.direction = null;
   });
 };
 

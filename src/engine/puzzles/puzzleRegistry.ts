@@ -34,13 +34,14 @@ import { batNPC } from "./bat/batNPC";
 import { handleBatPuzzle } from "./bat/handleBatPuzzle";
 import { spiderNPC } from "./spider/spiderNPC";
 import { SpiderPuzzle } from "./spider/SpiderPuzzle";
+import { computerNPC } from "./computer/computerNPC";
+import { ComputerPuzzle } from "./computer/ComputerPuzzle";
 
 export const puzzleAtLocation = {
   store: {
     puzzleId: "abbot",
     puzzleNPC: abbotNPC,
   },
-
   hallway: {
     puzzleId: "abbot",
     puzzleNPC: abbotHallwayNPC,
@@ -56,6 +57,14 @@ export const puzzleAtLocation = {
   triangle: {
     puzzleId: "bat",
     puzzleNPC: batNPC,
+  },
+  broomCupboard: {
+    puzzleId: "calculator",
+    puzzleNPC: calculatorNPC,
+  },
+  computer: {
+    puzzleId: "computer",
+    puzzleNPC: computerNPC,
   },
   largeKitchen: { puzzleId: "cook", puzzleNPC: cookNPC },
   lights: {
@@ -98,10 +107,6 @@ export const puzzleAtLocation = {
     puzzleId: "tree",
     puzzleNPC: treeNPC,
   },
-  broomCupboard: {
-    puzzleId: "calculator",
-    puzzleNPC: calculatorNPC,
-  },
 } as const satisfies Partial<
   Record<
     RoomId,
@@ -128,6 +133,10 @@ export const puzzleRegistry = {
   calculator: {
     pipelineFunction: null,
     component: CalculatorPuzzle,
+  },
+  computer: {
+    pipelineFunction: null,
+    component: ComputerPuzzle,
   },
   cook: {
     pipelineFunction: null,

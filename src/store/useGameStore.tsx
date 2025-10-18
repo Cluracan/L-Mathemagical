@@ -75,6 +75,10 @@ import {
   initialJailGuard,
   type JailGuard,
 } from "../engine/events/runAtticTriggers";
+import {
+  initialComputerState,
+  type ComputerState,
+} from "../engine/puzzles/computer/computerConstants";
 
 export interface GameStoreState {
   playerName: string;
@@ -96,6 +100,7 @@ export interface GameStoreState {
     ape: ApeState;
     bat: BatState;
     calculator: CalculatorState;
+    computer: ComputerState;
     cook: CookState;
     key: KeyState;
     lights: LightsState;
@@ -139,6 +144,7 @@ const initialGameState: GameStoreState = {
     ape: initialApeState,
     bat: initialBatState,
     calculator: initialCalculatorState,
+    computer: initialComputerState,
     cook: initialCookState,
     key: initialKeyState,
     lights: initialLightsState,

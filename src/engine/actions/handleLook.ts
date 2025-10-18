@@ -17,8 +17,6 @@ import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { runDrogoTriggers } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
 
-//Helpers
-
 const lookRoom: PipelineFunction = (payload) => {
   if (payload.target === null) {
     return produce(payload, (draft) => {
@@ -35,7 +33,6 @@ const lookItem: PipelineFunction = (payload) => {
   const { gameState, target } = payload;
   const { itemLocation, currentRoom } = gameState;
 
-  //Look at item
   if (target && isItemId(target)) {
     if (itemLocation[target] === "player") {
       return stopWithSuccess(

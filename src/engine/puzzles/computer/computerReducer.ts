@@ -9,7 +9,9 @@ import {
 import { roomRegistry } from "../../world/roomRegistry";
 
 // Types
-type ComputerAction = { type: "submit"; userInput: string } | { type: "reset" };
+type ComputerAction =
+  | { type: "submit"; userInput: string; recursionLevel: number }
+  | { type: "reset" };
 
 // Narrative Content
 const computerFeedback = {
@@ -30,6 +32,7 @@ const computerFeedback = {
 export function computerReducer(state: ComputerState, action: ComputerAction) {
   switch (action.type) {
     case "submit": {
+      console.log(action.recursionLevel);
       const { command, target } = parseInput(action.userInput);
       return produce(state, (draft) => {
         draft.feedback[0].push(action.userInput);

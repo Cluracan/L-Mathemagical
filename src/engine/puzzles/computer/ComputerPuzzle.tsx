@@ -5,6 +5,17 @@ import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { computerReducer } from "./computerReducer";
 
+// Types
+type ComputerDisplayProps = {
+  handleKeyDown: (
+    key: string,
+    userInput: string,
+    clearUserInput: () => void,
+    recursionLevel: number
+  ) => void;
+  recursionLevel: number;
+};
+
 export const ComputerPuzzle = () => {
   // State
   const puzzleCompleted = useGameStore(
@@ -17,20 +28,22 @@ export const ComputerPuzzle = () => {
   const handleKeyDown = (
     key: string,
     userInput: string,
-    clearUserInput: () => void
+    clearUserInput: () => void,
+    recursionLevel: number
   ) => {
     if (key === "Enter") {
-      handleSubmit(userInput);
+      handleSubmit(userInput, recursionLevel);
       clearUserInput();
     }
   };
-  const handleSubmit = (userInput: string) => {
+  const handleSubmit = (userInput: string, recursionLevel: number) => {
     useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
         computer: computerReducer(state.puzzleState.computer, {
           type: "submit",
           userInput,
+          recursionLevel,
         }),
       },
     }));
@@ -58,7 +71,7 @@ export const ComputerPuzzle = () => {
             border: "2px solid white",
           }}
         >
-          <ComputerDisplay handleKeyDown={handleKeyDown} />
+          <ComputerDisplay handleKeyDown={handleKeyDown} recursionLevel={0} />
         </Box>
         {/* <Box
           sx={{
@@ -75,7 +88,7 @@ export const ComputerPuzzle = () => {
         >
           <ComputerDisplaay />
         </Box> */}
-        {/* <Box
+        <Box
           sx={{
             position: "absolute",
             zIndex: 3,
@@ -88,8 +101,8 @@ export const ComputerPuzzle = () => {
             border: "2px solid white",
           }}
         >
-          <ComputerDisplaaay handleKeyDown={handleKeyDown} />
-        </Box> */}
+          <ComputerDisplaaay handleKeyDown={handleKeyDown} recursionLevel={2} />
+        </Box>
       </Box>
       <PuzzleActions
         handleReset={handleReset}
@@ -100,14 +113,10 @@ export const ComputerPuzzle = () => {
   );
 };
 
-type ComputerDisplayProps = {
-  handleKeyDown: (
-    key: string,
-    userInput: string,
-    clearUserInput: () => void
-  ) => void;
-};
-const ComputerDisplay = ({ handleKeyDown }: ComputerDisplayProps) => {
+const ComputerDisplay = ({
+  handleKeyDown,
+  recursionLevel,
+}: ComputerDisplayProps) => {
   return (
     <Stack
       sx={{
@@ -121,12 +130,18 @@ const ComputerDisplay = ({ handleKeyDown }: ComputerDisplayProps) => {
       }}
     >
       <ComputerFeedback />
-      <ComputerInput handleKeyDown={handleKeyDown} />
+      <ComputerInput
+        handleKeyDown={handleKeyDown}
+        recursionLevel={recursionLevel}
+      />
     </Stack>
   );
 };
 
-const ComputerDisplaay = ({ handleKeyDown }: ComputerDisplayProps) => {
+const ComputerDisplaay = ({
+  handleKeyDown,
+  recursionLevel,
+}: ComputerDisplayProps) => {
   return (
     <Stack
       sx={{
@@ -140,12 +155,18 @@ const ComputerDisplaay = ({ handleKeyDown }: ComputerDisplayProps) => {
       }}
     >
       <ComputerFeedback />
-      <ComputerInput handleKeyDown={handleKeyDown} />
+      <ComputerInput
+        handleKeyDown={handleKeyDown}
+        recursionLevel={recursionLevel}
+      />
     </Stack>
   );
 };
 
-const ComputerDisplaaay = ({ handleKeyDown }: ComputerDisplayProps) => {
+const ComputerDisplaaay = ({
+  handleKeyDown,
+  recursionLevel,
+}: ComputerDisplayProps) => {
   return (
     <Stack
       sx={{
@@ -159,7 +180,10 @@ const ComputerDisplaaay = ({ handleKeyDown }: ComputerDisplayProps) => {
       }}
     >
       <ComputerFeedback />
-      <ComputerInput handleKeyDown={handleKeyDown} />
+      <ComputerInput
+        handleKeyDown={handleKeyDown}
+        recursionLevel={recursionLevel}
+      />
     </Stack>
   );
 };
@@ -191,7 +215,10 @@ const ComputerFeedback = () => {
   );
 };
 
-const ComputerInput = ({ handleKeyDown }: ComputerDisplayProps) => {
+const ComputerInput = ({
+  handleKeyDown,
+  recursionLevel,
+}: ComputerDisplayProps) => {
   const [userInput, setUserInput] = useState("testing");
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
@@ -205,7 +232,7 @@ const ComputerInput = ({ handleKeyDown }: ComputerDisplayProps) => {
       autoFocus
       fullWidth
       onKeyDown={(e) => {
-        handleKeyDown(e.key, userInput, clearUserInput);
+        handleKeyDown(e.key, userInput, clearUserInput, recursionLevel);
       }}
       onChange={handleChange}
       value={userInput}

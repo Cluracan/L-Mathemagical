@@ -788,7 +788,7 @@ export const roomData = {
   ladderBottom: {
     id: "ladderBottom",
     descriptions: {
-      long: "You are in a cramped space like a chimney. A metal ladder disappears up int the darkness. A wooden door leads south.",
+      long: "You are in a cramped space like a chimney. A metal ladder disappears up into the darkness. A wooden door leads south.",
       short: "You are at the bottom of the metal ladder.",
     },
     mapText: "Ladder",
@@ -927,7 +927,7 @@ export const roomData = {
   computer: {
     id: "computer",
     descriptions: {
-      long: "You are in a room with grey walls and grey carpet tiles. A series of flourescent tubes provide stark lighting along with a low buzzing sound. There is a door to the northeast.",
+      long: "You are in a room with grey walls and grey carpet tiles. A series of fluorescent tubes provide stark lighting along with a low buzzing sound. There is a door to the northeast.",
       short: "You are in the computer room.",
     },
     mapText: "Computer",

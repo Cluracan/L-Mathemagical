@@ -1,3 +1,4 @@
+import { puzzleAtLocation } from "../puzzles/puzzleRegistry";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import {
   buildRoomDescription,
@@ -5,7 +6,6 @@ import {
 } from "../utils/buildRoomDescription";
 import { produce, type Draft } from "immer";
 import { isRoomId, type RoomId } from "../../assets/data/roomData";
-import { puzzleAtLocation } from "../puzzles/puzzleRegistry";
 import { itemRegistry } from "../world/itemRegistry";
 import { assertIsDefined } from "../utils/assertIsDefined";
 
@@ -24,11 +24,7 @@ const SAFE_ROOMS = new Set<RoomId>([
   "cell",
   "countryside",
 ]);
-for (const puzzleRoom of Object.keys(puzzleAtLocation)) {
-  if (isRoomId(puzzleRoom)) {
-    SAFE_ROOMS.add(puzzleRoom);
-  }
-}
+
 const JAIL_ROOM: RoomId = "attic";
 const DROGO_ALIASES = new Set(["drogo", "robot", "guard"]);
 const DROGO_SPAWN_CHANCE_LOW = 0.05;
@@ -66,8 +62,19 @@ const getDrogoIdReminder = (id: number) => {
 };
 
 // Helpers
+
+const isSafeRoom = (room: RoomId) => {
+  // Have to add these dynamically at run time to avoid initialisation error!
+  for (const puzzleRoom of Object.keys(puzzleAtLocation)) {
+    if (isRoomId(puzzleRoom)) {
+      SAFE_ROOMS.add(puzzleRoom);
+    }
+  }
+  return SAFE_ROOMS.has(room);
+};
+
 const getDrogoChance = (room: RoomId) => {
-  if (SAFE_ROOMS.has(room)) {
+  if (isSafeRoom(room)) {
     return 0;
   }
   return room.startsWith("cellar")

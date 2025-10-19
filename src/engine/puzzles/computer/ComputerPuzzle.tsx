@@ -4,9 +4,10 @@ import { useGameStore } from "../../../store/useGameStore";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { computerReducer } from "./computerReducer";
+import { computerFeedback, initialComputerState } from "./computerConstants";
 
 // Types
-type ComputerDisplayProps = {
+interface ComputerDisplayProps {
   handleKeyDown: (
     key: string,
     userInput: string,
@@ -14,17 +15,58 @@ type ComputerDisplayProps = {
     recursionLevel: number
   ) => void;
   recursionLevel: number;
-};
+}
+
+interface ComputerFeedbackProps {
+  recursionLevel: number;
+}
 
 export const ComputerPuzzle = () => {
   // State
   const puzzleCompleted = useGameStore(
     (state) => state.puzzleState.computer.puzzleCompleted
   );
+  const recursionLevel = useGameStore(
+    (state) => state.puzzleState.computer.recursionLevel
+  );
 
   // Handlers
-  const handleReset = () => {};
-  const handleLeave = () => {};
+  const handleReset = () => {
+    useGameStore.setState((state) => ({
+      puzzleState: {
+        ...state.puzzleState,
+        computer: computerReducer(state.puzzleState.computer, {
+          type: "reset",
+        }),
+      },
+    }));
+  };
+  const handleLeave = () => {
+    const state = useGameStore.getState();
+    if (recursionLevel > 0) {
+      useGameStore.setState({
+        puzzleState: {
+          ...state.puzzleState,
+          computer: {
+            ...state.puzzleState.computer,
+            recursionLevel: recursionLevel - 1,
+          },
+        },
+      });
+    } else {
+      useGameStore.setState({
+        showDialog: false,
+        currentPuzzle: null,
+        puzzleState: {
+          ...state.puzzleState,
+          computer: initialComputerState,
+          // ...or only allow one 'go'?
+          //   computer: { ...state.puzzleState.computer, puzzleCompleted: true },
+        },
+        storyLine: [...state.storyLine, computerFeedback.storyLineSuccess],
+      });
+    }
+  };
   const handleKeyDown = (
     key: string,
     userInput: string,
@@ -55,54 +97,17 @@ export const ComputerPuzzle = () => {
           position: "relative",
           minHeight: "50vh",
           width: "100%",
-          backgroundColor: "orange",
         }}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            zIndex: 1,
-
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            width: "100%",
-            border: "2px solid white",
-          }}
-        >
-          <ComputerDisplay handleKeyDown={handleKeyDown} recursionLevel={0} />
-        </Box>
-        {/* <Box
-          sx={{
-            position: "absolute",
-            zIndex: 2,
-
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            width: "100%",
-            border: "2px solid white",
-          }}
-        >
-          <ComputerDisplaay />
-        </Box> */}
-        <Box
-          sx={{
-            position: "absolute",
-            zIndex: 3,
-
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            width: "100%",
-            border: "2px solid white",
-          }}
-        >
-          <ComputerDisplaaay handleKeyDown={handleKeyDown} recursionLevel={2} />
-        </Box>
+        {recursionLevel >= 0 && (
+          <RecursionLayer handleKeyDown={handleKeyDown} recursionLevel={0} />
+        )}
+        {recursionLevel >= 1 && (
+          <RecursionLayer handleKeyDown={handleKeyDown} recursionLevel={1} />
+        )}
+        {recursionLevel >= 2 && (
+          <RecursionLayer handleKeyDown={handleKeyDown} recursionLevel={2} />
+        )}
       </Box>
       <PuzzleActions
         handleReset={handleReset}
@@ -113,48 +118,46 @@ export const ComputerPuzzle = () => {
   );
 };
 
-const ComputerDisplay = ({
+const RecursionLayer = ({
   handleKeyDown,
   recursionLevel,
 }: ComputerDisplayProps) => {
+  const zIndexValue = String(recursionLevel + 1);
   return (
-    <Stack
+    <Box
       sx={{
-        backgroundColor: "green",
+        position: "absolute",
+        zIndex: { zIndexValue },
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         height: "100%",
         width: "100%",
-        border: "2px solid white",
       }}
     >
-      <ComputerFeedback />
-      <ComputerInput
+      <ComputerDisplay
         handleKeyDown={handleKeyDown}
         recursionLevel={recursionLevel}
       />
-    </Stack>
+    </Box>
   );
 };
 
-const ComputerDisplaay = ({
+const ComputerDisplay = ({
   handleKeyDown,
   recursionLevel,
 }: ComputerDisplayProps) => {
+  const dimensionScaleFactor = `${String((10 - recursionLevel) * 10)}%`;
   return (
     <Stack
       sx={{
-        backgroundColor: "blue",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "90%",
-        width: "90%",
-        border: "2px solid white",
+        height: dimensionScaleFactor,
+        width: dimensionScaleFactor,
+        border: "1px solid white",
+        backgroundColor: "#272727df",
       }}
     >
-      <ComputerFeedback />
+      <ComputerFeedback recursionLevel={recursionLevel} />
       <ComputerInput
         handleKeyDown={handleKeyDown}
         recursionLevel={recursionLevel}
@@ -163,37 +166,14 @@ const ComputerDisplaay = ({
   );
 };
 
-const ComputerDisplaaay = ({
-  handleKeyDown,
-  recursionLevel,
-}: ComputerDisplayProps) => {
-  return (
-    <Stack
-      sx={{
-        backgroundColor: "red",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "80%",
-        width: "80%",
-        border: "2px solid white",
-      }}
-    >
-      <ComputerFeedback />
-      <ComputerInput
-        handleKeyDown={handleKeyDown}
-        recursionLevel={recursionLevel}
-      />
-    </Stack>
+const ComputerFeedback = ({ recursionLevel }: ComputerFeedbackProps) => {
+  const feedback = useGameStore(
+    (state) => state.puzzleState.computer.feedback[recursionLevel]
   );
-};
-
-const ComputerFeedback = () => {
-  const feedback = useGameStore((state) => state.puzzleState.computer.feedback);
   const bottomRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [feedback]);
+  }, [feedback.length]);
 
   return (
     <Card
@@ -205,7 +185,7 @@ const ComputerFeedback = () => {
         whiteSpace: "pre-wrap",
       }}
     >
-      {feedback[0].slice(-30).map((entry, index) => (
+      {feedback.slice(-30).map((entry, index) => (
         <Typography key={index} sx={{ mb: 1, fontSize: "1rem" }}>
           {entry}
         </Typography>
@@ -219,7 +199,7 @@ const ComputerInput = ({
   handleKeyDown,
   recursionLevel,
 }: ComputerDisplayProps) => {
-  const [userInput, setUserInput] = useState("testing");
+  const [userInput, setUserInput] = useState("");
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
   };

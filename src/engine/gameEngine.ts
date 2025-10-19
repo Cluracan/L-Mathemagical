@@ -10,13 +10,12 @@ export type GameState = Omit<
   visitedRooms: Set<RoomId>;
 };
 
-const toEngineState = (state: GameStoreState, userInput: string): GameState => {
+const toEngineState = (state: GameStoreState): GameState => {
   // assign playerName & modernMode to define 'rest'
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { playerName, modernMode, ...rest } = state;
   return {
     ...rest,
-    storyLine: [...state.storyLine, userInput],
     visitedRooms: new Set(state.visitedRooms),
   };
 };
@@ -30,19 +29,22 @@ const toStoreState = (state: GameState): Partial<GameStoreState> => {
 
 const gameEngine = {
   handleInput: (userInput: string) => {
-    //Take a snapshot of state
-    const snapshot = toEngineState(useGameStore.getState(), userInput);
+    // Take a snapshot of state
+    const snapshot = toEngineState(useGameStore.getState());
 
-    //parse input
+    // Insert userInput into feedback
+    snapshot.storyLine = [...snapshot.storyLine, userInput];
+
+    // Parse input
     const { command, target } = parseInput(userInput);
 
-    //send to dispatch
+    // Send to dispatch
     const newState = dispatchCommand({ command, target, gameState: snapshot });
 
-    //Location check (for UI map animation)
+    // Location check (for UI map animation)
     const locationChanged = snapshot.currentRoom !== newState.currentRoom;
 
-    //update state
+    // Update state
     useGameStore.setState(toStoreState(newState));
     return {
       locationChanged,

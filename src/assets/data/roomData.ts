@@ -993,12 +993,12 @@ export const roomData = {
   limbo: {
     id: "limbo",
     descriptions: {
-      long: "This room is currently used as a blocked exit destination. Which means you've probably passed through a wall to get here...\n\n ...so unless you are Harry Potter, Hermoine Granger, or a ghost, something has gone wrong...\n\nPlease contact...acutally, please find the code (github) and see if you can fix this issue, then let me know :)",
+      long: "You are in 'Limbo', which is a classic MUD destination. Well, maybe 'classic' is pushing it a little. Anyway, if you are reading this, you've probably passed through a wall to get here...\n\n ...so unless you are Harry Potter, Hermoine Granger, or a ghost, something has gone wrong...\n\nFeel free to let someone know about this. There don't appear to be any exits, although the ceiling is emitting a strange glow...",
       short:
         "You are in Limbo, which is another classic MUD destination. Well, maybe 'classic' is pushing it a little. Anyway, if you're reading this, you should be able to escape.",
     },
     mapText: "Limbo",
-    exits: {},
+    exits: { u: "kitchen" },
   },
 } as const satisfies Record<
   string,

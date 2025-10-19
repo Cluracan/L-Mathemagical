@@ -1,11 +1,11 @@
-import { isPuzzleLocation, puzzleAtLocation } from "../puzzles/puzzleRegistry";
+import { isPuzzleLocation } from "../puzzles/puzzleRegistry";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import {
   buildRoomDescription,
   toRoomDescriptionArgs,
 } from "../utils/buildRoomDescription";
 import { produce, type Draft } from "immer";
-import { isRoomId, type RoomId } from "../../assets/data/roomData";
+import type { RoomId } from "../../assets/data/roomData";
 import { itemRegistry } from "../world/itemRegistry";
 import { assertIsDefined } from "../utils/assertIsDefined";
 

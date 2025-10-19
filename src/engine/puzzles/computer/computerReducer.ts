@@ -2,16 +2,26 @@ import { produce } from "immer";
 import { initialComputerState, type ComputerState } from "./computerConstants";
 
 import { computerSimulation } from "./computerSimulation";
+import type { RoomId } from "../../../assets/data/roomData";
+import type { KeyId } from "../../../assets/data/itemData";
 
 // Types
 type ComputerAction =
-  | { type: "submit"; userInput: string; recursionLevel: number }
+  | {
+      type: "submit";
+      userInput: string;
+      recursionLevel: number;
+      keyLocked: Record<KeyId, boolean>;
+    }
   | { type: "reset" };
 
 export function computerReducer(state: ComputerState, action: ComputerAction) {
   switch (action.type) {
     case "submit": {
-      const nextComputerState = computerSimulation(action.userInput);
+      const nextComputerState = computerSimulation(
+        action.userInput,
+        action.keyLocked
+      );
       return nextComputerState;
     }
     case "reset": {

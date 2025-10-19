@@ -86,6 +86,7 @@ export const ComputerPuzzle = () => {
           type: "submit",
           userInput,
           recursionLevel,
+          keyLocked: state.keyLocked,
         }),
       },
     }));
@@ -122,12 +123,12 @@ const RecursionLayer = ({
   handleKeyDown,
   recursionLevel,
 }: ComputerDisplayProps) => {
-  const zIndexValue = String(recursionLevel + 1);
   return (
     <Box
       sx={{
         position: "absolute",
-        zIndex: { zIndexValue },
+        zIndex: recursionLevel + 1,
+        opacity: 1 - recursionLevel * 0.02,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -154,7 +155,6 @@ const ComputerDisplay = ({
         height: dimensionScaleFactor,
         width: dimensionScaleFactor,
         border: "1px solid white",
-        backgroundColor: "#272727df",
       }}
     >
       <ComputerFeedback recursionLevel={recursionLevel} />

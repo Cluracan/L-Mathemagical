@@ -10,14 +10,19 @@ import {
 import { createKeyGuard } from "../../../utils/guards";
 import { simulateHandleMove } from "./simulateHandleMove";
 import { roomRegistry } from "../../world/roomRegistry";
+import type { KeyId } from "../../../assets/data/itemData";
 
 // Types
-type ComputerSimulation = (userInput: string) => ComputerState;
+type ComputerSimulation = (
+  userInput: string,
+  keyLocked: Record<KeyId, boolean>
+) => ComputerState;
 
 export interface SimulationArgs {
   command: Command;
   target: string | null;
   computerState: ComputerState;
+  keyLocked: Record<KeyId, boolean>;
 }
 
 // Narrative Content
@@ -106,7 +111,10 @@ function simulateHandleLook(args: SimulationArgs) {
   });
 }
 
-export const computerSimulation: ComputerSimulation = (userInput) => {
+export const computerSimulation: ComputerSimulation = (
+  userInput,
+  keyLocked
+) => {
   // Take a snapshot of state
   const initialComputerState = useGameStore.getState().puzzleState.computer;
 
@@ -124,6 +132,7 @@ export const computerSimulation: ComputerSimulation = (userInput) => {
     command,
     target,
     computerState,
+    keyLocked,
   });
   return newComputerState;
 };

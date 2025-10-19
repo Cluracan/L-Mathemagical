@@ -149,11 +149,10 @@ const movePipeline: ((payload: MovePayload) => MovePayload)[] = [
 ];
 
 export function simulateHandleMove(args: SimulationArgs) {
-  const keyLocked = useGameStore.getState().keyLocked;
   const initialMovePayload: MovePayload = {
     computerState: args.computerState,
     target: args.target,
-    keyLocked,
+    keyLocked: args.keyLocked,
     done: false,
   };
   const finalPayload = movePipeline.reduce(

@@ -128,7 +128,6 @@ const RecursionLayer = ({
       sx={{
         position: "absolute",
         zIndex: recursionLevel + 1,
-        opacity: 1 - recursionLevel * 0.02,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -148,13 +147,16 @@ const ComputerDisplay = ({
   handleKeyDown,
   recursionLevel,
 }: ComputerDisplayProps) => {
-  const dimensionScaleFactor = `${String((10 - recursionLevel) * 10)}%`;
   return (
-    <Stack
+    <Card
       sx={{
-        height: dimensionScaleFactor,
-        width: dimensionScaleFactor,
+        transform: `scale(${1 - recursionLevel * 0.1})`,
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
         border: "1px solid white",
+        // backgroundColor: "background.paper",
       }}
     >
       <ComputerFeedback recursionLevel={recursionLevel} />
@@ -162,7 +164,7 @@ const ComputerDisplay = ({
         handleKeyDown={handleKeyDown}
         recursionLevel={recursionLevel}
       />
-    </Stack>
+    </Card>
   );
 };
 
@@ -186,7 +188,7 @@ const ComputerFeedback = ({ recursionLevel }: ComputerFeedbackProps) => {
       }}
     >
       {feedback.slice(-30).map((entry, index) => (
-        <Typography key={index} sx={{ mb: 1, fontSize: "1rem" }}>
+        <Typography key={index} sx={{ mb: 1 }}>
           {entry}
         </Typography>
       ))}

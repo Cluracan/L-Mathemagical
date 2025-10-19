@@ -1,4 +1,4 @@
-import { Box, Card, Stack, TextField, Typography } from "@mui/material";
+import { Box, Card, TextField, Typography } from "@mui/material";
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { useGameStore } from "../../../store/useGameStore";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
@@ -150,7 +150,7 @@ const ComputerDisplay = ({
   return (
     <Card
       sx={{
-        transform: `scale(${1 - recursionLevel * 0.1})`,
+        transform: `scale(${String(1 - recursionLevel * 0.1)})`,
         height: "100%",
         width: "100%",
         display: "flex",

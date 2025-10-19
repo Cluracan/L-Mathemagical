@@ -13,7 +13,6 @@ import {
 } from "../../../assets/data/blockedExitData";
 import { MAX_RECURSION, type ComputerState } from "./computerConstants";
 import { produce } from "immer";
-import { useGameStore } from "../../../store/useGameStore";
 import type { SimulationArgs } from "./computerSimulation";
 import { isPuzzleLocation } from "../puzzleRegistry";
 import { computerNPC } from "./computerNPC";

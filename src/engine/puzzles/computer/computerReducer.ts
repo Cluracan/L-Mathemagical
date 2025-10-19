@@ -2,7 +2,6 @@ import { produce } from "immer";
 import { initialComputerState, type ComputerState } from "./computerConstants";
 
 import { computerSimulation } from "./computerSimulation";
-import type { RoomId } from "../../../assets/data/roomData";
 import type { KeyId } from "../../../assets/data/itemData";
 
 // Types

@@ -4,7 +4,6 @@ import { roomRegistry } from "../../world/roomRegistry";
 // Types
 export interface ComputerState {
   feedback: Record<number, string[]>;
-
   recursionLevel: number;
   currentLocation: RoomId;
   puzzleCompleted: boolean;

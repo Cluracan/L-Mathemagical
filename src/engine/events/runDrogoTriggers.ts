@@ -1,4 +1,4 @@
-import { puzzleAtLocation } from "../puzzles/puzzleRegistry";
+import { isPuzzleLocation, puzzleAtLocation } from "../puzzles/puzzleRegistry";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import {
   buildRoomDescription,
@@ -64,13 +64,7 @@ const getDrogoIdReminder = (id: number) => {
 // Helpers
 
 const isSafeRoom = (room: RoomId) => {
-  // Have to add these dynamically at run time to avoid initialisation error!
-  for (const puzzleRoom of Object.keys(puzzleAtLocation)) {
-    if (isRoomId(puzzleRoom)) {
-      SAFE_ROOMS.add(puzzleRoom);
-    }
-  }
-  return SAFE_ROOMS.has(room);
+  return SAFE_ROOMS.has(room) || isPuzzleLocation(room);
 };
 
 const getDrogoChance = (room: RoomId) => {

@@ -11,6 +11,7 @@ import { createKeyGuard } from "../../../utils/guards";
 import { simulateHandleMove } from "./simulateHandleMove";
 import { roomRegistry } from "../../world/roomRegistry";
 import type { KeyId } from "../../../assets/data/itemData";
+import { computerNPC } from "./computerNPC";
 
 // Types
 type ComputerSimulation = (
@@ -84,6 +85,7 @@ function simulateHandleUse(args: SimulationArgs) {
         "You don't seem able to do that in this world."
       );
     } else if (recursionLevel < MAX_RECURSION) {
+      draft.feedback[recursionLevel].push(computerNPC.feedback.puzzleAccept);
       draft.recursionLevel++;
       draft.currentLocation = initialComputerState.currentLocation;
     } else {

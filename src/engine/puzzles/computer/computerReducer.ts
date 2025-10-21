@@ -2,6 +2,7 @@ import { produce } from "immer";
 import {
   computerFeedback,
   initialComputerState,
+  isRecursionLevel,
   type ComputerState,
 } from "./computerConstants";
 
@@ -39,8 +40,19 @@ export function computerReducer(state: ComputerState, action: ComputerAction) {
     case "leave": {
       return produce(state, (draft) => {
         const recursionLevel = draft.recursionLevel;
+        if (!isRecursionLevel(recursionLevel)) {
+          throw new Error(
+            `Expected valid recursion level, received ${String(recursionLevel)}`
+          );
+        }
         draft.currentLocation = "computer";
-        draft.feedback[recursionLevel] = [computerFeedback.hallwayDescription];
+        draft.feedback[recursionLevel] = [
+          computerFeedback.hallwayDescription,
+          computerFeedback.recursionLevel[recursionLevel],
+        ];
+        draft.feedback[recursionLevel - 1].push(
+          computerFeedback.storyLineSuccess
+        );
         draft.recursionLevel--;
       });
     }

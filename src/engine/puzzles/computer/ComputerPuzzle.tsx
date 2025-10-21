@@ -45,16 +45,14 @@ export const ComputerPuzzle = () => {
   const handleLeave = () => {
     const state = useGameStore.getState();
     if (recursionLevel > 0) {
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         puzzleState: {
           ...state.puzzleState,
-          computer: {
-            ...state.puzzleState.computer,
-            currentLocation: "computer",
-            recursionLevel: recursionLevel - 1,
-          },
+          computer: computerReducer(state.puzzleState.computer, {
+            type: "leave",
+          }),
         },
-      });
+      }));
     } else {
       useGameStore.setState({
         showDialog: false,
@@ -219,6 +217,14 @@ const ComputerInput = ({
   isFocused,
 }: ComputerScreenProps) => {
   const [userInput, setUserInput] = useState("");
+  const inputRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (isFocused) {
+      inputRef.current?.focus();
+    }
+  }, [isFocused]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
   };
@@ -228,6 +234,7 @@ const ComputerInput = ({
 
   return (
     <TextField
+      inputRef={inputRef}
       autoFocus={isFocused}
       fullWidth
       onKeyDown={(e) => {

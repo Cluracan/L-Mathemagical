@@ -1,4 +1,5 @@
 import type { RoomId } from "../../../assets/data/roomData";
+import { createKeyGuard } from "../../../utils/guards";
 import { roomRegistry } from "../../world/roomRegistry";
 
 // Types
@@ -18,22 +19,28 @@ export const computerFeedback = {
   computerDecription: roomRegistry.getLongDescription("computer"),
   storyLineSuccess:
     "You get up from the computer feeling slightly disorientated...",
+  recursionLevel: {
+    0: "The air is shimmering slightly, but this room looks vaguely familiar...",
+    1: "There is a defnite haze in the air now, and you experience a slight weightlessness, almost as if you are somehow less real...",
+    2: "You shake your head in an attempt to clear the feeling of diziness. As you hold your hands up to the light, you can almost...see...through...",
+  },
 };
+export const isRecursionLevel = createKeyGuard(computerFeedback.recursionLevel);
 
 // Initial State
 export const initialComputerState: ComputerState = {
   feedback: {
     0: [
       computerFeedback.hallwayDescription,
-      "The air is shimmering slightly, but this room looks vaguely familiar...",
+      computerFeedback.recursionLevel[0],
     ],
     1: [
       computerFeedback.hallwayDescription,
-      "There is a defnite haze in the air now, and you experience a slight weightlessness, almost as if you are somehow less real...",
+      computerFeedback.recursionLevel[1],
     ],
     2: [
       computerFeedback.hallwayDescription,
-      "You shake your head in an attempt to clear the feeling of diziness. As you hold your hands up to the light, you can almost...see...through...",
+      computerFeedback.recursionLevel[2],
     ],
   },
 

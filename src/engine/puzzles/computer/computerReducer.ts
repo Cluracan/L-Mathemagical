@@ -1,5 +1,9 @@
 import { produce } from "immer";
-import { initialComputerState, type ComputerState } from "./computerConstants";
+import {
+  computerFeedback,
+  initialComputerState,
+  type ComputerState,
+} from "./computerConstants";
 
 import { computerSimulation } from "./computerSimulation";
 import type { KeyId } from "../../../assets/data/itemData";
@@ -12,7 +16,8 @@ type ComputerAction =
       recursionLevel: number;
       keyLocked: Record<KeyId, boolean>;
     }
-  | { type: "reset" };
+  | { type: "reset" }
+  | { type: "leave" };
 
 export function computerReducer(state: ComputerState, action: ComputerAction) {
   switch (action.type) {
@@ -29,6 +34,14 @@ export function computerReducer(state: ComputerState, action: ComputerAction) {
         draft.currentLocation = initialComputerState.currentLocation;
         draft.feedback[recursionLevel] =
           initialComputerState.feedback[recursionLevel];
+      });
+    }
+    case "leave": {
+      return produce(state, (draft) => {
+        const recursionLevel = draft.recursionLevel;
+        draft.currentLocation = "computer";
+        draft.feedback[recursionLevel] = [computerFeedback.hallwayDescription];
+        draft.recursionLevel--;
       });
     }
   }

@@ -88,7 +88,7 @@ function simulateHandleUse(args: SimulationArgs) {
       draft.currentLocation = initialComputerState.currentLocation;
     } else {
       draft.feedback[recursionLevel].push(
-        `ERROR: Out of memory at recursion level ${String(recursionLevel)}`
+        `The message on the screen reads:-\n\n\t\tERROR: Out of memory at recursion level ${String(recursionLevel + 1)}`
       );
     }
   });

@@ -7,7 +7,7 @@ import { computerReducer } from "./computerReducer";
 import { computerFeedback, initialComputerState } from "./computerConstants";
 
 // Types
-interface ComputerDisplayProps {
+interface ComputerScreenProps {
   handleKeyDown: (
     key: string,
     userInput: string,
@@ -15,6 +15,7 @@ interface ComputerDisplayProps {
     recursionLevel: number
   ) => void;
   recursionLevel: number;
+  isFocused: boolean;
 }
 
 interface ComputerFeedbackProps {
@@ -49,6 +50,7 @@ export const ComputerPuzzle = () => {
           ...state.puzzleState,
           computer: {
             ...state.puzzleState.computer,
+            currentLocation: "computer",
             recursionLevel: recursionLevel - 1,
           },
         },
@@ -60,8 +62,6 @@ export const ComputerPuzzle = () => {
         puzzleState: {
           ...state.puzzleState,
           computer: initialComputerState,
-          // ...or only allow one 'go'?
-          //   computer: { ...state.puzzleState.computer, puzzleCompleted: true },
         },
         storyLine: [...state.storyLine, computerFeedback.storyLineSuccess],
       });
@@ -101,13 +101,25 @@ export const ComputerPuzzle = () => {
         }}
       >
         {recursionLevel >= 0 && (
-          <RecursionLayer handleKeyDown={handleKeyDown} recursionLevel={0} />
+          <RecursionLayer
+            handleKeyDown={handleKeyDown}
+            recursionLevel={0}
+            isFocused={recursionLevel === 0}
+          />
         )}
         {recursionLevel >= 1 && (
-          <RecursionLayer handleKeyDown={handleKeyDown} recursionLevel={1} />
+          <RecursionLayer
+            handleKeyDown={handleKeyDown}
+            recursionLevel={1}
+            isFocused={recursionLevel === 1}
+          />
         )}
         {recursionLevel >= 2 && (
-          <RecursionLayer handleKeyDown={handleKeyDown} recursionLevel={2} />
+          <RecursionLayer
+            handleKeyDown={handleKeyDown}
+            recursionLevel={2}
+            isFocused={recursionLevel === 2}
+          />
         )}
       </Box>
       <PuzzleActions
@@ -122,7 +134,8 @@ export const ComputerPuzzle = () => {
 const RecursionLayer = ({
   handleKeyDown,
   recursionLevel,
-}: ComputerDisplayProps) => {
+  isFocused,
+}: ComputerScreenProps) => {
   return (
     <Box
       sx={{
@@ -135,18 +148,20 @@ const RecursionLayer = ({
         width: "100%",
       }}
     >
-      <ComputerDisplay
+      <ComputerScreen
         handleKeyDown={handleKeyDown}
         recursionLevel={recursionLevel}
+        isFocused={isFocused}
       />
     </Box>
   );
 };
 
-const ComputerDisplay = ({
+const ComputerScreen = ({
   handleKeyDown,
   recursionLevel,
-}: ComputerDisplayProps) => {
+  isFocused,
+}: ComputerScreenProps) => {
   return (
     <Card
       sx={{
@@ -163,6 +178,7 @@ const ComputerDisplay = ({
       <ComputerInput
         handleKeyDown={handleKeyDown}
         recursionLevel={recursionLevel}
+        isFocused={isFocused}
       />
     </Card>
   );
@@ -200,7 +216,8 @@ const ComputerFeedback = ({ recursionLevel }: ComputerFeedbackProps) => {
 const ComputerInput = ({
   handleKeyDown,
   recursionLevel,
-}: ComputerDisplayProps) => {
+  isFocused,
+}: ComputerScreenProps) => {
   const [userInput, setUserInput] = useState("");
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
@@ -211,7 +228,7 @@ const ComputerInput = ({
 
   return (
     <TextField
-      autoFocus
+      autoFocus={isFocused}
       fullWidth
       onKeyDown={(e) => {
         handleKeyDown(e.key, userInput, clearUserInput, recursionLevel);

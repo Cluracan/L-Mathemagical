@@ -48,7 +48,7 @@ export function computerReducer(state: ComputerState, action: ComputerAction) {
         draft.currentLocation = "computer";
         draft.feedback[recursionLevel] = [
           computerFeedback.hallwayDescription,
-          computerFeedback.recursionLevel[recursionLevel],
+          computerFeedback.recursionEntrance[recursionLevel],
         ];
         draft.feedback[recursionLevel - 1].push(
           computerFeedback.storyLineSuccess

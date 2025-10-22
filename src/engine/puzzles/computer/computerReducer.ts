@@ -50,6 +50,7 @@ export function computerReducer(state: ComputerState, action: ComputerAction) {
           console.warn(
             "Passed recursion level 0 to reducer - should be handled in component"
           );
+          return;
         }
         draft.currentLocation = "computer";
         draft.feedback[recursionLevel] = [

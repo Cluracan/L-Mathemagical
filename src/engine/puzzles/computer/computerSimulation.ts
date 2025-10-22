@@ -51,6 +51,8 @@ const dispatchSimulation = (args: CommandArgs) => {
   return commandHandler(args);
 };
 
+export type CommandHandler = (args: CommandArgs) => ComputerState;
+
 const commandHandlers = {
   budge: handleDeny,
   drink: handleDeny,
@@ -64,7 +66,7 @@ const commandHandlers = {
   teleport: handleDeny,
   use: simulateHandleUse,
   unknown: handleDeny,
-};
+} as const satisfies Record<Command, CommandHandler>;
 
 function handleDeny(args: CommandArgs) {
   const { command, computerState } = args;

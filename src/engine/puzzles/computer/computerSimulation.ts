@@ -1,5 +1,4 @@
 import { produce } from "immer";
-import { useGameStore } from "../../../store/useGameStore";
 import type { Command } from "../../dispatchCommand";
 import { parseInput } from "../../parser/parseInput";
 import {
@@ -14,12 +13,13 @@ import type { KeyId } from "../../../assets/data/itemData";
 import { computerNPC } from "./computerNPC";
 
 // Types
-type ComputerSimulation = (
-  userInput: string,
-  keyLocked: Record<KeyId, boolean>
-) => ComputerState;
+interface ComputerSimulationArgs {
+  state: ComputerState;
+  userInput: string;
+  keyLocked: Record<KeyId, boolean>;
+}
 
-export interface SimulationArgs {
+export interface CommandArgs {
   command: Command;
   target: string | null;
   computerState: ComputerState;
@@ -35,16 +35,18 @@ const computerFeedback = {
     drop: "You are not carrying anything!",
     get: "You don't seem able to touch anything in this world...",
     inventory: "You are not carrying anything!",
+    look: "It's hard to see clearly. There is a strange ethereal quality to everything...",
     say: "You don't seem able to communicate in this world...",
     swim: "That would not be a good idea...",
     teleport: "Your powers are sadly diminished in this ethereal world!",
     unknown: "I don't understand...try moving around a little.",
+    use: "You don't seem able to do that in this world.",
   },
 };
 const hasFailureMessage = createKeyGuard(computerFeedback.failureMessage);
 
 // Helpers
-const dispatchSimulation = (args: SimulationArgs) => {
+const dispatchSimulation = (args: CommandArgs) => {
   const commandHandler = commandHandlers[args.command];
   return commandHandler(args);
 };
@@ -64,7 +66,7 @@ const commandHandlers = {
   unknown: handleDeny,
 };
 
-function handleDeny(args: SimulationArgs) {
+function handleDeny(args: CommandArgs) {
   const { command, computerState } = args;
   return produce(computerState, (draft) => {
     if (!hasFailureMessage(command)) {
@@ -76,14 +78,12 @@ function handleDeny(args: SimulationArgs) {
   });
 }
 
-function simulateHandleUse(args: SimulationArgs) {
+function simulateHandleUse(args: CommandArgs) {
   const { computerState, target } = args;
   return produce(computerState, (draft) => {
     const recursionLevel = draft.recursionLevel;
     if (draft.currentLocation !== "computer" || target !== "computer") {
-      draft.feedback[recursionLevel].push(
-        "You don't seem able to do that in this world."
-      );
+      draft.feedback[recursionLevel].push(computerFeedback.failureMessage.use);
     } else if (recursionLevel < MAX_RECURSION) {
       draft.feedback[recursionLevel].push(computerNPC.feedback.puzzleAccept);
       draft.recursionLevel++;
@@ -96,7 +96,7 @@ function simulateHandleUse(args: SimulationArgs) {
   });
 }
 
-function simulateHandleLook(args: SimulationArgs) {
+function simulateHandleLook(args: CommandArgs) {
   const { computerState, target } = args;
   return produce(computerState, (draft) => {
     const recursionLevel = draft.recursionLevel;
@@ -106,22 +106,16 @@ function simulateHandleLook(args: SimulationArgs) {
       );
       draft.feedback[recursionLevel].push(roomDescription);
     } else {
-      draft.feedback[recursionLevel].push(
-        "It's hard to see clearly. There is a strange ethereal quality to everything..."
-      );
+      draft.feedback[recursionLevel].push(computerFeedback.failureMessage.look);
     }
   });
 }
 
-export const computerSimulation: ComputerSimulation = (
-  userInput,
-  keyLocked
-) => {
-  // Take a snapshot of state
-  const initialComputerState = useGameStore.getState().puzzleState.computer;
+export const computerSimulation = (args: ComputerSimulationArgs) => {
+  const { state, userInput, keyLocked } = args;
 
   // Insert userInput
-  const computerState = produce(initialComputerState, (draft) => {
+  const computerState = produce(state, (draft) => {
     const recursionLevel = draft.recursionLevel;
     draft.feedback[recursionLevel].push(userInput);
   });

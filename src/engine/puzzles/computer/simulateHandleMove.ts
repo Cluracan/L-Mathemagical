@@ -13,7 +13,7 @@ import {
 } from "../../../assets/data/blockedExitData";
 import { MAX_RECURSION, type ComputerState } from "./computerConstants";
 import { produce } from "immer";
-import type { SimulationArgs } from "./computerSimulation";
+import type { CommandArgs } from "./computerSimulation";
 import { isPuzzleLocation } from "../puzzleRegistry";
 import { computerNPC } from "./computerNPC";
 
@@ -147,7 +147,7 @@ const movePipeline: ((payload: MovePayload) => MovePayload)[] = [
   addPuzzleNPCDescription,
 ];
 
-export function simulateHandleMove(args: SimulationArgs) {
+export function simulateHandleMove(args: CommandArgs) {
   const initialMovePayload: MovePayload = {
     computerState: args.computerState,
     target: args.target,

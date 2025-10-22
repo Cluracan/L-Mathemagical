@@ -23,10 +23,11 @@ type ComputerAction =
 export function computerReducer(state: ComputerState, action: ComputerAction) {
   switch (action.type) {
     case "submit": {
-      const nextComputerState = computerSimulation(
-        action.userInput,
-        action.keyLocked
-      );
+      const nextComputerState = computerSimulation({
+        state,
+        userInput: action.userInput,
+        keyLocked: action.keyLocked,
+      });
       return nextComputerState;
     }
     case "reset": {
@@ -43,6 +44,11 @@ export function computerReducer(state: ComputerState, action: ComputerAction) {
         if (!isRecursionLevel(recursionLevel)) {
           throw new Error(
             `Expected valid recursion level, received ${String(recursionLevel)}`
+          );
+        }
+        if (recursionLevel === 0) {
+          console.warn(
+            "Passed recursion level 0 to reducer - should be handled in component"
           );
         }
         draft.currentLocation = "computer";

@@ -8,6 +8,7 @@ import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction } from "../pipeline/types";
+import { runAmuletTriggers } from "../events/runAmuletTriggers";
 
 // Narrative Content
 const getFeedback = {
@@ -37,6 +38,7 @@ const getPipeline = [
   runPuzzleTriggers,
   runKeyConversion,
   runRingTriggers,
+  runAmuletTriggers,
   getItem,
 ];
 

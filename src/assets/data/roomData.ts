@@ -950,8 +950,9 @@ export const roomData = {
   guards: {
     id: "guards",
     descriptions: {
-      long: "You are in a shabby room decorated with posters. Against one wall are racks of electronic equipment studded with glowing coloured lights. There are doors to the north and west. About a dozen Drogo Robot Guards are in an untidy line, beneath a huge poster of a middle-aged lady who is smiling resolutely.",
-      short: "You are in the guard room.",
+      long: "You are in a shabby room decorated with posters. Against one wall are racks of electronic equipment studded with glowing coloured lights. There are doors to the north and west.\n\nAbout a dozen Drogo Robot Guards are in an untidy line, beneath a huge poster of a middle-aged lady who is smiling resolutely.",
+      short:
+        "You are in the guard room.\n\nAbout a dozen Drogo Robot Guards are in an untidy line, beneath a huge poster of a middle-aged lady who is smiling resolutely.",
     },
     mapText: "Guards",
     exits: {

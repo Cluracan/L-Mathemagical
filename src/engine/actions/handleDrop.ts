@@ -9,6 +9,7 @@ import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import type { PipelineFunction } from "../pipeline/types";
 import type { HandleCommand } from "../dispatchCommand";
 import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
+import { runAmuletTriggers } from "../events/runAmuletTriggers";
 
 // Narrative Content
 const dropFeedback = {
@@ -39,6 +40,7 @@ const dropPipeline = [
   runPuzzleTriggers,
   runGuardRoomTriggers,
   runRingTriggers,
+  runAmuletTriggers,
   dropItem,
 ];
 

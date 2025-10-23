@@ -13,6 +13,7 @@ interface RoomDescriptionArgs {
   itemLocation: GameState["itemLocation"];
   drogoGuard: GameState["drogoGuard"];
   puzzleState: GameState["puzzleState"];
+  currentPuzzle: GameState["currentPuzzle"];
 }
 
 // Helpers
@@ -23,6 +24,7 @@ export const toRoomDescriptionArgs = (state: GameState) => {
     itemLocation: state.itemLocation,
     drogoGuard: state.drogoGuard,
     puzzleState: state.puzzleState,
+    currentPuzzle: state.currentPuzzle,
   };
 };
 
@@ -43,8 +45,14 @@ export const buildRoomDescription = (
   args: RoomDescriptionArgs,
   command: Command
 ) => {
-  const { visitedRooms, currentRoom, itemLocation, drogoGuard, puzzleState } =
-    args;
+  const {
+    visitedRooms,
+    currentRoom,
+    itemLocation,
+    drogoGuard,
+    puzzleState,
+    currentPuzzle,
+  } = args;
 
   const roomText =
     visitedRooms.has(currentRoom) && command !== "look"
@@ -52,11 +60,12 @@ export const buildRoomDescription = (
       : roomRegistry.getLongDescription(currentRoom);
   const itemsPresent = buildFloorItemDescription(itemLocation, currentRoom);
   const drogoText = getDrogoDescription(drogoGuard);
-  const puzzleNPCText = getPuzzleNPCDescription(
+  const puzzleNPCText = getPuzzleNPCDescription({
     visitedRooms,
     currentRoom,
-    puzzleState
-  );
+    puzzleState,
+    currentPuzzle,
+  });
 
   return [
     roomText,

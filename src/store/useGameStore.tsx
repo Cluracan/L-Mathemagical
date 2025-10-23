@@ -91,6 +91,7 @@ export interface GameStoreState {
   keyLocked: Record<KeyId, boolean>;
   playerHeight: PlayerHeight;
   isInvisible: boolean;
+  hasAmulet: boolean;
   bathState: BathState;
   drogoGuard: DrogoGuard;
   jailGuard: JailGuard;
@@ -135,6 +136,7 @@ const initialGameState: GameStoreState = {
   keyLocked: initialKeyLocked,
   playerHeight: "one",
   isInvisible: false,
+  hasAmulet: false,
   bathState: initialBathState,
   drogoGuard: null,
   jailGuard: initialJailGuard,

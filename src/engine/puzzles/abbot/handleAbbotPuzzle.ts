@@ -9,7 +9,7 @@ export interface AbbotState {
 
 // Narrative Content
 const dialog = [
-  '"The abbot places a hand on your shoulder, voice steady but urgent.\n\n“The palace is guarded by Drogo Guards, unbeatable, unless you know the number they cannot bear to hear. Only those clever enough to discover the secret numbers will be able to pass safely. Will you enter the palace and retrieve the amulet for me?”',
+  'The abbot places a hand on your shoulder, voice steady but urgent.\n\n“The palace is guarded by Drogo Guards: unbeatable, unless you can discover the number each one cannot bear to hear. Only those clever enough to discover the secret numbers will be able to pass safely."\n\n"Will you enter the palace and retrieve the amulet for me?”',
   "A strange sound behind you attracts your attention. When you turn back the abbot has vanished",
 ];
 const abbotFeedback = {

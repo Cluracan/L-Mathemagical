@@ -256,6 +256,18 @@ export const itemData = {
     },
     isDrinkable: false,
   },
+  amulet: {
+    id: "amulet",
+    initialLocation: "cell",
+    descriptions: {
+      floor: "The Amulet of Yendor is here, glowing faintly with inner light.",
+      inventory: "The Amulet of Yendor",
+      pickUp: "Amulet of Yendor",
+      examine:
+        "The golden Amulet hums softly with hidden energy. You feel its pulse align with your heartbeat — a quiet promise of great power.",
+    },
+    isDrinkable: false,
+  },
 } as const satisfies Record<
   string,
   {

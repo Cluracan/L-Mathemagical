@@ -47,7 +47,7 @@ export const runAmuletTriggers: PipelineFunction = (payload) => {
               ? amuletFeedback.drop.playerInvisible
               : amuletFeedback.drop.playerVisible
           );
-          draft.gameState.itemLocation.amulet === currentRoom;
+          draft.gameState.itemLocation.amulet = currentRoom;
           draft.gameState.hasAmulet = false;
           draft.done = true;
         });

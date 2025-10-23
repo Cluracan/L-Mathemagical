@@ -32,7 +32,7 @@ export const runAmuletTriggers: PipelineFunction = (payload) => {
               ? amuletFeedback.pickUp.playerInvisible
               : amuletFeedback.pickUp.playerVisible
           );
-          draft.gameState.itemLocation.amulet === "player";
+          draft.gameState.itemLocation.amulet = "player";
           draft.gameState.hasAmulet = true;
           draft.done = true;
         });

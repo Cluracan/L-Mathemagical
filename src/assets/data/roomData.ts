@@ -962,7 +962,7 @@ export const roomData = {
   cell: {
     id: "cell",
     descriptions: {
-      long: "You are in a sparsely furnished cell. A window is open, but it is too high for you to jump and there is no way to climb down.\n\nA girl with red hair is sitting in one corner.",
+      long: "You are in a sparsely furnished cell. A window is open, but it is too high for you to jump and there is no way to climb down.",
       short: "You are in a cell.",
     },
     mapText: "Cell",

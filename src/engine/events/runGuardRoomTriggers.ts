@@ -15,7 +15,7 @@ const guardFeedback = {
     hasAmulet:
       "The guards jump in surprise at the appearance of the Amulet, but quickly overcome you and remove the Amulet, along with all your possessions.  They return the amulet to its place in the room to the west, before carrying you off.",
     dropRing:
-      "teleport cupboasrdThe Drogo guards jump in surprise at your sudden appearance amongst them, but quickly gather their wits and overpower you. They take the ring you dropped and carry you off.",
+      "The Drogo guards jump in surprise at your sudden appearance amongst them, but quickly gather their wits and overpower you. They take the ring you dropped and carry you off.",
     speak:
       "The Drogo guards jump in surprise at the sound you make, but quickly move to your position and overpower you. They take your items (including your ring) and carry you off.",
   },

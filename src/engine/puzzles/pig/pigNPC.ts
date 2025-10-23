@@ -6,6 +6,7 @@ export const pigNPC: PuzzleNPC = {
     long: "In the middle of the room, a large pig is staring at you. It has a piece of paper attached to its collar.",
     short:
       "A large pig is staring at you. It has a piece of paper attached to its collar.",
+    inProgress: null,
     completed: "The large pig eyes you warily.",
   },
   triggerPuzzleCommand: "get",

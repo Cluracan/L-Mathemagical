@@ -5,6 +5,7 @@ export const lightsNPC: PuzzleNPC = {
   description: {
     long: `An electrician is standing in the room with you.\n\n"Oh, please can you help me? I have to set these spotlights for this evening's reception. The Drogo Committee will appear in their different coloured costumes and I have to shine the right colours onto them or else they look awful. But one of the four switches doesn't work. Will you help?"`,
     short: `"Oh, it's you again", says the electrician.  "Will you help me with these lights?"`,
+    inProgress: null,
     completed:
       "The electrician is busy fiddling with some wires, and doesn't seem to notice you.",
   },

@@ -6,6 +6,7 @@ export const turtleNPC: PuzzleNPC = {
     long: "In the centre of the courtyard lies a turtle basking in a shaft of sunlight. He seems to be trying to catch your attention. Would you like to investigate?",
     short:
       "The turtle is still trying to catch your attention. Will you investigate?",
+    inProgress: "The turtle is waiting for you to move...",
     completed: "The turtle sleeps soundly in the middle of the courtyard.",
   },
   triggerPuzzleCommand: "say",

@@ -5,6 +5,7 @@ export const batNPC: PuzzleNPC = {
   description: {
     long: "One especially large bat is eyeing you suspiciously.",
     short: "One especially large bat is eyeing you suspiciously.",
+    inProgress: "The large bat is eyeing you expectantly.",
     completed: "The large bat ignores you.",
   },
   triggerPuzzleCommand: "move",

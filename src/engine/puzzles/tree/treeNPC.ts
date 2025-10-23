@@ -6,6 +6,7 @@ export const treeNPC: PuzzleNPC = {
     long: 'A man, who looks very much like a gardener, is scratching his head and mumbling to himself about a pile of young fruit trees lying on the ground.\n\n"I have something here which you are going to need," he says. "But first you must help me. The Drogos have given me firm instructions to plant these 9 trees in the clearing so that there are 10 straight rows with three trees in each row. I can\'t seem to do it. Can you help me?"',
     short:
       'The gardener looks up as you approach. "Have you come back to help me with these trees?"',
+    inProgress: null,
     completed: "Through the trees, you can see the gardener pruning a tree.",
   },
   triggerPuzzleCommand: "say",

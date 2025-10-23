@@ -6,6 +6,7 @@ export interface PuzzleNPC {
   description: {
     long: string;
     short: string;
+    inProgress: string | null;
     completed: string | null;
   };
   triggerPuzzleCommand: Command;

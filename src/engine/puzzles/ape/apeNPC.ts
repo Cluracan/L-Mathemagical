@@ -5,6 +5,7 @@ export const apeNPC: PuzzleNPC = {
   description: {
     long: "A large ape is sitting in a nearby tree.",
     short: "An ape is sitting in a nearby tree.",
+    inProgress: "The ape looks at you expectantly.",
     completed: null,
   },
   triggerPuzzleCommand: "use",

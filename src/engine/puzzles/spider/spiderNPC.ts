@@ -5,6 +5,7 @@ export const spiderNPC: PuzzleNPC = {
   description: {
     long: `A huge black spider is hanging by a thread from the ceiling.\n\nThe spider says, "I have something here that may help you, but the Drogos have made it invisible. Will you help me find it?"`,
     short: `The spider looks up as you approach. "Will you help me please?"`,
+    inProgress: null,
     completed: null,
   },
   triggerPuzzleCommand: "say",

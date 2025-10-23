@@ -5,6 +5,7 @@ export const telephoneNPC: PuzzleNPC = {
   description: {
     long: "There is an old fashioned telephone resting on the chest.",
     short: "A telephone rests on the oak chest.",
+    inProgress: null,
     completed: null,
   },
   triggerPuzzleCommand: "use",

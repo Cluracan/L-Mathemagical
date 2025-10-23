@@ -6,6 +6,7 @@ export const pianoNPC: PuzzleNPC = {
     long: "In the centre of the room is a rather battered Steinway grand piano.",
     short:
       "In the centre of the room is a rather battered Steinway grand piano.",
+    inProgress: null,
     completed:
       "In the centre of the room is a rather battered Steinway grand piano.",
   },

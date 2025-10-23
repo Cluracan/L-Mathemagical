@@ -6,6 +6,7 @@ export const snookerNPC: PuzzleNPC = {
     long: "An oval-shaped snooker table stands in the centre of the room. A cue is attached to the table by a long chain.",
     short:
       "An oval-shaped snooker table stands in the centre of the room. A cue is attached to the table by a long chain.",
+    inProgress: null,
     completed: null,
   },
   triggerPuzzleCommand: "use",

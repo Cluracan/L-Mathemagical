@@ -5,6 +5,7 @@ export const keyNPC: PuzzleNPC = {
   description: {
     long: "On the mantlepiece there are several key blanks and a small file.",
     short: "On the mantlepiece there are several key blanks and a small file.",
+    inProgress: null,
     completed: null,
   },
   triggerPuzzleCommand: "use",

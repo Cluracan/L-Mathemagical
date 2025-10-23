@@ -6,6 +6,7 @@ export const computerNPC: PuzzleNPC = {
     long: "In the middle of the room, there is a computer resting on a large wooden bench.",
     short:
       "In the middle of the room, there is a computer resting on a large wooden bench.",
+    inProgress: null,
     completed: `"In the middle of the room, there is a computer resting on a large wooden bench."`,
   },
   triggerPuzzleCommand: "use",

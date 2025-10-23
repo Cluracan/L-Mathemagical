@@ -6,6 +6,7 @@ export const calculatorNPC: PuzzleNPC = {
     long: "Also in the cupboard is a Drogo Robot Guard with the number 121 emblazoned on his chest. He stands in front of the door, blocking your exit.\n\nThere is a calculator lying on the ground here.",
     short:
       "Also in the cupboard is a Drogo Robot Guard with the number 121 emblazoned on his chest. He stands in front of the door, blocking your exit.\n\nThere is a calculator lying on the ground here.",
+    inProgress: null,
     completed: null,
   },
   triggerPuzzleCommand: "get",

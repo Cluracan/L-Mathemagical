@@ -5,6 +5,7 @@ export const abbotNPC: PuzzleNPC = {
   description: {
     long: 'The abbot is standing in one corner. He asks, "Can you help me, please?".',
     short: '"Ah!", says the abbot.  "Have you come back to help me?"',
+    inProgress: "The abbot looks at you expectantly.",
     completed: null,
   },
   triggerPuzzleCommand: "say",
@@ -12,7 +13,7 @@ export const abbotNPC: PuzzleNPC = {
   acceptPuzzleText: ["yes", "y"],
   rejectPuzzleText: ["no", "n"],
   feedback: {
-    puzzleAccept: `The abbot beckons you closer, eyes flicking towards the doorway.  "There is something hidden in the palace - a ancient relic of great power, called the Amulet of Yendor. The Drogos stole it long ago, fearing the ability it gave the owner to see patterns."\n\nHe pauses for a moment, letting this sink in, "Shall I go on?"`,
+    puzzleAccept: `The abbot beckons you closer, eyes flicking towards the doorway.\n\n"There is something hidden within the palace - an ancient relic of great power, called the Amulet of Yendor. The Drogos stole it long ago, fearing the strange ability it grants its bearer: the power to see patterns others cannot."\n\nHe pauses for a moment, letting this sink in, "Shall I go on?"`,
     puzzleReject: "The abbot sniffs sadly.",
     puzzleIsComplete: null,
     exitsBlocked: null,
@@ -29,9 +30,10 @@ export const abbotNPC: PuzzleNPC = {
 export const abbotHallwayNPC: PuzzleNPC = {
   usesDialog: false,
   description: {
-    completed: null,
     long: "The abbot is just disappearing through the door at the north end.",
     short: "",
+    inProgress: null,
+    completed: null,
   },
   triggerPuzzleCommand: "say",
   requiredItems: [],
@@ -49,9 +51,10 @@ export const abbotHallwayNPC: PuzzleNPC = {
 export const abbotKitchenNPC: PuzzleNPC = {
   usesDialog: false,
   description: {
-    completed: null,
     long: "The east door has just swung closed.",
     short: "",
+    inProgress: null,
+    completed: null,
   },
   triggerPuzzleCommand: "say",
   requiredItems: [],

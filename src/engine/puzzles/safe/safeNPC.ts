@@ -5,6 +5,7 @@ export const safeNPC: PuzzleNPC = {
   description: {
     long: "There is a numerical keypad fixed next to the safe door.",
     short: "There is a numerical keypad fixed next to the safe door.",
+    inProgress: null,
     completed: "There is a numerical keypad fixed next to the safe door.",
   },
   triggerPuzzleCommand: "use",

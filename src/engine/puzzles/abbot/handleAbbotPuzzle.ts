@@ -9,7 +9,7 @@ export interface AbbotState {
 
 // Narrative Content
 const dialog = [
-  "The abbot says he would like to find Runia but he is an old man and needs your help. She is somewhere in the palace. He warns you that there are many dangers, such as the Drogo Robot Guards, who are impossible to defeat unless you can find the personal secret number which each guard cannot bear to hear. You will come up against many weird and puzzling situations before you can find Runia.\n\nThe abbot asks you again if you will help.",
+  '"The abbot places a hand on your shoulder, voice steady but urgent.\n\n“The palace is guarded by Drogo Guards, unbeatable, unless you know the number they cannot bear to hear. Only those clever enough to discover the secret numbers will be able to pass safely. Will you enter the palace and retrieve the amulet for me?”',
   "A strange sound behind you attracts your attention. When you turn back the abbot has vanished",
 ];
 const abbotFeedback = {

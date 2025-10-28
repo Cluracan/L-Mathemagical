@@ -11,6 +11,7 @@ export const handleTeleport: HandleCommand = (args) => {
         ...gameState,
         visitedRooms: gameState.visitedRooms.add(gameState.currentRoom),
         currentRoom: target,
+        drogoGuard:null
       },
       command: "look",
       target: null,

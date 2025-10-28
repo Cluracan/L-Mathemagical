@@ -6,6 +6,7 @@ import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { runDrogoTriggers } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
 import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
+import { runNeumannTriggers } from "../events/runNeumannTriggers";
 
 // Narrative Content
 const sayFeedback = {
@@ -33,6 +34,7 @@ const sayPipeline: PipelineFunction[] = [
   runAtticTriggers,
   runDrogoTriggers,
   runGuardRoomTriggers,
+  runNeumannTriggers,
   sayTarget,
 ];
 

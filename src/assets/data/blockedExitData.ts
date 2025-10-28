@@ -3,7 +3,7 @@ import type { ItemId } from "./itemData";
 import { type ExitDirection, type RoomId } from "./roomData";
 
 export const blockedExitData = {
-  //Key available
+  // Key locked
   file: {
     direction: ["e"],
     lockedText:
@@ -50,14 +50,16 @@ export const blockedExitData = {
     lockedText: "The attic door is securely locked.",
     keyRequired: "jail",
   },
+
+  // Locked uniquely (handled separately in state)
   cell: {
     direction: ["d"],
     lockedText:
       "You take a look out of the window, and very quickly decide against attempting to climb down the smooth walls of the castle. If only there were another way to descend!",
-    keyRequired: "ladder",
+    keyRequired: null,
   },
 
-  //Permanently locked
+  // Permanently locked
   hallway: {
     direction: ["s"],
     lockedText: "The outside door seems to have jammed. You can't get it open.",

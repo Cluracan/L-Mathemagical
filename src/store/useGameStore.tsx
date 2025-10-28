@@ -91,10 +91,10 @@ export interface GameStoreState {
   keyLocked: Record<KeyId, boolean>;
   playerHeight: PlayerHeight;
   isInvisible: boolean;
-  hasAmulet: boolean;
   bathState: BathState;
   drogoGuard: DrogoGuard;
   jailGuard: JailGuard;
+  ladderFixed:boolean
   currentPuzzle: PuzzleId | null;
   puzzleState: {
     abbot: AbbotState;
@@ -136,10 +136,10 @@ const initialGameState: GameStoreState = {
   keyLocked: initialKeyLocked,
   playerHeight: "one",
   isInvisible: false,
-  hasAmulet: false,
   bathState: initialBathState,
   drogoGuard: null,
   jailGuard: initialJailGuard,
+  ladderFixed:false, 
   currentPuzzle: null,
   puzzleState: {
     abbot: initialAbbotState,

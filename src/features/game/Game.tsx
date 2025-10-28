@@ -58,6 +58,7 @@ export const GameContent = memo(() => {
         </Card>
         <TextField
           fullWidth
+          autoFocus
           onChange={handleChange}
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSubmit();

@@ -325,7 +325,6 @@ export const initialKeyLocked = {
   safe: true,
   chest: true,
   jail: true,
-  ladder: true,
 } as const;
 
 export type KeyId = keyof typeof initialKeyLocked;

@@ -222,26 +222,33 @@ const Instructions = () => {
       <Paper
         elevation={8}
         sx={{
-          height: "40vh",
+          display:"flex",
+          flexDirection:"column",
+          justifyContent:"space-between",
+          height:"50vh",
           width: "80%",
-          padding: 2,
-          margin: "auto",
+          padding: 4,
+          margin: 4,
+
         }}
       >
+        <div>
         {pigFeedback.instructions.map((entry, index) => (
           <Typography key={index} lineHeight={3}>
             {entry}
           </Typography>
         ))}
+        </div>
         <Paper
           sx={{
+            alignSelf:"center",
+            justifySelf:"end",
             width: "80%",
             display: "flex",
-            justifyContent: "center",
-            justifySelf: "center",
-            mt: 4,
+            justifyContent: "center",         
             padding: 4,
             backgroundColor: "transparent",
+            
           }}
         >
           Would you like to go first?

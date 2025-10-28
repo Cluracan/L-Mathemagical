@@ -101,6 +101,9 @@ export const confiscateItems = (draft: Draft<PipelinePayload>) => {
   for (const itemId of itemRegistry.getItemList()) {
     if (itemLocation[itemId] === "player") {
       itemLocation[itemId] = "cupboard";
+    if (itemId==="ring"){
+      draft.gameState.isInvisible = false
+    }
     }
   }
 };

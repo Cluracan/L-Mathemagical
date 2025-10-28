@@ -11,6 +11,7 @@ import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { isItemId, isKeyType } from "../../assets/data/itemData";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import type { HandleCommand } from "../dispatchCommand";
+import { runCellRoomTriggers } from "../events/runCellRoomTriggers";
 
 // Narrative Content
 const keyFeedback = {
@@ -20,7 +21,7 @@ const keyFeedback = {
   unlockDoor: "You unlock and open the door",
 } as const;
 
-const useFeedback = {
+export const useFeedback = {
   noTarget: "What would you like to use?",
   notAnItem: "Use what?",
   cannotUseHere: "You can't use that here...",
@@ -34,7 +35,7 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
   const requiredKey =
     isBlockedRoom(currentRoom) && blockedExitData[currentRoom].keyRequired;
 
-  if (!requiredKey || !target || !isKeyType(target)) return payload;
+  if (!requiredKey || !target || !isKeyType(target)||itemLocation[target]!=="player") return payload;
 
   if (itemLocation[requiredKey] !== "player") {
     return failCommand(payload, keyFeedback.noKey);
@@ -76,6 +77,7 @@ const usePipeline = [
   runKeyConversion,
   runPuzzleTriggers,
   runBathTriggers,
+  runCellRoomTriggers,
   runUseKeyCheck,
   runUseFailureMessage,
 ];

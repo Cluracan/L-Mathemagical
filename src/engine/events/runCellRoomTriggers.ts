@@ -12,6 +12,14 @@ const cellFeedback = {
   eastWithAmulet:
     "A mysterious force prevents you from moving East. You sense it is coming from the Amulet.",
   exitDown: "You clamber out of the window, and climb down the ladder.",
+  abbotText: {
+    initial:
+      "The abbot is sitting on a bench under a pear tree. As he sees you climb down, he hurries over to meet you.",
+    success:
+      '"You\'ve found it!" exclaims the abbot on seeing the amulet around your neck. "And just in time!". He points up to the window, where you can see a Drogo guard peering out of the window. The abbot deftly flicks the rope ladder and it falls to the floor. He tucks this into his robe, along with the amulet that you pass to him.',
+    failure:
+      '"You don\'t have the amulet!" cries the abbot. "Please, do go back and collect it!"',
+  },
 };
 
 export const runCellRoomTriggers: PipelineFunction = (payload) => {
@@ -35,7 +43,7 @@ export const runCellRoomTriggers: PipelineFunction = (payload) => {
     }
     case "move":
       {
-        console.log(gameState);
+        const playerHasAmulet = gameState.itemLocation.amulet === "player";
         if (target === "d" && gameState.ladderFixed) {
           return produce(payload, (draft) => {
             if (draft.gameState.ladderFixed) {
@@ -44,11 +52,23 @@ export const runCellRoomTriggers: PipelineFunction = (payload) => {
               const args = toRoomDescriptionArgs(draft.gameState);
               const roomDescription = buildRoomDescription(args, "move");
               draft.gameState.storyLine.push(...roomDescription);
+              // Abbot text
+              if (playerHasAmulet) {
+                draft.gameState.storyLine.push(
+                  cellFeedback.abbotText.initial,
+                  cellFeedback.abbotText.success
+                );
+                draft.gameState.ladderFixed = false;
+              } else {
+                draft.gameState.storyLine.push(
+                  cellFeedback.abbotText.initial,
+                  cellFeedback.abbotText.failure
+                );
+              }
               draft.done = true;
             }
           });
         }
-        const playerHasAmulet = gameState.itemLocation.amulet === "player";
         if (target === "e" && playerHasAmulet) {
           return produce(payload, (draft) => {
             draft.gameState.storyLine.push(cellFeedback.eastWithAmulet);

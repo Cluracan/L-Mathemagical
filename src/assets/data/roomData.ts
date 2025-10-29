@@ -969,16 +969,16 @@ export const roomData = {
     mapText: "Cell",
     exits: {
       e: "guards",
-      d: "countryside",
+      d: "grounds",
     },
   },
-  countryside: {
-    id: "countryside",
+  grounds: {
+    id: "grounds",
     descriptions: {
-      long: "You gaze around the countryside, thinking over your adventure. There is still so much to discover: What has happened to the abbot? Who are the Drogos? And what did Runia discover about them? What is in the Kempis room? And what is the meaning of the strange symbols on the pendant which Runia wears around her neck?\n\nBut I am afraid I cannot help you answer thse questions. This adventure is over, and what remains is for your imagination.\n\n\nGoodbye.",
-      short: "You are in the countryside.",
+      long: "You are on the grass outside the palace. The grounds sweep gently down to a small stream, and beyond this lies a large forest.",
+      short: "You are in the palace grounds.",
     },
-    mapText: "Countryside",
+    mapText: "Grounds",
     exits: {},
   },
   pit: {

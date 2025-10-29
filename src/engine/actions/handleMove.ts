@@ -21,6 +21,7 @@ import { runDrogoTriggers } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
 import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
 import { assertIsDefined } from "../utils/assertIsDefined";
+import { runCellRoomTriggers } from "../events/runCellRoomTriggers";
 
 enableMapSet();
 
@@ -84,6 +85,7 @@ const movePipeline = [
   runPoolTriggers,
   runAtticTriggers,
   runGuardRoomTriggers,
+  runCellRoomTriggers,
   runBlockedTriggers,
   runDrogoTriggers,
   movePlayer,

@@ -9,10 +9,10 @@ import {
 const cellFeedback = {
   useLadder:
     "You fix the rope ladder to the window frame, and are relieved to see that it is long enough to reach the ground below.",
-    eastWithAmulet:
+  eastWithAmulet:
     "A mysterious force prevents you from moving East. You sense it is coming from the Amulet.",
-    exitDown: "You clamber out of the window, and climb down the ladder.",
-  };
+  exitDown: "You clamber out of the window, and climb down the ladder.",
+};
 
 export const runCellRoomTriggers: PipelineFunction = (payload) => {
   const { command, target, gameState } = payload;
@@ -35,11 +35,12 @@ export const runCellRoomTriggers: PipelineFunction = (payload) => {
     }
     case "move":
       {
+        console.log(gameState);
         if (target === "d" && gameState.ladderFixed) {
           return produce(payload, (draft) => {
             if (draft.gameState.ladderFixed) {
               draft.gameState.storyLine.push(cellFeedback.exitDown);
-              draft.gameState.currentRoom = "countryside";
+              draft.gameState.currentRoom = "grounds";
               const args = toRoomDescriptionArgs(draft.gameState);
               const roomDescription = buildRoomDescription(args, "move");
               draft.gameState.storyLine.push(...roomDescription);
@@ -51,7 +52,7 @@ export const runCellRoomTriggers: PipelineFunction = (payload) => {
         if (target === "e" && playerHasAmulet) {
           return produce(payload, (draft) => {
             draft.gameState.storyLine.push(cellFeedback.eastWithAmulet);
-            draft.done = true
+            draft.done = true;
           });
         }
       }

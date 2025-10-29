@@ -27,9 +27,10 @@ export const runNeumannTriggers: PipelineFunction = (payload) => {
       const args = toRoomDescriptionArgs(draft.gameState);
       const roomDescription = buildRoomDescription(args, "move");
       draft.gameState.storyLine.push(...roomDescription);
-      draft.gameState.drogoGuard=null //defensive since drogo not allowed in valid rooms
+      draft.gameState.drogoGuard = null; //defensive since drogo not allowed in valid rooms
       draft.done = true;
     });
   }
+
   return payload;
 };

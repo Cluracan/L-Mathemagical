@@ -80,11 +80,11 @@ import {
   type ComputerState,
 } from "../engine/puzzles/computer/computerConstants";
 
-export type EntryType = "input"|"description"|"action"|"warning"
+export type EntryType = "input" | "description" | "action" | "warning";
 export interface StoryLineEntry {
-  type:EntryType
-  text:string
-  isEncrypted:boolean
+  type: EntryType;
+  text: string;
+  isEncrypted: boolean;
 }
 
 export interface GameStoreState {
@@ -101,8 +101,8 @@ export interface GameStoreState {
   bathState: BathState;
   drogoGuard: DrogoGuard;
   jailGuard: JailGuard;
-  ladderFixed:boolean
-  encryptionActive:boolean
+  ladderFixed: boolean;
+  encryptionActive: boolean;
   currentPuzzle: PuzzleId | null;
   puzzleState: {
     abbot: AbbotState;
@@ -138,7 +138,13 @@ const initialGameState: GameStoreState = {
   modernMode: true,
   currentRoom: "grass",
   visitedRooms: ["grass"],
-  storyLine: [{type:"description",text: roomRegistry.getLongDescription("grass"),isEncrypted:false}],
+  storyLine: [
+    {
+      type: "description",
+      text: roomRegistry.getLongDescription("grass"),
+      isEncrypted: false,
+    },
+  ],
   stepCount: 0,
   itemLocation: initialItemLocation,
   keyLocked: initialKeyLocked,
@@ -147,8 +153,8 @@ const initialGameState: GameStoreState = {
   bathState: initialBathState,
   drogoGuard: null,
   jailGuard: initialJailGuard,
-  ladderFixed:false, 
-  encryptionActive:false,
+  ladderFixed: false,
+  encryptionActive: false,
   currentPuzzle: null,
   puzzleState: {
     abbot: initialAbbotState,

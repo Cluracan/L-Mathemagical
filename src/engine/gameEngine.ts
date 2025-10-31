@@ -33,7 +33,14 @@ const gameEngine = {
     const snapshot = toEngineState(useGameStore.getState());
 
     // Insert userInput into feedback
-    snapshot.storyLine = [...snapshot.storyLine, userInput];
+    snapshot.storyLine = [
+      ...snapshot.storyLine,
+      {
+        type: "input",
+        text: userInput,
+        isEncrypted: snapshot.encryptionActive,
+      },
+    ];
 
     // Parse input
     const { command, target } = parseInput(userInput);

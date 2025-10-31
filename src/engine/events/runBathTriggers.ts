@@ -106,10 +106,11 @@ export const runBathTriggers: PipelineFunction = (payload) => {
       ) {
         return payload;
       }
-      return stopWithSuccess(
+      return stopWithSuccess({
         payload,
-        buildBathDescription(gameState.bathState)
-      );
+        type: "description",
+        text: buildBathDescription(gameState.bathState),
+      });
     }
     case "use": {
       const { currentRoom, bathState } = gameState;
@@ -118,7 +119,11 @@ export const runBathTriggers: PipelineFunction = (payload) => {
         return produce(payload, (draft) => {
           draft.gameState.itemLocation[target] = "pit";
           draft.gameState.bathState[target] = true;
-          draft.gameState.storyLine.push(bathFeedback.items[target].filled);
+          draft.gameState.storyLine.push({
+            type: "action",
+            text: bathFeedback.items[target].filled,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.done = true;
         });
       }
@@ -130,15 +135,26 @@ export const runBathTriggers: PipelineFunction = (payload) => {
       const crossRiverChecks = [
         {
           check: () => !willFloat(bathState),
-          action: () => failCommand(payload, buildBathDescription(bathState)),
+          action: () =>
+            failCommand({
+              payload,
+              type: "description",
+              text: buildBathDescription(bathState),
+            }),
         },
         {
           check: () => gameState.itemLocation.oar !== "player",
-          action: () => failCommand(payload, bathFeedback.noOar),
+          action: () =>
+            failCommand({ payload, type: "warning", text: bathFeedback.noOar }),
         },
         {
           check: () => playerIsOverLoaded(gameState),
-          action: () => failCommand(payload, bathFeedback.overLoaded),
+          action: () =>
+            failCommand({
+              payload,
+              type: "warning",
+              text: bathFeedback.overLoaded,
+            }),
         },
       ];
       for (const { check, action } of crossRiverChecks) {
@@ -148,7 +164,11 @@ export const runBathTriggers: PipelineFunction = (payload) => {
       return produce(payload, (draft) => {
         draft.gameState.currentRoom =
           currentRoom === "riverN" ? "riverS" : "riverN";
-        draft.gameState.storyLine.push(bathFeedback.success);
+        draft.gameState.storyLine.push({
+          type: "action",
+          text: bathFeedback.success,
+          isEncrypted: draft.gameState.encryptionActive,
+        });
         draft.done = true;
       });
     }
@@ -157,7 +177,11 @@ export const runBathTriggers: PipelineFunction = (payload) => {
         (gameState.currentRoom === "riverS" && target === "n") ||
         (gameState.currentRoom === "riverN" && target === "s")
       ) {
-        return failCommand(payload, bathFeedback.failure);
+        return failCommand({
+          payload,
+          type: "warning",
+          text: bathFeedback.failure,
+        });
       } else {
         return payload;
       }

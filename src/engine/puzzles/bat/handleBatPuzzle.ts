@@ -1,5 +1,7 @@
 import { produce } from "immer";
 import type { PipelineFunction } from "../../pipeline/types";
+import { createStoryElements } from "../../utils/createStoryElements";
+import { stopWithStoryLineEntry } from "../../pipeline/stopWithStoryLineEntry";
 
 /* Note: 
 Triangular numbers are intentionally only tested up to 90:
@@ -78,45 +80,68 @@ export const handleBatPuzzle: PipelineFunction = (payload) => {
           const { storyLine } = draft.gameState;
           const { bat } = draft.gameState.puzzleState;
           if (!Number.isInteger(value)) {
-            storyLine.push(batFeedback.nonInteger);
+            storyLine.push({
+              type: "description",
+              text: batFeedback.nonInteger,
+              isEncrypted: draft.gameState.encryptionActive,
+            });
           } else if (!isInValidRange(value)) {
-            storyLine.push(
-              value > MAX_VALUE ? batFeedback.tooBig : batFeedback.tooSmall
-            );
+            storyLine.push({
+              type: "description",
+              text:
+                value > MAX_VALUE ? batFeedback.tooBig : batFeedback.tooSmall,
+              isEncrypted: draft.gameState.encryptionActive,
+            });
           } else {
             bat.attempts++;
             if (TRIANGULAR_NUMBERS.includes(value)) {
               bat.puzzleCompleted = true;
               storyLine.push(
-                ...generateTriangleText(value),
-                batFeedback.success
+                ...createStoryElements({
+                  type: "description",
+                  text: [...generateTriangleText(value), batFeedback.success],
+                  isEncrypted: draft.gameState.encryptionActive,
+                })
               );
               draft.gameState.currentPuzzle = null;
             } else {
               if (bat.attempts % 3 === 0) {
                 storyLine.push(
-                  ...generateTriangleText(value),
-                  batFeedback.hint
+                  ...createStoryElements({
+                    type: "description",
+                    text: [...generateTriangleText(value), batFeedback.hint],
+                    isEncrypted: draft.gameState.encryptionActive,
+                  })
                 );
               } else {
-                storyLine.push(...batFeedback.failure);
+                storyLine.push(
+                  ...createStoryElements({
+                    type: "description",
+                    text: batFeedback.failure,
+                    isEncrypted: draft.gameState.encryptionActive,
+                  })
+                );
               }
             }
           }
           draft.done = true;
         });
       } else {
-        return produce(payload, (draft) => {
-          draft.gameState.storyLine.push(batFeedback.notANumber);
-          draft.done = true;
+        return stopWithStoryLineEntry({
+          payload,
+          text: batFeedback.notANumber,
+          type: "description",
         });
       }
     }
     case "move": {
       return produce(payload, (draft) => {
         draft.gameState.storyLine.push(
-          batFeedback.noMove,
-          batFeedback.reminder
+          ...createStoryElements({
+            type: "description",
+            text: [batFeedback.noMove, batFeedback.reminder],
+            isEncrypted: draft.gameState.encryptionActive,
+          })
         );
         draft.done = true;
       });
@@ -125,8 +150,11 @@ export const handleBatPuzzle: PipelineFunction = (payload) => {
       if (target === "bat") {
         return produce(payload, (draft) => {
           draft.gameState.storyLine.push(
-            batFeedback.description,
-            batFeedback.reminder
+            ...createStoryElements({
+              type: "description",
+              text: [batFeedback.description, batFeedback.reminder],
+              isEncrypted: draft.gameState.encryptionActive,
+            })
           );
           draft.done = true;
         });

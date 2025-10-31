@@ -33,10 +33,18 @@ const runChestTriggers: PipelineFunction = (payload) => {
   }
   return produce(payload, (draft) => {
     if (playerHasItems(draft.gameState)) {
-      draft.gameState.storyLine.push(chestFeedback.cannotMove);
+      draft.gameState.storyLine.push({
+        type: "warning",
+        text: chestFeedback.cannotMove,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
     } else {
       draft.gameState.keyLocked.chest = false;
-      draft.gameState.storyLine.push(chestFeedback.canMove);
+      draft.gameState.storyLine.push({
+        type: "action",
+        text: chestFeedback.canMove,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
     }
     draft.done = true;
   });
@@ -44,9 +52,11 @@ const runChestTriggers: PipelineFunction = (payload) => {
 
 const runFailureMessage: PipelineFunction = (payload) => {
   return produce(payload, (draft) => {
-    draft.gameState.storyLine.push(
-      draft.target ? failureFeedback.noEffect : failureFeedback.noTarget
-    );
+    draft.gameState.storyLine.push({
+      type: "warning",
+      text: draft.target ? failureFeedback.noEffect : failureFeedback.noTarget,
+      isEncrypted: draft.gameState.encryptionActive,
+    });
   });
 };
 

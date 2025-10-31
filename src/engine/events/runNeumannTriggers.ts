@@ -5,6 +5,7 @@ import {
   buildRoomDescription,
   toRoomDescriptionArgs,
 } from "../utils/buildRoomDescription";
+import { createStoryElements } from "../utils/createStoryElements";
 
 // Config
 const VALID_ROOMS: RoomId[] = ["atticPassage", "pig"];
@@ -22,11 +23,21 @@ export const runNeumannTriggers: PipelineFunction = (payload) => {
 
   if (command === "say" && target === "neumann") {
     return produce(payload, (draft) => {
-      draft.gameState.storyLine.push(travelText);
+      draft.gameState.storyLine.push({
+        type: "action",
+        text: travelText,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
       draft.gameState.currentRoom = "cupboard";
       const args = toRoomDescriptionArgs(draft.gameState);
       const roomDescription = buildRoomDescription(args, "move");
-      draft.gameState.storyLine.push(...roomDescription);
+      draft.gameState.storyLine.push(
+        ...createStoryElements({
+          type: "description",
+          text: roomDescription,
+          isEncrypted: draft.gameState.encryptionActive,
+        })
+      );
       draft.gameState.drogoGuard = null; //defensive since drogo not allowed in valid rooms
       draft.done = true;
     });

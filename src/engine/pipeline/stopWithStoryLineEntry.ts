@@ -1,13 +1,14 @@
 import { produce } from "immer";
-import type { PipelinePayload } from "../pipeline/types";
 import type { EntryType } from "../../store/useGameStore";
+import type { PipelinePayload } from "./types";
 
-interface StopWithSuccessArgs {
+interface Args {
   payload: PipelinePayload;
   text: string | null;
   type: EntryType;
 }
-export const stopWithSuccess = (args: StopWithSuccessArgs): PipelinePayload => {
+
+export const stopWithStoryLineEntry = (args: Args): PipelinePayload => {
   const { payload, text, type } = args;
   return produce(payload, (draft) => {
     if (text) {

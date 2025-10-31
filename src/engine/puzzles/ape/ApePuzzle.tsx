@@ -36,9 +36,13 @@ export const ApePuzzle = () => {
       },
       storyLine: [
         ...state.storyLine,
-        puzzleCompleted
-          ? apeFeedback.storyLineSuccess
-          : apeFeedback.storyLineFailure,
+        {
+          type: "action",
+          text: puzzleCompleted
+            ? apeFeedback.storyLineSuccess
+            : apeFeedback.storyLineFailure,
+          isEncrypted: state.encryptionActive,
+        },
       ],
       itemLocation: {
         ...state.itemLocation,

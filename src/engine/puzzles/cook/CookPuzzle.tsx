@@ -57,10 +57,10 @@ export const CookPuzzle = () => {
         },
       },
       storyLine: [
-        ...state.storyLine,
-        puzzleCompleted
+        ...state.storyLine,{type:"description",
+        text:puzzleCompleted
           ? cookFeedback.storyLineSuccess
-          : cookFeedback.storyLineFailure,
+          : cookFeedback.storyLineFailure,isEncrypted:state.encryptionActive}
       ],
       itemLocation: {
         ...state.itemLocation,

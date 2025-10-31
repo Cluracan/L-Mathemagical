@@ -22,12 +22,24 @@ export const handleApePuzzle: PipelineFunction = (payload) => {
         if (target && ["y", "yes"].includes(target)) {
           draft.gameState.showDialog = true;
           draft.gameState.currentPuzzle = "ape";
-          storyLine.push(apeFeedback.puzzleAccept);
+          storyLine.push({
+            type: "description",
+            text: apeFeedback.puzzleAccept,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
         } else if (target && ["n", "no"].includes(target)) {
           draft.gameState.currentPuzzle = null;
-          storyLine.push(apeFeedback.puzzleReject);
+          storyLine.push({
+            type: "description",
+            text: apeFeedback.puzzleReject,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
         } else {
-          storyLine.push(apeFeedback.confused);
+          storyLine.push({
+            type: "description",
+            text: apeFeedback.confused,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
         }
         draft.done = true;
       });
@@ -36,20 +48,36 @@ export const handleApePuzzle: PipelineFunction = (payload) => {
       return produce(payload, (draft) => {
         const { storyLine } = draft.gameState;
         if (target === "ape") {
-          storyLine.push(apeFeedback.examinableItems.ape);
+          storyLine.push({
+            type: "description",
+            text: apeFeedback.examinableItems.ape,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.done = true;
         } else if (target === "tree") {
-          storyLine.push(apeFeedback.examinableItems.tree);
+          storyLine.push({
+            type: "description",
+            text: apeFeedback.examinableItems.tree,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.done = true;
         } else {
-          storyLine.push(apeFeedback.puzzleReject);
+          storyLine.push({
+            type: "description",
+            text: apeFeedback.puzzleReject,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.gameState.currentPuzzle = null;
         }
       });
     }
     default: {
       return produce(payload, (draft) => {
-        draft.gameState.storyLine.push(apeFeedback.puzzleReject);
+        draft.gameState.storyLine.push({
+          type: "description",
+          text: apeFeedback.puzzleReject,
+          isEncrypted: draft.gameState.encryptionActive,
+        });
         draft.gameState.currentPuzzle = null;
       });
     }

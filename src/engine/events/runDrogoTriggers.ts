@@ -8,6 +8,7 @@ import { produce, type Draft } from "immer";
 import type { RoomId } from "../../assets/data/roomData";
 import { itemRegistry } from "../world/itemRegistry";
 import { assertIsDefined } from "../utils/assertIsDefined";
+import { createStoryElements } from "../utils/createStoryElements";
 
 // Types
 export type DrogoGuard = null | { id: number; turnsUntilCaught: number };
@@ -22,7 +23,7 @@ const SAFE_ROOMS = new Set<RoomId>([
   "pig",
   "guards",
   "cell",
-  "countryside",
+  "grounds",
 ]);
 
 const JAIL_ROOM: RoomId = "attic";
@@ -93,7 +94,13 @@ export const sendToJail = (draft: Draft<PipelinePayload>) => {
   draft.gameState.drogoGuard = null;
   const args = toRoomDescriptionArgs(draft.gameState);
   const roomDescription = buildRoomDescription(args, "move");
-  draft.gameState.storyLine.push(...roomDescription);
+  draft.gameState.storyLine.push(
+    ...createStoryElements({
+      type: "description",
+      text: roomDescription,
+      isEncrypted: draft.gameState.encryptionActive,
+    })
+  );
 };
 
 export const confiscateItems = (draft: Draft<PipelinePayload>) => {
@@ -101,9 +108,9 @@ export const confiscateItems = (draft: Draft<PipelinePayload>) => {
   for (const itemId of itemRegistry.getItemList()) {
     if (itemLocation[itemId] === "player") {
       itemLocation[itemId] = "cupboard";
-    if (itemId==="ring"){
-      draft.gameState.isInvisible = false
-    }
+      if (itemId === "ring") {
+        draft.gameState.isInvisible = false;
+      }
     }
   }
 };
@@ -135,18 +142,28 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
         const drogoGuard = draft.gameState.drogoGuard;
         assertIsDefined(drogoGuard);
         if (playerIsInvisible) {
-          draft.gameState.storyLine.push(drogoFeedback.moveAttempt.isInvisible);
+          draft.gameState.storyLine.push({
+            type: "description",
+            text: drogoFeedback.moveAttempt.isInvisible,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.gameState.drogoGuard = null;
         } else {
           drogoGuard.turnsUntilCaught--;
           if (drogoGuard.turnsUntilCaught === 0) {
-            draft.gameState.storyLine.push(drogoFeedback.capture);
+            draft.gameState.storyLine.push({
+              type: "warning",
+              text: drogoFeedback.capture,
+              isEncrypted: draft.gameState.encryptionActive,
+            });
             confiscateItems(draft);
             sendToJail(draft);
           } else {
-            draft.gameState.storyLine.push(
-              drogoFeedback.moveAttempt.hasTurnsRemaining
-            );
+            draft.gameState.storyLine.push({
+              type: "warning",
+              text: drogoFeedback.moveAttempt.hasTurnsRemaining,
+              isEncrypted: draft.gameState.encryptionActive,
+            });
           }
           draft.done = true;
         }
@@ -158,7 +175,11 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
         return produce(payload, (draft) => {
           const drogoGuard = draft.gameState.drogoGuard;
           assertIsDefined(drogoGuard);
-          draft.gameState.storyLine.push(getDrogoIdReminder(drogoGuard.id));
+          draft.gameState.storyLine.push({
+            type: "description",
+            text: getDrogoIdReminder(drogoGuard.id),
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.done = true;
         });
       }
@@ -169,20 +190,30 @@ export const runDrogoTriggers: PipelineFunction = (payload) => {
         const drogoGuard = draft.gameState.drogoGuard;
         assertIsDefined(drogoGuard);
         if (target && willScareGuard(target, drogoGuard)) {
-          draft.gameState.storyLine.push(drogoFeedback.scared);
+          draft.gameState.storyLine.push({
+            type: "description",
+            text: drogoFeedback.scared,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.gameState.drogoGuard = null;
         } else {
           drogoGuard.turnsUntilCaught--;
           if (drogoGuard.turnsUntilCaught === 0) {
-            draft.gameState.storyLine.push(drogoFeedback.capture);
+            draft.gameState.storyLine.push({
+              type: "warning",
+              text: drogoFeedback.capture,
+              isEncrypted: draft.gameState.encryptionActive,
+            });
             confiscateItems(draft);
             sendToJail(draft);
           } else {
-            draft.gameState.storyLine.push(
-              draft.gameState.isInvisible
+            draft.gameState.storyLine.push({
+              type: "description",
+              text: draft.gameState.isInvisible
                 ? drogoFeedback.sayAttempt.isInvisible
-                : drogoFeedback.sayAttempt.unaffected
-            );
+                : drogoFeedback.sayAttempt.unaffected,
+              isEncrypted: draft.gameState.encryptionActive,
+            });
           }
         }
         draft.done = true;

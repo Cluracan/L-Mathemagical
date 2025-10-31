@@ -21,16 +21,28 @@ const getItem: PipelineFunction = (payload) => {
   const { itemLocation, currentRoom } = gameState;
 
   if (!target || !isItemId(target)) {
-    return failCommand(payload, getFeedback.noTarget);
+    return failCommand({
+      payload,
+      type: "warning",
+      text: getFeedback.noTarget,
+    });
   }
 
   if (itemLocation[target] !== currentRoom) {
-    return failCommand(payload, getFeedback.notInRoom);
+    return failCommand({
+      payload,
+      type: "warning",
+      text: getFeedback.notInRoom,
+    });
   }
 
   return produce(payload, (draft) => {
     draft.gameState.itemLocation[target] = "player";
-    draft.gameState.storyLine.push(itemRegistry.getPickUpDescription(target));
+    draft.gameState.storyLine.push({
+      type: "action",
+      text: itemRegistry.getPickUpDescription(target),
+      isEncrypted: draft.gameState.encryptionActive,
+    });
   });
 };
 

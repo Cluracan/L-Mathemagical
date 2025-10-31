@@ -27,13 +27,14 @@ export const runAmuletTriggers: PipelineFunction = (payload) => {
     case "get": {
       if (itemLocation.amulet === currentRoom) {
         return produce(payload, (draft) => {
-          draft.gameState.storyLine.push(
-            isInvisible
+          draft.gameState.storyLine.push({
+            type: "action",
+            text: isInvisible
               ? amuletFeedback.pickUp.playerInvisible
-              : amuletFeedback.pickUp.playerVisible
-          );
+              : amuletFeedback.pickUp.playerVisible,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.gameState.itemLocation.amulet = "player";
-          draft.gameState.hasAmulet = true;
           draft.done = true;
         });
       }
@@ -42,13 +43,14 @@ export const runAmuletTriggers: PipelineFunction = (payload) => {
     case "drop": {
       if (itemLocation.amulet === "player") {
         return produce(payload, (draft) => {
-          draft.gameState.storyLine.push(
-            isInvisible
+          draft.gameState.storyLine.push({
+            type: "action",
+            text: isInvisible
               ? amuletFeedback.drop.playerInvisible
-              : amuletFeedback.drop.playerVisible
-          );
+              : amuletFeedback.drop.playerVisible,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.gameState.itemLocation.amulet = currentRoom;
-          draft.gameState.hasAmulet = false;
           draft.done = true;
         });
       }

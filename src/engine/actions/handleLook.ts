@@ -16,13 +16,20 @@ import { runBathTriggers } from "../events/runBathTriggers";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
 import { runDrogoTriggers } from "../events/runDrogoTriggers";
 import { runAtticTriggers } from "../events/runAtticTriggers";
+import { createStoryElements } from "../utils/createStoryElements";
 
 const lookRoom: PipelineFunction = (payload) => {
   if (payload.target === null) {
     return produce(payload, (draft) => {
       const args = toRoomDescriptionArgs(draft.gameState);
       const roomDescription = buildRoomDescription(args, "look");
-      draft.gameState.storyLine.push(...roomDescription);
+      draft.gameState.storyLine.push(
+        ...createStoryElements({
+          type: "description",
+          text: roomDescription,
+          isEncrypted: draft.gameState.encryptionActive,
+        })
+      );
       draft.done = true;
     });
   }
@@ -35,15 +42,24 @@ const lookItem: PipelineFunction = (payload) => {
 
   if (target && isItemId(target)) {
     if (itemLocation[target] === "player") {
-      return stopWithSuccess(
+      return stopWithSuccess({
         payload,
-        itemRegistry.getExamineDescription(target)
-      );
+        type: "description",
+        text: itemRegistry.getExamineDescription(target),
+      });
     } else if (itemLocation[target] === currentRoom) {
-      return stopWithSuccess(payload, itemRegistry.getFloorDescription(target));
+      return stopWithSuccess({
+        payload,
+        type: "description",
+        text: itemRegistry.getFloorDescription(target),
+      });
     }
   }
-  return failCommand(payload, "You don't see that here!");
+  return failCommand({
+    payload,
+    type: "warning",
+    text: "You don't see that here!",
+  });
 };
 
 const lookPipeline = [

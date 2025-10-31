@@ -4,6 +4,7 @@ import {
   buildRoomDescription,
   toRoomDescriptionArgs,
 } from "../utils/buildRoomDescription";
+import { createStoryElements } from "../utils/createStoryElements";
 
 // Narrative Content
 const cellFeedback = {
@@ -33,7 +34,11 @@ export const runCellRoomTriggers: PipelineFunction = (payload) => {
     case "use": {
       if (target === "ladder" && itemLocation.ladder === "player") {
         return produce(payload, (draft) => {
-          draft.gameState.storyLine.push(cellFeedback.useLadder);
+          draft.gameState.storyLine.push({
+            type: "action",
+            text: cellFeedback.useLadder,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.gameState.ladderFixed = true;
           draft.gameState.itemLocation.ladder = "pit";
           draft.done = true;
@@ -47,22 +52,44 @@ export const runCellRoomTriggers: PipelineFunction = (payload) => {
         if (target === "d" && gameState.ladderFixed) {
           return produce(payload, (draft) => {
             if (draft.gameState.ladderFixed) {
-              draft.gameState.storyLine.push(cellFeedback.exitDown);
+              draft.gameState.storyLine.push({
+                type: "action",
+                text: cellFeedback.exitDown,
+                isEncrypted: draft.gameState.encryptionActive,
+              });
               draft.gameState.currentRoom = "grounds";
               const args = toRoomDescriptionArgs(draft.gameState);
               const roomDescription = buildRoomDescription(args, "move");
-              draft.gameState.storyLine.push(...roomDescription);
+              draft.gameState.storyLine.push(
+                ...createStoryElements({
+                  type: "description",
+                  text: roomDescription,
+                  isEncrypted: draft.gameState.encryptionActive,
+                })
+              );
               // Abbot text
               if (playerHasAmulet) {
                 draft.gameState.storyLine.push(
-                  cellFeedback.abbotText.initial,
-                  cellFeedback.abbotText.success
+                  ...createStoryElements({
+                    type: "description",
+                    text: [
+                      cellFeedback.abbotText.initial,
+                      cellFeedback.abbotText.success,
+                    ],
+                    isEncrypted: draft.gameState.encryptionActive,
+                  })
                 );
                 draft.gameState.ladderFixed = false;
               } else {
                 draft.gameState.storyLine.push(
-                  cellFeedback.abbotText.initial,
-                  cellFeedback.abbotText.failure
+                  ...createStoryElements({
+                    type: "description",
+                    text: [
+                      cellFeedback.abbotText.initial,
+                      cellFeedback.abbotText.failure,
+                    ],
+                    isEncrypted: draft.gameState.encryptionActive,
+                  })
                 );
               }
               draft.done = true;
@@ -71,7 +98,11 @@ export const runCellRoomTriggers: PipelineFunction = (payload) => {
         }
         if (target === "e" && playerHasAmulet) {
           return produce(payload, (draft) => {
-            draft.gameState.storyLine.push(cellFeedback.eastWithAmulet);
+            draft.gameState.storyLine.push({
+              text: cellFeedback.eastWithAmulet,
+              type: "warning",
+              isEncrypted: draft.gameState.encryptionActive,
+            });
             draft.done = true;
           });
         }

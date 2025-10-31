@@ -6,6 +6,7 @@ import {
 import { produce } from "immer";
 import { failCommand } from "../pipeline/failCommand";
 import { stopWithSuccess } from "../pipeline/stopWithSuccess";
+import { createStoryElements } from "../utils/createStoryElements";
 
 const holeAttemptFeedback = {
   one: "You can't fit through a hole that small!",
@@ -29,7 +30,11 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
   switch (command) {
     case "look": {
       if (target && ["hole", "grate", "grating"].includes(target)) {
-        return stopWithSuccess(payload, holeAttemptFeedback.lookHole);
+        return stopWithSuccess({
+          payload,
+          type: "description",
+          text: holeAttemptFeedback.lookHole,
+        });
       }
       break;
     }
@@ -37,15 +42,27 @@ export const runPoolTriggers: PipelineFunction = (payload) => {
     case "move": {
       if (target === "in") {
         if (playerHeight !== "threeFourths") {
-          return failCommand(payload, holeAttemptFeedback[playerHeight]);
+          return failCommand({
+            payload,
+            type: "warning",
+            text: holeAttemptFeedback[playerHeight],
+          });
         }
         return produce(payload, (draft) => {
           draft.gameState.currentRoom = "tunnelTop";
           const args = toRoomDescriptionArgs(draft.gameState);
           const nextRoomDescription = buildRoomDescription(args, command);
           draft.gameState.storyLine.push(
-            holeAttemptFeedback[playerHeight],
-            ...nextRoomDescription
+            {
+              type: "action",
+              text: holeAttemptFeedback[playerHeight],
+              isEncrypted: draft.gameState.encryptionActive,
+            },
+            ...createStoryElements({
+              type: "description",
+              text: nextRoomDescription,
+              isEncrypted: draft.gameState.encryptionActive,
+            })
           );
           draft.done = true;
         });

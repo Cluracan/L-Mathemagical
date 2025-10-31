@@ -6,6 +6,7 @@ import {
   buildRoomDescription,
   toRoomDescriptionArgs,
 } from "../utils/buildRoomDescription";
+import { createStoryElements } from "../utils/createStoryElements";
 
 // Types
 export interface JailGuard {
@@ -87,7 +88,11 @@ export const runAtticTriggers: PipelineFunction = (payload) => {
       const guardResponse = getGuardResponse(command, target, jailGuard.status);
       if (guardResponse.alerted) {
         return produce(payload, (draft) => {
-          draft.gameState.storyLine.push(guardResponse.message);
+          draft.gameState.storyLine.push({
+            type: "action",
+            text: guardResponse.message,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.gameState.jailGuard.status = "alert";
           draft.done = true;
         });
@@ -98,12 +103,20 @@ export const runAtticTriggers: PipelineFunction = (payload) => {
       const guardResponse = getGuardResponse(command, target, jailGuard.status);
       if (guardResponse.alerted) {
         return produce(payload, (draft) => {
-          draft.gameState.storyLine.push(guardResponse.message);
+          draft.gameState.storyLine.push({
+            type: "action",
+            text: guardResponse.message,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.gameState.jailGuard.status = "active";
           const guardDescription = getJailGuardDescription(
             draft.gameState.jailGuard.id
           );
-          draft.gameState.storyLine.push(guardDescription);
+          draft.gameState.storyLine.push({
+            type: "description",
+            text: guardDescription,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.done = true;
         });
       }
@@ -114,18 +127,22 @@ export const runAtticTriggers: PipelineFunction = (payload) => {
         case "say": {
           if (willScareJailGuard(target, jailGuard)) {
             return produce(payload, (draft) => {
-              draft.gameState.storyLine.push(
-                jailGuardFeedback.scareAttempt.success
-              );
+              draft.gameState.storyLine.push({
+                type: "description",
+                text: jailGuardFeedback.scareAttempt.success,
+                isEncrypted: draft.gameState.encryptionActive,
+              });
               draft.gameState.jailGuard.status = "complete";
               draft.gameState.keyLocked.jail = false;
               draft.done = true;
             });
           } else if (target) {
             return produce(payload, (draft) => {
-              draft.gameState.storyLine.push(
-                jailGuardFeedback.scareAttempt.failure.say
-              );
+              draft.gameState.storyLine.push({
+                type: "description",
+                text: jailGuardFeedback.scareAttempt.failure.say,
+                isEncrypted: draft.gameState.encryptionActive,
+              });
               draft.gameState.jailGuard.status = "inactive";
               draft.done = true;
             });
@@ -134,9 +151,11 @@ export const runAtticTriggers: PipelineFunction = (payload) => {
         }
         case "move": {
           return produce(payload, (draft) => {
-            draft.gameState.storyLine.push(
-              jailGuardFeedback.scareAttempt.failure.move
-            );
+            draft.gameState.storyLine.push({
+              type: "description",
+              text: jailGuardFeedback.scareAttempt.failure.move,
+              isEncrypted: draft.gameState.encryptionActive,
+            });
             draft.gameState.jailGuard.status = "inactive";
             draft.done = true;
           });
@@ -148,14 +167,21 @@ export const runAtticTriggers: PipelineFunction = (payload) => {
               const args = toRoomDescriptionArgs(draft.gameState);
               const roomDescription = buildRoomDescription(args, "look");
               draft.gameState.storyLine.push(
-                ...roomDescription,
-                jailGuardDescription
+                ...createStoryElements({
+                  type: "description",
+                  text: [...roomDescription, jailGuardDescription],
+                  isEncrypted: draft.gameState.encryptionActive,
+                })
               );
               draft.done = true;
             });
           } else if (target === "guard") {
             return produce(payload, (draft) => {
-              draft.gameState.storyLine.push(jailGuardDescription);
+              draft.gameState.storyLine.push({
+                type: "description",
+                text: jailGuardDescription,
+                isEncrypted: draft.gameState.encryptionActive,
+              });
               draft.done = true;
             });
           }

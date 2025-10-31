@@ -18,7 +18,11 @@ export const runBlockedTriggers: PipelineFunction = (payload) => {
     if (blockedDirections.includes(target)) {
       //check for blocked door
       if (!keyRequired || keyLocked[keyRequired]) {
-        return failCommand(payload, blockedExitData[currentRoom].lockedText);
+        return failCommand({
+          payload,
+          type: "warning",
+          text: blockedExitData[currentRoom].lockedText,
+        });
       }
     }
   }

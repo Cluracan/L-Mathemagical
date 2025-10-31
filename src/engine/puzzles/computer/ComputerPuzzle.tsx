@@ -61,7 +61,7 @@ export const ComputerPuzzle = () => {
           ...state.puzzleState,
           computer: initialComputerState,
         },
-        storyLine: [...state.storyLine, computerFeedback.storyLineSuccess],
+        storyLine: [...state.storyLine, {type:"description",text: computerFeedback.storyLineSuccess,isEncrypted:state.encryptionActive}],
       });
     }
   };

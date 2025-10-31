@@ -33,17 +33,29 @@ export const handleAbbotPuzzle: PipelineFunction = (payload) => {
         const { abbot } = draft.gameState.puzzleState;
         const { storyLine } = draft.gameState;
         if (target && ["y", "yes"].includes(target)) {
-          storyLine.push(dialog[abbot.dialogIndex]);
+          storyLine.push({
+            type: "description",
+            text: dialog[abbot.dialogIndex],
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           abbot.dialogIndex += 1;
           if (abbot.dialogIndex === dialog.length) {
             abbot.puzzleCompleted = true;
           }
         } else if (target && ["n", "no"].includes(target)) {
-          storyLine.push(dialog[dialog.length - 1]);
+          storyLine.push({
+            type: "description",
+            text: dialog[dialog.length - 1],
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           abbot.puzzleCompleted = true;
           draft.gameState.currentPuzzle = null;
         } else {
-          storyLine.push(abbotFeedback.confused);
+          storyLine.push({
+            type: "description",
+            text: abbotFeedback.confused,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
         }
         draft.done = true;
       });
@@ -52,14 +64,22 @@ export const handleAbbotPuzzle: PipelineFunction = (payload) => {
       return produce(payload, (draft) => {
         draft.gameState.puzzleState.abbot.puzzleCompleted = true;
         draft.gameState.currentPuzzle = null;
-        draft.gameState.storyLine.push(dialog[dialog.length - 1]);
+        draft.gameState.storyLine.push({
+          type: "description",
+          text: dialog[dialog.length - 1],
+          isEncrypted: draft.gameState.encryptionActive,
+        });
       });
     }
 
     case "look": {
       if (target === "abbot") {
         return produce(payload, (draft) => {
-          draft.gameState.storyLine.push(abbotFeedback.description);
+          draft.gameState.storyLine.push({
+            type: "description",
+            text: abbotFeedback.description,
+            isEncrypted: draft.gameState.encryptionActive,
+          });
           draft.done = true;
         });
       }

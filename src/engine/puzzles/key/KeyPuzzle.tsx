@@ -59,9 +59,17 @@ export const KeyPuzzle = () => {
         draft.currentPuzzle = null;
         if (state.puzzleState.key.puzzleCompleted) {
           draft.itemLocation.iron = "player";
-          draft.storyLine.push(keyFeedback.storyLineSuccess);
+          draft.storyLine.push({
+            type: "description",
+            text: keyFeedback.storyLineSuccess,
+            isEncrypted: draft.encryptionActive,
+          });
         } else {
-          draft.storyLine.push(keyFeedback.storyLineFailure);
+          draft.storyLine.push({
+            type: "description",
+            text: keyFeedback.storyLineFailure,
+            isEncrypted: draft.encryptionActive,
+          });
           draft.puzzleState.key.selectedCells = initialKeyState.selectedCells;
         }
       })

@@ -14,6 +14,10 @@ export const handleUnknown: HandleCommand = (args) => {
   const { gameState } = args;
   return produce(gameState, (draft) => {
     const rngIndex = Math.floor(Math.random() * unknownFeedback.length);
-    draft.storyLine.push(unknownFeedback[rngIndex]);
+    draft.storyLine.push({
+      type: "warning",
+      text: unknownFeedback[rngIndex],
+      isEncrypted: gameState.encryptionActive,
+    });
   });
 };

@@ -35,25 +35,37 @@ const runUseKeyCheck: PipelineFunction = (payload) => {
   const requiredKey =
     isBlockedRoom(currentRoom) && blockedExitData[currentRoom].keyRequired;
 
-  if (!requiredKey || !target || !isKeyType(target)||itemLocation[target]!=="player") return payload;
+  if (
+    !requiredKey ||
+    !target ||
+    !isKeyType(target) ||
+    itemLocation[target] !== "player"
+  )
+    return payload;
 
   if (itemLocation[requiredKey] !== "player") {
-    return failCommand(payload, keyFeedback.noKey);
+    return failCommand({ payload, type: "warning", text: keyFeedback.noKey });
   }
 
   if (target === requiredKey) {
     return produce(payload, (draft) => {
       draft.gameState.keyLocked[requiredKey] =
         !draft.gameState.keyLocked[requiredKey];
-      draft.gameState.storyLine.push(
-        draft.gameState.keyLocked[requiredKey]
+      draft.gameState.storyLine.push({
+        type: "action",
+        text: draft.gameState.keyLocked[requiredKey]
           ? keyFeedback.lockDoor
-          : keyFeedback.unlockDoor
-      );
+          : keyFeedback.unlockDoor,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
       draft.done = true;
     });
   } else {
-    return failCommand(payload, keyFeedback.wrongKey);
+    return failCommand({
+      payload,
+      type: "warning",
+      text: keyFeedback.wrongKey,
+    });
   }
 };
 
@@ -62,15 +74,31 @@ const runUseFailureMessage: PipelineFunction = (payload) => {
   const { itemLocation } = gameState;
 
   if (target === null) {
-    return failCommand(payload, useFeedback.noTarget);
+    return failCommand({
+      payload,
+      type: "warning",
+      text: useFeedback.noTarget,
+    });
   }
   if (!isItemId(target)) {
-    return failCommand(payload, useFeedback.notAnItem);
+    return failCommand({
+      payload,
+      type: "warning",
+      text: useFeedback.notAnItem,
+    });
   }
   if (itemLocation[target] !== "player") {
-    return failCommand(payload, useFeedback.notOnPlayer);
+    return failCommand({
+      payload,
+      type: "warning",
+      text: useFeedback.notOnPlayer,
+    });
   }
-  return failCommand(payload, useFeedback.cannotUseHere);
+  return failCommand({
+    payload,
+    type: "warning",
+    text: useFeedback.cannotUseHere,
+  });
 };
 
 const usePipeline = [

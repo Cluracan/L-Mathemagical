@@ -22,6 +22,7 @@ import { runAtticTriggers } from "../events/runAtticTriggers";
 import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
 import { assertIsDefined } from "../utils/assertIsDefined";
 import { runCellRoomTriggers } from "../events/runCellRoomTriggers";
+import { createStoryElements } from "../utils/createStoryElements";
 
 enableMapSet();
 
@@ -31,7 +32,11 @@ const isValidDirection = (target: string | null) => {
 
 const validateDirection: PipelineFunction = (payload) => {
   if (!isValidDirection(payload.target)) {
-    return failCommand(payload, "That's not a direction!");
+    return failCommand({
+      payload,
+      type: "warning",
+      text: "That's not a direction!",
+    });
   }
 
   const direction = directionAliases[payload.target];
@@ -45,7 +50,11 @@ const validateExit: PipelineFunction = (payload) => {
     payload.direction
   );
   if (!nextRoom) {
-    return failCommand(payload, "You can't travel that way!");
+    return failCommand({
+      payload,
+      type: "warning",
+      text: "You can't travel that way!",
+    });
   }
   return {
     ...payload,
@@ -60,9 +69,11 @@ const movePlayer: PipelineFunction = (payload) => {
     draft.gameState.visitedRooms.add(draft.gameState.currentRoom);
     draft.gameState.currentRoom = draft.nextRoom;
     draft.gameState.stepCount++;
-    draft.gameState.storyLine.push(
-      `You travel ${directionNarratives[draft.direction]}`
-    );
+    draft.gameState.storyLine.push({
+      type: "action",
+      text: `You travel ${directionNarratives[draft.direction]}`,
+      isEncrypted: draft.gameState.encryptionActive,
+    });
     draft.nextRoom = null;
     draft.direction = null;
   });
@@ -72,7 +83,13 @@ const applyRoomDescription: PipelineFunction = (payload) => {
   return produce(payload, (draft) => {
     const args = toRoomDescriptionArgs(draft.gameState);
     const roomDescription = buildRoomDescription(args, "move");
-    draft.gameState.storyLine.push(...roomDescription);
+    draft.gameState.storyLine.push(
+      ...createStoryElements({
+        type: "description",
+        text: roomDescription,
+        isEncrypted: draft.gameState.encryptionActive,
+      })
+    );
     draft.done = true;
   });
 };

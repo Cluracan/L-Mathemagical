@@ -56,10 +56,13 @@ export const LightsPuzzle = () => {
         },
       },
       storyLine: [
-        ...state.storyLine,
+        ...state.storyLine,{type:"description",text:
         state.puzzleState.lights.puzzleCompleted
           ? lightsFeedback.storyLineSuccess
-          : lightsFeedback.storyLineFailure,
+          : lightsFeedback.storyLineFailure,isEncrypted:state.encryptionActive}
+
+
+          
       ],
       itemLocation: {
         ...state.itemLocation,

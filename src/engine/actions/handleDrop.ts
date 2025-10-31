@@ -22,15 +22,27 @@ const dropItem: PipelineFunction = (payload) => {
   const { itemLocation, currentRoom } = gameState;
 
   if (!target || !isItemId(target)) {
-    return failCommand(payload, dropFeedback.noTarget);
+    return failCommand({
+      payload,
+      text: dropFeedback.noTarget,
+      type: "warning",
+    });
   }
   if (itemLocation[target] !== "player") {
-    return failCommand(payload, dropFeedback.notOnPlayer);
+    return failCommand({
+      payload,
+      text: dropFeedback.notOnPlayer,
+      type: "warning",
+    });
   }
 
   return produce(payload, (draft) => {
     draft.gameState.itemLocation[target] = currentRoom;
-    draft.gameState.storyLine.push(itemRegistry.getDropDescription(target));
+    draft.gameState.storyLine.push({
+      type: "warning",
+      text: itemRegistry.getDropDescription(target),
+      isEncrypted: draft.gameState.encryptionActive,
+    });
     draft.done = true;
   });
 };

@@ -21,11 +21,13 @@ const sayFeedback = {
 const sayTarget: PipelineFunction = (payload) => {
   const rngIndex = Math.floor(Math.random() * sayFeedback.saySomething.length);
   return produce(payload, (draft) => {
-    draft.gameState.storyLine.push(
-      payload.target
+    draft.gameState.storyLine.push({
+      type: "action",
+      text: payload.target
         ? sayFeedback.saySomething[rngIndex]
-        : sayFeedback.sayNothing
-    );
+        : sayFeedback.sayNothing,
+      isEncrypted: draft.gameState.encryptionActive,
+    });
   });
 };
 

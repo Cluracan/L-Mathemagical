@@ -6,6 +6,7 @@ import {
 import { produce } from "immer";
 import { confiscateItems, sendToJail } from "./runDrogoTriggers";
 import { ringFeedback } from "./runRingTriggers";
+import { createStoryElements } from "../utils/createStoryElements";
 
 // Narrative Content
 const guardFeedback = {
@@ -27,17 +28,26 @@ export const runGuardRoomTriggers: PipelineFunction = (payload) => {
   if (gameState.currentRoom !== "guards" && nextRoom !== "guards") {
     return payload;
   }
-
+  const playerHasAmulet = gameState.itemLocation.amulet === "player";
   // Walk into room with amulet
-  if (nextRoom === "guards" && gameState.hasAmulet) {
+  if (nextRoom === "guards" && playerHasAmulet) {
     return produce(payload, (draft) => {
       draft.gameState.currentRoom = nextRoom;
       const args = toRoomDescriptionArgs(draft.gameState);
       const roomDescription = buildRoomDescription(args, "move");
-      draft.gameState.storyLine.push(...roomDescription);
-      draft.gameState.storyLine.push(guardFeedback.capture.hasAmulet);
+      draft.gameState.storyLine.push(
+        ...createStoryElements({
+          type: "description",
+          text: roomDescription,
+          isEncrypted: draft.gameState.encryptionActive,
+        })
+      );
+      draft.gameState.storyLine.push({
+        type: "warning",
+        text: guardFeedback.capture.hasAmulet,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
       draft.gameState.itemLocation.amulet = "cell";
-      draft.gameState.hasAmulet = false;
       confiscateItems(draft);
       sendToJail(draft);
       draft.done = true;
@@ -49,8 +59,18 @@ export const runGuardRoomTriggers: PipelineFunction = (payload) => {
       draft.gameState.currentRoom = nextRoom;
       const args = toRoomDescriptionArgs(draft.gameState);
       const roomDescription = buildRoomDescription(args, "move");
-      draft.gameState.storyLine.push(...roomDescription);
-      draft.gameState.storyLine.push(guardFeedback.capture.isVisible);
+      draft.gameState.storyLine.push(
+        ...createStoryElements({
+          type: "description",
+          text: roomDescription,
+          isEncrypted: draft.gameState.encryptionActive,
+        })
+      );
+      draft.gameState.storyLine.push({
+        type: "warning",
+        text: guardFeedback.capture.isVisible,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
       confiscateItems(draft);
       sendToJail(draft);
       draft.done = true;
@@ -60,8 +80,16 @@ export const runGuardRoomTriggers: PipelineFunction = (payload) => {
   // Drop ring in room
   if (command === "drop" && target === "ring") {
     return produce(payload, (draft) => {
-      draft.gameState.storyLine.push(ringFeedback.drop);
-      draft.gameState.storyLine.push(guardFeedback.capture.dropRing);
+      draft.gameState.storyLine.push({
+        type: "action",
+        text: ringFeedback.drop,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
+      draft.gameState.storyLine.push({
+        type: "warning",
+        text: guardFeedback.capture.dropRing,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
       confiscateItems(draft);
       sendToJail(draft);
       draft.done = true;
@@ -71,7 +99,11 @@ export const runGuardRoomTriggers: PipelineFunction = (payload) => {
   // Talk in room (will be invisible)
   if (command === "say" && target) {
     return produce(payload, (draft) => {
-      draft.gameState.storyLine.push(guardFeedback.capture.speak);
+      draft.gameState.storyLine.push({
+        type: "warning",
+        text: guardFeedback.capture.speak,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
       confiscateItems(draft);
       sendToJail(draft);
       draft.done = true;

@@ -20,9 +20,11 @@ const runHeightPotionCheck: PipelineFunction = (payload) => {
   const potion = payload.target;
   return produce(payload, (draft) => {
     const playerHeight = draft.gameState.playerHeight;
-    draft.gameState.storyLine.push(
-      itemRegistry.getDrinkMessage(potion, playerHeight)
-    );
+    draft.gameState.storyLine.push({
+      type: "action",
+      text: itemRegistry.getDrinkMessage(potion, playerHeight),
+      isEncrypted: draft.gameState.encryptionActive,
+    });
     draft.gameState.playerHeight = itemRegistry.getNewHeight(
       potion,
       playerHeight
@@ -37,11 +39,23 @@ const runFailureMessage: PipelineFunction = (payload) => {
     const storyLine = draft.gameState.storyLine;
     const target = draft.target;
     if (!target || !isItemId(target)) {
-      storyLine.push(failureFeedback.noTarget);
+      storyLine.push({
+        type: "warning",
+        text: failureFeedback.noTarget,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
     } else if (draft.gameState.itemLocation[target] !== "player") {
-      storyLine.push(failureFeedback.notOnPlayer);
+      storyLine.push({
+        type: "warning",
+        text: failureFeedback.notOnPlayer,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
     } else {
-      storyLine.push(failureFeedback.notDrinkable);
+      storyLine.push({
+        type: "warning",
+        text: failureFeedback.notDrinkable,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
     }
   });
 };

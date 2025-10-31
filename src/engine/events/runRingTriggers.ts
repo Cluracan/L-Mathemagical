@@ -15,7 +15,11 @@ export const runRingTriggers: PipelineFunction = (payload) => {
         if (itemLocation[target] === "player") {
           return produce(payload, (draft) => {
             draft.gameState.isInvisible = false;
-            draft.gameState.storyLine.push(ringFeedback.drop);
+            draft.gameState.storyLine.push({
+              type: "action",
+              text: ringFeedback.drop,
+              isEncrypted: draft.gameState.encryptionActive,
+            });
             draft.gameState.itemLocation[target] = currentRoom;
             draft.done = true;
           });
@@ -25,7 +29,11 @@ export const runRingTriggers: PipelineFunction = (payload) => {
         if (itemLocation[target] === currentRoom) {
           return produce(payload, (draft) => {
             draft.gameState.isInvisible = true;
-            draft.gameState.storyLine.push(ringFeedback.get);
+            draft.gameState.storyLine.push({
+              type: "action",
+              text: ringFeedback.get,
+              isEncrypted: draft.gameState.encryptionActive,
+            });
             draft.gameState.itemLocation[target] = "player";
             draft.done = true;
           });

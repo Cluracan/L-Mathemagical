@@ -21,9 +21,17 @@ const hasSwimFeedback = createKeyGuard(swimFeedback);
 export const runSwimTriggers: PipelineFunction = (payload) => {
   return produce(payload, (draft) => {
     if (hasSwimFeedback(draft.gameState.currentRoom)) {
-      draft.gameState.storyLine.push(swimFeedback[draft.gameState.currentRoom]);
+      draft.gameState.storyLine.push({
+        type: "warning",
+        text: swimFeedback[draft.gameState.currentRoom],
+        isEncrypted: draft.gameState.encryptionActive,
+      });
     } else {
-      draft.gameState.storyLine.push(swimFeedback.default);
+      draft.gameState.storyLine.push({
+        type: "warning",
+        text: swimFeedback.default,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
     }
   });
 };

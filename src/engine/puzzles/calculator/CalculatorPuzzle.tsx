@@ -105,9 +105,13 @@ export const CalculatorPuzzle = () => {
       },
       storyLine: [
         ...state.storyLine,
-        state.puzzleState.calculator.puzzleCompleted
-          ? calculatorFeedback.storyLineSuccess
-          : calculatorFeedback.storyLineFailure,
+        {
+          type: "description",
+          text: state.puzzleState.calculator.puzzleCompleted
+            ? calculatorFeedback.storyLineSuccess
+            : calculatorFeedback.storyLineFailure,
+          isEncrypted: state.encryptionActive,
+        },
       ],
     }));
   };

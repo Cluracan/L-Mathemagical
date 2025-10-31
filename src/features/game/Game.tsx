@@ -49,8 +49,13 @@ export const GameContent = memo(() => {
         >
           {storyLine.slice(-30).map((entry, index) => {
             return (
-              <Box key={index} sx={{ marginBottom: "1.5rem" }}>
-                {entry}
+              <Box
+                key={index}
+                sx={{
+                  marginBottom: "1.5rem",
+                }}
+              >
+                {entry.text}
               </Box>
             );
           })}

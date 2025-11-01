@@ -5,6 +5,11 @@ import { failCommand } from "../pipeline/failCommand";
 import type { PipelineFunction } from "../pipeline/types";
 import type { GameState } from "../gameEngine";
 import type { ItemId } from "../../assets/data/itemData";
+import {
+  buildRoomDescription,
+  toRoomDescriptionArgs,
+} from "../utils/buildRoomDescription";
+import { createStoryElements } from "../utils/createStoryElements";
 
 // Initial State
 export const initialBathState = {
@@ -169,6 +174,15 @@ export const runBathTriggers: PipelineFunction = (payload) => {
           text: bathFeedback.success,
           isEncrypted: draft.gameState.encryptionActive,
         });
+        const nextRoomArgs = toRoomDescriptionArgs(draft.gameState);
+        const nextRoomDescription = buildRoomDescription(nextRoomArgs, "move");
+        draft.gameState.storyLine.push(
+          ...createStoryElements({
+            type: "description",
+            text: nextRoomDescription,
+            isEncrypted: draft.gameState.encryptionActive,
+          })
+        );
         draft.done = true;
       });
     }

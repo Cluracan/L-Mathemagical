@@ -19,7 +19,7 @@ export const ApePuzzle = () => {
   const [userInput, setUserInput] = useState("");
 
   // Handlers
-  const handleLeave = () => {
+  const handleLeave = (leaveType: "early" | "default") => {
     const state = useGameStore.getState();
     const puzzleCompleted = state.puzzleState.ape.puzzleCompleted;
     useGameStore.setState({
@@ -40,7 +40,7 @@ export const ApePuzzle = () => {
           type: "action",
           text: puzzleCompleted
             ? apeFeedback.storyLineSuccess
-            : apeFeedback.storyLineFailure,
+            : apeFeedback.storyLineFailure[leaveType],
           isEncrypted: state.encryptionActive,
         },
       ],
@@ -98,13 +98,20 @@ export const ApePuzzle = () => {
       />
       <PuzzleFeedback feedback={feedback.slice(-20)} height="50vh" />
       {status === "instructions" && (
-        <InstructionChoices onConfirm={handleShowDemo} onCancel={handleLeave} />
+        <InstructionChoices
+          onConfirm={handleShowDemo}
+          onCancel={() => {
+            handleLeave("early");
+          }}
+        />
       )}
       {status === "play" && (
         <PuzzleActions
           puzzleCompleted={puzzleCompleted}
           handleReset={handleReset}
-          handleLeave={handleLeave}
+          handleLeave={() => {
+            handleLeave("default");
+          }}
         >
           <TextField
             disabled={puzzleCompleted}

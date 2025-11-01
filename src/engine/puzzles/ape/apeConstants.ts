@@ -28,7 +28,7 @@ export const apeFeedback = {
     "\tsay",
     "\tsty",
     '"...it was very difficult. But you are much cleverer than I am and perhaps you could change me into an owl?"',
-    " ",
+    "The ape climbs a nearby tree and sits on a branch, waiting for your first word",
   ],
   userInput: {
     hasNotChanged:
@@ -42,7 +42,11 @@ export const apeFeedback = {
   },
   reset:
     '"OK" says the ape, "let\'s try again. Remember, I turned pig into sty like this..."',
-  storyLineFailure: "The ape climbs a nearby tree and sits on a branch",
+  storyLineFailure: {
+    early:
+      "The ape lumbers back to a nearby tree, climbs up it, and sits on a branch.",
+    default: "The ape loses interest in you, and picks an apple from the tree.",
+  },
   storyLineSuccess:
     "The owl has disappeared behind the treeline with your ladder - you can only hope that she has stored it somewhere obvious in the palace!",
 };

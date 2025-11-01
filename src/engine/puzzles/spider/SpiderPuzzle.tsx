@@ -55,9 +55,13 @@ export const SpiderPuzzle = () => {
       },
       storyLine: [
         ...state.storyLine,
-        state.puzzleState.spider.puzzleCompleted
-          ? spiderFeedback.storyLineSuccess
-          : spiderFeedback.storyLineFailure,
+        {
+          type: "description",
+          text: state.puzzleState.spider.puzzleCompleted
+            ? spiderFeedback.storyLineSuccess
+            : spiderFeedback.storyLineFailure,
+          isEncrypted: state.encryptionActive,
+        },
       ],
       itemLocation: {
         ...state.itemLocation,

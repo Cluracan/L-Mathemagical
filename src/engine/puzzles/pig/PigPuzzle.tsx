@@ -96,9 +96,13 @@ export const PigPuzzle = () => {
       },
       storyLine: [
         ...state.storyLine,
-        state.puzzleState.pig.puzzleCompleted
-          ? pigFeedback.storyLineSuccess
-          : pigFeedback.storyLineFailure,
+        {
+          type: "description",
+          text: state.puzzleState.pig.puzzleCompleted
+            ? pigFeedback.storyLineSuccess
+            : pigFeedback.storyLineFailure,
+          isEncrypted: state.encryptionActive,
+        },
       ],
     }));
   };
@@ -222,33 +226,31 @@ const Instructions = () => {
       <Paper
         elevation={8}
         sx={{
-          display:"flex",
-          flexDirection:"column",
-          justifyContent:"space-between",
-          height:"50vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          height: "50vh",
           width: "80%",
           padding: 4,
           margin: 4,
-
         }}
       >
         <div>
-        {pigFeedback.instructions.map((entry, index) => (
-          <Typography key={index} lineHeight={3}>
-            {entry}
-          </Typography>
-        ))}
+          {pigFeedback.instructions.map((entry, index) => (
+            <Typography key={index} lineHeight={3}>
+              {entry}
+            </Typography>
+          ))}
         </div>
         <Paper
           sx={{
-            alignSelf:"center",
-            justifySelf:"end",
+            alignSelf: "center",
+            justifySelf: "end",
             width: "80%",
             display: "flex",
-            justifyContent: "center",         
+            justifyContent: "center",
             padding: 4,
             backgroundColor: "transparent",
-            
           }}
         >
           Would you like to go first?

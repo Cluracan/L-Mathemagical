@@ -31,9 +31,11 @@ export const handleTurtlePuzzle: PipelineFunction = (payload) => {
   if (command === "move" && target === "d") {
     return produce(payload, (draft) => {
       draft.gameState.currentPuzzle = null;
-      draft.gameState.storyLine.push(
-        'As you leave the courtyard, the turtle wanders back to his starting slab. "Please come back when you are ready!" he calls.'
-      );
+      draft.gameState.storyLine.push({
+        type: "description",
+        text: 'As you leave the courtyard, the turtle wanders back to his starting slab. "Please come back when you are ready!" he calls.',
+        isEncrypted: draft.gameState.encryptionActive,
+      });
       draft.gameState.puzzleState.turtle = initialTurtleState;
     });
   }
@@ -47,17 +49,21 @@ export const handleTurtlePuzzle: PipelineFunction = (payload) => {
     const moveDirection = turtleMovement[target].direction;
 
     return produce(payload, (draft) => {
-      draft.gameState.storyLine.push(
-        `As you move one square to the ${moveDirection}, the turtle moves two squares to the ${moveDirection}.`
-      );
+      draft.gameState.storyLine.push({
+        type: "description",
+        text: `As you move one square to the ${moveDirection}, the turtle moves two squares to the ${moveDirection}.`,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
       draft.gameState.puzzleState.turtle.displacement = { x: nextX, y: nextY };
       draft.done = true;
 
       //win check
       if (nextX === 0 && nextY === 0) {
-        draft.gameState.storyLine.push(
-          "The turtle sidles up to meet you. He gives you a small rusty key which he was concealing in his shell. Then he scurries back to the centre of the courtyard and shuts his eyes."
-        );
+        draft.gameState.storyLine.push({
+          type: "description",
+          text: "The turtle sidles up to meet you. He gives you a small rusty key which he was concealing in his shell. Then he scurries back to the centre of the courtyard and shuts his eyes.",
+          isEncrypted: draft.gameState.encryptionActive,
+        });
         draft.gameState.puzzleState.turtle.puzzleCompleted = true;
         draft.gameState.itemLocation.rusty = "player";
         draft.gameState.currentPuzzle = null;
@@ -73,9 +79,11 @@ export const handleTurtlePuzzle: PipelineFunction = (payload) => {
     const yDirection = turtleLocation.y >= 0 ? "north" : "south";
 
     return produce(payload, (draft) => {
-      draft.gameState.storyLine.push(
-        `The turtle is ${String(yDistance)} squares to the ${yDirection} of you, and ${String(xDistance)} squares to the ${xDirection} of you.`
-      );
+      draft.gameState.storyLine.push({
+        type: "description",
+        text: `The turtle is ${String(yDistance)} squares to the ${yDirection} of you, and ${String(xDistance)} squares to the ${xDirection} of you.`,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
       draft.done = true;
     });
   }

@@ -66,7 +66,11 @@ export const SnookerPuzzle = () => {
         draft.showDialog = false;
         draft.currentPuzzle = null;
         draft.puzzleState.snooker = initialSnookerState;
-        draft.storyLine.push(snookerFeedback.storyLine);
+        draft.storyLine.push({
+          type: "description",
+          text: snookerFeedback.storyLine,
+          isEncrypted: draft.encryptionActive,
+        });
       })
     );
   };

@@ -69,9 +69,13 @@ export const PianoPuzzle = () => {
       },
       storyLine: [
         ...state.storyLine,
-        state.puzzleState.piano.puzzleCompleted
-          ? pianoFeedback.storyLineSuccess
-          : pianoFeedback.storyLineFailure,
+        {
+          type: "description",
+          text: state.puzzleState.piano.puzzleCompleted
+            ? pianoFeedback.storyLineSuccess
+            : pianoFeedback.storyLineFailure,
+          isEncrypted: state.encryptionActive,
+        },
       ],
       itemLocation: {
         ...state.itemLocation,

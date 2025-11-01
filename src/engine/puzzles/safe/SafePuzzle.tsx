@@ -59,9 +59,13 @@ export const SafePuzzle = () => {
       },
       storyLine: [
         ...state.storyLine,
-        state.puzzleState.safe.puzzleCompleted
-          ? safeFeedback.storyLineSuccess
-          : safeFeedback.storyLineFailure,
+        {
+          type: "description",
+          text: state.puzzleState.safe.puzzleCompleted
+            ? safeFeedback.storyLineSuccess
+            : safeFeedback.storyLineFailure,
+          isEncrypted: state.encryptionActive,
+        },
       ],
       keyLocked: { ...state.keyLocked, safe: false },
     }));

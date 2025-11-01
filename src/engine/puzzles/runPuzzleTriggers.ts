@@ -51,14 +51,22 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
         requiredItems.every((itemId) => itemLocation[itemId] === "player") &&
         feedback.puzzleIsComplete
       ) {
-        return stopWithSuccess(payload, feedback.puzzleIsComplete);
+        return stopWithSuccess({
+          payload,
+          text: feedback.puzzleIsComplete,
+          type: "description",
+        });
       }
       if (
         command === "look" &&
         Object.keys(examinableItems).includes(target) &&
         examinableItems[target].puzzleComplete
       ) {
-        return stopWithSuccess(payload, examinableItems[target].puzzleComplete);
+        return stopWithSuccess({
+          payload,
+          text: examinableItems[target].puzzleComplete,
+          type: "description",
+        });
       }
       break;
     }
@@ -72,7 +80,11 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
           const nextGameState = produce(gameState, (draft) => {
             draft.currentPuzzle = puzzleId;
             draft.showDialog = usesDialog;
-            draft.storyLine.push(feedback.puzzleAccept);
+            draft.storyLine.push({
+              type: "description",
+              text: feedback.puzzleAccept,
+              isEncrypted: draft.encryptionActive,
+            });
           });
 
           return { ...payload, gameState: nextGameState, done: true };
@@ -84,7 +96,11 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
         command === triggerPuzzleCommand &&
         rejectPuzzleText.includes(target)
       ) {
-        return stopWithSuccess(payload, feedback.puzzleReject);
+        return stopWithSuccess({
+          payload,
+          text: feedback.puzzleReject,
+          type: "description",
+        });
       }
 
       //examine clues
@@ -93,15 +109,20 @@ export const runPuzzleTriggers: PipelineFunction = (payload) => {
         Object.keys(examinableItems).includes(target) &&
         examinableItems[target].puzzleIncomplete
       ) {
-        return stopWithSuccess(
+        return stopWithSuccess({
           payload,
-          examinableItems[target].puzzleIncomplete
-        );
+          text: examinableItems[target].puzzleIncomplete,
+          type: "description",
+        });
       }
 
       //move check
       if (command === "move" && feedback.exitsBlocked) {
-        return failCommand(payload, feedback.exitsBlocked);
+        return failCommand({
+          payload,
+          text: feedback.exitsBlocked,
+          type: "description",
+        });
       }
       break;
   }

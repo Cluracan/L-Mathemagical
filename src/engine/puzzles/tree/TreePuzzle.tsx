@@ -17,6 +17,7 @@ import {
   TREE_COUNT,
   treeFeedback,
 } from "./treeConstants";
+import { createStoryElements } from "../../utils/createStoryElements";
 
 //Helper Functions
 const countTrees = (selectedCells: boolean[]) => {
@@ -65,10 +66,22 @@ export const TreePuzzle = () => {
         draft.showDialog = false;
         draft.currentPuzzle = null;
         if (puzzleCompleted) {
-          draft.storyLine.push(...treeFeedback.storyLineSuccess);
+          draft.storyLine.push(
+            ...createStoryElements({
+              type: "description",
+              text: treeFeedback.storyLineSuccess,
+              isEncrypted: draft.encryptionActive,
+            })
+          );
           draft.itemLocation.ladder = "player";
         } else {
-          draft.storyLine.push(...treeFeedback.storyLineFailure);
+          draft.storyLine.push(
+            ...createStoryElements({
+              type: "description",
+              text: treeFeedback.storyLineFailure,
+              isEncrypted: draft.encryptionActive,
+            })
+          );
           draft.puzzleState.tree.selectedCells = initialTreeState.selectedCells;
           draft.puzzleState.tree.feedback = initialTreeState.feedback;
         }

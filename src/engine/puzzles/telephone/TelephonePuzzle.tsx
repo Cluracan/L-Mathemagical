@@ -55,9 +55,13 @@ export const TelephonePuzzle = () => {
       puzzleState: { ...state.puzzleState, telephone: initialTelephoneState },
       storyLine: [
         ...state.storyLine,
-        puzzleCompleted
-          ? telephoneFeedback.storyLineSuccess
-          : telephoneFeedback.storyLineFailure,
+        {
+          type: "description",
+          text: puzzleCompleted
+            ? telephoneFeedback.storyLineSuccess
+            : telephoneFeedback.storyLineFailure,
+          isEncrypted: state.encryptionActive,
+        },
       ],
     });
   };

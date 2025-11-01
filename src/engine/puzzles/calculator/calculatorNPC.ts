@@ -28,7 +28,7 @@ export const calculatorNPC: PuzzleNPC = {
     },
     guard: {
       puzzleIncomplete:
-        "The guard is staring at some point a long way in the distance. He doesn't seem willing to move.",
+        "The guard is staring at some point a long way in the distance. He doesn't respond to any sounds you make, and you slowly realise that the guard is deaf.",
       puzzleComplete:
         "The guard has left the room, but you think you can still hear his screams from elsewhere in the palace.",
     },

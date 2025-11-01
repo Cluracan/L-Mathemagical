@@ -6,11 +6,10 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 
 export default defineConfig(
-  globalIgnores(["dist/", ".config/", "tsconfig.json", "eslint.config.js"]),
+  globalIgnores(["dist/", ".config/*", "tsconfig.json", "eslint.config.mjs"]),
   eslint.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
-
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   {
     files: ["**/*.{ts,tsx}"],
     plugins: {

@@ -142,15 +142,10 @@ export const blockedExitData = {
       "When you open this door you find a brick wall immediately behind it.",
     keyRequired: null,
   },
-} as const satisfies Partial<
-  Record<
-    RoomId,
-    {
-      direction: ExitDirection[];
-      lockedText: string;
-      keyRequired: ItemId | null;
-    }
-  >
->;
-
+} as const satisfies Partial<Record<RoomId, BlockedExitData>>;
+interface BlockedExitData {
+  direction: ExitDirection[];
+  lockedText: string;
+  keyRequired: ItemId | null;
+}
 export const isBlockedRoom = createKeyGuard(blockedExitData);

@@ -268,17 +268,16 @@ export const itemData = {
     },
     isDrinkable: false,
   },
-} as const satisfies Record<
-  string,
-  {
-    id: string;
-    initialLocation: RoomId;
-    descriptions: Record<"floor" | "inventory" | "pickUp" | "examine", string>;
-    isDrinkable: boolean;
-    heightChange?: Record<PlayerHeight, PlayerHeight>;
-    drinkMessage?: Record<PlayerHeight, string>;
-  }
->;
+} as const satisfies Record<string, ItemData>;
+
+interface ItemData {
+  id: string;
+  initialLocation: RoomId;
+  descriptions: Record<"floor" | "inventory" | "pickUp" | "examine", string>;
+  isDrinkable: boolean;
+  heightChange?: Record<PlayerHeight, PlayerHeight>;
+  drinkMessage?: Record<PlayerHeight, string>;
+}
 
 // Types
 

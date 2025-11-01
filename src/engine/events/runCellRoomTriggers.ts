@@ -17,7 +17,7 @@ const cellFeedback = {
     initial:
       "The abbot is sitting on a bench under a pear tree. As he sees you climb down, he hurries over to meet you.",
     success:
-      '"You\'ve found it!" exclaims the abbot on seeing the amulet around your neck. "And just in time!". He points up to the window, where you can see a Drogo guard peering out of the window. The abbot deftly flicks the rope ladder and it falls to the floor. He tucks this into his robe, along with the amulet that you pass to him.',
+      '"You\'ve found it!" exclaims the abbot on seeing the amulet around your neck. "And just in time!". He points up to the window, where you can see a Drogo guard peering out of the window. The abbot deftly flicks the rope ladder and it falls to the floor. He tucks this into his robe, along with the amulet that you pass to him.\n\n"I must leave you now - but you have my eternal thanks for your help!" says the abbot, before hurrying off. You stand and gaze around at the countryside, thinking over your adventure. You have many questions, but these questions will have to remain unanswered for now...',
     failure:
       '"You don\'t have the amulet!" cries the abbot. "Please, do go back and collect it!"',
   },
@@ -49,6 +49,7 @@ export const runCellRoomTriggers: PipelineFunction = (payload) => {
     case "move":
       {
         const playerHasAmulet = gameState.itemLocation.amulet === "player";
+        console.log(target, playerHasAmulet);
         if (target === "d" && gameState.ladderFixed) {
           return produce(payload, (draft) => {
             if (draft.gameState.ladderFixed) {
@@ -96,6 +97,7 @@ export const runCellRoomTriggers: PipelineFunction = (payload) => {
             }
           });
         }
+        console.log(target, playerHasAmulet);
         if (target === "e" && playerHasAmulet) {
           return produce(payload, (draft) => {
             draft.gameState.storyLine.push({

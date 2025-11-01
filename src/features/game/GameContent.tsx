@@ -1,4 +1,4 @@
-import { Box, Card, TextField } from "@mui/material";
+import { Box, Card, TextField, useTheme } from "@mui/material";
 import { memo, useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useGameStore } from "../../store/useGameStore";
 import { Canvas } from "./Canvas";
@@ -18,6 +18,9 @@ export const GameContent = memo(() => {
   const [trueInput, setTrueInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
   const { submitInput, reportAnimationComplete } = useGameController();
+
+  //TODO - refactor/remove this! (styled component or just extract storyline)
+  const theme = useTheme();
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -66,6 +69,7 @@ export const GameContent = memo(() => {
                 key={index}
                 sx={{
                   marginBottom: "1.5rem",
+                  color: theme.feedback[entry.type],
                 }}
               >
                 {entry.isEncrypted

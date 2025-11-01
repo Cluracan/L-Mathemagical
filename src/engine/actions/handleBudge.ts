@@ -28,7 +28,10 @@ const playerHasItems = (gameState: GameState) => {
 };
 
 const runChestTriggers: PipelineFunction = (payload) => {
-  if (payload.target !== "chest") {
+  if (
+    payload.target !== "chest" ||
+    payload.gameState.currentRoom !== "telephone"
+  ) {
     return payload;
   }
   return produce(payload, (draft) => {
@@ -41,7 +44,7 @@ const runChestTriggers: PipelineFunction = (payload) => {
     } else {
       draft.gameState.keyLocked.chest = false;
       draft.gameState.storyLine.push({
-        type: "action",
+        type: "description",
         text: chestFeedback.canMove,
         isEncrypted: draft.gameState.encryptionActive,
       });

@@ -5,6 +5,26 @@ import "@fontsource/orbitron/400.css";
 import "@fontsource/mystery-quest/400.css";
 import "@fontsource/dseg7/400.css";
 
+declare module "@mui/material/styles" {
+  interface Theme {
+    feedback: {
+      input: string;
+      description: string;
+      action: string;
+      warning: string;
+    };
+  }
+  // allow configuration using `createTheme()` https://mui.com/material-ui/customization/theming/
+  interface ThemeOptions {
+    feedback?: {
+      input?: string;
+      description?: string;
+      action?: string;
+      warning?: string;
+    };
+  }
+}
+
 const darkTheme = createTheme({
   typography: {
     fontSize: 18,
@@ -18,6 +38,12 @@ const darkTheme = createTheme({
       dark: "hsla(66, 61%, 37%, 1.00)",
       contrastText: "#211e08",
     },
+  },
+  feedback: {
+    input: "rgba(236, 255, 68, 1)",
+    description: "white",
+    action: "rgba(178, 250, 180, 1)",
+    warning: "rgba(255, 112, 102, 1)",
   },
 });
 

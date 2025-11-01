@@ -10,6 +10,7 @@ import type { PipelineFunction } from "../pipeline/types";
 import type { HandleCommand } from "../dispatchCommand";
 import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
 import { runAmuletTriggers } from "../events/runAmuletTriggers";
+import { runSpectacletriggers } from "../events/runSpectacleTrrggers";
 
 // Narrative Content
 const dropFeedback = {
@@ -53,6 +54,7 @@ const dropPipeline = [
   runGuardRoomTriggers,
   runRingTriggers,
   runAmuletTriggers,
+  runSpectacletriggers,
   dropItem,
 ];
 

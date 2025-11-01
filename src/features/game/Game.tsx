@@ -1,10 +1,10 @@
 import { Box, Card, TextField } from "@mui/material";
-import { useGameStore } from "../../store/useGameStore";
 import { memo, useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useGameStore } from "../../store/useGameStore";
 import { Canvas } from "./Canvas";
 import { useGameController } from "../../middleware/useGameController";
-
 import { PuzzleDialog } from "./PuzzleDialog";
+import { getSpectacleEncryption } from "../../utils/getSpectacleEncryption";
 
 export const GameContent = memo(() => {
   const storyLine = useGameStore((state) => {
@@ -14,7 +14,8 @@ export const GameContent = memo(() => {
   const modernMode = useGameStore((state) => state.modernMode);
   const showDialog = useGameStore((state) => state.showDialog);
   const currentPuzzle = useGameStore((state) => state.currentPuzzle);
-  const [userInput, setUserInput] = useState("");
+  const encryptionActive = useGameStore((state) => state.encryptionActive);
+  const [trueInput, setTrueInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
   const { submitInput, reportAnimationComplete } = useGameController();
 
@@ -23,13 +24,25 @@ export const GameContent = memo(() => {
   }, [storyLine]);
 
   const handleSubmit = (): void => {
-    submitInput(userInput);
-    setUserInput("");
+    submitInput(trueInput);
+    setTrueInput("");
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    //can now tranlate this when in spectacle mode
-    setUserInput(e.target.value);
+    //should be able to do this by taking currentInput and comparing to userInput - if deleted a section then return currentInput...if pasted a section then you would be in trouble, so maybe no ctrl v? or jsut handle 1 letter at a time to stop paste, but maybe only in encryption mode
+    const currentInput = e.target.value;
+    if (!encryptionActive) {
+      setTrueInput(currentInput);
+    } else {
+      if (currentInput.length > trueInput.length) {
+        const lastKeyEntered = currentInput[currentInput.length - 1];
+        const updatedTrueInput = trueInput + lastKeyEntered;
+        setTrueInput(updatedTrueInput);
+      } else if (currentInput.length < trueInput.length) {
+        const updatedTrueInput = trueInput.slice(0, currentInput.length);
+        setTrueInput(updatedTrueInput);
+      }
+    }
   };
 
   return (
@@ -55,7 +68,9 @@ export const GameContent = memo(() => {
                   marginBottom: "1.5rem",
                 }}
               >
-                {entry.text}
+                {entry.isEncrypted
+                  ? getSpectacleEncryption(entry.text)
+                  : entry.text}
               </Box>
             );
           })}
@@ -66,9 +81,13 @@ export const GameContent = memo(() => {
           autoFocus
           onChange={handleChange}
           onKeyDown={(e) => {
-            if (e.key === "Enter") handleSubmit();
+            if (e.key === "Enter") {
+              handleSubmit();
+            }
           }}
-          value={userInput}
+          value={
+            encryptionActive ? getSpectacleEncryption(trueInput) : trueInput
+          }
         ></TextField>
       </Box>
       {currentPuzzle && (

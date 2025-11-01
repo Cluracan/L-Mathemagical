@@ -23,6 +23,7 @@ import { runGuardRoomTriggers } from "../events/runGuardRoomTriggers";
 import { assertIsDefined } from "../utils/assertIsDefined";
 import { runCellRoomTriggers } from "../events/runCellRoomTriggers";
 import { createStoryElements } from "../utils/createStoryElements";
+import { runSpectacletriggers } from "../events/runSpectacleTrrggers";
 
 enableMapSet();
 
@@ -106,6 +107,7 @@ const movePipeline = [
   runBlockedTriggers,
   runDrogoTriggers,
   movePlayer,
+  runSpectacletriggers,
   applyRoomDescription,
 ];
 

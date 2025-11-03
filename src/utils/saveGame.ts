@@ -1,6 +1,8 @@
 import { useGameStore } from "../store/useGameStore";
 
 export const saveGame = () => {
+  let link: HTMLAnchorElement | null = null;
+  let url: string | null = null;
   try {
     const state = useGameStore.getState();
     const filteredState = Object.fromEntries(
@@ -8,8 +10,8 @@ export const saveGame = () => {
     );
     const json = JSON.stringify(filteredState);
     const blob = new Blob([json], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+    url = URL.createObjectURL(blob);
+    link = document.createElement("a");
     link.href = url;
     const fileName = `L-Mathemagical_Save_${state.playerName}_${String(Date.now())}.json`;
     link.download = fileName;
@@ -34,5 +36,12 @@ export const saveGame = () => {
         { type: "warning", text: "Error saving game", isEncrypted: false },
       ],
     }));
+  } finally {
+    if (link && document.body.contains(link)) {
+      document.body.removeChild(link);
+    }
+    if (url) {
+      URL.revokeObjectURL(url);
+    }
   }
 };

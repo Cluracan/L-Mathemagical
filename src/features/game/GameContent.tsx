@@ -41,7 +41,6 @@ export const GameContent = memo(() => {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    //should be able to do this by taking currentInput and comparing to userInput - if deleted a section then return currentInput...if pasted a section then you would be in trouble, so maybe no ctrl v? or jsut handle 1 letter at a time to stop paste, but maybe only in encryption mode
     const currentInput = e.target.value;
     if (!encryptionActive) {
       setTrueInput(currentInput);
@@ -91,8 +90,9 @@ export const GameContent = memo(() => {
         </Card>
 
         <UserInput
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          onSave={saveGame}
           trueInput={trueInput}
         />
       </Box>
@@ -106,12 +106,13 @@ export const GameContent = memo(() => {
 GameContent.displayName = "GameContent";
 
 interface UserInputArgs {
-  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: () => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: () => void;
+  onSave: () => void;
   trueInput: string;
 }
 const UserInput = (args: UserInputArgs) => {
-  const { handleChange, handleSubmit, trueInput } = args;
+  const { onChange, onSubmit, onSave, trueInput } = args;
   const encryptionActive = useGameStore((state) => state.encryptionActive);
   return (
     <TextField
@@ -125,17 +126,17 @@ const UserInput = (args: UserInputArgs) => {
                 <DarkMode />
                 <LightMode />
               </IconButton>
-              <IconButton onClick={saveGame}>
+              <IconButton onClick={onSave}>
                 <Save />
               </IconButton>
             </InputAdornment>
           ),
         },
       }}
-      onChange={handleChange}
+      onChange={onChange}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
-          handleSubmit();
+          onSubmit();
         }
       }}
       value={encryptionActive ? getSpectacleEncryption(trueInput) : trueInput}

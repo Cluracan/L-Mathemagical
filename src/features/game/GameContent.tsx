@@ -1,10 +1,19 @@
-import { Box, Card, TextField, useTheme } from "@mui/material";
+import {
+  Box,
+  Card,
+  IconButton,
+  InputAdornment,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import { memo, useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useGameStore } from "../../store/useGameStore";
 import { Canvas } from "./Canvas";
 import { useGameController } from "../../middleware/useGameController";
 import { PuzzleDialog } from "./PuzzleDialog";
 import { getSpectacleEncryption } from "../../utils/getSpectacleEncryption";
+import { DarkMode, LightMode, Save } from "@mui/icons-material";
+import { saveGame } from "../../utils/saveGame";
 
 export const GameContent = memo(() => {
   const storyLine = useGameStore((state) => {
@@ -80,19 +89,12 @@ export const GameContent = memo(() => {
           })}
           <div ref={bottomRef} />
         </Card>
-        <TextField
-          fullWidth
-          autoFocus
-          onChange={handleChange}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSubmit();
-            }
-          }}
-          value={
-            encryptionActive ? getSpectacleEncryption(trueInput) : trueInput
-          }
-        ></TextField>
+
+        <UserInput
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          trueInput={trueInput}
+        />
       </Box>
       {currentPuzzle && (
         <PuzzleDialog puzzleId={currentPuzzle} showDialog={showDialog} />
@@ -102,3 +104,41 @@ export const GameContent = memo(() => {
 });
 
 GameContent.displayName = "GameContent";
+
+interface UserInputArgs {
+  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: () => void;
+  trueInput: string;
+}
+const UserInput = (args: UserInputArgs) => {
+  const { handleChange, handleSubmit, trueInput } = args;
+  const encryptionActive = useGameStore((state) => state.encryptionActive);
+  return (
+    <TextField
+      fullWidth
+      autoFocus
+      slotProps={{
+        input: {
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton>
+                <DarkMode />
+                <LightMode />
+              </IconButton>
+              <IconButton onClick={saveGame}>
+                <Save />
+              </IconButton>
+            </InputAdornment>
+          ),
+        },
+      }}
+      onChange={handleChange}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleSubmit();
+        }
+      }}
+      value={encryptionActive ? getSpectacleEncryption(trueInput) : trueInput}
+    ></TextField>
+  );
+};

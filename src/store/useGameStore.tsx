@@ -9,7 +9,6 @@ import {
   type BathState,
 } from "../engine/events/runBathTriggers";
 import { type PuzzleId } from "../engine/puzzles/puzzleRegistry";
-
 import {
   initialKeyState,
   type KeyState,
@@ -79,8 +78,14 @@ import {
   initialComputerState,
   type ComputerState,
 } from "../engine/puzzles/computer/computerConstants";
+import { createKeyGuard } from "../utils/guards";
 
+// Constants
+export const SAVE_VERSION = "1.0.0";
+export const MAJOR_VERSION = SAVE_VERSION.split(".")[0];
+// Types
 export type EntryType = "input" | "description" | "action" | "warning";
+
 export interface StoryLineEntry {
   type: EntryType;
   text: string;
@@ -125,15 +130,10 @@ export interface GameStoreState {
   showDialog: boolean;
 }
 
-interface GameStoreActions {
-  setPlayerName: (playerName: string) => void;
-  toggleGameMode: () => void;
-  resetGameStore: () => void;
-}
+export type GameStore = GameStoreState;
 
-export type GameStore = GameStoreState & GameStoreActions;
-
-const initialGameState: GameStoreState = {
+// Initial State
+export const initialGameState = {
   playerName: "player 1",
   modernMode: true,
   currentRoom: "grass",
@@ -175,24 +175,19 @@ const initialGameState: GameStoreState = {
     turtle: initialTurtleState,
   },
   showDialog: false,
-};
+} as const satisfies GameStoreState;
 
+export const isGameStoreKey = createKeyGuard(initialGameState);
+export const isPuzzleStateKey = createKeyGuard(initialGameState.puzzleState);
+
+// GameStore
 export const useGameStore = create<GameStore>()(
   persist(
-    (set) => ({
+    (_) => ({
       ...initialGameState,
-      toggleGameMode: () => {
-        set((state) => ({ modernMode: !state.modernMode }));
-      },
-      setPlayerName: (playerName: string) => {
-        set({ playerName });
-      },
-      resetGameStore: () => {
-        set(initialGameState);
-      },
     }),
     {
-      name: "l-game-storage",
+      name: "l-mathemagical",
     }
   )
 );

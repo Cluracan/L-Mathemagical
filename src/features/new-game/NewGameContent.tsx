@@ -11,12 +11,23 @@ import {
   FormControlLabel,
   FormHelperText,
 } from "@mui/material";
-import { useGameStore } from "../../store/useGameStore";
+import { initialGameState, useGameStore } from "../../store/useGameStore";
 import entranceImage from "./images/entrance.png";
 import { Link } from "@tanstack/react-router";
 const validateName = (value: string): boolean => {
   const regex = /^[a-zA-Z0-9 ]+$/;
   return regex.test(value);
+};
+
+// Narrative Content
+const newGameFeedback = {
+  noName: "Please enter a team name, like 'Mel and Kim', or 'The A Team'",
+  invalidName:
+    "Please stick to alphanumeric characters (it helps with the save file)",
+  modernMode:
+    "This version includes an inventory log and a map - don't leave home without it!",
+  classicMode:
+    "The full 1984 experience. No map? No problem! You've got a pencil and paper, right?",
 };
 
 export const NewGameContent = () => {
@@ -25,31 +36,32 @@ export const NewGameContent = () => {
   const [error, setError] = useState<boolean>(false);
   const [helperText, setHelperText] = useState<string>(" ");
 
-  const { modernMode, setPlayerName, toggleGameMode, resetGameStore } =
-    useGameStore();
+  const modernMode = useGameStore((state) => state.modernMode);
   const navigate = useNavigate({ from: "/new" });
 
   useEffect(() => {
-    resetGameStore();
+    useGameStore.setState(initialGameState);
   }, []);
+
+  const handleToggleGameMode = () => {
+    useGameStore.setState((state) => ({
+      ...state,
+      modernMode: !state.modernMode,
+    }));
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (!name.trim()) {
       setError(true);
-      setHelperText(
-        "Please enter a team name, like 'Mel and Kim', or 'The A Team'"
-      );
+      setHelperText(newGameFeedback.noName);
     } else if (!validateName(name)) {
       setError(true);
-      setHelperText(
-        "Please stick to alphanumeric characters (it helps with the save file)"
-      );
+      setHelperText(newGameFeedback.invalidName);
     } else {
       setError(false);
       setHelperText(" ");
-      // resetGameStore();
-      setPlayerName(name);
+      useGameStore.setState((state) => ({ ...state, playerName: name }));
       navigate({
         to: "/game",
       }).catch((error: unknown) => {
@@ -106,13 +118,15 @@ export const NewGameContent = () => {
         />
         <FormGroup>
           <FormControlLabel
-            control={<Switch checked={modernMode} onChange={toggleGameMode} />}
+            control={
+              <Switch checked={modernMode} onChange={handleToggleGameMode} />
+            }
             label={modernMode ? "Modern Mode" : "Classic Mode"}
           />
           <FormHelperText sx={{ height: "4rem" }}>
             {modernMode
-              ? "This version includes an inventory log and a map - don't leave home without it!"
-              : "The full 1984 experience. No map? No problem! You've got a pencil and paper, right?"}
+              ? newGameFeedback.modernMode
+              : newGameFeedback.classicMode}
           </FormHelperText>
         </FormGroup>
         <Container sx={{ display: "flex", justifyContent: "space-between" }}>

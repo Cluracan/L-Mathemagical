@@ -29,6 +29,10 @@ class RoomRegistry {
     const nextRoom = exitMap[direction];
     return nextRoom ?? null;
   }
+
+  getRoomName(id: RoomId): string {
+    return roomData[id].mapText;
+  }
 }
 
 export const roomRegistry = new RoomRegistry();

@@ -1,45 +1,57 @@
-import { useGameStore } from "../store/useGameStore";
+import { produce } from "immer";
+import {
+  SAVE_VERSION,
+  useGameStore,
+  type GameStoreState,
+} from "../store/useGameStore";
+
+export interface SaveFile {
+  version: string;
+  gameData: GameStoreState;
+}
 
 export const saveGame = () => {
   let link: HTMLAnchorElement | null = null;
   let url: string | null = null;
   try {
     const state = useGameStore.getState();
-    const filteredState = Object.fromEntries(
-      Object.entries(state).filter(([_, value]) => typeof value !== "function")
-    );
-    const json = JSON.stringify(filteredState);
+    console.log(state.playerName);
+    const saveFile: SaveFile = {
+      version: SAVE_VERSION,
+      gameData: state,
+    };
+
+    const json = JSON.stringify(saveFile);
     const blob = new Blob([json], { type: "application/json" });
     url = URL.createObjectURL(blob);
     link = document.createElement("a");
     link.href = url;
-    const fileName = `L-Mathemagical_Save_${state.playerName}_${String(Date.now())}.json`;
+    const fileName = `L_${state.playerName}_${String(Date.now())}.sav`;
     link.download = fileName;
-    document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    useGameStore.setState((state) => ({
-      ...state,
-      storyLine: [
-        ...state.storyLine,
-        { type: "description", text: "Game saved", isEncrypted: false },
-      ],
-    }));
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.storyLine.push({
+          type: "description",
+          text: "Game saved",
+          isEncrypted: false,
+        });
+      })
+    );
   } catch (err) {
     console.error("Save game failed", err);
-    useGameStore.setState((state) => ({
-      ...state,
-      storyLine: [
-        ...state.storyLine,
-        { type: "warning", text: "Error saving game", isEncrypted: false },
-      ],
-    }));
+    useGameStore.setState((state) =>
+      produce(state, (draft) => {
+        draft.storyLine.push({
+          type: "warning",
+          text: "Error saving game",
+          isEncrypted: false,
+        });
+      })
+    );
   } finally {
-    if (link && document.body.contains(link)) {
-      document.body.removeChild(link);
-    }
     if (url) {
       URL.revokeObjectURL(url);
     }

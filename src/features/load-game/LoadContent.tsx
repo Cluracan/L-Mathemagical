@@ -147,13 +147,7 @@ export const LoadContent = () => {
         >
           {loadStatus.status === "empty" && <EmptyContent />}
           {loadStatus.status === "error" && <ErrorContent />}
-          {loadStatus.status === "loading" && (
-            <CircularProgress
-              enableTrackSlot
-              size={"4rem"}
-              sx={{ alignSelf: "center" }}
-            />
-          )}
+          {loadStatus.status === "loading" && <LoadingContent />}
           {loadStatus.status === "gameLoaded" && (
             <SaveGameContent
               gameData={loadStatus.gameData}
@@ -162,7 +156,9 @@ export const LoadContent = () => {
           )}
         </Card>
         <Stack direction={"row"} sx={{ m: 4, justifyContent: "space-around" }}>
-          <Button onClick={handleClick}>Choose File</Button>
+          <Button onClick={handleClick} aria-label="Choose a save file to load">
+            Choose File
+          </Button>
           <Button component={Link} to="/">
             Leave
           </Button>
@@ -172,10 +168,23 @@ export const LoadContent = () => {
   );
 };
 
+const LoadingContent = () => {
+  return (
+    <>
+      <CircularProgress
+        enableTrackSlot
+        size={"4rem"}
+        sx={{ alignSelf: "center" }}
+      />
+      <Typography sx={{ mt: 2 }}>Loading your save file...</Typography>
+    </>
+  );
+};
+
 const EmptyContent = () => {
   return (
     <>
-      <img style={{ height: "40vh" }} src={logoL} alt="L - Logo" />
+      <img style={{ height: "40vh" }} src={logoL} alt="" role="presentation" />
     </>
   );
 };

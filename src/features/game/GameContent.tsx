@@ -4,6 +4,7 @@ import {
   IconButton,
   InputAdornment,
   TextField,
+  Tooltip,
   useTheme,
 } from "@mui/material";
 import { memo, useEffect, useRef, useState, type ChangeEvent } from "react";
@@ -12,7 +13,7 @@ import { Canvas } from "./Canvas";
 import { useGameController } from "../../middleware/useGameController";
 import { PuzzleDialog } from "./PuzzleDialog";
 import { getSpectacleEncryption } from "../../utils/getSpectacleEncryption";
-import { DarkMode, LightMode, Save } from "@mui/icons-material";
+import { Save } from "@mui/icons-material";
 import { saveGame } from "../../utils/saveGame";
 
 export const GameContent = memo(() => {
@@ -122,13 +123,11 @@ const UserInput = (args: UserInputArgs) => {
         input: {
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton>
-                <DarkMode />
-                <LightMode />
-              </IconButton>
-              <IconButton onClick={onSave}>
-                <Save />
-              </IconButton>
+              <Tooltip title="Save game">
+                <IconButton aria-label="save" onClick={onSave}>
+                  <Save />
+                </IconButton>
+              </Tooltip>
             </InputAdornment>
           ),
         },

@@ -1,4 +1,11 @@
-import { Button, Card, CardActions, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardActions,
+  CircularProgress,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useRef, useState, type ChangeEvent } from "react";
 import type { SaveFile } from "../../utils/saveGame";
 import {
@@ -15,6 +22,7 @@ import logoL from "../index/images/LogoL.svg";
 type LoadStatus =
   | { status: "empty" }
   | { status: "error" }
+  | { status: "loading" }
   | { status: "gameLoaded"; gameData: GameStoreState };
 
 // Helpers
@@ -38,12 +46,13 @@ const isSaveFile = (result: unknown): result is SaveFile => {
     !hasOwnProperty(result, "version") ||
     !isVersion(result.version) ||
     !hasOwnProperty(result, "gameData") ||
-    typeof result.gameData !== "object" ||
-    result.gameData === null
+    result.gameData === null ||
+    typeof result.gameData !== "object"
   ) {
     return false;
   }
   const version = result.version.split(".");
+  console.log(result.gameData);
   return (
     version[0] === MAJOR_VERSION &&
     Object.keys(result.gameData).every(isGameStoreKey)
@@ -69,6 +78,7 @@ export const LoadContent = () => {
     if (!file) {
       return;
     }
+    setLoadStatus({ status: "loading" });
     const reader = new FileReader();
     reader.onload = ({ target }) => {
       const result = target?.result;
@@ -81,6 +91,7 @@ export const LoadContent = () => {
       }
       try {
         const parsed: unknown = JSON.parse(result);
+        console.log(parsed);
         if (!isSaveFile(parsed)) {
           console.error("Invalid save file or version mismatch");
           setLoadStatus({
@@ -100,14 +111,12 @@ export const LoadContent = () => {
       setLoadStatus({ status: "error" });
     };
     reader.readAsText(file, "UTF-8");
+    e.target.value = "";
   };
 
   const handleStartClick = (gameData: GameStoreState) => {
-    if (loadStatus.status !== "gameLoaded") {
-      return;
-    }
-
-    useGameStore.setState((state) => ({ ...state, gameData }));
+    useGameStore.setState(gameData);
+    setLoadStatus({ status: "loading" });
     navigate({
       to: "/game",
     }).catch((error: unknown) => {
@@ -138,6 +147,13 @@ export const LoadContent = () => {
         >
           {loadStatus.status === "empty" && <EmptyContent />}
           {loadStatus.status === "error" && <ErrorContent />}
+          {loadStatus.status === "loading" && (
+            <CircularProgress
+              enableTrackSlot
+              size={"4rem"}
+              sx={{ alignSelf: "center" }}
+            />
+          )}
           {loadStatus.status === "gameLoaded" && (
             <SaveGameContent
               gameData={loadStatus.gameData}

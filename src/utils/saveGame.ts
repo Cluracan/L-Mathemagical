@@ -15,7 +15,6 @@ export const saveGame = () => {
   let url: string | null = null;
   try {
     const state = useGameStore.getState();
-    console.log(state.playerName);
     const saveFile: SaveFile = {
       version: SAVE_VERSION,
       gameData: state,

@@ -70,8 +70,8 @@ export const LoadContent = () => {
       return;
     }
     const reader = new FileReader();
-    reader.onload = (readerEvent) => {
-      const result = readerEvent.target?.result;
+    reader.onload = ({ target }) => {
+      const result = target?.result;
       if (typeof result !== "string") {
         console.error("Unexpected FileReader result");
         setLoadStatus({
@@ -80,15 +80,15 @@ export const LoadContent = () => {
         return;
       }
       try {
-        const saveFile: unknown = JSON.parse(result);
-        if (!isSaveFile(saveFile)) {
+        const parsed: unknown = JSON.parse(result);
+        if (!isSaveFile(parsed)) {
           console.error("Invalid save file or version mismatch");
           setLoadStatus({
             status: "error",
           });
           return;
         }
-        const gameData = saveFile.gameData;
+        const gameData = parsed.gameData;
         setLoadStatus({ status: "gameLoaded", gameData });
       } catch (err) {
         console.error("Failed to parse save file", err);
@@ -207,7 +207,7 @@ const SaveGameContent = ({
         {completedPuzzleCount === 1 ? "puzzle" : "puzzles"}...
       </Typography>
       <Typography sx={{ mb: 2 }}>
-        They are currently at the {roomName}.
+        They are currently in the {roomName}.
       </Typography>
       <CardActions sx={{ display: "flex", justifyContent: "end" }}>
         <Button

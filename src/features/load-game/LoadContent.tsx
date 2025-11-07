@@ -52,7 +52,7 @@ const isSaveFile = (result: unknown): result is SaveFile => {
     return false;
   }
   const version = result.version.split(".");
-  console.log(result.gameData);
+
   return (
     version[0] === MAJOR_VERSION &&
     Object.keys(result.gameData).every(isGameStoreKey)
@@ -91,7 +91,7 @@ export const LoadContent = () => {
       }
       try {
         const parsed: unknown = JSON.parse(result);
-        console.log(parsed);
+
         if (!isSaveFile(parsed)) {
           console.error("Invalid save file or version mismatch");
           setLoadStatus({

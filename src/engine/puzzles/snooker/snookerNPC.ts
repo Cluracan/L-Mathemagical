@@ -22,12 +22,17 @@ export const snookerNPC: PuzzleNPC = {
   examinableItems: {
     table: {
       puzzleIncomplete:
-        "This snooker table is most unusual! It is elliptical in shape, and has a single pocket, located at one end of the table. Near to you there is a yellow ball, resting on the spot.",
+        "This snooker table is most unusual! It is elliptical in shape, and has a single pocket, located at one end of the table. There is a yellow ball, resting on the spot at the other end. You don't think anyone would mind if you used the cue to take a few shots...",
       puzzleComplete: null,
     },
     cue: {
       puzzleIncomplete:
         "The snooker cue is attached to the table by a long chain. You could still use it to play, though!",
+      puzzleComplete: null,
+    },
+    ball: {
+      puzzleIncomplete:
+        "The snooker ball is resting on its spot at one side of the table. There is a snooker cue nearby...",
       puzzleComplete: null,
     },
   },

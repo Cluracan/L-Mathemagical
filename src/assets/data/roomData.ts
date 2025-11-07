@@ -81,7 +81,7 @@ export const roomData = {
       long: "You are in a room where a huge creeper has grown through the windows and covers a large area of the room. Doors lead to the north and west",
       short: "You are in the creeper room.",
     },
-    mapText: "Creeper",
+    mapText: "Creeper room",
     exits: {
       n: "workshop",
       w: "narrowPassageS",
@@ -130,7 +130,7 @@ export const roomData = {
       long: "You are in a room containing a heavy black oak chest with intricate carvings on it. The only door leads to the south.",
       short: "You are in the telephone room.",
     },
-    mapText: "Telephone",
+    mapText: "Telephone room",
     exits: {
       s: "narrowPassageN",
       d: "cellar00",
@@ -166,7 +166,7 @@ export const roomData = {
       long: "You are in a boiler room, full of machinery which appears to have been standing idle for some time. In one corner is a spiral staircase which goes up. On the east side, a flight of steps leads down, and to the west, there is a door.",
       short: "You are in the boiler room.",
     },
-    mapText: "Boiler",
+    mapText: "Boiler room",
     exits: {
       u: "stairsSpiral",
       d: "longPassageW",
@@ -206,7 +206,7 @@ export const roomData = {
       short:
         "You are in a room with two doors. To the east is a massive oak door which is many hundreds of years old.  A smaller door leads to the west.",
     },
-    mapText: "File Room",
+    mapText: "File room",
     exits: {
       w: "longPassageE",
       e: "panelled",
@@ -256,7 +256,7 @@ export const roomData = {
       long: "You are in the old music room. The walls are blotched with damp and there are holes in the skirting board. A small window is open in the northwest corner of the room, obstructed by an old, battered telescope. There are doors to the east and west.",
       short: "You are in the old music room.",
     },
-    mapText: "Music",
+    mapText: "Music room",
     exits: {
       e: "solarium",
       w: "lobby",
@@ -281,7 +281,7 @@ export const roomData = {
       long: "You are in a room with doors to the south, west and east.",
       short: "You are in the snooker room.",
     },
-    mapText: "Snooker",
+    mapText: "Snooker room",
     exits: {
       e: "stoneLanding",
       w: "solarium",
@@ -319,7 +319,7 @@ export const roomData = {
       long: "You are in a room which has just one door leading west. Through a glass panel, below you, you can see a small theatre. Four coloured spotlights illuminate the empty stage.",
       short: "You are in the electrician's box.",
     },
-    mapText: "Lights",
+    mapText: "Lighting box",
     exits: {
       w: "stoneStairs",
     },
@@ -556,7 +556,7 @@ export const roomData = {
       long: "You are in an oriental room. Paintings of bamboo and red dragons cover the walls. The only door leads to the east.",
       short: "You are in the oriental room.",
     },
-    mapText: "Oriental",
+    mapText: "Oriental room",
     exits: {
       e: "code",
     },
@@ -578,7 +578,7 @@ export const roomData = {
       long: "You are in a panelled room. Round the walls are seventeen panels covered by wallpaper with a repeating pattern. Each pattern uses the same basic unit, but the way in which the unit is repeated is different for each panel. Doors lead to the west and north.",
       short: "You are in the panelled room.",
     },
-    mapText: "Panelled",
+    mapText: "Panelled room",
     exits: {
       w: "file",
       n: "gardenSW",
@@ -653,7 +653,7 @@ export const roomData = {
       long: "You are in a beautiful orchard and are surrounded by trees laden with many different kinds of fruit, some of which you have never seen before. There is a clearing in the centre of the orchard from which a path leads to the southwest.",
       short: "You are in the orchard.",
     },
-    mapText: "Gardener",
+    mapText: "Orchard",
     exits: {
       sw: "riverN",
     },
@@ -664,7 +664,7 @@ export const roomData = {
       long: "You are standing in the empty swimming pool. It slopes down gently towards the west. On the north side of the pool is a small hole, about 20cm square, which was once covered by a grating.",
       short: "You are standing in the swimming pool.",
     },
-    mapText: "In the pool",
+    mapText: "pool floor",
     exits: {
       u: "pool",
       in: "tunnelTop",
@@ -724,7 +724,7 @@ export const roomData = {
       long: "You are on the landing at the top of some wooden stairs. There is a door to the East here.",
       short: "You are at the top of the wooden stairs.",
     },
-    mapText: "woodenLanding",
+    mapText: "landing",
     exits: {
       d: "woodenStairs",
       e: "circular",
@@ -736,7 +736,7 @@ export const roomData = {
       long: "You are in a large circular room beneath a glass dome. Eight identical doors lead to the north, northwest, west, southwest, south, southeast, east, and northeast.",
       short: "You are in the circular room.",
     },
-    mapText: "Circular",
+    mapText: "Circular room",
     exits: {
       n: "broomCupboard",
       nw: "half",
@@ -815,7 +815,7 @@ export const roomData = {
       long: "You have entered a grim room with a triangular floor and three slanting triangular walls which meet at a point high above you. Doors lead off to the south and northwest. Hundreds of bats are hanging from the slanting walls.",
       short: "You are in the triangular room.",
     },
-    mapText: "Triangle",
+    mapText: "Triangle room",
     exits: {
       nw: "circular",
       s: "blue",
@@ -838,7 +838,7 @@ export const roomData = {
       long: "You are in a room with six walls. There is a door to the west. On the east wall is a brass plaque engraved with:-\n\n\t\t\t?@3+>*=@\n\t\t\t+33./",
       short: "You are in the room with six walls.",
     },
-    mapText: "Hexagon",
+    mapText: "Hexagonal room",
     exits: {
       w: "circular",
     },
@@ -861,7 +861,7 @@ export const roomData = {
       long: "You are at the south end of a passage, just inside the safe door. The passage has a strange soft appearance because the floor, walls, and ceiling are completely covered in a deep blue carpet.",
       short: "You are at the south end of the soft passage.",
     },
-    mapText: "Passage S",
+    mapText: "Passage",
     exits: {
       s: "safe",
       n: "carpetPassageN",
@@ -873,7 +873,7 @@ export const roomData = {
       long: "You are at the north end of the soft passage outside a wooden door.",
       short: "You are at the north end of the soft passage.",
     },
-    mapText: "Passage N",
+    mapText: "Passage",
     exits: {
       s: "carpetPassageS",
       n: "spider",
@@ -885,7 +885,7 @@ export const roomData = {
       long: "You are in a square room which is full of cobwebs. The only door leads south.",
       short: "You are in the spider room.",
     },
-    mapText: "Spider",
+    mapText: "Square room",
     exits: {
       s: "carpetPassageN",
     },
@@ -919,7 +919,7 @@ export const roomData = {
       long: "You are in a green room with a single door to the west. A large chandelier hangs from the ceiling and there are pieces of straw on the floor.",
       short: "You are in the green room.",
     },
-    mapText: "Pig",
+    mapText: "Green room",
     exits: {
       w: "atticPassage",
     },
@@ -930,7 +930,7 @@ export const roomData = {
       long: "You are in a room with grey walls and grey carpet tiles. A series of fluorescent tubes provide stark lighting along with a low buzzing sound. There is a door to the northeast.",
       short: "You are in the computer room.",
     },
-    mapText: "Computer",
+    mapText: "Computer room",
     exits: {
       ne: "circular",
     },
@@ -954,7 +954,7 @@ export const roomData = {
       short:
         "You are in the guard room.\n\nAbout a dozen Drogo Robot Guards are in an untidy line, beneath a huge poster of a middle-aged lady who is smiling resolutely.",
     },
-    mapText: "Guards",
+    mapText: "Guard room",
     exits: {
       n: "guardsPassage",
       w: "cell",

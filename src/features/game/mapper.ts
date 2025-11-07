@@ -207,7 +207,12 @@ export class Mapper {
     this.ctx.stroke();
     this.ctx.font = roomFont;
     this.ctx.textAlign = "center";
-    this.ctx.fillText(roomName, room.x + roomSize / 2, room.y + roomSize / 3);
+    this.ctx.fillText(
+      roomName,
+      room.x + roomSize / 2,
+      room.y + roomSize / 3,
+      roomSize
+    );
   }
 
   getRoomExits(roomId: RoomId) {

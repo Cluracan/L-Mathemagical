@@ -124,11 +124,16 @@ const StoryImage = ({ storyImage, width }: StoryImageProps) => {
   }, [storyImage]);
 
   return loaded ? (
-    <Fade in={true} timeout={1200}>
+    <Fade in={true} timeout={800}>
       <img src={storyImage.url} alt={storyImage.alt} style={{ width }} />
     </Fade>
   ) : (
-    <Skeleton animation="wave" width={width} height={"75vh"} />
+    <Skeleton
+      variant="rectangular"
+      animation="wave"
+      width={width}
+      height={"90vh"}
+    />
   );
 };
 

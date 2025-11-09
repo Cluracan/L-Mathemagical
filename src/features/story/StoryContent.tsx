@@ -124,7 +124,7 @@ const StoryImage = ({ storyImage, width }: StoryImageProps) => {
   }, [storyImage]);
 
   return loaded ? (
-    <Fade key={storyImage.url} in={true} timeout={800}>
+    <Fade in={true} timeout={1200}>
       <img src={storyImage.url} alt={storyImage.alt} style={{ width }} />
     </Fade>
   ) : (

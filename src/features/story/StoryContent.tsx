@@ -1,41 +1,102 @@
-import { Box, Button, Card, CardActions, CardContent } from "@mui/material";
-import { Link } from "@tanstack/react-router";
-import castleAscii from "./data/castleAscii.txt?raw";
-import mapFragment from "./images/mapFragment.png";
+import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+// import { Link } from "@tanstack/react-router";
+
+import { useState } from "react";
+import {
+  FiberManualRecord,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+} from "@mui/icons-material";
 import { storyText } from "./data/storyText";
-import { AsciiContent } from "../../components/AsciiContent";
-import { ImageZoom } from "../../components/ImageZoom";
-import { TextContent } from "../../components/TextContent";
+import river from "./images/river.png";
+import woods from "./images/woods.jpg";
+import paper from "./images/paper.jpg";
+import { Link } from "@tanstack/react-router";
+
+// Types
+interface StepperArgs {
+  handleNext: () => void;
+  handleBack: () => void;
+  activeStep: number;
+}
+
+const storyImage = [river, woods, paper];
 
 export const StoryContent = () => {
+  const [activeStep, setActiveStep] = useState(0);
+
+  const handleNext = () => {
+    setActiveStep((step) => step + 1);
+  };
+  const handleBack = () => {
+    setActiveStep((step) => step - 1);
+  };
   return (
     <>
-      <AsciiContent imageText={castleAscii} color="hsla(62, 67%, 69%, 1.00)" />
-      <Card
-        sx={{
-          maxWidth: "32vw",
-          maxHeight: "90vh",
-          overflowY: "auto",
-          padding: "2rem",
-        }}
+      <Button
+        variant="outlined"
+        component={Link}
+        to="/"
+        sx={{ position: "absolute", left: "2rem", top: "2rem" }}
       >
-        <CardContent>
-          <TextContent text={storyText} />
-        </CardContent>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <CardActions>
-            <Button variant="outlined" component={Link} to="/">
-              Back
-            </Button>
-          </CardActions>
-          <ImageZoom
-            src={mapFragment}
-            alt="A small fragment of a map"
-            smallSize="4rem"
-            largeSize="16rem"
-          />
-        </Box>
-      </Card>
+        Main Menu
+      </Button>
+      <Stack sx={{ width: "60vw", gap: 4, alignItems: "center" }}>
+        <img src={storyImage[activeStep]} style={{ width: "60vw" }} />
+
+        <Paper
+          sx={{
+            height: "12vh",
+            overflowY: "auto",
+            padding: 2,
+          }}
+        >
+          <Typography>{storyText[activeStep]}</Typography>
+        </Paper>
+        <Stepper
+          handleBack={handleBack}
+          handleNext={handleNext}
+          activeStep={activeStep}
+        />
+      </Stack>
     </>
+  );
+};
+
+const Stepper = (args: StepperArgs) => {
+  const { handleBack, handleNext, activeStep } = args;
+  const maxSteps = storyText.length;
+  return (
+    <Stack
+      direction={"row"}
+      sx={{ width: "100%", justifyContent: "space-around" }}
+    >
+      <Button
+        onClick={handleBack}
+        disabled={activeStep === 0}
+        startIcon={<KeyboardArrowLeft />}
+      >
+        Back
+      </Button>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        {storyText.map((_, i) => (
+          <FiberManualRecord
+            key={i}
+            sx={{
+              height: 0.5,
+              color: activeStep === i ? "primary.main" : "action.disabled",
+            }}
+          />
+        ))}
+      </Box>
+
+      <Button
+        onClick={handleNext}
+        disabled={activeStep === maxSteps - 1}
+        endIcon={<KeyboardArrowRight />}
+      >
+        Next
+      </Button>
+    </Stack>
   );
 };

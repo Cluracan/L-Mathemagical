@@ -1,4 +1,4 @@
-import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Fade, Paper, Stack, Typography } from "@mui/material";
 // import { Link } from "@tanstack/react-router";
 
 import { useState } from "react";
@@ -10,6 +10,7 @@ import {
 import { storyText } from "./data/storyText";
 import river from "./images/river.png";
 import woods from "./images/woods.jpg";
+import palace from "./images/palace.jpg";
 import paper from "./images/paper.jpg";
 import { Link } from "@tanstack/react-router";
 
@@ -20,7 +21,7 @@ interface StepperArgs {
   activeStep: number;
 }
 
-const storyImage = [river, woods, paper];
+const storyImage = [river, woods, palace, paper];
 
 export const StoryContent = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -42,7 +43,9 @@ export const StoryContent = () => {
         Main Menu
       </Button>
       <Stack sx={{ width: "60vw", gap: 4, alignItems: "center" }}>
-        <img src={storyImage[activeStep]} style={{ width: "60vw" }} />
+        <Fade in={true}>
+          <img src={storyImage[activeStep]} style={{ width: "60vw" }} />
+        </Fade>
 
         <Paper
           sx={{

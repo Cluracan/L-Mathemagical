@@ -131,7 +131,7 @@ export const NewGameContent = () => {
         </FormGroup>
         <Container sx={{ display: "flex", justifyContent: "space-between" }}>
           <Button variant="outlined" component={Link} to="/">
-            Back
+            Main Menu
           </Button>
           <Button variant="contained" type="submit">
             Start

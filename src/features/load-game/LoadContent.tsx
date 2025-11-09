@@ -156,11 +156,17 @@ export const LoadContent = () => {
           )}
         </Card>
         <Stack direction={"row"} sx={{ m: 4, justifyContent: "space-around" }}>
-          <Button onClick={handleClick} aria-label="Choose a save file to load">
-            Choose File
+          <Button variant="outlined" component={Link} to="/">
+            Main Menu
           </Button>
-          <Button component={Link} to="/">
-            Leave
+          <Button
+            variant={
+              loadStatus.status === "gameLoaded" ? "outlined" : "contained"
+            }
+            onClick={handleClick}
+            aria-label="Choose a save file to load"
+          >
+            Choose File
           </Button>
         </Stack>
       </Stack>
@@ -211,6 +217,7 @@ const SaveGameContent = ({
     (puzzle) => puzzle.puzzleCompleted
   ).length;
   const roomName = roomRegistry.getRoomName(gameData.currentRoom).toLowerCase();
+  const positionPrefix = roomRegistry.getPositionPrefix(gameData.currentRoom);
   return (
     <>
       <Typography sx={{ mb: 2, color: "text.secondary" }}>
@@ -232,7 +239,7 @@ const SaveGameContent = ({
         {completedPuzzleCount === 1 ? "puzzle" : "puzzles"}...
       </Typography>
       <Typography sx={{ mb: 2 }}>
-        They are currently in the {roomName}.
+        They are currently {positionPrefix} the {roomName}.
       </Typography>
       <CardActions sx={{ display: "flex", justifyContent: "end" }}>
         <Button

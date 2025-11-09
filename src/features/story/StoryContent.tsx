@@ -1,7 +1,15 @@
-import { Box, Button, Fade, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Fade,
+  Paper,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 // import { Link } from "@tanstack/react-router";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FiberManualRecord,
   KeyboardArrowLeft,
@@ -15,16 +23,45 @@ import paper from "./images/paper.jpg";
 import { Link } from "@tanstack/react-router";
 
 // Types
+interface StoryImageProps {
+  storyImage: { url: string; alt: string };
+  width: string;
+}
+
 interface StepperArgs {
   handleNext: () => void;
   handleBack: () => void;
   activeStep: number;
 }
 
-const storyImage = [river, woods, palace, paper];
+const storyImage = [
+  {
+    url: river,
+    alt: "Sunlight glints of the river as it winds through the trees",
+  },
+  {
+    url: woods,
+    alt: "Tall beech trees overhang the path as it continues through the woods.",
+  },
+  {
+    url: palace,
+    alt: "The beech trees frame a large meadow. In the distance is a medeival castle.",
+  },
+  {
+    url: paper,
+    alt: "A torn corner of a map stands in the grass, showing a single room, titled 'downstairs pantry",
+  },
+];
 
 export const StoryContent = () => {
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    storyImage.forEach(({ url }) => {
+      const img = new Image();
+      img.src = url;
+    });
+  }, []);
 
   const handleNext = () => {
     setActiveStep((step) => step + 1);
@@ -42,10 +79,17 @@ export const StoryContent = () => {
       >
         Main Menu
       </Button>
-      <Stack sx={{ width: "60vw", gap: 4, alignItems: "center" }}>
-        <Fade in={true}>
-          <img src={storyImage[activeStep]} style={{ width: "60vw" }} />
-        </Fade>
+      <Stack
+        sx={{
+          width: "60vw",
+          height: "100vh",
+          p: 2,
+          gap: 4,
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <StoryImage storyImage={storyImage[activeStep]} width="60vw" />
 
         <Paper
           sx={{
@@ -63,6 +107,29 @@ export const StoryContent = () => {
         />
       </Stack>
     </>
+  );
+};
+
+const StoryImage = (args: StoryImageProps) => {
+  const { storyImage, width } = args;
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const img = new Image();
+    img.src = storyImage.url;
+    img.onload = () => {
+      setLoaded(true);
+    };
+    return () => {
+      setLoaded(false);
+    };
+  }, [storyImage]);
+
+  return loaded ? (
+    <Fade key={storyImage.url} in={true} timeout={800}>
+      <img src={storyImage.url} alt={storyImage.alt} style={{ width }} />
+    </Fade>
+  ) : (
+    <Skeleton animation="wave" width={width} height={"75vh"} />
   );
 };
 

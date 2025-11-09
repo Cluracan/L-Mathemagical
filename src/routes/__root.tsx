@@ -1,5 +1,4 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import "@fontsource/orbitron/400.css";
 import "@fontsource/mystery-quest/400.css";
@@ -61,7 +60,6 @@ export const Route = createRootRoute({
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Outlet />
-        <TanStackRouterDevtools />
       </ThemeProvider>
     </Box>
   ),

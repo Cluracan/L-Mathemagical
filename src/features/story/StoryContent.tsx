@@ -49,7 +49,7 @@ const storyImage = [
   },
   {
     url: paper,
-    alt: "A torn corner of a map stands in the grass, showing a single room, titled 'downstairs pantry",
+    alt: "A torn corner of a map stands in the grass, showing a single room, titled 'downstairs pantry'",
   },
 ];
 
@@ -110,8 +110,7 @@ export const StoryContent = () => {
   );
 };
 
-const StoryImage = (args: StoryImageProps) => {
-  const { storyImage, width } = args;
+const StoryImage = ({ storyImage, width }: StoryImageProps) => {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     const img = new Image();

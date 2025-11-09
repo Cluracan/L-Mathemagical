@@ -8,6 +8,7 @@ export const roomData = {
       short: "You are sitting on the grass.",
     },
     mapText: "Grass",
+    positionPrefix: "on",
     exits: {
       n: "hallway",
     },
@@ -19,6 +20,7 @@ export const roomData = {
       short: "You are in the hall way.",
     },
     mapText: "Hallway",
+    positionPrefix: "in",
     exits: {
       n: "kitchen",
       s: "grass",
@@ -31,6 +33,7 @@ export const roomData = {
       short: "You are in the old kitchen",
     },
     mapText: "Kitchen",
+    positionPrefix: "in",
     exits: {
       n: "lShaped",
       e: "store",
@@ -46,6 +49,7 @@ export const roomData = {
         "You are in a large store room which has wooden shelves going up to the ceiling.",
     },
     mapText: "Store",
+    positionPrefix: "in",
     exits: {
       w: "kitchen",
       u: "shelf",
@@ -58,6 +62,7 @@ export const roomData = {
       short: "You are sitting on the top shelf in the store room.",
     },
     mapText: "Shelf",
+    positionPrefix: "on",
     exits: {
       d: "store",
     },
@@ -69,6 +74,7 @@ export const roomData = {
       short: "You are in the workshop.",
     },
     mapText: "Workshop",
+    positionPrefix: "in",
     exits: {
       e: "kitchen",
       s: "creeper",
@@ -82,6 +88,7 @@ export const roomData = {
       short: "You are in the creeper room.",
     },
     mapText: "Creeper room",
+    positionPrefix: "in",
     exits: {
       n: "workshop",
       w: "narrowPassageS",
@@ -94,6 +101,7 @@ export const roomData = {
       short: "You are at the south end of the narrow passage.",
     },
     mapText: "Passage",
+    positionPrefix: "in",
     exits: {
       n: "narrowPassage",
       e: "creeper",
@@ -106,6 +114,7 @@ export const roomData = {
       short: "You are in the middle of the narrow passage.",
     },
     mapText: "Passage",
+    positionPrefix: "in",
     exits: {
       n: "narrowPassageN",
       e: "workshop",
@@ -119,6 +128,7 @@ export const roomData = {
       short: "You are at the north end of the narrow passage.",
     },
     mapText: "Passage",
+    positionPrefix: "in",
     exits: {
       n: "telephone",
       s: "narrowPassage",
@@ -131,6 +141,7 @@ export const roomData = {
       short: "You are in the telephone room.",
     },
     mapText: "Telephone room",
+    positionPrefix: "in",
     exits: {
       s: "narrowPassageN",
       d: "cellar00",
@@ -143,6 +154,7 @@ export const roomData = {
       short: "You are in the L-shaped room.",
     },
     mapText: "L room",
+    positionPrefix: "in",
     exits: {
       s: "kitchen",
       e: "boiler",
@@ -156,6 +168,7 @@ export const roomData = {
       short: "You are in the large cupboard.",
     },
     mapText: "Cupboard",
+    positionPrefix: "in",
     exits: {
       e: "lShaped",
     },
@@ -167,6 +180,7 @@ export const roomData = {
       short: "You are in the boiler room.",
     },
     mapText: "Boiler room",
+    positionPrefix: "in",
     exits: {
       u: "stairsSpiral",
       d: "longPassageW",
@@ -181,6 +195,7 @@ export const roomData = {
       short: "You are at the west end of a long passage.",
     },
     mapText: "Passage",
+    positionPrefix: "in",
     exits: {
       u: "boiler",
       w: "boiler",
@@ -194,6 +209,7 @@ export const roomData = {
       short: "You are at the east end of a long passage.",
     },
     mapText: "Passage",
+    positionPrefix: "in",
     exits: {
       e: "file",
       w: "longPassageW",
@@ -207,6 +223,7 @@ export const roomData = {
         "You are in a room with two doors. To the east is a massive oak door which is many hundreds of years old.  A smaller door leads to the west.",
     },
     mapText: "File room",
+    positionPrefix: "in",
     exits: {
       w: "longPassageE",
       e: "panelled",
@@ -219,6 +236,7 @@ export const roomData = {
       short: "You are at the top of the spiral staircase.",
     },
     mapText: "Stairs",
+    positionPrefix: "on",
     exits: {
       e: "pool",
       d: "boiler",
@@ -231,6 +249,7 @@ export const roomData = {
       short: "You are in the room with the pool.",
     },
     mapText: "Pool",
+    positionPrefix: "in",
     exits: {
       e: "lobby",
       w: "stairsSpiral",
@@ -244,6 +263,7 @@ export const roomData = {
       short: "You are in the orange lobby.",
     },
     mapText: "Lobby",
+    positionPrefix: "in",
     exits: {
       e: "music",
       s: "limbo",
@@ -257,6 +277,7 @@ export const roomData = {
       short: "You are in the old music room.",
     },
     mapText: "Music room",
+    positionPrefix: "in",
     exits: {
       e: "solarium",
       w: "lobby",
@@ -269,6 +290,7 @@ export const roomData = {
       short: "You are in the solarium",
     },
     mapText: "Solarium",
+    positionPrefix: "in",
     exits: {
       e: "snooker",
       w: "music",
@@ -282,6 +304,7 @@ export const roomData = {
       short: "You are in the snooker room.",
     },
     mapText: "Snooker room",
+    positionPrefix: "in",
     exits: {
       e: "stoneLanding",
       w: "solarium",
@@ -295,6 +318,7 @@ export const roomData = {
       short: "You are on the landing of a stone staircase.",
     },
     mapText: "Landing",
+    positionPrefix: "on",
     exits: {
       u: "stoneStairs",
       w: "snooker",
@@ -308,6 +332,7 @@ export const roomData = {
       short: "You are at the top of the stone staircase.",
     },
     mapText: "Stairs",
+    positionPrefix: "on",
     exits: {
       e: "lights",
       d: "stoneLanding",
@@ -320,6 +345,7 @@ export const roomData = {
       short: "You are in the electrician's box.",
     },
     mapText: "Lighting box",
+    positionPrefix: "in",
     exits: {
       w: "stoneStairs",
     },
@@ -331,6 +357,7 @@ export const roomData = {
       short: "You are by the ladder in the cellar.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       u: "telephone",
       n: "cellar01",
@@ -344,6 +371,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "limbo",
       e: "cellar02",
@@ -359,6 +387,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "limbo",
       e: "cellar03",
@@ -374,6 +403,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "limbo",
       e: "cellar08",
@@ -389,6 +419,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "cellar02",
       e: "cellar05",
@@ -404,6 +435,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "cellar03",
       e: "cellar06",
@@ -419,6 +451,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "cellar08",
       e: "cellar10",
@@ -434,6 +467,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "cellar06",
       e: "limbo",
@@ -449,6 +483,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "cellar09",
       e: "limbo",
@@ -464,6 +499,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "limbo",
       e: "limbo",
@@ -479,6 +515,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "cellar11",
       e: "limbo",
@@ -494,6 +531,7 @@ export const roomData = {
         "You are in the cellar maze in a square room which is lit by a dim bulb. There are doors to the north, south, east and west.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       n: "cellar12",
       e: "limbo",
@@ -508,6 +546,7 @@ export const roomData = {
       short: "You are at the bottom of the stone steps.",
     },
     mapText: "Cellar",
+    positionPrefix: "in",
     exits: {
       e: "limbo",
       s: "cellar11",
@@ -522,6 +561,7 @@ export const roomData = {
       short: "You are in the turtle courtyard",
     },
     mapText: "Courtyard",
+    positionPrefix: "in",
     exits: {
       d: "cellar12",
     },
@@ -533,6 +573,7 @@ export const roomData = {
       short: "You are in the ante-room.",
     },
     mapText: "Ante-room",
+    positionPrefix: "in",
     exits: {
       n: "snooker",
       w: "code",
@@ -545,6 +586,7 @@ export const roomData = {
       short: "You are in the code room.",
     },
     mapText: "Code room",
+    positionPrefix: "in",
     exits: {
       e: "ante",
       w: "oriental",
@@ -557,6 +599,7 @@ export const roomData = {
       short: "You are in the oriental room.",
     },
     mapText: "Oriental room",
+    positionPrefix: "in",
     exits: {
       e: "code",
     },
@@ -568,6 +611,7 @@ export const roomData = {
       short: "You are in the great kitchen.",
     },
     mapText: "Kitchen",
+    positionPrefix: "in",
     exits: {
       u: "stoneLanding",
     },
@@ -579,6 +623,7 @@ export const roomData = {
       short: "You are in the panelled room.",
     },
     mapText: "Panelled room",
+    positionPrefix: "in",
     exits: {
       w: "file",
       n: "gardenSW",
@@ -591,6 +636,7 @@ export const roomData = {
       short: "You are in the south west corner of the walled garden.",
     },
     mapText: "Garden",
+    positionPrefix: "in",
     exits: {
       s: "panelled",
       n: "gardenN",
@@ -603,6 +649,7 @@ export const roomData = {
       short: "You are in the walled garden",
     },
     mapText: "Garden",
+    positionPrefix: "in",
     exits: {
       n: "riverS",
       s: "gardenSW",
@@ -616,6 +663,7 @@ export const roomData = {
       short: "You are on the balcony.",
     },
     mapText: "Balcony",
+    positionPrefix: "on",
     exits: {
       s: "solarium",
       d: "gardenN",
@@ -628,7 +676,8 @@ export const roomData = {
       short:
         "You are on the lawn beside the river.\n\nAn old and rusty tin bath is lying on the bank.",
     },
-    mapText: "River S",
+    mapText: "River",
+    positionPrefix: "at",
     exits: {
       s: "gardenN",
       n: "riverN",
@@ -641,7 +690,8 @@ export const roomData = {
       short:
         "You are on the north bank of the river.\n\nAn old and rusty tin bath is lying on the bank.",
     },
-    mapText: "River N",
+    mapText: "River",
+    positionPrefix: "at",
     exits: {
       ne: "orchard",
       s: "riverS",
@@ -654,6 +704,7 @@ export const roomData = {
       short: "You are in the orchard.",
     },
     mapText: "Orchard",
+    positionPrefix: "in",
     exits: {
       sw: "riverN",
     },
@@ -665,6 +716,7 @@ export const roomData = {
       short: "You are standing in the swimming pool.",
     },
     mapText: "pool floor",
+    positionPrefix: "on",
     exits: {
       u: "pool",
       in: "tunnelTop",
@@ -677,6 +729,7 @@ export const roomData = {
       short: "You are at the top of the tunnel.",
     },
     mapText: "Tunnel",
+    positionPrefix: "in",
     exits: {
       out: "poolFloor",
       d: "tunnelBottom",
@@ -689,6 +742,7 @@ export const roomData = {
       short: "You are at the bottom of the tunnel.",
     },
     mapText: "Tunnel",
+    positionPrefix: "in",
     exits: {
       u: "tunnelTop",
       s: "granite",
@@ -701,6 +755,7 @@ export const roomData = {
       short: "You are in a granite passage.",
     },
     mapText: "Passage",
+    positionPrefix: "in",
     exits: {
       n: "tunnelBottom",
       s: "woodenStairs",
@@ -713,6 +768,7 @@ export const roomData = {
       short: "You are at the bottom of the wooden stairs.",
     },
     mapText: "Stairs",
+    positionPrefix: "on",
     exits: {
       u: "landing",
       n: "granite",
@@ -725,6 +781,7 @@ export const roomData = {
       short: "You are at the top of the wooden stairs.",
     },
     mapText: "landing",
+    positionPrefix: "on",
     exits: {
       d: "woodenStairs",
       e: "circular",
@@ -737,6 +794,7 @@ export const roomData = {
       short: "You are in the circular room.",
     },
     mapText: "Circular room",
+    positionPrefix: "in",
     exits: {
       n: "broomCupboard",
       nw: "half",
@@ -755,6 +813,7 @@ export const roomData = {
       short: "You are in a broom cupboard.",
     },
     mapText: "Cupboard",
+    positionPrefix: "in",
     exits: {
       s: "circular",
     },
@@ -766,6 +825,7 @@ export const roomData = {
       short: "You are in the half-decorated room.",
     },
     mapText: "Half Room",
+    positionPrefix: "in",
     exits: {
       se: "circular",
       w: "mirror",
@@ -780,6 +840,7 @@ export const roomData = {
         "You have passed through a large door which covers the whole of one side of a wall.\n\nYou seem to be standing in a very long corridor with dozens of other people.",
     },
     mapText: "Corridor",
+    positionPrefix: "in",
     exits: {
       e: "half",
       w: "limbo",
@@ -792,6 +853,7 @@ export const roomData = {
       short: "You are at the bottom of the metal ladder.",
     },
     mapText: "Ladder",
+    positionPrefix: "on",
     exits: {
       s: "half",
       u: "ladderTop",
@@ -804,6 +866,7 @@ export const roomData = {
       short: "You are at the top of the metal ladder.",
     },
     mapText: "Ladder",
+    positionPrefix: "on",
     exits: {
       d: "ladderBottom",
       u: "attic",
@@ -816,6 +879,7 @@ export const roomData = {
       short: "You are in the triangular room.",
     },
     mapText: "Triangle room",
+    positionPrefix: "in",
     exits: {
       nw: "circular",
       s: "blue",
@@ -828,6 +892,7 @@ export const roomData = {
       short: "You are in the blue room.",
     },
     mapText: "Blue room",
+    positionPrefix: "in",
     exits: {
       n: "triangle",
     },
@@ -839,6 +904,7 @@ export const roomData = {
       short: "You are in the room with six walls.",
     },
     mapText: "Hexagonal room",
+    positionPrefix: "in",
     exits: {
       w: "circular",
     },
@@ -850,6 +916,7 @@ export const roomData = {
       short: "You are in the room with the safe",
     },
     mapText: "Safe",
+    positionPrefix: "in",
     exits: {
       n: "carpetPassageS",
       sw: "circular",
@@ -862,6 +929,7 @@ export const roomData = {
       short: "You are at the south end of the soft passage.",
     },
     mapText: "Passage",
+    positionPrefix: "in",
     exits: {
       s: "safe",
       n: "carpetPassageN",
@@ -874,6 +942,7 @@ export const roomData = {
       short: "You are at the north end of the soft passage.",
     },
     mapText: "Passage",
+    positionPrefix: "in",
     exits: {
       s: "carpetPassageS",
       n: "spider",
@@ -886,6 +955,7 @@ export const roomData = {
       short: "You are in the spider room.",
     },
     mapText: "Square room",
+    positionPrefix: "in",
     exits: {
       s: "carpetPassageN",
     },
@@ -897,6 +967,7 @@ export const roomData = {
       short: "You are in an attic room.",
     },
     mapText: "Attic",
+    positionPrefix: "in",
     exits: {
       e: "atticPassage",
     },
@@ -908,6 +979,7 @@ export const roomData = {
       short: "You are in the attic passage",
     },
     mapText: "Passage",
+    positionPrefix: "in",
     exits: {
       w: "attic",
       e: "pig",
@@ -920,6 +992,7 @@ export const roomData = {
       short: "You are in the green room.",
     },
     mapText: "Green room",
+    positionPrefix: "in",
     exits: {
       w: "atticPassage",
     },
@@ -931,6 +1004,7 @@ export const roomData = {
       short: "You are in the computer room.",
     },
     mapText: "Computer room",
+    positionPrefix: "in",
     exits: {
       ne: "circular",
     },
@@ -942,6 +1016,7 @@ export const roomData = {
       short: "You are in a narrow passage.",
     },
     mapText: "Passage",
+    positionPrefix: "in",
     exits: {
       n: "circular",
       s: "guards",
@@ -955,6 +1030,7 @@ export const roomData = {
         "You are in the guard room.\n\nAbout a dozen Drogo Robot Guards are in an untidy line, beneath a huge poster of a middle-aged lady who is smiling resolutely.",
     },
     mapText: "Guard room",
+    positionPrefix: "in",
     exits: {
       n: "guardsPassage",
       w: "cell",
@@ -967,6 +1043,7 @@ export const roomData = {
       short: "You are in a cell.",
     },
     mapText: "Cell",
+    positionPrefix: "in",
     exits: {
       e: "guards",
       d: "grounds",
@@ -979,6 +1056,7 @@ export const roomData = {
       short: "You are in the palace grounds.",
     },
     mapText: "Grounds",
+    positionPrefix: "in",
     exits: {},
   },
   pit: {
@@ -989,6 +1067,7 @@ export const roomData = {
         "You are in the pit, although you shouldn't be. How did you get here?",
     },
     mapText: "Pit",
+    positionPrefix: "in",
     exits: {},
   },
   limbo: {
@@ -999,6 +1078,7 @@ export const roomData = {
         "You are in Limbo, which is another classic MUD destination. Well, maybe 'classic' is pushing it a little. Anyway, if you're reading this, you should be able to escape.",
     },
     mapText: "Limbo",
+    positionPrefix: "in",
     exits: { u: "kitchen" },
   },
 } as const satisfies Record<
@@ -1007,6 +1087,7 @@ export const roomData = {
     id: string;
     descriptions: Record<"long" | "short", string>;
     mapText: string;
+    positionPrefix: string;
     exits: Partial<Record<ExitDirection, string>>;
   }
 >;

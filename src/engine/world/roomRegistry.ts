@@ -33,6 +33,8 @@ class RoomRegistry {
   getRoomName(id: RoomId): string {
     return roomData[id].mapText;
   }
+  getPositionPrefix(id: RoomId): string {
+    return roomData[id].positionPrefix;
+  }
 }
-
 export const roomRegistry = new RoomRegistry();

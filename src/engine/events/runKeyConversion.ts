@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import { isItemId, keyList } from "../../assets/data/itemData";
 import type { PipelineFunction } from "../pipeline/types";
 
@@ -12,36 +13,56 @@ export const runKeyConversion: PipelineFunction = (payload) => {
 
   if (target !== "key") return payload;
 
-  const keyInRoom = keyList.find(
+  const keyInRoom = keyList.filter(
     (keyId) => itemLocation[keyId] === currentRoom
   );
 
-  const keyOnPlayer = keyList.find((keyId) => itemLocation[keyId] === "player");
+  const keyOnPlayer = keyList.filter(
+    (keyId) => itemLocation[keyId] === "player"
+  );
 
-  let convertedTarget: string | undefined = undefined;
+  let availableKeys: string[] = [];
 
   switch (command) {
     case "get":
-      convertedTarget = keyInRoom;
+      availableKeys = keyInRoom;
       break;
     case "drop":
-      convertedTarget = keyOnPlayer;
+      availableKeys = keyOnPlayer;
       break;
     case "use":
-      convertedTarget = keyOnPlayer;
+      availableKeys = keyOnPlayer;
       break;
     case "look":
-      // OR is correct here: prefer a key on player, but fall back to a key in room (or none).
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      convertedTarget = keyOnPlayer || keyInRoom;
+      availableKeys = keyOnPlayer.length > 0 ? keyOnPlayer : keyInRoom;
       break;
     //other commands are unaffected
     default:
       return payload;
   }
+  // Multiple keys
+  if (availableKeys.length > 1) {
+    const actionVerb = command === "look" ? "look at" : command;
+    const inputSuggestions = availableKeys
+      .map(
+        (key, index) =>
+          `${index === availableKeys.length - 1 ? 'or "' : '"'}${command} ${key}"`
+      )
+      .join(availableKeys.length === 2 ? " " : ", ");
+    const feedback = `Which key would you like to ${actionVerb}? Try ${inputSuggestions}.`;
+    return produce(payload, (draft) => {
+      draft.gameState.storyLine.push({
+        type: "warning",
+        text: feedback,
+        isEncrypted: draft.gameState.encryptionActive,
+      });
+      draft.done = true;
+    });
+  }
+
   // Key was found
-  if (convertedTarget && isItemId(convertedTarget)) {
-    return { ...payload, target: convertedTarget };
+  if (availableKeys.length === 1 && isItemId(availableKeys[0])) {
+    return { ...payload, target: availableKeys[0] };
   }
   // Else
   return payload;

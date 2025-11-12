@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LoadContent } from "../features/load-game/LoadContent";
+import { Background } from "../components/Background";
+import desk from "../features/load-game/images/desk.png";
 
 export const Route = createFileRoute("/load")({
   component: RouteComponent,
@@ -8,7 +10,9 @@ export const Route = createFileRoute("/load")({
 function RouteComponent() {
   return (
     <>
-      <LoadContent />
+      <Background src={desk}>
+        <LoadContent />
+      </Background>
     </>
   );
 }

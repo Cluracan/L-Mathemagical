@@ -3,6 +3,7 @@ import { Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import "@fontsource/orbitron/400.css";
 import "@fontsource/mystery-quest/400.css";
 import "@fontsource/dseg7/400.css";
+import "@fontsource/charm/400.css";
 
 declare module "@mui/material/styles" {
   interface Theme {

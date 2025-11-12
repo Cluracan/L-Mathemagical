@@ -1,8 +1,8 @@
 import {
   Button,
-  Card,
   CardActions,
   CircularProgress,
+  Paper,
   Stack,
   Typography,
 } from "@mui/material";
@@ -16,8 +16,9 @@ import {
 } from "../../store/useGameStore";
 import { roomRegistry } from "../../engine/world/roomRegistry";
 import { useNavigate } from "@tanstack/react-router";
-import logoL from "../index/images/LogoL.svg";
+
 import { HomeLink } from "../../components/HomeLink";
+import { itemRegistry } from "../../engine/world/itemRegistry";
 
 // Types
 type LoadStatus =
@@ -115,8 +116,11 @@ export const LoadContent = () => {
     e.target.value = "";
   };
 
-  const handleStartClick = (gameData: GameStoreState) => {
-    useGameStore.setState(gameData);
+  const handleStartClick = () => {
+    if (loadStatus.status !== "gameLoaded") {
+      return;
+    }
+    useGameStore.setState(loadStatus.gameData);
     setLoadStatus({ status: "loading" });
     navigate({
       to: "/game",
@@ -137,14 +141,15 @@ export const LoadContent = () => {
           onChange={handleFileChange}
           style={{ display: "none" }}
         />
-        <Card
+        <Paper
+          elevation={6}
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            minWidth: "20vw",
-            minHeight: "30vh",
-            padding: 4,
+            backgroundColor: "#fff8dc",
+            color: "#000",
+            padding: 3,
+            width: "16vw",
+            aspectRatio: 0.707,
+            "& .MuiTypography-root": { fontFamily: "charm", mt: 2 },
           }}
         >
           {loadStatus.status === "empty" && <EmptyContent />}
@@ -156,7 +161,7 @@ export const LoadContent = () => {
               onStartClick={handleStartClick}
             />
           )}
-        </Card>
+        </Paper>
         <Stack direction={"row"} sx={{ m: 4, justifyContent: "space-around" }}>
           <Button
             variant={
@@ -187,19 +192,16 @@ const LoadingContent = () => {
 };
 
 const EmptyContent = () => {
-  return (
-    <>
-      <img style={{ height: "40vh" }} src={logoL} alt="" role="presentation" />
-    </>
-  );
+  return <Typography sx={{ mt: 2 }}>Choose your destiny...</Typography>;
 };
 
 const ErrorContent = () => {
   return (
     <>
-      <Typography>Uh oh! Something has gone wrong!</Typography>
-      <Typography>Please try again,</Typography>
-      <Typography>or try a different save file.</Typography>
+      <Typography sx={{ color: "red" }}>
+        Uh oh! Something has gone wrong!
+      </Typography>
+      <Typography>Please try again, or try a different save file.</Typography>
     </>
   );
 };
@@ -209,7 +211,7 @@ const SaveGameContent = ({
   onStartClick,
 }: {
   gameData: GameStoreState;
-  onStartClick: (gameData: GameStoreState) => void;
+  onStartClick: () => void;
 }) => {
   const { puzzleState } = gameData;
   const completedPuzzleCount = Object.values(puzzleState).filter(
@@ -217,36 +219,35 @@ const SaveGameContent = ({
   ).length;
   const roomName = roomRegistry.getRoomName(gameData.currentRoom).toLowerCase();
   const positionPrefix = roomRegistry.getPositionPrefix(gameData.currentRoom);
+  const inventoryCount = itemRegistry
+    .getItemList()
+    .filter((item) => gameData.itemLocation[item] === "player").length;
+
   return (
     <>
-      <Typography sx={{ mb: 2, color: "text.secondary" }}>
+      <Typography sx={{ mb: 2, color: "black" }}>
         The story so far...
       </Typography>
       <Typography>
-        {gameData.playerName} boldly ventured into the palace some time ago.
+        Going by the name {gameData.playerName}, you ventured into the palace
+        some time ago.
       </Typography>
       <Typography>
         {gameData.modernMode
-          ? "With the help of a magical map, and a little luck,"
-          : "With only their wits and a pencil and paper to help,"}
-      </Typography>
-      <Typography>
-        they have visited {gameData.visitedRooms.length} rooms thus far,
-      </Typography>
-      <Typography>
-        and solved {completedPuzzleCount}{" "}
-        {completedPuzzleCount === 1 ? "puzzle" : "puzzles"}...
+          ? "With the help of a magical map, and a little luck, "
+          : "With only your wits and a pencil and paper to help, "}
+        you have visited {gameData.visitedRooms.length} rooms thus far, and have
+        solved {completedPuzzleCount}{" "}
+        {completedPuzzleCount === 1 ? "puzzle" : "puzzles"}.
       </Typography>
       <Typography sx={{ mb: 2 }}>
-        They are currently {positionPrefix} the {roomName}.
+        You are currently {positionPrefix} the {roomName}, carrying{" "}
+        {String(inventoryCount)} {inventoryCount === 1 ? "item" : "items"}.
       </Typography>
-      <CardActions sx={{ display: "flex", justifyContent: "end" }}>
-        <Button
-          variant="contained"
-          onClick={() => {
-            onStartClick(gameData);
-          }}
-        >
+      <CardActions
+        sx={{ display: "flex", justifyContent: "end", alignItems: "end" }}
+      >
+        <Button variant="contained" onClick={onStartClick}>
           Continue
         </Button>
       </CardActions>

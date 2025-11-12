@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { NewGameContent } from "../features/new-game/NewGameContent";
 import { Background } from "../components/Background";
-import entrance from "../features/new-game/images/entrance.png";
+import entrance from "../features/new-game/images/entrance.webp";
 
 export const Route = createFileRoute("/new")({
   component: RouteComponent,

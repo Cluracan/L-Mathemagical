@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { StoryContent } from "../features/story/StoryContent";
 import { Background } from "../components/Background";
-import wall from "../features/story/images/greenWall.png";
+import wall from "../features/story/images/greenWall.webp";
 
 export const Route = createFileRoute("/story")({
   component: RouteComponent,

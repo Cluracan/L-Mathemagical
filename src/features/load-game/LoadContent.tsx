@@ -15,8 +15,9 @@ import {
   type GameStoreState,
 } from "../../store/useGameStore";
 import { roomRegistry } from "../../engine/world/roomRegistry";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import logoL from "../index/images/LogoL.svg";
+import { HomeLink } from "../../components/HomeLink";
 
 // Types
 type LoadStatus =
@@ -127,6 +128,7 @@ export const LoadContent = () => {
   // Render
   return (
     <>
+      <HomeLink />
       <Stack>
         <input
           ref={inputRef}
@@ -137,12 +139,12 @@ export const LoadContent = () => {
         />
         <Card
           sx={{
-            minWidth: "20vw",
-            minHeight: "30vh",
-            padding: 4,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
+            minWidth: "20vw",
+            minHeight: "30vh",
+            padding: 4,
           }}
         >
           {loadStatus.status === "empty" && <EmptyContent />}
@@ -156,9 +158,6 @@ export const LoadContent = () => {
           )}
         </Card>
         <Stack direction={"row"} sx={{ m: 4, justifyContent: "space-around" }}>
-          <Button variant="outlined" component={Link} to="/">
-            Main Menu
-          </Button>
           <Button
             variant={
               loadStatus.status === "gameLoaded" ? "outlined" : "contained"

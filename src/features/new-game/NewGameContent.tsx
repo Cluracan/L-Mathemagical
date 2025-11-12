@@ -11,8 +11,9 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { initialGameState, useGameStore } from "../../store/useGameStore";
+import { HomeLink } from "../../components/HomeLink";
 
-import { Link } from "@tanstack/react-router";
+// Helpers
 const validateName = (value: string): boolean => {
   const regex = /^[a-zA-Z0-9 ]+$/;
   return regex.test(value);
@@ -79,14 +80,7 @@ export const NewGameContent = () => {
 
   return (
     <>
-      <Button
-        variant="outlined"
-        component={Link}
-        to="/"
-        sx={{ position: "absolute", left: "2rem", top: "2rem" }}
-      >
-        Main Menu
-      </Button>
+      <HomeLink />
       <Card
         component="form"
         onSubmit={handleSubmit}

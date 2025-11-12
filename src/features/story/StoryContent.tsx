@@ -7,7 +7,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-// import { Link } from "@tanstack/react-router";
 
 import { useEffect, useState } from "react";
 import {
@@ -21,8 +20,7 @@ import woods from "./images/woodsColor.png";
 import palace from "./images/palaceColor.png";
 import paper from "./images/paperColor2.png";
 import frame from "./images/frame.png";
-
-import { Link } from "@tanstack/react-router";
+import { HomeLink } from "../../components/HomeLink";
 
 // Types
 interface StoryImageProps {
@@ -75,14 +73,15 @@ export const StoryContent = () => {
   };
   return (
     <>
-      <Button
+      <HomeLink />
+      {/* <Button
         variant="outlined"
         component={Link}
         to="/"
         sx={{ position: "absolute", left: "2rem", top: "2rem" }}
       >
         Main Menu
-      </Button>
+      </Button> */}
       <Stack
         sx={{
           width: "40vw",

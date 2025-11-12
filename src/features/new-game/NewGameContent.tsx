@@ -3,7 +3,6 @@ import { useNavigate } from "@tanstack/react-router";
 import {
   Card,
   Button,
-  Container,
   Switch,
   TextField,
   Typography,
@@ -12,7 +11,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { initialGameState, useGameStore } from "../../store/useGameStore";
-import entranceImage from "./images/entrance.png";
+
 import { Link } from "@tanstack/react-router";
 const validateName = (value: string): boolean => {
   const regex = /^[a-zA-Z0-9 ]+$/;
@@ -79,25 +78,22 @@ export const NewGameContent = () => {
   };
 
   return (
-    <Container
-      sx={{
-        backgroundImage: `url(${entranceImage})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "bottom",
-        height: "90vh",
-        width: "80vw ",
-      }}
-    >
+    <>
+      <Button
+        variant="outlined"
+        component={Link}
+        to="/"
+        sx={{ position: "absolute", left: "2rem", top: "2rem" }}
+      >
+        Main Menu
+      </Button>
       <Card
         component="form"
         onSubmit={handleSubmit}
         sx={{
           maxWidth: "600px",
-          m: "auto",
-          mt: 5,
           padding: 6,
-          bgcolor: "rgba(28, 28, 28, 0.6)",
+          bgcolor: "rgba(28, 28, 28, 0.8)",
         }}
       >
         <Typography variant="h5" align="center" sx={{ mb: 4 }}>
@@ -129,15 +125,11 @@ export const NewGameContent = () => {
               : newGameFeedback.classicMode}
           </FormHelperText>
         </FormGroup>
-        <Container sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Button variant="outlined" component={Link} to="/">
-            Main Menu
-          </Button>
-          <Button variant="contained" type="submit">
-            Start
-          </Button>
-        </Container>
+
+        <Button variant="contained" type="submit">
+          Start
+        </Button>
       </Card>
-    </Container>
+    </>
   );
 };

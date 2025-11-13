@@ -42,6 +42,10 @@ interface StepperArgs {
   activeStep: number;
 }
 
+interface StoryTextProps {
+  storyText: string;
+}
+
 // Constants
 const IMAGE_ASPECT_RATIO = 1.5;
 const storyImage = [
@@ -64,8 +68,10 @@ const storyImage = [
 ];
 
 export const StoryContent = () => {
+  // State
   const [activeStep, setActiveStep] = useState(0);
 
+  // Effects
   useEffect(() => {
     storyImage.forEach(({ url }) => {
       const img = new Image();
@@ -73,16 +79,18 @@ export const StoryContent = () => {
     });
   }, []);
 
+  // Handlers
   const handleNext = () => {
     setActiveStep((step) => step + 1);
   };
   const handleBack = () => {
     setActiveStep((step) => step - 1);
   };
+
+  // Render
   return (
     <>
       <HomeLink />
-
       <Stack
         sx={{
           height: "100vh",
@@ -100,22 +108,7 @@ export const StoryContent = () => {
           handleNext={handleNext}
           activeStep={activeStep}
         />
-        <Paper
-          elevation={6}
-          sx={{
-            width: "30vw",
-            padding: 2,
-            overflowY: "auto",
-            backgroundColor: "gold",
-            color: "black",
-            "& .MuiTypography-root": {
-              fontFamily: "charm",
-              letterSpacing: 0.5,
-            },
-          }}
-        >
-          <Typography>{storyText[activeStep]}</Typography>
-        </Paper>
+        <StoryText storyText={storyText[activeStep]} />
       </Stack>
     </>
   );
@@ -216,5 +209,26 @@ const Stepper = (args: StepperArgs) => {
         Next
       </Button>
     </Stack>
+  );
+};
+
+const StoryText = ({ storyText }: StoryTextProps) => {
+  return (
+    <Paper
+      elevation={6}
+      sx={{
+        width: "30vw",
+        padding: 2,
+        overflowY: "auto",
+        backgroundColor: "gold",
+        color: "black",
+        "& .MuiTypography-root": {
+          fontFamily: "charm",
+          letterSpacing: 0.5,
+        },
+      }}
+    >
+      <Typography>{storyText}</Typography>
+    </Paper>
   );
 };

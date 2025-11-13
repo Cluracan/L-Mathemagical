@@ -1,14 +1,14 @@
 import {
   Box,
   Button,
+  Container,
   Fade,
   Paper,
-  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState, type PropsWithChildren } from "react";
 import {
   FiberManualRecord,
   KeyboardArrowLeft,
@@ -23,9 +23,17 @@ import frame from "./images/frame.png";
 import { HomeLink } from "../../components/HomeLink";
 
 // Types
+interface StoryPaintingProps {
+  storyImage: { url: string; alt: string };
+  height: string;
+}
+
+interface StoryFrameProps extends PropsWithChildren {
+  height: string;
+}
+
 interface StoryImageProps {
   storyImage: { url: string; alt: string };
-  width: string;
 }
 
 interface StepperArgs {
@@ -74,25 +82,18 @@ export const StoryContent = () => {
   return (
     <>
       <HomeLink />
-      {/* <Button
-        variant="outlined"
-        component={Link}
-        to="/"
-        sx={{ position: "absolute", left: "2rem", top: "2rem" }}
-      >
-        Main Menu
-      </Button> */}
+
       <Stack
         sx={{
-          width: "40vw",
           height: "100vh",
+          width: "50vw",
           p: 2,
           gap: 4,
           alignItems: "center",
           justifyContent: "start",
         }}
       >
-        <StoryImage storyImage={storyImage[activeStep]} width="40vw" />
+        <StoryPainting storyImage={storyImage[activeStep]} height="50vh" />
 
         <Stepper
           handleBack={handleBack}
@@ -102,10 +103,15 @@ export const StoryContent = () => {
         <Paper
           elevation={6}
           sx={{
-            // height: "12vh",
-            width: "80%",
-            overflowY: "auto",
+            width: "30vw",
             padding: 2,
+            overflowY: "auto",
+            backgroundColor: "gold",
+            color: "black",
+            "& .MuiTypography-root": {
+              fontFamily: "charm",
+              letterSpacing: 0.5,
+            },
           }}
         >
           <Typography>{storyText[activeStep]}</Typography>
@@ -115,34 +121,42 @@ export const StoryContent = () => {
   );
 };
 
-const StoryImage = ({ storyImage, width }: StoryImageProps) => {
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    const img = new Image();
-    img.src = storyImage.url;
-    img.onload = () => {
-      setLoaded(true);
-    };
-    return () => {
-      setLoaded(false);
-    };
-  }, [storyImage]);
+const StoryPainting = ({ storyImage, height }: StoryPaintingProps) => {
+  return (
+    <StoryFrame height={height}>
+      <StoryImage storyImage={storyImage} />
+    </StoryFrame>
+  );
+};
 
-  return loaded ? (
-    <Fade in={true} timeout={800}>
-      <Box
-        sx={{
-          width,
-          aspectRatio: IMAGE_ASPECT_RATIO,
-          position: "relative",
-          borderImageSource: `url(${frame})`,
-          borderImageSlice: 76,
-          borderImageRepeat: "stretch",
-          borderStyle: "solid",
-          borderWidth: "2.5vw",
-          borderImageOutset: 0,
-          boxShadow: "12px 6px 5px #18201aff ",
-        }}
+const StoryFrame = memo(({ height, children }: StoryFrameProps) => {
+  return (
+    <Box
+      sx={{
+        position: "relative",
+        height,
+        aspectRatio: IMAGE_ASPECT_RATIO,
+        borderImageSource: `url(${frame})`,
+        borderImageSlice: 76,
+        borderImageRepeat: "stretch",
+        borderStyle: "solid",
+        borderWidth: "2.5vw",
+        borderImageOutset: 0,
+        boxShadow: "12px 6px 5px #18201aff ",
+      }}
+    >
+      {children}
+    </Box>
+  );
+});
+StoryFrame.displayName = "StoryFrame";
+
+const StoryImage = ({ storyImage }: StoryImageProps) => {
+  return (
+    <Fade key={storyImage.url} in={true} timeout={800}>
+      <Container
+        disableGutters
+        sx={{ width: "100%", height: "100%", padding: 0 }}
       >
         <img
           src={storyImage.url}
@@ -163,15 +177,8 @@ const StoryImage = ({ storyImage, width }: StoryImageProps) => {
             boxShadow: "inset 4px 4px 20px 4px #000000ff",
           }}
         />
-      </Box>
+      </Container>
     </Fade>
-  ) : (
-    <Skeleton
-      variant="rectangular"
-      animation="wave"
-      height={"55vh"}
-      width={width}
-    />
   );
 };
 
@@ -201,7 +208,6 @@ const Stepper = (args: StepperArgs) => {
           />
         ))}
       </Box>
-
       <Button
         onClick={handleNext}
         disabled={activeStep === maxSteps - 1}

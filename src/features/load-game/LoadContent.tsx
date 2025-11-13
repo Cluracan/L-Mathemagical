@@ -1,6 +1,5 @@
 import {
   Button,
-  CardActions,
   CircularProgress,
   Paper,
   Stack,
@@ -68,7 +67,7 @@ export const LoadContent = () => {
   const navigate = useNavigate({ from: "/load" });
 
   // Handlers
-  const handleClick = () => {
+  const handleChooseFileClick = () => {
     if (!inputRef.current) {
       return;
     }
@@ -133,7 +132,7 @@ export const LoadContent = () => {
   return (
     <>
       <HomeLink />
-      <Stack>
+      <>
         <input
           ref={inputRef}
           type="file"
@@ -141,39 +140,50 @@ export const LoadContent = () => {
           onChange={handleFileChange}
           style={{ display: "none" }}
         />
+
         <Paper
           elevation={6}
           sx={{
-            backgroundColor: "#fff8dc",
-            color: "#000",
-            padding: 3,
-            width: "16vw",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            overflowY: "auto",
+            height: "50vh",
             aspectRatio: 0.707,
-            "& .MuiTypography-root": { fontFamily: "charm", mt: 2 },
+            padding: 3,
+            color: "#000",
+            backgroundColor: "#fff8dc",
+            "& .MuiTypography-root": {
+              fontFamily: "charm",
+              letterSpacing: 0.5,
+            },
           }}
         >
           {loadStatus.status === "empty" && <EmptyContent />}
           {loadStatus.status === "error" && <ErrorContent />}
           {loadStatus.status === "loading" && <LoadingContent />}
           {loadStatus.status === "gameLoaded" && (
-            <SaveGameContent
-              gameData={loadStatus.gameData}
-              onStartClick={handleStartClick}
-            />
+            <SaveGameContent gameData={loadStatus.gameData} />
           )}
-        </Paper>
-        <Stack direction={"row"} sx={{ m: 4, justifyContent: "space-around" }}>
-          <Button
-            variant={
-              loadStatus.status === "gameLoaded" ? "outlined" : "contained"
-            }
-            onClick={handleClick}
-            aria-label="Choose a save file to load"
+          <Stack
+            direction={"row"}
+            sx={{ width: "100%", justifyContent: "space-around" }}
           >
-            Choose File
-          </Button>
-        </Stack>
-      </Stack>
+            <Button
+              variant={"contained"}
+              onClick={handleChooseFileClick}
+              aria-label="Choose a save file to load"
+            >
+              Choose File
+            </Button>
+            {loadStatus.status === "gameLoaded" && (
+              <Button variant="contained" onClick={handleStartClick}>
+                Continue
+              </Button>
+            )}
+          </Stack>
+        </Paper>
+      </>
     </>
   );
 };
@@ -186,13 +196,13 @@ const LoadingContent = () => {
         size={"4rem"}
         sx={{ alignSelf: "center" }}
       />
-      <Typography sx={{ mt: 2 }}>Loading your save file...</Typography>
+      <Typography>Loading your save file...</Typography>
     </>
   );
 };
 
 const EmptyContent = () => {
-  return <Typography sx={{ mt: 2 }}>Choose your destiny...</Typography>;
+  return <Typography>Choose your destiny...</Typography>;
 };
 
 const ErrorContent = () => {
@@ -206,15 +216,8 @@ const ErrorContent = () => {
   );
 };
 
-const SaveGameContent = ({
-  gameData,
-  onStartClick,
-}: {
-  gameData: GameStoreState;
-  onStartClick: () => void;
-}) => {
-  const { puzzleState } = gameData;
-  const completedPuzzleCount = Object.values(puzzleState).filter(
+const SaveGameContent = ({ gameData }: { gameData: GameStoreState }) => {
+  const completedPuzzleCount = Object.values(gameData.puzzleState).filter(
     (puzzle) => puzzle.puzzleCompleted
   ).length;
   const roomName = roomRegistry.getRoomName(gameData.currentRoom).toLowerCase();
@@ -225,9 +228,7 @@ const SaveGameContent = ({
 
   return (
     <>
-      <Typography sx={{ mb: 2, color: "black" }}>
-        The story so far...
-      </Typography>
+      <Typography>The story so far...</Typography>
       <Typography>
         Going by the name {gameData.playerName}, you ventured into the palace
         some time ago.
@@ -244,13 +245,6 @@ const SaveGameContent = ({
         You are currently {positionPrefix} the {roomName}, carrying{" "}
         {String(inventoryCount)} {inventoryCount === 1 ? "item" : "items"}.
       </Typography>
-      <CardActions
-        sx={{ display: "flex", justifyContent: "end", alignItems: "end" }}
-      >
-        <Button variant="contained" onClick={onStartClick}>
-          Continue
-        </Button>
-      </CardActions>
     </>
   );
 };

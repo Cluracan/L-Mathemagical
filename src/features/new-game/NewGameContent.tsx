@@ -9,6 +9,7 @@ import {
   FormGroup,
   FormControlLabel,
   FormHelperText,
+  CardActions,
 } from "@mui/material";
 import { initialGameState, useGameStore } from "../../store/useGameStore";
 import { HomeLink } from "../../components/HomeLink";
@@ -31,7 +32,7 @@ const newGameFeedback = {
 };
 
 export const NewGameContent = () => {
-  console.log("loading NewGameContent");
+  // State
   const [name, setName] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const [helperText, setHelperText] = useState<string>(" ");
@@ -39,10 +40,12 @@ export const NewGameContent = () => {
   const modernMode = useGameStore((state) => state.modernMode);
   const navigate = useNavigate({ from: "/new" });
 
+  // Effects
   useEffect(() => {
     useGameStore.setState(initialGameState);
   }, []);
 
+  // Helpers
   const handleToggleGameMode = () => {
     useGameStore.setState((state) => ({
       ...state,
@@ -70,7 +73,7 @@ export const NewGameContent = () => {
     }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
     if (error) {
       setError(false);
@@ -78,6 +81,7 @@ export const NewGameContent = () => {
     }
   };
 
+  // Render
   return (
     <>
       <HomeLink />
@@ -87,7 +91,7 @@ export const NewGameContent = () => {
         sx={{
           maxWidth: "600px",
           padding: 6,
-          bgcolor: "rgba(28, 28, 28, 0.8)",
+          opacity: 0.8,
         }}
       >
         <Typography variant="h5" align="center" sx={{ mb: 4 }}>
@@ -101,7 +105,8 @@ export const NewGameContent = () => {
           label="Name"
           margin="normal"
           variant="outlined"
-          onChange={handleChange}
+          autoFocus
+          onChange={handleNameChange}
           value={name}
           error={error}
           helperText={helperText}
@@ -120,9 +125,11 @@ export const NewGameContent = () => {
           </FormHelperText>
         </FormGroup>
 
-        <Button variant="contained" type="submit">
-          Start
-        </Button>
+        <CardActions sx={{ justifyContent: "end" }}>
+          <Button variant="contained" type="submit">
+            Start
+          </Button>
+        </CardActions>
       </Card>
     </>
   );

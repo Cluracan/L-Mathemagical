@@ -24,7 +24,7 @@ import { HomeLink } from "../../components/HomeLink";
 
 // Types
 interface StoryPaintingProps {
-  storyImage: { url: string; alt: string };
+  painting: { url: string; alt: string };
   height: string;
 }
 
@@ -33,7 +33,7 @@ interface StoryFrameProps extends PropsWithChildren {
 }
 
 interface StoryImageProps {
-  storyImage: { url: string; alt: string };
+  painting: { url: string; alt: string };
 }
 
 interface StepperArgs {
@@ -43,27 +43,39 @@ interface StepperArgs {
 }
 
 interface StoryTextProps {
-  storyText: string;
+  text: string;
 }
 
 // Constants
 const IMAGE_ASPECT_RATIO = 1.5;
-const storyImage = [
+const gallery = [
   {
-    url: river,
-    alt: "Sunlight glints of the river as it winds through the trees",
+    painting: {
+      url: river,
+      alt: "Sunlight glints of the river as it winds through the trees",
+    },
+    text: storyText[0],
   },
   {
-    url: woods,
-    alt: "Tall beech trees overhang the path as it continues through the woods.",
+    painting: {
+      url: woods,
+      alt: "Tall beech trees overhang the path as it continues through the woods.",
+    },
+    text: storyText[1],
   },
   {
-    url: palace,
-    alt: "The beech trees frame a large meadow. In the distance is a medeival castle.",
+    painting: {
+      url: palace,
+      alt: "The beech trees frame a large meadow. In the distance is a medeival castle.",
+    },
+    text: storyText[2],
   },
   {
-    url: paper,
-    alt: "A torn corner of a map stands in the grass, showing a single room, titled 'downstairs pantry'",
+    painting: {
+      url: paper,
+      alt: "A torn corner of a map stands in the grass, showing a single room, titled 'downstairs pantry'",
+    },
+    text: storyText[3],
   },
 ];
 
@@ -73,9 +85,9 @@ export const StoryContent = () => {
 
   // Effects
   useEffect(() => {
-    storyImage.forEach(({ url }) => {
+    gallery.forEach(({ painting }) => {
       const img = new Image();
-      img.src = url;
+      img.src = painting.url;
     });
   }, []);
 
@@ -101,23 +113,23 @@ export const StoryContent = () => {
           justifyContent: "start",
         }}
       >
-        <StoryPainting storyImage={storyImage[activeStep]} height="50vh" />
+        <StoryPainting painting={gallery[activeStep].painting} height="50vh" />
 
         <Stepper
           handleBack={handleBack}
           handleNext={handleNext}
           activeStep={activeStep}
         />
-        <StoryText storyText={storyText[activeStep]} />
+        <StoryText text={gallery[activeStep].text} />
       </Stack>
     </>
   );
 };
 
-const StoryPainting = ({ storyImage, height }: StoryPaintingProps) => {
+const StoryPainting = ({ painting, height }: StoryPaintingProps) => {
   return (
     <StoryFrame height={height}>
-      <StoryImage storyImage={storyImage} />
+      <StoryImage painting={painting} />
     </StoryFrame>
   );
 };
@@ -144,16 +156,16 @@ const StoryFrame = memo(({ height, children }: StoryFrameProps) => {
 });
 StoryFrame.displayName = "StoryFrame";
 
-const StoryImage = ({ storyImage }: StoryImageProps) => {
+const StoryImage = ({ painting }: StoryImageProps) => {
   return (
-    <Fade key={storyImage.url} in={true} timeout={800}>
+    <Fade key={painting.url} in={true} timeout={800}>
       <Container
         disableGutters
         sx={{ width: "100%", height: "100%", padding: 0 }}
       >
         <img
-          src={storyImage.url}
-          alt={storyImage.alt}
+          src={painting.url}
+          alt={painting.alt}
           style={{
             width: "100%",
             height: "100%",
@@ -212,7 +224,7 @@ const Stepper = (args: StepperArgs) => {
   );
 };
 
-const StoryText = ({ storyText }: StoryTextProps) => {
+const StoryText = ({ text }: StoryTextProps) => {
   return (
     <Paper
       elevation={6}
@@ -228,7 +240,7 @@ const StoryText = ({ storyText }: StoryTextProps) => {
         },
       }}
     >
-      <Typography>{storyText}</Typography>
+      <Typography>{text}</Typography>
     </Paper>
   );
 };

@@ -8,7 +8,7 @@ export const keyNPC: PuzzleNPC = {
     inProgress: null,
     completed: null,
   },
-  triggerPuzzleCommand: "use",
+  triggerPuzzleCommand: "get",
   requiredItems: [],
   acceptPuzzleText: ["file", "blank", "blanks"],
   rejectPuzzleText: [],

@@ -176,14 +176,14 @@ export const roomData = {
   boiler: {
     id: "boiler",
     descriptions: {
-      long: "You are in a boiler room, full of machinery which appears to have been standing idle for some time. In one corner is a spiral staircase which goes up. On the east side, a flight of steps leads down, and to the west, there is a door.",
+      long: "You are in a boiler room, full of machinery which appears to have been standing idle for some time. In one corner is a spiral staircase which goes up. A corridor leads off to the east, and to the west there is a door.",
       short: "You are in the boiler room.",
     },
     mapText: "Boiler room",
     positionPrefix: "in",
     exits: {
       u: "stairsSpiral",
-      d: "longPassageW",
+
       e: "longPassageW",
       w: "lShaped",
     },
@@ -197,7 +197,6 @@ export const roomData = {
     mapText: "Passage",
     positionPrefix: "in",
     exits: {
-      u: "boiler",
       w: "boiler",
       e: "longPassageE",
     },
@@ -245,7 +244,7 @@ export const roomData = {
   pool: {
     id: "pool",
     descriptions: {
-      long: "You are in a large room with marble walls and floors. Four classical statues stand at the corners of an indoor swimming pool which is empty. The main door is at the east end, but there is another door leading west.",
+      long: "You are in a large room with marble walls and floors. Four classical statues stand at the corners of an indoor swimming pool which is empty. The main door is at the east end, but there is another door leading west. You can feel a breeze coming from somewhere nearby.",
       short: "You are in the room with the pool.",
     },
     mapText: "Pool",
@@ -725,7 +724,7 @@ export const roomData = {
   tunnelTop: {
     id: "tunnelTop",
     descriptions: {
-      long: "You are at one end of a dark tunnel littered with brick rubble. A small opening leads out into the light. The tunnel slopes downwards and is just wide enough for you to crawl along.",
+      long: "You are at one end of a dark tunnel littered with brick rubble. The tunnel slopes downwards and is just wide enough for you to crawl along. A small opening leads out into the light.",
       short: "You are at the top of the tunnel.",
     },
     mapText: "Tunnel",

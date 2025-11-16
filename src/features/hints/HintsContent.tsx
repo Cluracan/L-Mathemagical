@@ -13,7 +13,7 @@ export const HintsContent = () => {
         flexDirection: "column",
         gap: 4,
         aspectRatio: 1.47,
-        width: "60vw",
+        width: "70vw",
         p: 8,
         backgroundImage: `url(${note})`,
         backgroundSize: "cover",
@@ -37,8 +37,8 @@ export const HintsContent = () => {
                 justifyContent: "space-between",
                 color: "black",
                 textTransform: "none",
-                fontFamily: "charm",
-                letterSpacing: 0.5,
+                // fontFamily: "charm",
+                // letterSpacing: 0.5,
               }}
             >
               {question}
@@ -50,8 +50,9 @@ export const HintsContent = () => {
                 sx={{
                   p: 4,
                   color: "black",
-                  fontFamily: "charm",
-                  letterSpacing: 0.5,
+                  // backgroundColor: "rgba(255, 255, 255, 0.11)",
+                  // fontFamily: "charm",
+                  // letterSpacing: 0.5,
                 }}
               >
                 {answer}

@@ -15,11 +15,11 @@ import {
   KeyboardArrowRight,
 } from "@mui/icons-material";
 import { storyText } from "./data/storyText";
-import river from "./images/riverColor.png";
-import woods from "./images/woodsColor.png";
-import palace from "./images/palaceColor.png";
-import paper from "./images/paperColor2.png";
-import frame from "./images/frame.png";
+import river from "./images/riverColor.webp";
+import woods from "./images/woodsColor.webp";
+import palace from "./images/palaceColor.webp";
+import paper from "./images/paperColor.webp";
+import frame from "./images/frame.webp";
 import { HomeLink } from "../../components/HomeLink";
 
 // Types

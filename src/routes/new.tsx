@@ -10,7 +10,7 @@ export const Route = createFileRoute("/new")({
 function RouteComponent() {
   return (
     <>
-      <Background src={entrance}>
+      <Background imageSrc={entrance} backgroundColor="#195072">
         <NewGameContent />
       </Background>
     </>

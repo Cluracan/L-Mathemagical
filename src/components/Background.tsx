@@ -1,15 +1,31 @@
 import { Box } from "@mui/material";
-import { useEffect, type PropsWithChildren } from "react";
+import { useEffect, useState, type PropsWithChildren } from "react";
 
 interface BackgroundProps extends PropsWithChildren {
-  src: string;
+  imageSrc: string | null;
+  backgroundColor: string;
 }
-export const Background = ({ src, children }: BackgroundProps) => {
+export const Background = ({
+  imageSrc,
+  backgroundColor,
+  children,
+}: BackgroundProps) => {
+  const [validImage, setValidImage] = useState(false);
   useEffect(() => {
+    if (!imageSrc) {
+      return;
+    }
     const img = new Image();
-    img.src = src;
+    img.src = imageSrc;
+    img.onload = () => {
+      setValidImage(true);
+    };
+    img.onerror = () => {
+      setValidImage(false);
+    };
   }, []);
 
+  const backgroundImagePresent = imageSrc && validImage;
   return (
     <Box
       sx={{
@@ -18,11 +34,17 @@ export const Background = ({ src, children }: BackgroundProps) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundImage: `url(${src})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        boxShadow: "inset 0 0 10vh rgba(0,0,0,0.8)",
+        ...(backgroundImagePresent
+          ? {
+              backgroundImage: `url(${imageSrc})`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              boxShadow: "inset 0 0 10vh rgba(0,0,0,0.8)",
+            }
+          : {
+              backgroundColor,
+            }),
       }}
     >
       {children}

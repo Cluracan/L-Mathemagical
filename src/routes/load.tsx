@@ -10,7 +10,7 @@ export const Route = createFileRoute("/load")({
 function RouteComponent() {
   return (
     <>
-      <Background src={desk}>
+      <Background imageSrc={desk} backgroundColor="rgba(70, 50, 7, 1)">
         <LoadContent />
       </Background>
     </>

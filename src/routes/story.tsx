@@ -12,7 +12,7 @@ function RouteComponent() {
 
   return (
     <>
-      <Background src={wall}>
+      <Background imageSrc={wall} backgroundColor="#2b392e">
         <StoryContent />
       </Background>
     </>

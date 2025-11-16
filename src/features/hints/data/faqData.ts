@@ -5,9 +5,9 @@ export const faqData = [
       "Somewhere nearby is a magical palace full of puzzles and strange creatures. To move around and interact with the world, you type simple commands at the prompt. Your experiences may be intriguing or puzzling. Talk about them with fellow adventurers, but do not give anything away to those who may be following.",
   },
   {
-    question: "How do I give instructions?",
+    question: "How do I type commands?",
     answer:
-      "In general, you should type your instructions using two words - for example 'get cube', 'go north', 'use key'. There are some abbreviations though: you can type 'look' to have a general look around, and you can type 'n' for 'go north', 'e' for 'go east' etc. In addition, 'inv' will reveal your inventory. The most common commands are 'get', 'drop', 'use', but there are several others that will be useful, so don't be afraid to try things out!",
+      "In general, you should type commands using two words - for example 'get cube', 'go north', 'use key'. There are some abbreviations though: you can type 'look' to have a general look around, and you can type 'n' for 'go north', 'e' for 'go east' etc. In addition, 'inv' will reveal your inventory. The most common commands are 'get', 'drop', 'use', but there are several others that will be useful, so don't be afraid to try things out!",
   },
   {
     question: "I can't solve this problem - what should I do?",

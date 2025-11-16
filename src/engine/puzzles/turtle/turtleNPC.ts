@@ -15,7 +15,7 @@ export const turtleNPC: PuzzleNPC = {
   rejectPuzzleText: ["no", "n"],
   feedback: {
     puzzleAccept:
-      'As you move towards the turtle, he waves a flipper to attract your attention. "Don\'t approach me directly," he warns. "I\'d like to help you", he says, lowering his voice. "We can meet somewhere provided that it is I who catch up with you. Also," he says, lowering his voice even further, "the Drogos have programmed me to move in a special way. Try moving about a little."',
+      'As you move towards the turtle, he waves a flipper to attract your attention. "Don\'t approach me directly," he warns. "I\'d like to help you", he says, lowering his voice. "We can meet somewhere provided that it is I who catch up with you. Also," he says, lowering his voice even further, "the Drogos have programmed me to move in a special way. Try moving and looking around a little."',
     puzzleReject: "The turtle looks at you imploringly.",
     puzzleIsComplete: "The turtle is sleeping",
     exitsBlocked: null,

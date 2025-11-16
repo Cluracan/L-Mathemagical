@@ -41,6 +41,7 @@ export const handleAbbotPuzzle: PipelineFunction = (payload) => {
           abbot.dialogIndex += 1;
           if (abbot.dialogIndex === dialog.length) {
             abbot.puzzleCompleted = true;
+            draft.gameState.currentPuzzle = null;
           }
         } else if (target && ["n", "no"].includes(target)) {
           storyLine.push({

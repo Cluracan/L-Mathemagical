@@ -40,24 +40,27 @@ export const AboutContent = () => {
   // Render
   return (
     <>
-      <HomeLink />
-      <Stack
-        sx={{
-          height: "100vh",
-          width: "50vw",
-          p: 2,
-          gap: 4,
-          alignItems: "center",
-          justifyContent: "start",
-        }}
-      >
-        <StoryPainting
-          painting={{ url: BBCMicro, alt: "BBC Microcomputer" }}
-          height="50vh"
-        />
+      <Box sx={{ height: "100%" }}>
+        <HomeLink />
+        <Stack
+          direction={"row"}
+          sx={{
+            height: "80vh",
+            width: "80vw",
+            p: 2,
+            gap: 4,
+            alignItems: "center",
+            justifyContent: "start",
+          }}
+        >
+          <StoryPainting
+            painting={{ url: BBCMicro, alt: "BBC Microcomputer" }}
+            height="50vh"
+          />
 
-        <StoryText text={aboutText[0]} />
-      </Stack>
+          <StoryText text={aboutText[0]} />
+        </Stack>
+      </Box>
     </>
   );
 };
@@ -73,6 +76,8 @@ const StoryPainting = ({ painting, height }: StoryPaintingProps) => {
 const StoryFrame = memo(({ height, children }: StoryFrameProps) => {
   return (
     <Box
+      aria-hidden="true"
+      role="presentation"
       sx={{
         position: "relative",
         height,
@@ -139,6 +144,7 @@ const StoryText = ({ text }: StoryTextProps) => {
         },
       }}
     >
+      <Typography variant="h6">About the game...</Typography>
       <Typography>{text}</Typography>
     </Paper>
   );

@@ -3,7 +3,7 @@ import { Box, Container, Fade, Paper, Stack, Typography } from "@mui/material";
 import { memo, useEffect, type PropsWithChildren } from "react";
 
 import frame from "../story/images/frame.webp";
-import BBCMicro from "./images/BBCMicro.webp";
+import BBCMicro from "./images/BBCMicro2.webp";
 import { HomeLink } from "../../components/HomeLink";
 import { aboutText } from "./data/aboutText";
 

@@ -14,8 +14,13 @@ export const IndexContent = () => {
           width: "60vw",
         }}
       >
-        <img src={logoL} alt="L - Logo" style={{ height: "72vh" }} />
-        <Stack direction="column" spacing={4}>
+        <img src={logoL} alt="Game logo" style={{ height: "72vh" }} />
+        <Stack
+          direction="column"
+          spacing={4}
+          component="nav"
+          aria-label="Main menu"
+        >
           <Button variant="outlined" component={Link} to="/new">
             NEW GAME
           </Button>

@@ -137,6 +137,8 @@ const StoryPainting = ({ painting, height }: StoryPaintingProps) => {
 const StoryFrame = memo(({ height, children }: StoryFrameProps) => {
   return (
     <Box
+      aria-hidden="true"
+      role="presentation"
       sx={{
         position: "relative",
         height,

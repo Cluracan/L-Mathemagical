@@ -40,8 +40,6 @@ export const HintsContent = () => {
                   justifyContent: "space-between",
                   color: "black",
                   textTransform: "none",
-                  // fontFamily: "charm",
-                  // letterSpacing: 0.5,
                 }}
               >
                 {question}
@@ -53,9 +51,6 @@ export const HintsContent = () => {
                   sx={{
                     p: 4,
                     color: "black",
-                    // backgroundColor: "rgba(255, 255, 255, 0.11)",
-                    // fontFamily: "charm",
-                    // letterSpacing: 0.5,
                   }}
                 >
                   {answer}

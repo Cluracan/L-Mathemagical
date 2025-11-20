@@ -50,6 +50,7 @@ const darkTheme = createTheme({
 export const Route = createRootRoute({
   component: () => (
     <Box
+      component="main"
       sx={{
         height: "100vh",
         width: "100vw",
@@ -60,6 +61,7 @@ export const Route = createRootRoute({
     >
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
+
         <Outlet />
       </ThemeProvider>
     </Box>

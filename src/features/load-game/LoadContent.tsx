@@ -158,6 +158,7 @@ export const LoadContent = () => {
               letterSpacing: 0.5,
             },
           }}
+          role="status"
         >
           {loadStatus.status === "empty" && <EmptyContent />}
           {loadStatus.status === "error" && <ErrorContent />}
@@ -169,11 +170,7 @@ export const LoadContent = () => {
             direction={"row"}
             sx={{ width: "100%", justifyContent: "space-around" }}
           >
-            <Button
-              variant={"contained"}
-              onClick={handleChooseFileClick}
-              aria-label="Choose a save file to load"
-            >
+            <Button variant={"contained"} onClick={handleChooseFileClick}>
               Choose File
             </Button>
             {loadStatus.status === "gameLoaded" && (

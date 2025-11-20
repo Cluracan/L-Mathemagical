@@ -45,7 +45,13 @@ export const Canvas = ({
 
   return (
     <>
-      <canvas ref={canvasRef} width={canvasWidth} height={canvasWidth} />
+      <canvas
+        ref={canvasRef}
+        width={canvasWidth}
+        height={canvasWidth}
+        role="img"
+        aria-label="A self updating map of the gameworld showing rooms explored."
+      />
     </>
   );
 };

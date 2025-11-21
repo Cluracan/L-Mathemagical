@@ -1056,7 +1056,7 @@ export const roomData = {
     },
     mapText: "Grounds",
     positionPrefix: "in",
-    exits: {},
+    exits: { u: "cell" },
   },
   pit: {
     id: "pit",

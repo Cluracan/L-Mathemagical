@@ -115,12 +115,13 @@ export const StoryContent = () => {
       >
         <StoryPainting painting={gallery[activeStep].painting} height="50vh" />
 
+        <StoryText text={gallery[activeStep].text} />
+
         <Stepper
           handleBack={handleBack}
           handleNext={handleNext}
           activeStep={activeStep}
         />
-        <StoryText text={gallery[activeStep].text} />
       </Stack>
     </>
   );
@@ -195,7 +196,7 @@ const Stepper = (args: StepperArgs) => {
   return (
     <Stack
       direction={"row"}
-      sx={{ width: "100%", justifyContent: "space-around" }}
+      sx={{ width: "100%", mt: "auto", justifyContent: "space-around" }}
     >
       <Button
         onClick={handleBack}

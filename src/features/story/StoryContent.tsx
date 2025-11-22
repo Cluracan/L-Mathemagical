@@ -103,19 +103,25 @@ export const StoryContent = () => {
   return (
     <>
       <HomeLink />
-      <Stack
-        sx={{
-          height: "100vh",
-          width: "50vw",
-          p: 2,
-          gap: 4,
-          alignItems: "center",
-          justifyContent: "start",
-        }}
-      >
-        <StoryPainting painting={gallery[activeStep].painting} height="50vh" />
 
-        <StoryText text={gallery[activeStep].text} />
+      <Stack sx={{ height: "100%", p: 2 }}>
+        <Stack
+          direction={"row"}
+          sx={{
+            height: "80vh",
+            p: 2,
+            gap: 6,
+            alignItems: "center",
+            justifyContent: "start",
+          }}
+        >
+          <StoryPainting
+            painting={gallery[activeStep].painting}
+            height="50vh"
+          />
+
+          <StoryText text={gallery[activeStep].text} />
+        </Stack>
 
         <Stepper
           handleBack={handleBack}
@@ -196,7 +202,12 @@ const Stepper = (args: StepperArgs) => {
   return (
     <Stack
       direction={"row"}
-      sx={{ width: "100%", mt: "auto", justifyContent: "space-around" }}
+      sx={{
+        width: "100%",
+        mt: "auto",
+        p: 2,
+        justifyContent: "space-around",
+      }}
     >
       <Button
         onClick={handleBack}
@@ -232,7 +243,7 @@ const StoryText = ({ text }: StoryTextProps) => {
     <Paper
       elevation={6}
       sx={{
-        width: "30vw",
+        width: { md: "30vw", xl: "20vw" },
         padding: 2,
         overflowY: "auto",
         backgroundColor: "gold",

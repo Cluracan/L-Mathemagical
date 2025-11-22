@@ -27,7 +27,7 @@ declare module "@mui/material/styles" {
 
 const darkTheme = createTheme({
   typography: {
-    fontSize: 18,
+    // fontSize: 18,
     fontFamily: "Lucida Console",
   },
   palette: {

@@ -147,25 +147,35 @@ export const LoadContent = () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            overflowY: "auto",
             height: "50vh",
-            aspectRatio: 0.707,
+            width: "40ch",
             padding: 3,
             color: "#000",
             backgroundColor: "#fff8dc",
             "& .MuiTypography-root": {
               fontFamily: "charm",
               letterSpacing: 0.5,
+              mt: { md: 1, lg: 2 },
+              fontSize: { xl: "18px" },
             },
           }}
           role="status"
         >
-          {loadStatus.status === "empty" && <EmptyContent />}
-          {loadStatus.status === "error" && <ErrorContent />}
-          {loadStatus.status === "loading" && <LoadingContent />}
-          {loadStatus.status === "gameLoaded" && (
-            <SaveGameContent gameData={loadStatus.gameData} />
-          )}
+          <Stack
+            sx={{
+              flexGrow: 1,
+              overflowY: "auto",
+              mb: 2,
+              // maxWidth: "40ch",
+            }}
+          >
+            {loadStatus.status === "empty" && <EmptyContent />}
+            {loadStatus.status === "error" && <ErrorContent />}
+            {loadStatus.status === "loading" && <LoadingContent />}
+            {loadStatus.status === "gameLoaded" && (
+              <SaveGameContent gameData={loadStatus.gameData} />
+            )}
+          </Stack>
           <Stack
             direction={"row"}
             sx={{ width: "100%", justifyContent: "space-around" }}
@@ -226,6 +236,7 @@ const SaveGameContent = ({ gameData }: { gameData: GameStoreState }) => {
   return (
     <>
       <Typography>The story so far...</Typography>
+
       <Typography>
         Going by the name {gameData.playerName}, you ventured into the palace
         some time ago.

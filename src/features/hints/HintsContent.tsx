@@ -17,7 +17,7 @@ export const HintsContent = () => {
           gap: 4,
           aspectRatio: 1.47,
           width: "70vw",
-          p: 8,
+          p: { md: 2, lg: 8 },
           backgroundImage: `url(${note})`,
           backgroundSize: "cover",
         }}

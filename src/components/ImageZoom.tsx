@@ -1,6 +1,8 @@
 import { Dialog } from "@mui/material";
 import { useState } from "react";
 
+// Currently unused
+
 interface ImageZoomProps {
   src: string;
   alt?: string;

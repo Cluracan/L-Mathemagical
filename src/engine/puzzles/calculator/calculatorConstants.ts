@@ -35,11 +35,22 @@ export const calculatorFeedback = {
     "The guard watches you carefully as you pick up the calculator, but makes no attempt to stop you.",
   success:
     "The guard gives a shriek of terror, smashes the calculator into tiny fragments, and rushes out through the door.",
-  failure:
+  failure: [
     "The guard watches you warily, but otherwise seems unaffected by your efforts.",
+    "The guard glances at your calculator display, but is unimpressed.",
+    "The guard appears unimpressed by your calculations.",
+    "You show the calculator display to the guard, but nothing happens.",
+    "The calculator display has no effect on the guard",
+  ],
   storyLineSuccess:
     "You watch as the guard disappears into the distance - now you can leave!",
   storyLineFailure: "You put the calculator down, and ponder what to do next. ",
+};
+
+export const getCalculatorFailureMessage = () => {
+  const messageCount = calculatorFeedback.failure.length;
+  const messageIndex = Math.floor(Math.random() * messageCount);
+  return calculatorFeedback.failure[messageIndex];
 };
 
 // Constants

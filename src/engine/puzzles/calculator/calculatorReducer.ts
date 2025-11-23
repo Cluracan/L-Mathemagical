@@ -4,6 +4,7 @@ import {
   INPUT_TARGET,
   calculatorButtons,
   calculatorFeedback,
+  getCalculatorFailureMessage,
   type CalculatorState,
   type InputButton,
   type InputType,
@@ -163,7 +164,7 @@ export function calculatorReducer(
           draft.puzzleCompleted = true;
           draft.feedback = calculatorFeedback.success;
         } else {
-          draft.feedback = calculatorFeedback.failure;
+          draft.feedback = getCalculatorFailureMessage();
         }
         draft.showFeedback = true;
       });

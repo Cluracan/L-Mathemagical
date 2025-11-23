@@ -26,6 +26,7 @@ export const WORKING_CALCULATOR_BUTTONS = new Set([
   "=",
 ]);
 export const CALCULATOR_DISPLAY_LENGTH = 11;
+export const EXP_SIG_FIGS = 2;
 
 // Narration Content
 export const calculatorFeedback = {

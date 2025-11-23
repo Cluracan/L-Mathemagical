@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Snackbar,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Snackbar, Stack, Typography } from "@mui/material";
 import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
@@ -14,6 +7,7 @@ import { memo, useCallback } from "react";
 import { calculatorReducer } from "./calculatorReducer";
 import {
   CALCULATOR_DISPLAY_LENGTH,
+  EXP_SIG_FIGS,
   WORKING_CALCULATOR_BUTTONS,
   buttonOrder,
   calculatorButtons,
@@ -41,8 +35,8 @@ const formatNumber = (value: number) => {
   if (valueString.length <= CALCULATOR_DISPLAY_LENGTH) {
     return valueString;
   }
-  const sigFigs = CALCULATOR_DISPLAY_LENGTH - 6;
-  return value.toExponential(sigFigs);
+
+  return value.toExponential(EXP_SIG_FIGS);
 };
 
 const formatToken = (token: Token) => {
@@ -62,7 +56,7 @@ const generateDisplay = (tokens: Token[], currentInput: string) => {
 
 export const CalculatorPuzzle = () => {
   // State
-  const theme = useTheme();
+
   const feedback = useGameStore(
     (state) => state.puzzleState.calculator.feedback
   );
@@ -133,7 +127,9 @@ export const CalculatorPuzzle = () => {
           title="Calculator Puzzle"
           description="Display the correct number"
         />
+
         <Calculator handleInput={handleInput} />
+
         <Stack
           direction={"row"}
           width={"90%"}
@@ -141,7 +137,7 @@ export const CalculatorPuzzle = () => {
         >
           <PuzzleFeedback
             feedback={[calculatorFeedback.instructions]}
-            height={theme.spacing(13)}
+            height={"auto"}
           />
           <Button
             onClick={handleLeave}
@@ -167,7 +163,7 @@ const Calculator = memo(({ handleInput }: CalculatorProps) => {
     <>
       <Stack
         sx={{
-          margin: 4,
+          margin: { md: 2, lg: 4 },
           padding: 3,
           borderRadius: 1,
           backgroundColor: "rgb(251, 241, 122)",

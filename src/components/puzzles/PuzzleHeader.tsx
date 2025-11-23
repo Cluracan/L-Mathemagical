@@ -8,7 +8,7 @@ interface PuzzleHeaderProps {
 export const PuzzleHeader = ({ title, description }: PuzzleHeaderProps) => {
   return (
     <>
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle sx={{ p: { sm: 0, lg: 2 } }}>{title}</DialogTitle>
       <DialogContentText>{description}</DialogContentText>
     </>
   );

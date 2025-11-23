@@ -17,7 +17,7 @@ export const PuzzleFeedback = ({ feedback, height }: PuzzleFeedbackProps) => {
       sx={{
         width: "80%",
         height,
-        padding: 2,
+        padding: { md: 1, lg: 2 },
         overflowY: "auto",
         whiteSpace: "pre-wrap",
       }}

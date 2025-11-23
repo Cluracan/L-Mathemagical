@@ -51,6 +51,9 @@ interface SlideCarouselProps {
   gallery: Gallery;
 }
 
+// Constants
+const FRAME_ASPECT_RATIO = 1.45;
+
 export const SlideCarousel = ({ gallery }: SlideCarouselProps) => {
   // State
   const [activeStep, setActiveStep] = useState(0);
@@ -61,7 +64,7 @@ export const SlideCarousel = ({ gallery }: SlideCarouselProps) => {
       const img = new Image();
       img.src = slide.url;
     });
-  }, []);
+  }, [gallery]);
 
   // Handlers
   const handleNext = () => {
@@ -110,15 +113,6 @@ const FramedSlide = ({ slide, height }: FramedSlideProps) => {
 };
 
 const SlideFrame = memo(({ height, children }: SlideFrameProps) => {
-  const [aspectRatio, setAspectRatio] = useState(1.5);
-  useEffect(() => {
-    const img = new Image();
-    img.src = frame;
-    img.onload = () => {
-      console.log(img.height, img.width, img.width / img.height);
-      setAspectRatio(img.width / img.height);
-    };
-  }, []);
   return (
     <Box
       aria-hidden="true"
@@ -126,7 +120,7 @@ const SlideFrame = memo(({ height, children }: SlideFrameProps) => {
       sx={{
         position: "relative",
         height,
-        aspectRatio,
+        aspectRatio: FRAME_ASPECT_RATIO,
         borderImageSource: `url(${frame})`,
         borderImageSlice: 76,
         borderImageRepeat: "stretch",

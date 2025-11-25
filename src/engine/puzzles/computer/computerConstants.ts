@@ -1,5 +1,5 @@
 import type { RoomId } from "../../../assets/data/roomData";
-import { createKeyGuard } from "../../../utils/guards";
+import { createKeyGuard } from "../../../utils/createKeyGuard";
 import { roomRegistry } from "../../world/roomRegistry";
 
 // Types

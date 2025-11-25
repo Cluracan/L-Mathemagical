@@ -3,7 +3,7 @@ import type { HandleCommand } from "../dispatchCommand";
 import type { PipelineFunction, PipelinePayload } from "../pipeline/types";
 import { withPipeline } from "../pipeline/withPipeline";
 import { runPuzzleTriggers } from "../puzzles/runPuzzleTriggers";
-import { createKeyGuard } from "../../utils/guards";
+import { createKeyGuard } from "../../utils/createKeyGuard";
 
 // Narrative Content
 const swimFeedback = {

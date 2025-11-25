@@ -1,4 +1,4 @@
-import { createKeyGuard } from "../../utils/guards";
+import { createKeyGuard } from "../../utils/createKeyGuard";
 import type { ItemId } from "./itemData";
 import { type ExitDirection, type RoomId } from "./roomData";
 

@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { createKeyGuard } from "../../../utils/guards";
+import { createKeyGuard } from "../../../utils/createKeyGuard";
 import type { PipelineFunction } from "../../pipeline/types";
 
 // Types

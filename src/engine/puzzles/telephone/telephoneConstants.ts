@@ -1,4 +1,4 @@
-import { createKeyGuard } from "../../../utils/guards";
+import { createKeyGuard } from "../../../utils/createKeyGuard";
 
 // Types
 export interface TelephoneState {

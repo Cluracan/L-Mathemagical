@@ -6,7 +6,7 @@ import {
   MAX_RECURSION,
   type ComputerState,
 } from "./computerConstants";
-import { createKeyGuard } from "../../../utils/guards";
+import { createKeyGuard } from "../../../utils/createKeyGuard";
 import { simulateHandleMove } from "./simulateHandleMove";
 import { roomRegistry } from "../../world/roomRegistry";
 import type { KeyId } from "../../../assets/data/itemData";

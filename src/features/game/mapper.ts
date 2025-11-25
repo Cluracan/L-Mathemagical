@@ -4,7 +4,7 @@ import {
 } from "../../assets/data/blockedExitData";
 import { roomData, type RoomId } from "../../assets/data/roomData";
 import { useGameStore } from "../../store/useGameStore";
-import { createKeyGuard } from "../../utils/guards";
+import { createKeyGuard } from "../../utils/createKeyGuard";
 
 //config Values
 const roomSize = 50;

@@ -1,5 +1,5 @@
 import type { ExitDirection } from "../../assets/data/roomData";
-import { createKeyGuard } from "../../utils/guards";
+import { createKeyGuard } from "../../utils/createKeyGuard";
 
 // userInput -> ExitDirection
 export const directionAliases = {

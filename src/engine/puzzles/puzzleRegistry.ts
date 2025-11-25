@@ -2,7 +2,7 @@ import { abbotHallwayNPC, abbotKitchenNPC, abbotNPC } from "./abbot/abbotNPC";
 import { handleAbbotPuzzle } from "./abbot/handleAbbotPuzzle";
 import { lightsNPC } from "./lights/lightsNPC";
 import { LightsPuzzle } from "./lights/LightsPuzzle";
-import { createKeyGuard } from "../../utils/guards";
+import { createKeyGuard } from "../../utils/createKeyGuard";
 import type { PuzzleNPC } from "./types";
 import type { PipelineFunction } from "../pipeline/types";
 import type { RoomId } from "../../assets/data/roomData";

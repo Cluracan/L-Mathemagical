@@ -78,7 +78,7 @@ import {
   initialComputerState,
   type ComputerState,
 } from "../engine/puzzles/computer/computerConstants";
-import { createKeyGuard } from "../utils/guards";
+import { createKeyGuard } from "../utils/createKeyGuard";
 
 // Constants
 export const SAVE_VERSION = "1.0.0";

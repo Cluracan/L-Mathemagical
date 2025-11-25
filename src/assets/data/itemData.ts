@@ -1,4 +1,4 @@
-import { createKeyGuard } from "../../utils/guards";
+import { createKeyGuard } from "../../utils/createKeyGuard";
 import type { RoomId } from "./roomData";
 
 export const itemData = {

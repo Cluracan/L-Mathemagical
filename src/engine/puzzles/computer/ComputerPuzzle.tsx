@@ -61,7 +61,14 @@ export const ComputerPuzzle = () => {
           ...state.puzzleState,
           computer: initialComputerState,
         },
-        storyLine: [...state.storyLine, {type:"description",text: computerFeedback.storyLineSuccess,isEncrypted:state.encryptionActive}],
+        storyLine: [
+          ...state.storyLine,
+          {
+            type: "description",
+            text: computerFeedback.storyLineSuccess,
+            isEncrypted: state.encryptionActive,
+          },
+        ],
       });
     }
   };
@@ -94,7 +101,7 @@ export const ComputerPuzzle = () => {
       <Box
         sx={{
           position: "relative",
-          minHeight: "50vh",
+          minHeight: "70vh",
           width: "100%",
         }}
       >

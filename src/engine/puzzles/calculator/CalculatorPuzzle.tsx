@@ -236,10 +236,11 @@ CalculatorDisplay.displayName = "CalculatorDisplay";
 
 const CalculatorButton = memo(
   ({ value, displayValue, handleInput }: CalculatorButtonProps) => {
+    const buttonDisabled = !WORKING_CALCULATOR_BUTTONS.has(value);
     return (
       <Button
         variant="contained"
-        disableRipple={!WORKING_CALCULATOR_BUTTONS.has(value)}
+        disableRipple={buttonDisabled}
         onClick={() => {
           if (WORKING_CALCULATOR_BUTTONS.has(value)) {
             handleInput(value);
@@ -258,6 +259,7 @@ const CalculatorButton = memo(
             boxShadow: "inset 0px 0px 6px 0px #bdbdba",
           },
         }}
+        aria-disabled={buttonDisabled}
       >
         {displayValue}
       </Button>

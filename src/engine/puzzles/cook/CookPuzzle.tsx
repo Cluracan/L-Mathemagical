@@ -1,5 +1,5 @@
 import { Box, Button, InputAdornment, Stack, TextField } from "@mui/material";
-import type { ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { produce } from "immer";
 import { useGameStore } from "../../../store/useGameStore";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
@@ -14,6 +14,17 @@ import {
   type Ingredient,
 } from "./cookConstants";
 import { cookReducer } from "./cookReducer";
+import { typedKeys } from "../../../utils/typedKeys";
+
+// Types
+interface InputFieldProps {
+  ingredient: Ingredient;
+  currentFocus: Ingredient;
+  handleEnterClick: () => void;
+}
+
+// Constants
+const ingredients = typedKeys(initialCookState.ingredients);
 
 export const CookPuzzle = () => {
   // State
@@ -21,22 +32,34 @@ export const CookPuzzle = () => {
     (state) => state.puzzleState.cook.puzzleCompleted
   );
   const feedback = useGameStore((state) => state.puzzleState.cook.feedback);
+  const [ingredientFocusIndex, setIngredientFocusIndex] = useState(0);
 
   // Handlers
-  const handleReset = () => {
-    useGameStore.setState((state) => ({
-      puzzleState: {
-        ...state.puzzleState,
-        cook: cookReducer(state.puzzleState.cook, { type: "reset" }),
-      },
-    }));
-  };
-
   const handleBake = () => {
     useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
         cook: cookReducer(state.puzzleState.cook, { type: "bake" }),
+      },
+    }));
+  };
+
+  const handleEnterClick = () => {
+    if (ingredientFocusIndex === ingredients.length - 1) {
+      setIngredientFocusIndex(0);
+      handleBake();
+    } else {
+      setIngredientFocusIndex(
+        (ingredientFocusIndex) => ingredientFocusIndex + 1
+      );
+    }
+  };
+
+  const handleReset = () => {
+    useGameStore.setState((state) => ({
+      puzzleState: {
+        ...state.puzzleState,
+        cook: cookReducer(state.puzzleState.cook, { type: "reset" }),
       },
     }));
   };
@@ -57,10 +80,14 @@ export const CookPuzzle = () => {
         },
       },
       storyLine: [
-        ...state.storyLine,{type:"description",
-        text:puzzleCompleted
-          ? cookFeedback.storyLineSuccess
-          : cookFeedback.storyLineFailure,isEncrypted:state.encryptionActive}
+        ...state.storyLine,
+        {
+          type: "description",
+          text: puzzleCompleted
+            ? cookFeedback.storyLineSuccess
+            : cookFeedback.storyLineFailure,
+          isEncrypted: state.encryptionActive,
+        },
       ],
       itemLocation: {
         ...state.itemLocation,
@@ -87,10 +114,12 @@ export const CookPuzzle = () => {
             padding: 2,
           }}
         >
-          {Object.keys(initialCookState.ingredients).map((ingredient) => (
+          {ingredients.map((ingredient) => (
             <InputField
               key={ingredient}
-              ingredient={ingredient as Ingredient}
+              ingredient={ingredient}
+              currentFocus={ingredients[ingredientFocusIndex]}
+              handleEnterClick={handleEnterClick}
             />
           ))}
           <CakeDisplay />
@@ -115,12 +144,17 @@ export const CookPuzzle = () => {
   );
 };
 
-const InputField = ({ ingredient }: { ingredient: Ingredient }) => {
+const InputField = ({
+  ingredient,
+  currentFocus,
+  handleEnterClick,
+}: InputFieldProps) => {
   // State
   const value = useGameStore(
     (state) => state.puzzleState.cook.ingredients[ingredient]
   );
 
+  const inputRef = useRef<HTMLInputElement>(null);
   // Handlers
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (isNaN(Number(e.target.value)) || Number(e.target.value) > MAX_QUANTITY)
@@ -132,14 +166,31 @@ const InputField = ({ ingredient }: { ingredient: Ingredient }) => {
     );
   };
 
+  // Effects
+  useEffect(() => {
+    if (currentFocus === ingredient) {
+      console.log(`Setting focus to ${ingredient}`);
+      inputRef.current?.focus();
+    }
+  }, [currentFocus]);
+
   // Render
   return (
     <>
       <TextField
         variant="outlined"
+        inputRef={inputRef}
+        onSubmit={() => {
+          console.log("Submit");
+        }}
         label={ingredient}
         value={value}
         onChange={handleChange}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleEnterClick();
+          }
+        }}
         sx={{ width: "96px", m: 2 }}
         slotProps={{
           input: {

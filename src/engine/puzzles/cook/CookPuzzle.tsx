@@ -236,6 +236,7 @@ const CakeDisplay = () => {
           backgroundColor: "#F1D5D1",
           color: "black",
         }}
+        aria-label={`Cake height: ${cakeHeight.toFixed(1)} centimeters`}
       >
         {`${cakeHeight.toFixed(1)} cm`}
       </Box>

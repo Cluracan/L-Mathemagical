@@ -56,13 +56,14 @@ export const LightsPuzzle = () => {
         },
       },
       storyLine: [
-        ...state.storyLine,{type:"description",text:
-        state.puzzleState.lights.puzzleCompleted
-          ? lightsFeedback.storyLineSuccess
-          : lightsFeedback.storyLineFailure,isEncrypted:state.encryptionActive}
-
-
-          
+        ...state.storyLine,
+        {
+          type: "description",
+          text: state.puzzleState.lights.puzzleCompleted
+            ? lightsFeedback.storyLineSuccess
+            : lightsFeedback.storyLineFailure,
+          isEncrypted: state.encryptionActive,
+        },
       ],
       itemLocation: {
         ...state.itemLocation,
@@ -116,8 +117,8 @@ const LightsDisplay = () => {
     <Stack
       direction={"row"}
       width={"80%"}
-      p={4}
-      m={2}
+      p={{ md: 2, lg: 4 }}
+      m={{ md: 0, lg: 2 }}
       sx={{
         justifyContent: "space-around",
       }}

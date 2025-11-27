@@ -21,6 +21,9 @@ export const PuzzleFeedback = ({ feedback, height }: PuzzleFeedbackProps) => {
         overflowY: "auto",
         whiteSpace: "pre-wrap",
       }}
+      role="log"
+      aria-live="polite"
+      aria-relevant="additions"
     >
       {feedback.map((entry, index) => (
         <Typography key={index} sx={{ mb: 1 }}>

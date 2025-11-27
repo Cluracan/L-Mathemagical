@@ -1,5 +1,11 @@
 import { Box, Button, InputAdornment, Stack, TextField } from "@mui/material";
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type Ref,
+} from "react";
 import { produce } from "immer";
 import { useGameStore } from "../../../store/useGameStore";
 import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
@@ -16,13 +22,6 @@ import {
 import { cookReducer } from "./cookReducer";
 import { typedKeys } from "../../../utils/typedKeys";
 
-// Types
-interface InputFieldProps {
-  ingredient: Ingredient;
-  currentFocus: Ingredient;
-  handleEnterClick: () => void;
-}
-
 // Constants
 const ingredients = typedKeys(initialCookState.ingredients);
 
@@ -32,7 +31,15 @@ export const CookPuzzle = () => {
     (state) => state.puzzleState.cook.puzzleCompleted
   );
   const feedback = useGameStore((state) => state.puzzleState.cook.feedback);
-  const [ingredientFocusIndex, setIngredientFocusIndex] = useState(0);
+  const inputRefs = useRef(
+    ingredients.map(() => React.createRef<HTMLInputElement>())
+  );
+  const [activeInputIndex, setActiveInputIndex] = useState(0);
+
+  // Effects
+  useEffect(() => {
+    inputRefs.current[activeInputIndex].current?.focus();
+  }, [activeInputIndex]);
 
   // Handlers
   const handleBake = () => {
@@ -44,14 +51,12 @@ export const CookPuzzle = () => {
     }));
   };
 
-  const handleEnterClick = () => {
-    if (ingredientFocusIndex === ingredients.length - 1) {
-      setIngredientFocusIndex(0);
+  const advanceInputFocus = () => {
+    if (activeInputIndex === ingredients.length - 1) {
+      setActiveInputIndex(0);
       handleBake();
     } else {
-      setIngredientFocusIndex(
-        (ingredientFocusIndex) => ingredientFocusIndex + 1
-      );
+      setActiveInputIndex((activeInputIndex) => activeInputIndex + 1);
     }
   };
 
@@ -114,12 +119,12 @@ export const CookPuzzle = () => {
             padding: 2,
           }}
         >
-          {ingredients.map((ingredient) => (
+          {ingredients.map((ingredient, index) => (
             <InputField
               key={ingredient}
               ingredient={ingredient}
-              currentFocus={ingredients[ingredientFocusIndex]}
-              handleEnterClick={handleEnterClick}
+              inputRef={inputRefs.current[index]}
+              advanceInputFocus={advanceInputFocus}
             />
           ))}
           <CakeDisplay />
@@ -143,18 +148,22 @@ export const CookPuzzle = () => {
     </>
   );
 };
+interface InputFieldProps {
+  ingredient: Ingredient;
+  inputRef: Ref<HTMLInputElement>;
+  advanceInputFocus: () => void;
+}
 
 const InputField = ({
   ingredient,
-  currentFocus,
-  handleEnterClick,
+  inputRef,
+  advanceInputFocus,
 }: InputFieldProps) => {
   // State
   const value = useGameStore(
     (state) => state.puzzleState.cook.ingredients[ingredient]
   );
 
-  const inputRef = useRef<HTMLInputElement>(null);
   // Handlers
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (isNaN(Number(e.target.value)) || Number(e.target.value) > MAX_QUANTITY)
@@ -166,29 +175,21 @@ const InputField = ({
     );
   };
 
-  // Effects
-  useEffect(() => {
-    if (currentFocus === ingredient) {
-      console.log(`Setting focus to ${ingredient}`);
-      inputRef.current?.focus();
-    }
-  }, [currentFocus]);
-
   // Render
   return (
     <>
       <TextField
-        variant="outlined"
         inputRef={inputRef}
-        onSubmit={() => {
-          console.log("Submit");
+        onFocus={(e) => {
+          e.target.select();
         }}
+        variant="outlined"
         label={ingredient}
         value={value}
         onChange={handleChange}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            handleEnterClick();
+            advanceInputFocus();
           }
         }}
         sx={{ width: "96px", m: 2 }}

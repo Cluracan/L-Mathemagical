@@ -6,6 +6,7 @@ import { PuzzleActions } from "../../../components/puzzles/PuzzleActions";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { lightsReducer } from "./lightsReducer";
 import { INITAL_ORDER, lightsFeedback } from "./lightsConstants";
+import { VisuallyHidden } from "../../../components/VisuallyHidden";
 
 export const LightsPuzzle = () => {
   // State
@@ -114,32 +115,38 @@ const LightsDisplay = () => {
   const theme = useTheme();
   const curOrder = useGameStore((state) => state.puzzleState.lights.curOrder);
   return (
-    <Stack
-      direction={"row"}
-      width={"80%"}
-      p={{ md: 2, lg: 4 }}
-      m={{ md: 0, lg: 2 }}
-      sx={{
-        justifyContent: "space-around",
-      }}
-    >
-      {curOrder.map((color) => (
-        <div
-          key={color}
-          style={{
-            color: "black",
-            backgroundColor: color,
-            borderRadius: "100%",
-            height: theme.spacing(12),
-            width: theme.spacing(12),
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {color}
-        </div>
-      ))}
-    </Stack>
+    <>
+      <Stack
+        direction={"row"}
+        width={"80%"}
+        p={{ md: 2, lg: 4 }}
+        m={{ md: 0, lg: 2 }}
+        sx={{
+          justifyContent: "space-around",
+        }}
+      >
+        {curOrder.map((color) => (
+          <div
+            key={color}
+            style={{
+              color: "black",
+              backgroundColor: color,
+              borderRadius: "100%",
+              height: theme.spacing(12),
+              width: theme.spacing(12),
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            aria-hidden="true"
+          >
+            {color}
+          </div>
+        ))}
+      </Stack>
+      <VisuallyHidden role="status" aria-live="polite">
+        {`Lights are in order ${curOrder.join(", ")}`}
+      </VisuallyHidden>
+    </>
   );
 };

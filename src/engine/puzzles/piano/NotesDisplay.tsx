@@ -36,7 +36,12 @@ export const NotesDisplay = ({ playedNotes }: NotesDisplayProps) => {
     if (!vexFlowNode || containerWidth === 0) return;
 
     const renderer = new Renderer(vexFlowNode, Renderer.Backends.SVG);
-    const stave = new Stave(0, 0, containerWidth - 2 * HORIZONTAL_PADDING);
+    const stave = new Stave(0, 0, containerWidth - 2 * HORIZONTAL_PADDING, {
+      spaceAboveStaffLn: 1,
+      spaceBelowStaffLn: 2,
+      spacingBetweenLinesPx: 10,
+      // https://www.vexflow.com/build/docs/stave.html
+    });
     stave.addClef("treble");
 
     const staveBounds = stave.getBoundingBox();

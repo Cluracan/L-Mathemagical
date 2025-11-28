@@ -5,7 +5,7 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import {
   audioCache,
-  keyboardMapper,
+  keyboardToNote,
   pianoFeedback,
   TARGET_MELODY,
   type NoteId,
@@ -44,8 +44,8 @@ export const PianoPuzzle = () => {
 
   useEffect(() => {
     function keyDownHandler(e: KeyboardEvent) {
-      if (e.key in keyboardMapper) {
-        const noteId = keyboardMapper[e.key];
+      if (e.key in keyboardToNote) {
+        const noteId = keyboardToNote[e.key];
         handleNotePress(noteId);
       }
     }

@@ -42,7 +42,7 @@ export const pianoKeys = {
   B4: { noteName: "B", display: "B", color: "white", offset: true },
 } as const;
 
-export const keyboardMapper: Record<string, NoteId> = {
+export const keyboardToNote: Record<string, NoteId> = {
   a: "C4",
   w: "Db4",
   s: "D4",

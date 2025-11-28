@@ -80,7 +80,7 @@ export const pianoFeedback = {
     "As you look around, you notice a small glass bottle full of a blue liquid, and a phial containing some very pink liquid lying on the ground.",
   ],
   partialSuccess:
-    "You feel confident that you playing all the right notes, but need to play some more...",
+    "You feel confident that you are playing all the right notes, but need to play some more...",
 
   storyLineSuccess:
     "The mice have all disappeared, but they have left two items lying on the ground in front of you.",

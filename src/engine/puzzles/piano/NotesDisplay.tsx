@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { pianoKeys, TARGET_MELODY, type NoteId } from "./pianoConstants";
 import { Renderer, Stave, StaveNote, Formatter, Accidental } from "vexflow";
+import { VisuallyHidden } from "../../../components/VisuallyHidden";
 
 // Types
 interface NotesDisplayProps {
@@ -96,7 +97,13 @@ export const NotesDisplay = ({ playedNotes }: NotesDisplayProps) => {
           background: "linear-gradient(to bottom, #ffeaa7, #fab1a0)",
           borderRadius: "8px",
         }}
+        aria-hidden="true"
       ></div>
+      <VisuallyHidden>
+        {playedNotes.length === 0
+          ? "No notes played yet"
+          : `Played notes: ${playedNotes.map((noteId) => pianoKeys[noteId].noteName).join(", ")}`}
+      </VisuallyHidden>
     </>
   );
 };

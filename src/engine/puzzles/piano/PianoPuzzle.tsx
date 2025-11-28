@@ -5,6 +5,7 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import {
   audioCache,
+  keyboardMapper,
   pianoFeedback,
   TARGET_MELODY,
   type NoteId,
@@ -30,8 +31,8 @@ export const PianoPuzzle = () => {
   const playedNotes = useGameStore(
     (state) => state.puzzleState.piano.playedNotes
   );
+  // Effects
 
-  //Preload Audio
   useEffect(() => {
     Object.values(audioCache).forEach((audio) => {
       if (audio instanceof HTMLAudioElement) {
@@ -40,6 +41,22 @@ export const PianoPuzzle = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    function keyDownHandler(e: KeyboardEvent) {
+      if (e.key in keyboardMapper) {
+        const noteId = keyboardMapper[e.key];
+        handleNotePress(noteId);
+      }
+    }
+    window.addEventListener("keydown", keyDownHandler);
+
+    return () => {
+      window.removeEventListener("keydown", keyDownHandler);
+    };
+  }, []);
+
+  // Handlers
 
   const handleReset = () => {
     useGameStore.setState((state) => ({
@@ -53,7 +70,6 @@ export const PianoPuzzle = () => {
     }));
   };
 
-  // Helpers
   const handleLeave = () => {
     useGameStore.setState((state) => ({
       ...state,

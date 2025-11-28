@@ -18,6 +18,8 @@ export const PianoKeyboard = ({ onNotePress }: PianoKeyboardProps) => {
           justifyContent: "center",
           backgroundColor: "gray",
         }}
+        role="group"
+        aria-label="Piano keyboard"
       >
         {typedKeys(pianoKeys).map((noteId) => {
           const keyColor = pianoKeys[noteId].color;
@@ -55,6 +57,7 @@ export const PianoKeyboard = ({ onNotePress }: PianoKeyboardProps) => {
                       border: "1px solid grey",
                     }
               }
+              aria-label={`Play key ${pianoKeys[noteId].noteName}`}
             >
               {keyColor === "white" && pianoKeys[noteId].display}
             </Button>

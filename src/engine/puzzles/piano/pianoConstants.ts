@@ -42,6 +42,21 @@ export const pianoKeys = {
   B4: { noteName: "B", display: "B", color: "white", offset: true },
 } as const;
 
+export const keyboardMapper: Record<string, NoteId> = {
+  a: "C4",
+  w: "Db4",
+  s: "D4",
+  e: "Eb4",
+  d: "E4",
+  f: "F4",
+  t: "Gb4",
+  g: "G4",
+  y: "Ab4",
+  h: "A4",
+  u: "Bb4",
+  j: "B4",
+};
+
 export const audioCache: Record<string, HTMLAudioElement> = {};
 Object.keys(pianoKeys).forEach((noteId) => {
   audioCache[noteId] = new Audio(`/assets/piano/${noteId}.mp3`);

@@ -1,5 +1,6 @@
 import { Button, Stack, useTheme } from "@mui/material";
 import { pianoKeys, type NoteId } from "./pianoConstants";
+import { typedKeys } from "../../../utils/typedKeys";
 
 interface PianoKeyboardProps {
   onNotePress: (note: NoteId) => void;
@@ -18,7 +19,7 @@ export const PianoKeyboard = ({ onNotePress }: PianoKeyboardProps) => {
           backgroundColor: "gray",
         }}
       >
-        {(Object.keys(pianoKeys) as NoteId[]).map((noteId) => {
+        {typedKeys(pianoKeys).map((noteId) => {
           const keyColor = pianoKeys[noteId].color;
           const keyOffset = pianoKeys[noteId].offset;
           return (
@@ -30,7 +31,10 @@ export const PianoKeyboard = ({ onNotePress }: PianoKeyboardProps) => {
               sx={
                 keyColor === "white"
                   ? {
-                      height: theme.spacing(24),
+                      height: {
+                        md: theme.spacing(15),
+                        lg: theme.spacing(24),
+                      },
                       width: theme.spacing(12),
                       alignItems: "end",
                       backgroundColor: "white",
@@ -39,7 +43,10 @@ export const PianoKeyboard = ({ onNotePress }: PianoKeyboardProps) => {
                       color: "darkgray",
                     }
                   : {
-                      height: theme.spacing(8),
+                      height: {
+                        md: theme.spacing(5),
+                        lg: theme.spacing(8),
+                      },
                       width: theme.spacing(6),
                       alignItems: "end",
                       ml: -4,

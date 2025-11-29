@@ -18,7 +18,7 @@ export const PuzzleDialog = memo((props: PuzzleDialogProps) => {
 
   return (
     <>
-      <Dialog open={showDialog} fullWidth={true} maxWidth={"lg"}>
+      <Dialog open={showDialog} fullWidth={true} maxWidth={"lg"} sx={{ p: 0 }}>
         <PuzzleComponent />
       </Dialog>
     </>

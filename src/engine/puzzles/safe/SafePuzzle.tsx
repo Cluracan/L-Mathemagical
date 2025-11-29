@@ -75,6 +75,9 @@ export const SafePuzzle = () => {
   };
 
   const handleInput = useCallback((button: KeypadButton) => {
+    if (puzzleCompleted) {
+      return;
+    }
     useGameStore.setState((state) => ({
       puzzleState: {
         ...state.puzzleState,
@@ -252,9 +255,7 @@ const KeypadFeedback = () => {
       activeLights.push(String(index + 1));
     }
   });
-  console.log(
-    `Of the five lights, ${activeLights.length === 0 ? "none" : `numbers ${activeLights.join(",")}`} are active`
-  );
+
   return (
     <>
       <Stack direction={"row"} sx={{ gap: 1 }}>
@@ -271,7 +272,7 @@ const KeypadFeedback = () => {
           ></Box>
         ))}
       </Stack>
-      <VisuallyHidden>{`Of the five lights, ${activeLights.length === 0 ? "none" : `numbers ${activeLights.join(",")}`} are active`}</VisuallyHidden>
+      <VisuallyHidden>{`Of the five lights, numbers ${activeLights.join(",")} are active`}</VisuallyHidden>
     </>
   );
 };

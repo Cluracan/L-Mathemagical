@@ -17,6 +17,7 @@ import { memo, useEffect } from "react";
 import {
   directionAliases,
   GRID_SIZE,
+  GRID_WIDTH,
   INITIAL_PIG_LOCATION,
   INITIAL_PLAYER_LOCATION,
   initialPigState,
@@ -28,6 +29,7 @@ import pig from "../../../assets/images/pig.svg";
 import player from "../../../assets/images/person.svg";
 import pigCaptured from "../../../assets/images/pigCaptured.svg";
 import { pigReducer } from "./pigReducer";
+import { VisuallyHidden } from "../../../components/VisuallyHidden";
 
 export const PigPuzzle = () => {
   // State
@@ -138,6 +140,7 @@ export const PigPuzzle = () => {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         message={feedback}
       />
+      <DisplacementAnnouncer />
     </PuzzleContainer>
   );
 };
@@ -279,4 +282,34 @@ const Instructions = () => {
       </Paper>
     </>
   );
+};
+
+const DisplacementAnnouncer = () => {
+  const playerLocation = useGameStore(
+    (state) => state.puzzleState.pig.playerLocation
+  );
+  const pigLocation = useGameStore(
+    (state) => state.puzzleState.pig.pigLocation
+  );
+  const verticalDisplacement =
+    Math.floor(pigLocation / GRID_WIDTH) -
+    Math.floor(playerLocation / GRID_WIDTH);
+  const horizontalDisplacement =
+    (pigLocation % GRID_WIDTH) - (playerLocation % GRID_WIDTH);
+  const horizontalText =
+    horizontalDisplacement === 0
+      ? ""
+      : `${String(Math.abs(horizontalDisplacement))} ${Math.abs(horizontalDisplacement) > 1 ? "squares" : "square"} to the ${horizontalDisplacement >= 0 ? "east" : "west"}`;
+  const verticalText =
+    verticalDisplacement === 0
+      ? ""
+      : `${String(Math.abs(verticalDisplacement))}  ${Math.abs(verticalDisplacement) > 1 ? "squares" : "square"} to the ${verticalDisplacement > 0 ? "south" : "north"}`;
+
+  const displacementText = `The pig is ${[horizontalText, verticalText].filter(Boolean).join(" and ")}`;
+  const message =
+    horizontalDisplacement === 0 && verticalDisplacement === 0
+      ? "You have caught the pig!"
+      : displacementText;
+
+  return <VisuallyHidden>{message}</VisuallyHidden>;
 };

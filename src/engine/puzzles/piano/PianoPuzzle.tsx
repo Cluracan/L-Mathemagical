@@ -13,8 +13,9 @@ import {
 import { NotesDisplay } from "./NotesDisplay";
 import { PianoKeyboard } from "./PianoKeyboard";
 import { pianoReducer } from "./pianoReducer";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useEffect } from "react";
+import { PuzzleHelp } from "../../../components/puzzles/PuzzleHelp";
 
 //Helpers
 const playAudioNote = (note: NoteId) => {
@@ -134,10 +135,15 @@ export const PianoPuzzle = () => {
   // Render
   return (
     <PuzzleContainer>
+      <PuzzleHelp>
+        <Typography>
+          You can play notes by clicking the keys, or you can use your keyboard.
+        </Typography>
+      </PuzzleHelp>
       <PuzzleHeader title="Piano Puzzle" description="Play the right tune." />
       <NotesDisplay playedNotes={playedNotes} />
       <PianoKeyboard onNotePress={handleNotePress} />
-      <PuzzleFeedback height="24vh" feedback={feedback.slice(-20)} />
+      <PuzzleFeedback height="18vh" feedback={feedback.slice(-20)} />
       <PuzzleActions
         handleReset={handleReset}
         handleLeave={handleLeave}

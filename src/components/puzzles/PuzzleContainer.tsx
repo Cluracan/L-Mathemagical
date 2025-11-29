@@ -7,7 +7,6 @@ export const PuzzleContainer = ({ children, ...props }: StackProps) => {
         alignItems: "center",
         justifyContent: "space-between",
         minHeight: "60vh",
-        padding: 2,
       }}
       {...props}
     >

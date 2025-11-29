@@ -68,7 +68,6 @@ export const pianoFeedback = {
     " ",
     "You sit carefully on the piano stool and prepare to play.",
     "There is a book of music, titled '100 Nursery Rhymes for Piano' resting on the music stand.",
-    " ",
   ],
   failureMessages: [
     "You finish your piece and sit back...but nothing happens.",

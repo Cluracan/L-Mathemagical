@@ -5,6 +5,7 @@ import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
 import {
   DIGIT_COUNT,
+  helpText,
   initialSafeState,
   isKeypadButton,
   keypadButtons,
@@ -13,6 +14,8 @@ import {
 } from "./safeConstants";
 import { safeReducer } from "./safeReducer";
 import { useCallback, useEffect } from "react";
+import { PuzzleHelp } from "../../../components/puzzles/PuzzleHelp";
+import { VisuallyHidden } from "../../../components/VisuallyHidden";
 
 // Types
 interface SafeDisplayProps {
@@ -117,6 +120,9 @@ export const SafePuzzle = () => {
   // Render
   return (
     <PuzzleContainer>
+      <PuzzleHelp>
+        <Typography>{helpText}</Typography>
+      </PuzzleHelp>
       <PuzzleHeader title="Safe Puzzle" description="Crack the code." />
       <SafeDisplay onClick={handleInput} />
       <PuzzleActions
@@ -170,6 +176,8 @@ const Keypad = ({ onClick }: KeypadProps) => {
           padding: 2,
           backgroundColor: "#a2a1a7",
         }}
+        role="group"
+        aria-label="keypad"
       >
         {keypadButtons.map((button, index) => (
           <KeypadButton onClick={onClick} button={button} key={index} />
@@ -217,6 +225,8 @@ const KeypadDisplay = () => {
           fontFamily: "DSEG7",
           fontSize: "2rem",
         }}
+        role="status"
+        aria-label="Code display panel"
       >
         {value.toString().padStart(DIGIT_COUNT, "0")}
       </Typography>
@@ -236,20 +246,32 @@ const KeypadFeedback = () => {
     { color: "rgba(204, 255, 0, 1)", isActive: feedback.isCube },
     { color: "rgba(0, 255, 17, 1)", isActive: puzzleCompleted },
   ];
+  const activeLights: string[] = [];
+  feedbackLights.forEach((light, index) => {
+    if (light.isActive) {
+      activeLights.push(String(index + 1));
+    }
+  });
+  console.log(
+    `Of the five lights, ${activeLights.length === 0 ? "none" : `numbers ${activeLights.join(",")}`} are active`
+  );
   return (
-    <Stack direction={"row"} sx={{ gap: 1 }}>
-      {feedbackLights.map((light, index) => (
-        <Box
-          key={index}
-          sx={{
-            width: "1rem",
-            height: "1rem",
-            border: `1px solid ${light.color}`,
-            borderRadius: "50%",
-            backgroundColor: light.isActive ? light.color : "none",
-          }}
-        ></Box>
-      ))}
-    </Stack>
+    <>
+      <Stack direction={"row"} sx={{ gap: 1 }}>
+        {feedbackLights.map((light, index) => (
+          <Box
+            key={index}
+            sx={{
+              width: "1rem",
+              height: "1rem",
+              border: `1px solid ${light.color}`,
+              borderRadius: "50%",
+              backgroundColor: light.isActive ? light.color : "none",
+            }}
+          ></Box>
+        ))}
+      </Stack>
+      <VisuallyHidden>{`Of the five lights, ${activeLights.length === 0 ? "none" : `numbers ${activeLights.join(",")}`} are active`}</VisuallyHidden>
+    </>
   );
 };

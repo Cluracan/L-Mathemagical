@@ -237,7 +237,7 @@ const Instructions = () => {
       >
         <div>
           {pigFeedback.instructions.map((entry, index) => (
-            <Typography key={index} lineHeight={3}>
+            <Typography key={index} sx={{ lineHeight: { md: 1.5, lg: 3 } }}>
               {entry}
             </Typography>
           ))}
@@ -249,7 +249,7 @@ const Instructions = () => {
             width: "80%",
             display: "flex",
             justifyContent: "center",
-            padding: 4,
+            padding: { md: 2, lg: 4 },
             backgroundColor: "transparent",
           }}
         >

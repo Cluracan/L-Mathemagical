@@ -16,7 +16,7 @@ export const INITIAL_NUMBER = 0;
 // Narrative Content
 export const telephoneFeedback = {
   instructions: [
-    "This telephone only accepts three digit numbers (000-999)",
+    "This telephone only accepts three digit numbers (001-999)",
     "Choose a number using either the onscreen keypad or your keyboard, then press DIAL",
   ],
   reply: {

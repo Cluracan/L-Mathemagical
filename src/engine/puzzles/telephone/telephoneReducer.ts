@@ -28,6 +28,7 @@ export function telephoneReducer(
         draft.number = INITIAL_NUMBER;
       });
     case "submit":
+      if (state.number === 0) return state;
       return produce(state, (draft) => {
         draft.feedback.push(
           `You dial ${draft.number.toString().padStart(3, "0")}`

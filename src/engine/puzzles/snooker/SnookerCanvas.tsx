@@ -78,6 +78,8 @@ export const SnookerCanvas = ({
         style={{
           margin: "2rem",
         }}
+        role="img"
+        aria-label="Image of elliptical snooker table with a single ball and pocket"
       />
     </>
   );

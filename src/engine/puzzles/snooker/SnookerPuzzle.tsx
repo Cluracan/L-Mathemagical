@@ -83,7 +83,7 @@ export const SnookerPuzzle = () => {
       <PuzzleContainer>
         <PuzzleHeader title="Snooker Puzzle" description="Hit the ball!" />
         <SnookerCanvas onAnimationComplete={onAnimationComplete} />
-        <PuzzleFeedback feedback={[feedback]} height="8vh" />
+        <PuzzleFeedback feedback={[feedback]} height="4rem" />
         <PuzzleActions
           handleLeave={handleLeave}
           handleReset={handleReset}
@@ -91,10 +91,15 @@ export const SnookerPuzzle = () => {
         >
           <TextField
             label="Angle"
+            autoFocus
             onChange={handleChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleHit();
+              }
+            }}
             value={angleInput}
             inputRef={inputRef}
-            autoFocus
             slotProps={{
               input: {
                 endAdornment: (

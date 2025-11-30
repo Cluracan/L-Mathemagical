@@ -164,6 +164,8 @@ const TelephoneKeypad = ({ onClick }: TelephoneProps) => {
           padding: 2,
           backgroundColor: "#d7bc83",
         }}
+        role="group"
+        aria-label="Telephone keypad"
       >
         {telephoneButtons.map((value, index) => (
           <TelephoneButton onClick={onClick} value={value} key={index} />
@@ -201,6 +203,7 @@ const TelephoneButton = ({ onClick, value }: TelephoneButtonProps) => {
         borderRadius: "5px",
         backgroundColor: "#d7bc83",
       }}
+      aria-hidden="true"
     />
   );
 };
@@ -220,6 +223,7 @@ const NumberDisplay = () => {
           fontFamily: "DSEG7",
           fontSize: "2rem",
         }}
+        role="status"
       >
         {number.toString().padStart(3, "0")}
       </Typography>

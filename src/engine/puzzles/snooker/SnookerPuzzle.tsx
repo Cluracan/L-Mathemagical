@@ -4,7 +4,7 @@ import { PuzzleContainer } from "../../../components/puzzles/PuzzleContainer";
 import { PuzzleFeedback } from "../../../components/puzzles/PuzzleFeedback";
 import { PuzzleHeader } from "../../../components/puzzles/PuzzleHeader";
 import { useGameStore } from "../../../store/useGameStore";
-import { useState, type ChangeEvent } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 
 import { produce } from "immer";
 import { initialSnookerState, snookerFeedback } from "./snookerConstants";
@@ -21,6 +21,7 @@ export const SnookerPuzzle = () => {
     (state) => state.puzzleState.snooker.puzzleCompleted
   );
   const [angleInput, setAngleInput] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Handlers
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +59,7 @@ export const SnookerPuzzle = () => {
         };
       })
     );
+    inputRef.current?.focus();
   };
 
   const handleLeave = () => {
@@ -91,6 +93,8 @@ export const SnookerPuzzle = () => {
             label="Angle"
             onChange={handleChange}
             value={angleInput}
+            inputRef={inputRef}
+            autoFocus
             slotProps={{
               input: {
                 endAdornment: (

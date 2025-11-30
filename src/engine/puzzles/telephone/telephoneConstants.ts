@@ -65,7 +65,7 @@ export const telephoneButtons = [
 // Initial State
 export const initialTelephoneState: TelephoneState = {
   puzzleCompleted: false,
-  feedback: telephoneFeedback.instructions,
+  feedback: [...telephoneFeedback.instructions],
   number: INITIAL_NUMBER,
   targetNumberIsEngaged: true,
 };

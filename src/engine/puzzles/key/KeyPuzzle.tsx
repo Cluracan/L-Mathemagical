@@ -201,6 +201,14 @@ const KeyCell = memo(({ index, onCellClick }: KeyCellProps) => {
       key={index}
       onClick={handleClick}
       className={cellSelected ? "filled" : "empty"}
+      role="button"
+      tabIndex={0}
+      aria-label={cellSelected ? "Blank" : "File here"}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleClick();
+        }
+      }}
     />
   );
 });

@@ -143,6 +143,7 @@ const TreeGrid = memo(() => {
         margin: 1,
         backgroundColor: "rgb(87, 125, 61)",
       }}
+      aria-label="Orchard - click on a cell to plant a tree"
     >
       {Array.from({ length: ORCHARD_SIZE }, (_, i) => i).map((i) => (
         <TreeCell key={i} index={i} />
@@ -180,7 +181,18 @@ const TreeCell = memo(({ index }: { index: number }) => {
     });
   }, [index]);
   return (
-    <StyledCell key={index} onClick={handleClick}>
+    <StyledCell
+      key={index}
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      aria-label={cellSelected ? "Remove tree" : "Plant tree"}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleClick();
+        }
+      }}
+    >
       {cellSelected && (
         <img
           src={tree}

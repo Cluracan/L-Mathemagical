@@ -1,11 +1,13 @@
 import { produce } from "immer";
 import {
+  GAME_NAME,
   SAVE_VERSION,
   useGameStore,
   type GameStoreState,
 } from "../store/useGameStore";
 
 export interface SaveFile {
+  gameName: string;
   version: string;
   gameData: GameStoreState;
 }
@@ -16,6 +18,7 @@ export const saveGame = () => {
   try {
     const state = useGameStore.getState();
     const saveFile: SaveFile = {
+      gameName: GAME_NAME,
       version: SAVE_VERSION,
       gameData: state,
     };

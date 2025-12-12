@@ -83,6 +83,7 @@ import { createKeyGuard } from "../utils/createKeyGuard";
 // Constants
 export const SAVE_VERSION = "1.0.0";
 export const MAJOR_VERSION = SAVE_VERSION.split(".")[0];
+export const GAME_NAME = "L-A Mathemagical Adventure";
 // Types
 export type EntryType = "input" | "description" | "action" | "warning";
 

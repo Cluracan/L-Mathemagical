@@ -102,13 +102,15 @@ const canFillBathHole = (
 //Main Function
 export const runBathTriggers: PipelineFunction = (payload) => {
   const { command, target, gameState } = payload;
+  if (
+    gameState.currentRoom !== "riverS" &&
+    gameState.currentRoom !== "riverN"
+  ) {
+    return payload;
+  }
   switch (command) {
     case "look": {
-      if (
-        target !== "bath" ||
-        (gameState.currentRoom !== "riverS" &&
-          gameState.currentRoom !== "riverN")
-      ) {
+      if (target !== "bath") {
         return payload;
       }
       return stopWithSuccess({

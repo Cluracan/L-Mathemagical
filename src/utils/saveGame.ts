@@ -9,6 +9,7 @@ import {
 export interface SaveFile {
   gameName: string;
   version: string;
+  id: string;
   gameData: GameStoreState;
 }
 
@@ -17,9 +18,11 @@ export const saveGame = () => {
   let url: string | null = null;
   try {
     const state = useGameStore.getState();
+    const uuid = crypto.randomUUID();
     const saveFile: SaveFile = {
       gameName: GAME_NAME,
       version: SAVE_VERSION,
+      id: uuid,
       gameData: state,
     };
 

@@ -52,7 +52,10 @@ export const TelephonePuzzle = () => {
     useGameStore.setState({
       showDialog: false,
       currentPuzzle: null,
-      puzzleState: { ...state.puzzleState, telephone: initialTelephoneState },
+      puzzleState: {
+        ...state.puzzleState,
+        telephone: { ...initialTelephoneState, puzzleCompleted },
+      },
       storyLine: [
         ...state.storyLine,
         {

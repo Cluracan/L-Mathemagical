@@ -147,7 +147,7 @@ export class Mapper {
     // DFS traverse connected rooms(ignore stairs) pop() is O(1) whilst shift() is O(n) (reindex remaining elements)
     this.drawableRooms = [];
     const stack: DrawableRoom[] = [];
-    //DFS = stack, BFS = queue (thanks chatGBT!)
+
     stack.push({
       roomId: centerRoomId,
       x: this.centerRoomX,

@@ -23,16 +23,16 @@ class ItemRegistry {
     return this.itemData[id].descriptions.examine;
   }
   isDrinkable(id: ItemId) {
-    return this.itemData[id].isDrinkable;
+    return this.itemData[id].canDrink;
   }
   getDrinkMessage(id: ItemId, height: PlayerHeight) {
-    if (!this.itemData[id].isDrinkable) {
+    if (!this.itemData[id].canDrink) {
       throw new Error(`Item ${id} is not drinkable`);
     }
     return this.itemData[id].drinkMessage[height];
   }
   getNewHeight(id: ItemId, height: PlayerHeight) {
-    if (!this.itemData[id].isDrinkable) {
+    if (!this.itemData[id].canDrink) {
       throw new Error(`Item ${id} is not drinkable`);
     }
     return this.itemData[id].heightChange[height];

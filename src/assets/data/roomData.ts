@@ -974,8 +974,9 @@ export const roomData = {
   atticPassage: {
     id: "atticPassage",
     descriptions: {
-      long: "You are in an attic passage with doors at the east and west ends. There is a faint smell of stale kippers. Paint is peeling from the walls.",
-      short: "You are in the attic passage",
+      long: "You are in an attic passage with doors at the east and west ends. There is a faint smell of stale kippers. Paint is peeling from the walls.\n\nA faded sign on the wall reads:-\n\n\t\t\t----------------------\n\t\t\t|                    |\n\t\t\t| Say the magic word |\n\t\t\t|                    |\n\t\t\t----------------------",
+      short:
+        "You are in the attic passage.\n\nA faded sign on the wall reads:-\n\n\t\t\t----------------------\n\t\t\t|                    |\n\t\t\t| Say the magic word |\n\t\t\t|                    |\n\t\t\t----------------------",
     },
     mapText: "Passage",
     positionPrefix: "in",

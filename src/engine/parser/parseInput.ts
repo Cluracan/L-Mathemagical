@@ -38,6 +38,9 @@ export const parseInput: ParseInput = (userInput) => {
     return { command: "say", target: commandWord };
   }
 
+  //Interpret 'neumann'
+  if (commandWord === "neumann") return { command: "say", target: "neumann" };
+
   const target = args[args.length - 1] || null;
 
   for (const [command, triggerWords] of Object.entries(commandDictionary)) {

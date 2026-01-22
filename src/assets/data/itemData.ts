@@ -13,7 +13,7 @@ export const itemData = {
       examine:
         "The tetrahedron looks very solid - perhaps you can find a use for it?",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   cube: {
     id: "cube",
@@ -24,7 +24,7 @@ export const itemData = {
       pickUp: "gold cube",
       examine: "The cube is small, but made of solid gold.",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   dodecahedron: {
     id: "dodecahedron",
@@ -35,7 +35,7 @@ export const itemData = {
       pickUp: "diamond dodecahedron",
       examine: "This diamond has 12 identical faces that glitter in the light.",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   icosahedron: {
     id: "icosahedron",
@@ -47,7 +47,7 @@ export const itemData = {
       examine:
         "This gemstone has swirling patterns of various shades of green on each of its 20 faces.",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   octahedron: {
     id: "octahedron",
@@ -59,7 +59,7 @@ export const itemData = {
       examine:
         "The octahedron is discoloured by age, but still feels very solid in your hand.",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   bottle: {
     id: "bottle",
@@ -72,7 +72,7 @@ export const itemData = {
       examine:
         "The bottle contains a sweet-smelling blue liquid. It seems very drinkable...",
     },
-    isDrinkable: true,
+    canDrink: true,
     heightChange: {
       threeFifths: "threeFourths",
       threeFourths: "threeFourths",
@@ -98,7 +98,7 @@ export const itemData = {
       examine:
         "The phial contains a pink liquid. You take a sniff, but can't quite place the scent - it seems to be a mix of cherry-tart, custard, pineapple, roast turkey, toffee, and hot buttered toast.",
     },
-    isDrinkable: true,
+    canDrink: true,
     heightChange: {
       threeFifths: "threeFifths",
       threeFourths: "threeFourths",
@@ -123,7 +123,7 @@ export const itemData = {
       examine:
         "This oar looks like it could help you if you ever needed to cross some water in a vessel (as long as you know how to single-oar scull!)",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   sphere: {
     id: "sphere",
@@ -135,7 +135,7 @@ export const itemData = {
       examine:
         "The sphere is very heavy, and highly polished. You resist the temptation to kick it (it's heavy steel, remember?)",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   rusty: {
     id: "rusty",
@@ -147,7 +147,7 @@ export const itemData = {
       examine:
         "The rusty key is tarnished by age, but could be very useful, if you find the right door...",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   iron: {
     id: "iron",
@@ -158,7 +158,7 @@ export const itemData = {
       pickUp: "iron key",
       examine: "The iron key has been carefully filed to fit multiple locks...",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   safe: {
     id: "safe",
@@ -170,7 +170,7 @@ export const itemData = {
       examine:
         "The key will bypass the safe keypad...which means you shouldn't be using it!",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   chest: {
     id: "chest",
@@ -182,7 +182,7 @@ export const itemData = {
       examine:
         "The key will bypass the 'move chest' puzzle...which means you shouldn't be using it!",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   jail: {
     id: "jail",
@@ -194,7 +194,7 @@ export const itemData = {
       examine:
         "The key will unlock the attic room...which means you shouldn't be using it!",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   spectacles: {
     id: "spectacles",
@@ -205,7 +205,7 @@ export const itemData = {
       pickUp: "spectacles",
       examine: "The wire-rimmed spectacles have a magical air about them.",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   ladder: {
     id: "ladder",
@@ -217,7 +217,7 @@ export const itemData = {
       examine:
         "It's a ladder, made of rope. It could be used as an emergency escape...",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   hair: {
     id: "hair",
@@ -229,7 +229,7 @@ export const itemData = {
       examine:
         "This hair doesn't look like it belongs to the abbot. Whose is it?",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   ticket: {
     id: "ticket",
@@ -242,7 +242,7 @@ export const itemData = {
       examine:
         "On the back of the bus ticket is written in spdery handwriting:-\n\nTHE COMBINATION IS A PERFECT SQUARE AND A PERFECT CUBE",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   ring: {
     id: "ring",
@@ -254,7 +254,7 @@ export const itemData = {
       examine:
         "You sense that the ring holds huge magical powers. It feels strangely heavy in your hand.",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
   amulet: {
     id: "amulet",
@@ -266,20 +266,28 @@ export const itemData = {
       examine:
         "The golden Amulet hums softly with hidden energy. You feel its pulse align with your heartbeat — a quiet promise of great power.",
     },
-    isDrinkable: false,
+    canDrink: false,
   },
 } as const satisfies Record<string, ItemData>;
 
-interface ItemData {
+// Types
+interface BaseItemData {
   id: string;
   initialLocation: RoomId;
   descriptions: Record<"floor" | "inventory" | "pickUp" | "examine", string>;
-  isDrinkable: boolean;
-  heightChange?: Record<PlayerHeight, PlayerHeight>;
-  drinkMessage?: Record<PlayerHeight, string>;
 }
 
-// Types
+interface DrinkableItemData extends BaseItemData {
+  canDrink: true;
+  heightChange: Record<PlayerHeight, PlayerHeight>;
+  drinkMessage: Record<PlayerHeight, string>;
+}
+
+interface NonDrinkableItemData extends BaseItemData {
+  canDrink: false;
+}
+
+type ItemData = DrinkableItemData | NonDrinkableItemData;
 
 export type PlayerHeight =
   | "threeFifths"
@@ -297,7 +305,7 @@ export type Item =
         "floor" | "inventory" | "pickUp" | "examine",
         string
       >;
-      isDrinkable: false;
+      canDrink: false;
     }
   | {
       id: ItemId;
@@ -306,7 +314,7 @@ export type Item =
         "floor" | "inventory" | "pickUp" | "examine",
         string
       >;
-      isDrinkable: true;
+      canDrink: true;
       heightChange: Record<PlayerHeight, PlayerHeight>;
       drinkMessage: Record<PlayerHeight, string>;
     };
@@ -315,7 +323,7 @@ export const isItemId = createKeyGuard(itemData);
 
 export const initialItemLocation = Object.values(itemData).reduce(
   (obj, item) => Object.assign(obj, { [item.id]: item.initialLocation }),
-  {}
+  {},
 ) as Record<ItemId, RoomId>;
 
 export const initialKeyLocked = {

@@ -14,7 +14,7 @@ const VALID_ROOMS: RoomId[] = ["atticPassage"];
 const travelText =
   "Suddenly it goes dark. You experience the sensation of travelling in a high speed lift.";
 const mannersText =
-  "That is excellent manners, but you get the feeling that this is not the magic word you are looking for.";
+  "That is excellent manners, but you get the feeling that this is not the magic word you are looking for. Perphaps you will find something useful in a nearby room?";
 
 export const runNeumannTriggers: PipelineFunction = (payload) => {
   const { command, target, gameState } = payload;

@@ -240,7 +240,7 @@ export const itemData = {
       inventory: "An old bus ticket",
       pickUp: "bus ticket",
       examine:
-        "On the back of the bus ticket is written in spdery handwriting:-\n\nTHE COMBINATION IS A PERFECT SQUARE AND A PERFECT CUBE",
+        "On the back of the bus ticket is written in spidery handwriting:-\n\nTHE COMBINATION IS A PERFECT SQUARE AND A PERFECT CUBE",
     },
     canDrink: false,
   },
